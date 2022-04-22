@@ -2,7 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { Multicall } from "./Multicall";
+export type { YieldGate } from "./YieldGate";
 export type { YourContract } from "./YourContract";
 
 export { Multicall__factory } from "./factories/Multicall__factory";
+export { YieldGate__factory } from "./factories/YieldGate__factory";
 export { YourContract__factory } from "./factories/YourContract__factory";
