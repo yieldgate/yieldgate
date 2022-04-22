@@ -8,11 +8,10 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  useDisclosure,
+  useDisclosure
 } from '@chakra-ui/react'
 import { useEthers } from '@usedapp/core'
 import React from 'react'
-import { walletconnect, walletlink } from '../lib/connectors'
 
 function ConnectWallet(): JSX.Element {
   const { activate, activateBrowserWallet } = useEthers()
@@ -25,7 +24,8 @@ function ConnectWallet(): JSX.Element {
         order={[-1, null, null, 2]}
         textAlign={['left', null, null, 'right']}
       >
-        <Button colorScheme="teal" variant="outline" onClick={onOpen}>
+        {/* <Button colorScheme="teal" variant="outline" onClick={onOpen}> */}
+        <Button colorScheme="teal" variant="outline" onClick={() => activateBrowserWallet}>
           Connect to a wallet
         </Button>
       </Box>
@@ -54,7 +54,7 @@ function ConnectWallet(): JSX.Element {
             >
               MetaMask
             </Button>
-            <Button
+            {/* <Button
               justifyContent="space-between"
               width="100%"
               mb="4"
@@ -72,8 +72,8 @@ function ConnectWallet(): JSX.Element {
               }}
             >
               WalletConnect
-            </Button>
-            <Button
+            </Button> */}
+            {/* <Button
               justifyContent="space-between"
               width="100%"
               mb="4"
@@ -91,7 +91,7 @@ function ConnectWallet(): JSX.Element {
               }}
             >
               Coinbase Wallet
-            </Button>
+            </Button> */}
           </ModalBody>
         </ModalContent>
       </Modal>

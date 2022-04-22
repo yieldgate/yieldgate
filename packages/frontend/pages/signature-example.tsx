@@ -6,7 +6,7 @@ import {
   Divider,
   Heading,
   Input,
-  Text,
+  Text
 } from '@chakra-ui/react'
 import { useEthers } from '@usedapp/core'
 import { utils } from 'ethers'
@@ -23,29 +23,29 @@ type StateType = {
 }
 type ActionType =
   | {
-      type: 'SET_SIGNATURE'
-      signature: string
-    }
+    type: 'SET_SIGNATURE'
+    signature: string
+  }
   | {
-      type: 'SET_MESSAGE_TO_SIGN'
-      messageToSign: string
-    }
+    type: 'SET_MESSAGE_TO_SIGN'
+    messageToSign: string
+  }
   | {
-      type: 'SET_ADDRESS_TO_VERIFY'
-      addressToVerify: string
-    }
+    type: 'SET_ADDRESS_TO_VERIFY'
+    addressToVerify: string
+  }
   | {
-      type: 'SET_SIGNATURE_TO_VERIFY'
-      signatureToVerify: string
-    }
+    type: 'SET_SIGNATURE_TO_VERIFY'
+    signatureToVerify: string
+  }
   | {
-      type: 'SET_MESSAGE_TO_VERIFY'
-      messageToVerify: string
-    }
+    type: 'SET_MESSAGE_TO_VERIFY'
+    messageToVerify: string
+  }
   | {
-      type: 'SET_VERIFICATION_SUCCESS'
-      verificationSuccess: boolean
-    }
+    type: 'SET_VERIFICATION_SUCCESS'
+    verificationSuccess: boolean
+  }
 
 const initialState: StateType = {
   signature: '',

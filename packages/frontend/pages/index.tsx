@@ -27,17 +27,17 @@ type StateType = {
 }
 type ActionType =
   | {
-      type: 'SET_GREETING'
-      greeting: StateType['greeting']
-    }
+    type: 'SET_GREETING'
+    greeting: StateType['greeting']
+  }
   | {
-      type: 'SET_INPUT_VALUE'
-      inputValue: StateType['inputValue']
-    }
+    type: 'SET_INPUT_VALUE'
+    inputValue: StateType['inputValue']
+  }
   | {
-      type: 'SET_LOADING'
-      isLoading: StateType['isLoading']
-    }
+    type: 'SET_LOADING'
+    isLoading: StateType['isLoading']
+  }
 
 /**
  * Component
