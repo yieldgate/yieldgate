@@ -25,7 +25,7 @@ function ConnectWallet(): JSX.Element {
         textAlign={['left', null, null, 'right']}
       >
         {/* <Button colorScheme="teal" variant="outline" onClick={onOpen}> */}
-        <Button colorScheme="teal" variant="outline"               onClick={() => {
+        <Button colorScheme="teal" variant="outline" onClick={() => {
           activateBrowserWallet()
         }}>
           Connect to a wallet
