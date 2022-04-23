@@ -29,8 +29,9 @@ const config: HardhatUserConfig = {
     artifacts: path.resolve("../frontend/artifacts"),
   },
   networks: {
-    hardhat: {
+    localhost: {
       chainId: 1337,
+      url: "http://127.0.0.1:8545",
     },
     mumbai: {
       chainId: 80001,
