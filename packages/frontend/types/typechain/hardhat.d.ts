@@ -53,6 +53,57 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.YieldGate__factory>;
 
+    getContractAt(
+      name: "IERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20>;
+    getContractAt(
+      name: "IAaveIncentivesController",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IAaveIncentivesController>;
+    getContractAt(
+      name: "IAToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IAToken>;
+    getContractAt(
+      name: "IInitializableAToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IInitializableAToken>;
+    getContractAt(
+      name: "IPool",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IPool>;
+    getContractAt(
+      name: "IPoolAddressesProvider",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IPoolAddressesProvider>;
+    getContractAt(
+      name: "IScaledBalanceToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IScaledBalanceToken>;
+    getContractAt(
+      name: "IWETHGateway",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IWETHGateway>;
+    getContractAt(
+      name: "BeneficiaryPool",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.BeneficiaryPool>;
+    getContractAt(
+      name: "YieldGate",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.YieldGate>;
+
     // default types
     getContractFactory(
       name: string,
@@ -63,5 +114,10 @@ declare module "hardhat/types/runtime" {
       bytecode: ethers.utils.BytesLike,
       signer?: ethers.Signer
     ): Promise<ethers.ContractFactory>;
+    getContractAt(
+      nameOrAbi: string | any[],
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<ethers.Contract>;
   }
 }

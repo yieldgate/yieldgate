@@ -17,7 +17,7 @@ import {
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
+import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface IPoolInterface extends ethers.utils.Interface {
   functions: {
@@ -29,7 +29,7 @@ interface IPoolInterface extends ethers.utils.Interface {
     "MAX_STABLE_RATE_BORROW_SIZE_PERCENT()": FunctionFragment;
     "backUnbacked(address,uint256,uint256)": FunctionFragment;
     "borrow(address,uint256,uint256,uint16,address)": FunctionFragment;
-    "configureEModeCategory(uint8,tuple)": FunctionFragment;
+    "configureEModeCategory(uint8,(uint16,uint16,uint16,address,string))": FunctionFragment;
     "deposit(address,uint256,address,uint16)": FunctionFragment;
     "dropReserve(address)": FunctionFragment;
     "finalizeTransfer(address,address,address,uint256,uint256,uint256)": FunctionFragment;
@@ -54,7 +54,7 @@ interface IPoolInterface extends ethers.utils.Interface {
     "repayWithPermit(address,uint256,uint256,address,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "rescueTokens(address,address,uint256)": FunctionFragment;
     "resetIsolationModeTotalDebt(address)": FunctionFragment;
-    "setConfiguration(address,tuple)": FunctionFragment;
+    "setConfiguration(address,(uint256))": FunctionFragment;
     "setReserveInterestRateStrategyAddress(address,address)": FunctionFragment;
     "setUserEMode(uint8)": FunctionFragment;
     "setUserUseReserveAsCollateral(address,bool)": FunctionFragment;
@@ -468,6 +468,133 @@ interface IPoolInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "UserEModeSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Withdraw"): EventFragment;
 }
+
+export type BackUnbackedEvent = TypedEvent<
+  [string, string, BigNumber, BigNumber] & {
+    reserve: string;
+    backer: string;
+    amount: BigNumber;
+    fee: BigNumber;
+  }
+>;
+
+export type BorrowEvent = TypedEvent<
+  [string, string, string, BigNumber, number, BigNumber, number] & {
+    reserve: string;
+    user: string;
+    onBehalfOf: string;
+    amount: BigNumber;
+    interestRateMode: number;
+    borrowRate: BigNumber;
+    referralCode: number;
+  }
+>;
+
+export type FlashLoanEvent = TypedEvent<
+  [string, string, string, BigNumber, number, BigNumber, number] & {
+    target: string;
+    initiator: string;
+    asset: string;
+    amount: BigNumber;
+    interestRateMode: number;
+    premium: BigNumber;
+    referralCode: number;
+  }
+>;
+
+export type IsolationModeTotalDebtUpdatedEvent = TypedEvent<
+  [string, BigNumber] & { asset: string; totalDebt: BigNumber }
+>;
+
+export type LiquidationCallEvent = TypedEvent<
+  [string, string, string, BigNumber, BigNumber, string, boolean] & {
+    collateralAsset: string;
+    debtAsset: string;
+    user: string;
+    debtToCover: BigNumber;
+    liquidatedCollateralAmount: BigNumber;
+    liquidator: string;
+    receiveAToken: boolean;
+  }
+>;
+
+export type MintUnbackedEvent = TypedEvent<
+  [string, string, string, BigNumber, number] & {
+    reserve: string;
+    user: string;
+    onBehalfOf: string;
+    amount: BigNumber;
+    referralCode: number;
+  }
+>;
+
+export type MintedToTreasuryEvent = TypedEvent<
+  [string, BigNumber] & { reserve: string; amountMinted: BigNumber }
+>;
+
+export type RebalanceStableBorrowRateEvent = TypedEvent<
+  [string, string] & { reserve: string; user: string }
+>;
+
+export type RepayEvent = TypedEvent<
+  [string, string, string, BigNumber, boolean] & {
+    reserve: string;
+    user: string;
+    repayer: string;
+    amount: BigNumber;
+    useATokens: boolean;
+  }
+>;
+
+export type ReserveDataUpdatedEvent = TypedEvent<
+  [string, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber] & {
+    reserve: string;
+    liquidityRate: BigNumber;
+    stableBorrowRate: BigNumber;
+    variableBorrowRate: BigNumber;
+    liquidityIndex: BigNumber;
+    variableBorrowIndex: BigNumber;
+  }
+>;
+
+export type ReserveUsedAsCollateralDisabledEvent = TypedEvent<
+  [string, string] & { reserve: string; user: string }
+>;
+
+export type ReserveUsedAsCollateralEnabledEvent = TypedEvent<
+  [string, string] & { reserve: string; user: string }
+>;
+
+export type SupplyEvent = TypedEvent<
+  [string, string, string, BigNumber, number] & {
+    reserve: string;
+    user: string;
+    onBehalfOf: string;
+    amount: BigNumber;
+    referralCode: number;
+  }
+>;
+
+export type SwapBorrowRateModeEvent = TypedEvent<
+  [string, string, number] & {
+    reserve: string;
+    user: string;
+    interestRateMode: number;
+  }
+>;
+
+export type UserEModeSetEvent = TypedEvent<
+  [string, number] & { user: string; categoryId: number }
+>;
+
+export type WithdrawEvent = TypedEvent<
+  [string, string, string, BigNumber] & {
+    reserve: string;
+    user: string;
+    to: string;
+    amount: BigNumber;
+  }
+>;
 
 export class IPool extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -1473,6 +1600,16 @@ export class IPool extends BaseContract {
   };
 
   filters: {
+    "BackUnbacked(address,address,uint256,uint256)"(
+      reserve?: string | null,
+      backer?: string | null,
+      amount?: null,
+      fee?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber, BigNumber],
+      { reserve: string; backer: string; amount: BigNumber; fee: BigNumber }
+    >;
+
     BackUnbacked(
       reserve?: string | null,
       backer?: string | null,
@@ -1481,6 +1618,27 @@ export class IPool extends BaseContract {
     ): TypedEventFilter<
       [string, string, BigNumber, BigNumber],
       { reserve: string; backer: string; amount: BigNumber; fee: BigNumber }
+    >;
+
+    "Borrow(address,address,address,uint256,uint8,uint256,uint16)"(
+      reserve?: string | null,
+      user?: null,
+      onBehalfOf?: string | null,
+      amount?: null,
+      interestRateMode?: null,
+      borrowRate?: null,
+      referralCode?: BigNumberish | null
+    ): TypedEventFilter<
+      [string, string, string, BigNumber, number, BigNumber, number],
+      {
+        reserve: string;
+        user: string;
+        onBehalfOf: string;
+        amount: BigNumber;
+        interestRateMode: number;
+        borrowRate: BigNumber;
+        referralCode: number;
+      }
     >;
 
     Borrow(
@@ -1500,6 +1658,27 @@ export class IPool extends BaseContract {
         amount: BigNumber;
         interestRateMode: number;
         borrowRate: BigNumber;
+        referralCode: number;
+      }
+    >;
+
+    "FlashLoan(address,address,address,uint256,uint8,uint256,uint16)"(
+      target?: string | null,
+      initiator?: null,
+      asset?: string | null,
+      amount?: null,
+      interestRateMode?: null,
+      premium?: null,
+      referralCode?: BigNumberish | null
+    ): TypedEventFilter<
+      [string, string, string, BigNumber, number, BigNumber, number],
+      {
+        target: string;
+        initiator: string;
+        asset: string;
+        amount: BigNumber;
+        interestRateMode: number;
+        premium: BigNumber;
         referralCode: number;
       }
     >;
@@ -1525,12 +1704,41 @@ export class IPool extends BaseContract {
       }
     >;
 
+    "IsolationModeTotalDebtUpdated(address,uint256)"(
+      asset?: string | null,
+      totalDebt?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { asset: string; totalDebt: BigNumber }
+    >;
+
     IsolationModeTotalDebtUpdated(
       asset?: string | null,
       totalDebt?: null
     ): TypedEventFilter<
       [string, BigNumber],
       { asset: string; totalDebt: BigNumber }
+    >;
+
+    "LiquidationCall(address,address,address,uint256,uint256,address,bool)"(
+      collateralAsset?: string | null,
+      debtAsset?: string | null,
+      user?: string | null,
+      debtToCover?: null,
+      liquidatedCollateralAmount?: null,
+      liquidator?: null,
+      receiveAToken?: null
+    ): TypedEventFilter<
+      [string, string, string, BigNumber, BigNumber, string, boolean],
+      {
+        collateralAsset: string;
+        debtAsset: string;
+        user: string;
+        debtToCover: BigNumber;
+        liquidatedCollateralAmount: BigNumber;
+        liquidator: string;
+        receiveAToken: boolean;
+      }
     >;
 
     LiquidationCall(
@@ -1554,6 +1762,23 @@ export class IPool extends BaseContract {
       }
     >;
 
+    "MintUnbacked(address,address,address,uint256,uint16)"(
+      reserve?: string | null,
+      user?: null,
+      onBehalfOf?: string | null,
+      amount?: null,
+      referralCode?: BigNumberish | null
+    ): TypedEventFilter<
+      [string, string, string, BigNumber, number],
+      {
+        reserve: string;
+        user: string;
+        onBehalfOf: string;
+        amount: BigNumber;
+        referralCode: number;
+      }
+    >;
+
     MintUnbacked(
       reserve?: string | null,
       user?: null,
@@ -1571,6 +1796,14 @@ export class IPool extends BaseContract {
       }
     >;
 
+    "MintedToTreasury(address,uint256)"(
+      reserve?: string | null,
+      amountMinted?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { reserve: string; amountMinted: BigNumber }
+    >;
+
     MintedToTreasury(
       reserve?: string | null,
       amountMinted?: null
@@ -1579,10 +1812,32 @@ export class IPool extends BaseContract {
       { reserve: string; amountMinted: BigNumber }
     >;
 
+    "RebalanceStableBorrowRate(address,address)"(
+      reserve?: string | null,
+      user?: string | null
+    ): TypedEventFilter<[string, string], { reserve: string; user: string }>;
+
     RebalanceStableBorrowRate(
       reserve?: string | null,
       user?: string | null
     ): TypedEventFilter<[string, string], { reserve: string; user: string }>;
+
+    "Repay(address,address,address,uint256,bool)"(
+      reserve?: string | null,
+      user?: string | null,
+      repayer?: string | null,
+      amount?: null,
+      useATokens?: null
+    ): TypedEventFilter<
+      [string, string, string, BigNumber, boolean],
+      {
+        reserve: string;
+        user: string;
+        repayer: string;
+        amount: BigNumber;
+        useATokens: boolean;
+      }
+    >;
 
     Repay(
       reserve?: string | null,
@@ -1598,6 +1853,25 @@ export class IPool extends BaseContract {
         repayer: string;
         amount: BigNumber;
         useATokens: boolean;
+      }
+    >;
+
+    "ReserveDataUpdated(address,uint256,uint256,uint256,uint256,uint256)"(
+      reserve?: string | null,
+      liquidityRate?: null,
+      stableBorrowRate?: null,
+      variableBorrowRate?: null,
+      liquidityIndex?: null,
+      variableBorrowIndex?: null
+    ): TypedEventFilter<
+      [string, BigNumber, BigNumber, BigNumber, BigNumber, BigNumber],
+      {
+        reserve: string;
+        liquidityRate: BigNumber;
+        stableBorrowRate: BigNumber;
+        variableBorrowRate: BigNumber;
+        liquidityIndex: BigNumber;
+        variableBorrowIndex: BigNumber;
       }
     >;
 
@@ -1620,7 +1894,17 @@ export class IPool extends BaseContract {
       }
     >;
 
+    "ReserveUsedAsCollateralDisabled(address,address)"(
+      reserve?: string | null,
+      user?: string | null
+    ): TypedEventFilter<[string, string], { reserve: string; user: string }>;
+
     ReserveUsedAsCollateralDisabled(
+      reserve?: string | null,
+      user?: string | null
+    ): TypedEventFilter<[string, string], { reserve: string; user: string }>;
+
+    "ReserveUsedAsCollateralEnabled(address,address)"(
       reserve?: string | null,
       user?: string | null
     ): TypedEventFilter<[string, string], { reserve: string; user: string }>;
@@ -1629,6 +1913,23 @@ export class IPool extends BaseContract {
       reserve?: string | null,
       user?: string | null
     ): TypedEventFilter<[string, string], { reserve: string; user: string }>;
+
+    "Supply(address,address,address,uint256,uint16)"(
+      reserve?: string | null,
+      user?: null,
+      onBehalfOf?: string | null,
+      amount?: null,
+      referralCode?: BigNumberish | null
+    ): TypedEventFilter<
+      [string, string, string, BigNumber, number],
+      {
+        reserve: string;
+        user: string;
+        onBehalfOf: string;
+        amount: BigNumber;
+        referralCode: number;
+      }
+    >;
 
     Supply(
       reserve?: string | null,
@@ -1647,6 +1948,15 @@ export class IPool extends BaseContract {
       }
     >;
 
+    "SwapBorrowRateMode(address,address,uint8)"(
+      reserve?: string | null,
+      user?: string | null,
+      interestRateMode?: null
+    ): TypedEventFilter<
+      [string, string, number],
+      { reserve: string; user: string; interestRateMode: number }
+    >;
+
     SwapBorrowRateMode(
       reserve?: string | null,
       user?: string | null,
@@ -1656,10 +1966,25 @@ export class IPool extends BaseContract {
       { reserve: string; user: string; interestRateMode: number }
     >;
 
+    "UserEModeSet(address,uint8)"(
+      user?: string | null,
+      categoryId?: null
+    ): TypedEventFilter<[string, number], { user: string; categoryId: number }>;
+
     UserEModeSet(
       user?: string | null,
       categoryId?: null
     ): TypedEventFilter<[string, number], { user: string; categoryId: number }>;
+
+    "Withdraw(address,address,address,uint256)"(
+      reserve?: string | null,
+      user?: string | null,
+      to?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, string, string, BigNumber],
+      { reserve: string; user: string; to: string; amount: BigNumber }
+    >;
 
     Withdraw(
       reserve?: string | null,

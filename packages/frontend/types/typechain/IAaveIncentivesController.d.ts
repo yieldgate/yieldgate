@@ -17,7 +17,7 @@ import {
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
+import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface IAaveIncentivesControllerInterface extends ethers.utils.Interface {
   functions: {
@@ -140,6 +140,27 @@ interface IAaveIncentivesControllerInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "RewardsAccrued"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "RewardsClaimed"): EventFragment;
 }
+
+export type ClaimerSetEvent = TypedEvent<
+  [string, string] & { user: string; claimer: string }
+>;
+
+export type RewardsAccruedEvent = TypedEvent<
+  [string, BigNumber] & { user: string; amount: BigNumber }
+>;
+
+export type RewardsClaimed_address_address_uint256_Event = TypedEvent<
+  [string, string, BigNumber] & { user: string; to: string; amount: BigNumber }
+>;
+
+export type RewardsClaimed_address_address_address_uint256_Event = TypedEvent<
+  [string, string, string, BigNumber] & {
+    user: string;
+    to: string;
+    claimer: string;
+    amount: BigNumber;
+  }
+>;
 
 export class IAaveIncentivesController extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -396,10 +417,23 @@ export class IAaveIncentivesController extends BaseContract {
   };
 
   filters: {
+    "ClaimerSet(address,address)"(
+      user?: string | null,
+      claimer?: string | null
+    ): TypedEventFilter<[string, string], { user: string; claimer: string }>;
+
     ClaimerSet(
       user?: string | null,
       claimer?: string | null
     ): TypedEventFilter<[string, string], { user: string; claimer: string }>;
+
+    "RewardsAccrued(address,uint256)"(
+      user?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { user: string; amount: BigNumber }
+    >;
 
     RewardsAccrued(
       user?: string | null,
@@ -409,13 +443,23 @@ export class IAaveIncentivesController extends BaseContract {
       { user: string; amount: BigNumber }
     >;
 
-    RewardsClaimed(
+    "RewardsClaimed(address,address,uint256)"(
       user?: string | null,
       to?: string | null,
       amount?: null
     ): TypedEventFilter<
       [string, string, BigNumber],
       { user: string; to: string; amount: BigNumber }
+    >;
+
+    "RewardsClaimed(address,address,address,uint256)"(
+      user?: string | null,
+      to?: string | null,
+      claimer?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, string, string, BigNumber],
+      { user: string; to: string; claimer: string; amount: BigNumber }
     >;
   };
 

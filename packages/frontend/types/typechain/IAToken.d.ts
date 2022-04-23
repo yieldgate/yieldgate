@@ -17,7 +17,7 @@ import {
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
+import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface IATokenInterface extends ethers.utils.Interface {
   functions: {
@@ -232,6 +232,60 @@ interface IATokenInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "Mint"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
+
+export type ApprovalEvent = TypedEvent<
+  [string, string, BigNumber] & {
+    owner: string;
+    spender: string;
+    value: BigNumber;
+  }
+>;
+
+export type BalanceTransferEvent = TypedEvent<
+  [string, string, BigNumber, BigNumber] & {
+    from: string;
+    to: string;
+    value: BigNumber;
+    index: BigNumber;
+  }
+>;
+
+export type BurnEvent = TypedEvent<
+  [string, string, BigNumber, BigNumber, BigNumber] & {
+    from: string;
+    target: string;
+    value: BigNumber;
+    balanceIncrease: BigNumber;
+    index: BigNumber;
+  }
+>;
+
+export type InitializedEvent = TypedEvent<
+  [string, string, string, string, number, string, string, string] & {
+    underlyingAsset: string;
+    pool: string;
+    treasury: string;
+    incentivesController: string;
+    aTokenDecimals: number;
+    aTokenName: string;
+    aTokenSymbol: string;
+    params: string;
+  }
+>;
+
+export type MintEvent = TypedEvent<
+  [string, string, BigNumber, BigNumber, BigNumber] & {
+    caller: string;
+    onBehalfOf: string;
+    value: BigNumber;
+    balanceIncrease: BigNumber;
+    index: BigNumber;
+  }
+>;
+
+export type TransferEvent = TypedEvent<
+  [string, string, BigNumber] & { from: string; to: string; value: BigNumber }
+>;
 
 export class IAToken extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -650,6 +704,15 @@ export class IAToken extends BaseContract {
   };
 
   filters: {
+    "Approval(address,address,uint256)"(
+      owner?: string | null,
+      spender?: string | null,
+      value?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber],
+      { owner: string; spender: string; value: BigNumber }
+    >;
+
     Approval(
       owner?: string | null,
       spender?: string | null,
@@ -657,6 +720,16 @@ export class IAToken extends BaseContract {
     ): TypedEventFilter<
       [string, string, BigNumber],
       { owner: string; spender: string; value: BigNumber }
+    >;
+
+    "BalanceTransfer(address,address,uint256,uint256)"(
+      from?: string | null,
+      to?: string | null,
+      value?: null,
+      index?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber, BigNumber],
+      { from: string; to: string; value: BigNumber; index: BigNumber }
     >;
 
     BalanceTransfer(
@@ -667,6 +740,23 @@ export class IAToken extends BaseContract {
     ): TypedEventFilter<
       [string, string, BigNumber, BigNumber],
       { from: string; to: string; value: BigNumber; index: BigNumber }
+    >;
+
+    "Burn(address,address,uint256,uint256,uint256)"(
+      from?: string | null,
+      target?: string | null,
+      value?: null,
+      balanceIncrease?: null,
+      index?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber, BigNumber, BigNumber],
+      {
+        from: string;
+        target: string;
+        value: BigNumber;
+        balanceIncrease: BigNumber;
+        index: BigNumber;
+      }
     >;
 
     Burn(
@@ -683,6 +773,29 @@ export class IAToken extends BaseContract {
         value: BigNumber;
         balanceIncrease: BigNumber;
         index: BigNumber;
+      }
+    >;
+
+    "Initialized(address,address,address,address,uint8,string,string,bytes)"(
+      underlyingAsset?: string | null,
+      pool?: string | null,
+      treasury?: null,
+      incentivesController?: null,
+      aTokenDecimals?: null,
+      aTokenName?: null,
+      aTokenSymbol?: null,
+      params?: null
+    ): TypedEventFilter<
+      [string, string, string, string, number, string, string, string],
+      {
+        underlyingAsset: string;
+        pool: string;
+        treasury: string;
+        incentivesController: string;
+        aTokenDecimals: number;
+        aTokenName: string;
+        aTokenSymbol: string;
+        params: string;
       }
     >;
 
@@ -709,6 +822,23 @@ export class IAToken extends BaseContract {
       }
     >;
 
+    "Mint(address,address,uint256,uint256,uint256)"(
+      caller?: string | null,
+      onBehalfOf?: string | null,
+      value?: null,
+      balanceIncrease?: null,
+      index?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber, BigNumber, BigNumber],
+      {
+        caller: string;
+        onBehalfOf: string;
+        value: BigNumber;
+        balanceIncrease: BigNumber;
+        index: BigNumber;
+      }
+    >;
+
     Mint(
       caller?: string | null,
       onBehalfOf?: string | null,
@@ -724,6 +854,15 @@ export class IAToken extends BaseContract {
         balanceIncrease: BigNumber;
         index: BigNumber;
       }
+    >;
+
+    "Transfer(address,address,uint256)"(
+      from?: string | null,
+      to?: string | null,
+      value?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber],
+      { from: string; to: string; value: BigNumber }
     >;
 
     Transfer(

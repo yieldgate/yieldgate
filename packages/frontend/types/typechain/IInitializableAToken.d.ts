@@ -17,7 +17,7 @@ import {
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
+import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface IInitializableATokenInterface extends ethers.utils.Interface {
   functions: {
@@ -46,6 +46,19 @@ interface IInitializableATokenInterface extends ethers.utils.Interface {
 
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
 }
+
+export type InitializedEvent = TypedEvent<
+  [string, string, string, string, number, string, string, string] & {
+    underlyingAsset: string;
+    pool: string;
+    treasury: string;
+    incentivesController: string;
+    aTokenDecimals: number;
+    aTokenName: string;
+    aTokenSymbol: string;
+    params: string;
+  }
+>;
 
 export class IInitializableAToken extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -131,6 +144,29 @@ export class IInitializableAToken extends BaseContract {
   };
 
   filters: {
+    "Initialized(address,address,address,address,uint8,string,string,bytes)"(
+      underlyingAsset?: string | null,
+      pool?: string | null,
+      treasury?: null,
+      incentivesController?: null,
+      aTokenDecimals?: null,
+      aTokenName?: null,
+      aTokenSymbol?: null,
+      params?: null
+    ): TypedEventFilter<
+      [string, string, string, string, number, string, string, string],
+      {
+        underlyingAsset: string;
+        pool: string;
+        treasury: string;
+        incentivesController: string;
+        aTokenDecimals: number;
+        aTokenName: string;
+        aTokenSymbol: string;
+        params: string;
+      }
+    >;
+
     Initialized(
       underlyingAsset?: string | null,
       pool?: string | null,

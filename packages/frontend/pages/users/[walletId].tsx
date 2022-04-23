@@ -20,7 +20,6 @@ export default function UsersPage() {
   const { account, chainId } = useEthers()
   const [isMyPage, setIsMyPage] = useState(false)
   const [creator, setCreator] = useState<Creator | null>(null)
-  // const [posts, setPosts] = useState<Post[]>([])
 
   const fetchCreator = async (): Promise<Creator> => {
     const res = await fetch('/api/creators/getCreator',{

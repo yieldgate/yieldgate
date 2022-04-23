@@ -17,7 +17,7 @@ import {
 import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
+import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface IPoolAddressesProviderInterface extends ethers.utils.Interface {
   functions: {
@@ -201,6 +201,63 @@ interface IPoolAddressesProviderInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "PriceOracleUpdated"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ProxyCreated"): EventFragment;
 }
+
+export type ACLAdminUpdatedEvent = TypedEvent<
+  [string, string] & { oldAddress: string; newAddress: string }
+>;
+
+export type ACLManagerUpdatedEvent = TypedEvent<
+  [string, string] & { oldAddress: string; newAddress: string }
+>;
+
+export type AddressSetEvent = TypedEvent<
+  [string, string, string] & {
+    id: string;
+    oldAddress: string;
+    newAddress: string;
+  }
+>;
+
+export type AddressSetAsProxyEvent = TypedEvent<
+  [string, string, string, string] & {
+    id: string;
+    proxyAddress: string;
+    oldImplementationAddress: string;
+    newImplementationAddress: string;
+  }
+>;
+
+export type MarketIdSetEvent = TypedEvent<
+  [string, string] & { oldMarketId: string; newMarketId: string }
+>;
+
+export type PoolConfiguratorUpdatedEvent = TypedEvent<
+  [string, string] & { oldAddress: string; newAddress: string }
+>;
+
+export type PoolDataProviderUpdatedEvent = TypedEvent<
+  [string, string] & { oldAddress: string; newAddress: string }
+>;
+
+export type PoolUpdatedEvent = TypedEvent<
+  [string, string] & { oldAddress: string; newAddress: string }
+>;
+
+export type PriceOracleSentinelUpdatedEvent = TypedEvent<
+  [string, string] & { oldAddress: string; newAddress: string }
+>;
+
+export type PriceOracleUpdatedEvent = TypedEvent<
+  [string, string] & { oldAddress: string; newAddress: string }
+>;
+
+export type ProxyCreatedEvent = TypedEvent<
+  [string, string, string] & {
+    id: string;
+    proxyAddress: string;
+    implementationAddress: string;
+  }
+>;
 
 export class IPoolAddressesProvider extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -451,7 +508,23 @@ export class IPoolAddressesProvider extends BaseContract {
   };
 
   filters: {
+    "ACLAdminUpdated(address,address)"(
+      oldAddress?: string | null,
+      newAddress?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { oldAddress: string; newAddress: string }
+    >;
+
     ACLAdminUpdated(
+      oldAddress?: string | null,
+      newAddress?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { oldAddress: string; newAddress: string }
+    >;
+
+    "ACLManagerUpdated(address,address)"(
       oldAddress?: string | null,
       newAddress?: string | null
     ): TypedEventFilter<
@@ -467,6 +540,15 @@ export class IPoolAddressesProvider extends BaseContract {
       { oldAddress: string; newAddress: string }
     >;
 
+    "AddressSet(bytes32,address,address)"(
+      id?: BytesLike | null,
+      oldAddress?: string | null,
+      newAddress?: string | null
+    ): TypedEventFilter<
+      [string, string, string],
+      { id: string; oldAddress: string; newAddress: string }
+    >;
+
     AddressSet(
       id?: BytesLike | null,
       oldAddress?: string | null,
@@ -474,6 +556,21 @@ export class IPoolAddressesProvider extends BaseContract {
     ): TypedEventFilter<
       [string, string, string],
       { id: string; oldAddress: string; newAddress: string }
+    >;
+
+    "AddressSetAsProxy(bytes32,address,address,address)"(
+      id?: BytesLike | null,
+      proxyAddress?: string | null,
+      oldImplementationAddress?: null,
+      newImplementationAddress?: string | null
+    ): TypedEventFilter<
+      [string, string, string, string],
+      {
+        id: string;
+        proxyAddress: string;
+        oldImplementationAddress: string;
+        newImplementationAddress: string;
+      }
     >;
 
     AddressSetAsProxy(
@@ -491,6 +588,14 @@ export class IPoolAddressesProvider extends BaseContract {
       }
     >;
 
+    "MarketIdSet(string,string)"(
+      oldMarketId?: string | null,
+      newMarketId?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { oldMarketId: string; newMarketId: string }
+    >;
+
     MarketIdSet(
       oldMarketId?: string | null,
       newMarketId?: string | null
@@ -499,7 +604,23 @@ export class IPoolAddressesProvider extends BaseContract {
       { oldMarketId: string; newMarketId: string }
     >;
 
+    "PoolConfiguratorUpdated(address,address)"(
+      oldAddress?: string | null,
+      newAddress?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { oldAddress: string; newAddress: string }
+    >;
+
     PoolConfiguratorUpdated(
+      oldAddress?: string | null,
+      newAddress?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { oldAddress: string; newAddress: string }
+    >;
+
+    "PoolDataProviderUpdated(address,address)"(
       oldAddress?: string | null,
       newAddress?: string | null
     ): TypedEventFilter<
@@ -515,7 +636,23 @@ export class IPoolAddressesProvider extends BaseContract {
       { oldAddress: string; newAddress: string }
     >;
 
+    "PoolUpdated(address,address)"(
+      oldAddress?: string | null,
+      newAddress?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { oldAddress: string; newAddress: string }
+    >;
+
     PoolUpdated(
+      oldAddress?: string | null,
+      newAddress?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { oldAddress: string; newAddress: string }
+    >;
+
+    "PriceOracleSentinelUpdated(address,address)"(
       oldAddress?: string | null,
       newAddress?: string | null
     ): TypedEventFilter<
@@ -531,12 +668,29 @@ export class IPoolAddressesProvider extends BaseContract {
       { oldAddress: string; newAddress: string }
     >;
 
+    "PriceOracleUpdated(address,address)"(
+      oldAddress?: string | null,
+      newAddress?: string | null
+    ): TypedEventFilter<
+      [string, string],
+      { oldAddress: string; newAddress: string }
+    >;
+
     PriceOracleUpdated(
       oldAddress?: string | null,
       newAddress?: string | null
     ): TypedEventFilter<
       [string, string],
       { oldAddress: string; newAddress: string }
+    >;
+
+    "ProxyCreated(bytes32,address,address)"(
+      id?: BytesLike | null,
+      proxyAddress?: string | null,
+      implementationAddress?: string | null
+    ): TypedEventFilter<
+      [string, string, string],
+      { id: string; proxyAddress: string; implementationAddress: string }
     >;
 
     ProxyCreated(
