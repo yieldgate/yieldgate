@@ -5,9 +5,9 @@ import path from "path";
 async function main() {
   const YieldGate = await ethers.getContractFactory("YieldGate");
   const yieldGateContract = await YieldGate.deploy(
-    "0xee906c1a4df4aef89cfea87879d3c199cfe55747", // pool
-    "0xee906c1a4df4aef89cfea87879d3c199cfe55747", // wETHGateway
-    "0xee906c1a4df4aef89cfea87879d3c199cfe55747"  // aToken
+    "0x6C9fB0D5bD9429eb9Cd96B85B81d872281771E6B", // pool
+    "0x2a58E9bbb5434FdA7FF78051a4B82cb0EF669C17", // wETHGateway
+    "0x89a6AE840b3F8f489418933A220315eeA36d11fF"  // native aToken
   );
   await yieldGateContract.deployed();
   console.log("YieldGate deployed to:", yieldGateContract.address);
