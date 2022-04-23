@@ -1,4 +1,4 @@
-import { Image, Box } from '@chakra-ui/react'
+import { Box, Image } from '@chakra-ui/react'
 import blockies from 'blockies-ts'
 import { FC, useEffect, useState } from 'react'
 
@@ -23,7 +23,7 @@ export const BlockiesAvatar: FC<BlockiesAvatarProps> = ({
   }, [])
 
   return (
-    <Box border="1px" borderRadius="md">
+    <Box>
       <Image
         src={avatarUri}
         fallbackSrc="https://via.placeholder.com/150"

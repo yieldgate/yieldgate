@@ -1,16 +1,13 @@
 import {
-  Grid,
-  GridItem,
-  Container,
-  Text,
-  Heading,
-  Flex,
+  Box,
+  Container, Flex, Grid,
+  GridItem, Heading, Text
 } from '@chakra-ui/react'
-import { BlockiesAvatar } from '@components/BlockiesAvatar'
+import { CreatorCard } from '@components/CreatorCard'
 import Feed from '@components/Feed'
 import Layout from '@components/layout/Layout'
-import SponsorsCard from '@components/SponsorsCard'
 import NewPostForm from '@components/NewPostForm'
+import SponsorsCard from '@components/SponsorsCard'
 import { Creator } from '@entities/Creator.entity'
 import { useRouter } from 'next/router'
 import * as React from 'react'
@@ -70,14 +67,12 @@ export default function UsersPage() {
         <Container maxW="5xl">
           <Grid templateColumns="300px 1fr" gap={10}>
             <Flex direction="column" gap={10}>
-              <BlockiesAvatar
-                address={walletId}
-                ml="4"
-                width={250}
-                height={250}
-              />
-              <SponsorsCard />
+              <Box position={'sticky'} top='4' mt='4'>
+                <CreatorCard creator={creator} />
+                <SponsorsCard />
+              </Box>
             </Flex>
+
             <GridItem>
               <NewPostForm />
               <Heading>Perry Mason</Heading>

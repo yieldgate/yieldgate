@@ -4,9 +4,11 @@
   "version": "0.0.1",
   "scripts": {
     "chain": "npx hardhat node",
+    "chain:hardhat": "npx hardhat node --network hardhat",
     "compile": "npx hardhat compile",
     "deploy": "npx hardhat run scripts/deploy.ts --network localhost",
-    "deploy:mumbai": "npx hardhat run scripts/deploy.ts --network mumbai"
+    "deploy:mumbai": "npx hardhat run scripts/deploy.ts --network mumbai",
+    "deploy:hardhat": "npx hardhat run scripts/deploy.ts --network hardhat"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",

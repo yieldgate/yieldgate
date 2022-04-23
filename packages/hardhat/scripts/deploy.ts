@@ -7,7 +7,11 @@ async function main() {
   const yieldGateContract = await YieldGate.deploy(
     "0x6C9fB0D5bD9429eb9Cd96B85B81d872281771E6B", // pool
     "0x2a58E9bbb5434FdA7FF78051a4B82cb0EF669C17", // wETHGateway
-    "0x89a6AE840b3F8f489418933A220315eeA36d11fF"  // native aToken
+    "0x89a6AE840b3F8f489418933A220315eeA36d11fF" // native aToken
+  );
+  console.log(
+    "deployment transaction",
+    yieldGateContract.deployTransaction.hash
   );
   await yieldGateContract.deployed();
   console.log("YieldGate deployed to:", yieldGateContract.address);
@@ -48,7 +52,7 @@ function saveFrontendAddressFiles(contracts: any) {
   );
   indexFileContents += `export const ContractAddresses = {`;
   indexFileContents += `${chainIds.reduce(
-    (acc, val) => acc + `'${val}': ContractAddresses_${val}\n`,
+    (acc, val) => acc + `'${val}': ContractAddresses_${val},\n`,
     ""
   )}}`;
   const indexFilePath = path.join(addressesDir, "index.ts");

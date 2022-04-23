@@ -37,7 +37,11 @@ const connectors = ({ chainId }) => {
 }
 
 const provider = ({ chainId }) => {
-  if (chainId === ChainId.Localhost) return new providers.JsonRpcProvider(env.rpc.hardhat)
+  if (chainId === ChainId.Localhost || chainId === 31337) return new providers.JsonRpcProvider(env.rpc.hardhat)
+  // if (chainId === ChainId.Mumbai) return new providers.JsonRpcProvider(env.rpc.hardhat)
+  // if (chainId === ChainId.Mainnet) return new providers.JsonRpcProvider(env.rpc.hardhat)
+  // if (chainId === ChainId.Mumbai) return new providers.JsonRpcProvider(env.rpc.polygonMumbai)
+  if (chainId === ChainId.Mumbai) return new providers.AlchemyProvider(chainId, env.alchemyApiKeys.mumbai)
   return new providers.InfuraProvider(chainId, env.infuraApiKey)
 }
 
