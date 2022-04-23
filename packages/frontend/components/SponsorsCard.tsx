@@ -1,9 +1,31 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Heading, WrapItem, Wrap } from '@chakra-ui/react'
+import { BlockiesAvatar } from './BlockiesAvatar'
 
-function SponsorsCard() {
+interface BlockiesAvatarProps {
+  sponsors: string[]
+}
+
+function SponsorsCard({ sponsors }: BlockiesAvatarProps) {
+  if (!sponsors) return <></>
+
   return (
     <Box border="1px" borderRadius="md">
-      Sponsors Card
+      <Heading px={8} mt={2}>
+        Sponsors
+      </Heading>
+      <Box p={8}>
+        <Wrap display="flex">
+          {sponsors.map((sponsor) => (
+            <WrapItem key={sponsor}>
+              <BlockiesAvatar
+                address={sponsor}
+                borderRadius="full"
+                width={16}
+              />
+            </WrapItem>
+          ))}
+        </Wrap>
+      </Box>
     </Box>
   )
 }
