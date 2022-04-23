@@ -1,13 +1,10 @@
 import { Box, Heading } from '@chakra-ui/react'
-import type { Post as PostType } from './types'
+import type { Post as PostType } from '@entities/Post.entity'
+import dayjs from 'dayjs'
+import md from 'markdown-it'
 
-function formatDateTime(timestamp: number): string {
-  return `${new Date(timestamp).toLocaleDateString(undefined, {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  })} - ${new Date(timestamp).toLocaleTimeString()}`
+function formatDateTime(date: string): string {
+  return dayjs(date).format('MMM D, YYYY h:mm A')
 }
 
 function Lock(): JSX.Element {
@@ -28,14 +25,15 @@ function Lock(): JSX.Element {
   )
 }
 
-function Post({ locked, title, timestamp, body }: PostType): JSX.Element {
-  if (locked) {
+function Post({post, isLocked}: { post: PostType, isLocked: boolean }): JSX.Element {
+  const { _id, content, date, owner, title } = post
+  if (isLocked) {
     return (
       <Box border="1px" borderRadius="md" display="flex-column">
         <Lock />
         <Box padding="5">
           <Heading size="lg">{title}</Heading>
-          <Box as="span">{formatDateTime(timestamp)}</Box>
+          <Box as="span">{formatDateTime(date)}</Box>
         </Box>
       </Box>
     )
@@ -49,8 +47,8 @@ function Post({ locked, title, timestamp, body }: PostType): JSX.Element {
       sx={{ '> div + div': { mt: '12px' } }}
     >
       <Heading size="lg">{title}</Heading>
-      <Box as="span">{formatDateTime(timestamp)}</Box>
-      <div dangerouslySetInnerHTML={{ __html: body }} />
+      <Box as="span">{formatDateTime(date)}</Box>
+      <div dangerouslySetInnerHTML={{ __html: md().render(content) }} />
     </Box>
   )
 }

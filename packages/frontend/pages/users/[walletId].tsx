@@ -1,13 +1,23 @@
+import { BlockiesAvatar } from '@components/BlockiesAvatar'
+import Feed from '@components/Feed'
+import Layout from '@components/layout/Layout'
+import { Post } from '@entities/Post.entity'
 import { useEthers } from '@usedapp/core'
 import { useRouter } from 'next/router'
+import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { useAsyncEffect } from 'use-async-effect'
-import { Post } from '../api/content/[content]'
+
 
 export default function UsersPage() {
   const router = useRouter()
-  const { walletId } = router.query
-  const { account } = useEthers()
+  let { walletId } = router.query
+  if (typeof walletId !== 'string' || !/^0x[a-fA-F0-9]{40}$/.test(walletId as string)) {
+    return <>Not a valid address</>
+  }
+  walletId = walletId.toLowerCase()
+  
+  const { account, chainId } = useEthers()
   const [isMyPage, setIsMyPage] = useState(false)
   const [posts, setPosts] = useState<Post[]>([])
 
@@ -38,15 +48,15 @@ export default function UsersPage() {
       setPosts([])
       return
     }
+
     const posts = await fetchPosts()
     setPosts(posts)
-  }, [walletId])
+  }, [walletId, chainId])
 
   return <>
-    <>{walletId}</>
-    <>{isMyPage ? 'IS MY PAGE' : 'IS NOT MY PAGE'}</>
-    {posts.map((post) => <div key={post._id}>
-      {JSON.stringify(post, null, 4 )}
-    </div>)}
+    <Layout>
+      <BlockiesAvatar address={walletId} ml="4" width={250} height={250} />
+      <Feed feed={posts} isLocked={false} />
+    </Layout>
   </>
 }

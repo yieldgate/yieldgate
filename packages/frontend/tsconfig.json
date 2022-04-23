@@ -17,6 +17,7 @@
     "paths": {
       "@components/*": ["./components/*"],
       "@lib/*": ["./lib/*"],
+      "@entities/*": ["./entities/*"],
     }
   },
   "exclude": ["node_modules", ".next", "out"],

@@ -2,14 +2,6 @@ import { Db, MongoClient } from 'mongodb'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { connectToDatabase } from '../../../lib/mongodb'
 
-export interface Post {
-  _id: string
-  date: string
-  owner: string
-  title: string
-  content: string
-}
-
 export type MongoDBConnection = { db: Db; client: MongoClient }
 
 export default async function handler(
@@ -39,7 +31,7 @@ export const handleCreateContent = async (
   const { owner, title, content } = post
   const newPost = {
     date: new Date().toUTCString(),
-    owner,
+    owner: owner.toLowerCase(),
     title,
     content,
   }
@@ -70,7 +62,7 @@ export const handleGetContent = async (
   const { db } = (await connectToDatabase()) as MongoDBConnection
   const posts = await db
     .collection('posts')
-    .find({ owner })
+    .find({ owner: owner.toLowerCase() })
     .sort({ date: -1 })
     // .limit(20)
     .toArray()
