@@ -12,6 +12,7 @@ import {
   BaseContract,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   CallOverrides,
 } from "ethers";
 import { BytesLike } from "@ethersproject/bytes";
@@ -24,7 +25,9 @@ interface YieldGateInterface extends ethers.utils.Interface {
     "beneficiaryPools(address)": FunctionFragment;
     "earned(address)": FunctionFragment;
     "getOrDeployPool(address)": FunctionFragment;
+    "stake(address)": FunctionFragment;
     "staked(address)": FunctionFragment;
+    "unstake(address)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -36,7 +39,9 @@ interface YieldGateInterface extends ethers.utils.Interface {
     functionFragment: "getOrDeployPool",
     values: [string]
   ): string;
+  encodeFunctionData(functionFragment: "stake", values: [string]): string;
   encodeFunctionData(functionFragment: "staked", values: [string]): string;
+  encodeFunctionData(functionFragment: "unstake", values: [string]): string;
 
   decodeFunctionResult(
     functionFragment: "beneficiaryPools",
@@ -47,7 +52,9 @@ interface YieldGateInterface extends ethers.utils.Interface {
     functionFragment: "getOrDeployPool",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "staked", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "unstake", data: BytesLike): Result;
 
   events: {};
 }
@@ -111,10 +118,20 @@ export class YieldGate extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    stake(
+      beneficiary: string,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     staked(
       beneficiary: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
+
+    unstake(
+      beneficiary: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
 
   beneficiaryPools(arg0: string, overrides?: CallOverrides): Promise<string>;
@@ -126,7 +143,17 @@ export class YieldGate extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  stake(
+    beneficiary: string,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   staked(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+  unstake(
+    beneficiary: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   callStatic: {
     beneficiaryPools(arg0: string, overrides?: CallOverrides): Promise<string>;
@@ -138,7 +165,11 @@ export class YieldGate extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    stake(beneficiary: string, overrides?: CallOverrides): Promise<void>;
+
     staked(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    unstake(beneficiary: string, overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {};
@@ -156,7 +187,17 @@ export class YieldGate extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    stake(
+      beneficiary: string,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     staked(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    unstake(
+      beneficiary: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -175,9 +216,19 @@ export class YieldGate extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    stake(
+      beneficiary: string,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     staked(
       beneficiary: string,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    unstake(
+      beneficiary: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
 }
