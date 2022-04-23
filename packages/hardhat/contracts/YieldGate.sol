@@ -106,7 +106,7 @@ contract BeneficiaryPool {
 
         supporters[supporter] += msg.value;
 
-        wethgw.depositETH(pool, address(this), 0);
+        wethgw.depositETH{value: msg.value}(pool, address(this), 0);
     }
 
     // Unstakes all previously staked ether by the calling supporter.
