@@ -9,7 +9,6 @@ export type { IPool } from "./IPool";
 export type { IPoolAddressesProvider } from "./IPoolAddressesProvider";
 export type { IScaledBalanceToken } from "./IScaledBalanceToken";
 export type { IWETHGateway } from "./IWETHGateway";
-export type { Multicall } from "./Multicall";
 export type { BeneficiaryPool } from "./BeneficiaryPool";
 export type { YieldGate } from "./YieldGate";
 
@@ -21,6 +20,5 @@ export { IPool__factory } from "./factories/IPool__factory";
 export { IPoolAddressesProvider__factory } from "./factories/IPoolAddressesProvider__factory";
 export { IScaledBalanceToken__factory } from "./factories/IScaledBalanceToken__factory";
 export { IWETHGateway__factory } from "./factories/IWETHGateway__factory";
-export { Multicall__factory } from "./factories/Multicall__factory";
 export { BeneficiaryPool__factory } from "./factories/BeneficiaryPool__factory";
 export { YieldGate__factory } from "./factories/YieldGate__factory";

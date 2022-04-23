@@ -3,19 +3,16 @@ import hre, { config, ethers } from "hardhat";
 import path from "path";
 
 async function main() {
-  const YourContract = await ethers.getContractFactory("YourContract");
-  const yourContract = await YourContract.deploy("Hello, Hardhat!");
-  await yourContract.deployed();
-  console.log("YourContract deployed to:", yourContract.address);
-
-  const MulticallContract = await ethers.getContractFactory("Multicall");
-  const multicallContract = await MulticallContract.deploy();
-  await multicallContract.deployed();
-  console.log("Multicall deployed to:", multicallContract.address);
+  const YieldGate = await ethers.getContractFactory("YieldGate");
+  const yieldGateContract = await YieldGate.deploy(
+    "0xee906c1a4df4aef89cfea87879d3c199cfe55747",
+    "0xee906c1a4df4aef89cfea87879d3c199cfe55747"
+  );
+  await yieldGateContract.deployed();
+  console.log("YieldGate deployed to:", yieldGateContract.address);
 
   saveFrontendAddressFiles({
-    YourContract: yourContract.address,
-    MulticallContract: multicallContract.address,
+    YieldGate: yieldGateContract.address,
   });
 }
 

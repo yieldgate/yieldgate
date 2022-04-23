@@ -8,7 +8,6 @@ import {IWETHGateway} from "@aave/periphery-v3/contracts/misc/interfaces/IWETHGa
 import "@openzeppelin/contracts/proxy/Clones.sol";
 
 contract YieldGate {
-
     address beneficiaryPoolLib;
     address pool;
     address token;
@@ -17,7 +16,11 @@ contract YieldGate {
     mapping(address => BeneficiaryPool) public beneficiaryPools;
 
     constructor(address wethGateway, address aWETH) {
-        console.log("Deploying YieldGate with pool %s and token %s", wethGateway, aWETH);
+        console.log(
+            "Deploying YieldGate with pool %s and token %s",
+            wethGateway,
+            aWETH
+        );
         pool = wethGateway;
         token = aWETH;
 
@@ -33,7 +36,9 @@ contract YieldGate {
     }
 
     function deployPool(address beneficiary) internal returns (address) {
-        BeneficiaryPool bpool = BeneficiaryPool(Clones.clone(beneficiaryPoolLib));
+        BeneficiaryPool bpool = BeneficiaryPool(
+            Clones.clone(beneficiaryPoolLib)
+        );
         bpool.init(pool, token, beneficiary);
         beneficiaryPools[beneficiary] = bpool;
         return address(bpool);
@@ -42,12 +47,12 @@ contract YieldGate {
     // earned returns the total earned ether by the provided beneficiary.
     // It is the accrued interest on all staked ether.
     // It can be withdrawn by the beneficiary with claim.
-    function earned(address beneficiary) public view returns (uint) {
+    function earned(address beneficiary) public view returns (uint256) {
         return beneficiaryPools[beneficiary].earned();
     }
 
     // staked returns the total staked ether on behalf of the beneficiary.
-    function staked(address beneficiary) public view returns (uint) {
+    function staked(address beneficiary) public view returns (uint256) {
         return beneficiaryPools[beneficiary].staked();
     }
 }
@@ -58,13 +63,21 @@ contract BeneficiaryPool {
     address beneficiary;
 
     // supporter => amount
-    mapping(address => uint) public supporters;
+    mapping(address => uint256) public supporters;
 
-    function init(address _pool, address _token, address _beneficiary) public {
+    function init(
+        address _pool,
+        address _token,
+        address _beneficiary
+    ) public {
         require(beneficiary == address(0), "already initialized");
 
-        console.log("Deploying BeneficiaryPool with pool %s and token %s for %s",
-                    _pool, _token, _beneficiary);
+        console.log(
+            "Deploying BeneficiaryPool with pool %s and token %s for %s",
+            _pool,
+            _token,
+            _beneficiary
+        );
 
         pool = IWETHGateway(_pool);
         token = IAToken(_token);
@@ -81,7 +94,7 @@ contract BeneficiaryPool {
     // Unstakes all previously staked ether by the calling supporter.
     // The beneficiary keeps all generated yield.
     function unstake() public {
-        uint sstake = supporters[msg.sender];
+        uint256 sstake = supporters[msg.sender];
         console.log("Unstaking %s for %s", sstake, beneficiary);
         supporters[msg.sender] = 0;
         // TODO:
@@ -97,15 +110,15 @@ contract BeneficiaryPool {
     // earned returns the total earned ether by the provided beneficiary.
     // It is the accrued interest on all staked ether.
     // It can be withdrawn by the beneficiary with claim.
-    function earned() public view returns (uint) {
-        uint c = 0; // TODO: read from aToken
+    function earned() public view returns (uint256) {
+        uint256 c = 0; // TODO: read from aToken
         console.log("Earned by %s: %s", beneficiary, c);
         return c;
     }
 
     // staked returns the total staked ether by this pool.
-    function staked() public view returns (uint) {
-        uint s = 0; // TODO: read from aToken
+    function staked() public view returns (uint256) {
+        uint256 s = 0; // TODO: read from aToken
         console.log("Total staked for %s: %s", beneficiary, s);
         return s;
     }

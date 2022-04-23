@@ -3,51 +3,39 @@ import {
   Flex,
   Image,
   Menu,
-  MenuButton,
-  Text,
-  MenuList,
-  MenuItem,
+  MenuButton, MenuItem, MenuList, Text
 } from '@chakra-ui/react'
-import { CHAIN_NAMES, useEthers } from '@usedapp/core'
-import blockies from 'blockies-ts'
 import React from 'react'
-import Balance from './Balance'
+import { useAccount, useConnect } from 'wagmi'
 
 function truncateHash(hash: string, length = 38): string {
   return hash.replace(hash.substring(6, length), '...')
 }
 
 function ConnectWallet(): JSX.Element {
-  const { account, activateBrowserWallet, activate, deactivate, chainId } =
-    useEthers()
-  console.log(account)
-
-  let blockieImageSrc
-  if (typeof window !== 'undefined') {
-    blockieImageSrc = blockies.create({ seed: account }).toDataURL()
-  }
+  const [{ data, error }, connect] = useConnect()
+  const [{ data: accountData }, disconnect] = useAccount({
+    fetchEns: true,
+  })
 
   return (
     <>
-      {account ? (
+      {accountData ? (
         <Flex
           order={[-1, null, null, 2]}
           alignItems={'center'}
           justifyContent={['flex-start', null, null, 'flex-end']}
         >
-          <Balance />
-          <Image ml="4" src={blockieImageSrc} alt="blockie" />
+          {/* <Balance /> */}
+          <Image ml="4" src={accountData.ens?.avatar} alt="ENS Avatar" />
           <Menu placement="bottom-end">
             <MenuButton as={Button} ml="4">
               <Flex direction="column">
-                <Text>{truncateHash(account)}</Text>
-                <Text fontSize="xs" color="gray.500">
-                  {CHAIN_NAMES[chainId]}
-                </Text>
+                <Text>{truncateHash(accountData.address)}</Text>
               </Flex>
             </MenuButton>
             <MenuList>
-              <MenuItem onClick={deactivate}>Disconnect</MenuItem>
+              <MenuItem onClick={disconnect}>Disconnect</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
@@ -56,7 +44,7 @@ function ConnectWallet(): JSX.Element {
           w="220px"
           variant="solid"
           onClick={() => {
-            activateBrowserWallet()
+            connect(data.connectors[0])
           }}
         >
           Connect Wallet

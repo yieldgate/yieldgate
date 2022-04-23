@@ -29,6 +29,7 @@ yarn install
 
 # Copy & fill environments
 cp packages/frontend/.env.local.example packages/frontend/.env.local && nano packages/frontend/.env.local
+cp packages/hardhat/.env.example packages/hardhat/.env && nano packages/hardhat/.env
 
 # NOTE: The following commands all have to be done in different terminals (in parallel)
 # 1. Start up the Hardhat Network

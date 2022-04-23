@@ -45,10 +45,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IWETHGateway__factory>;
     getContractFactory(
-      name: "Multicall",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Multicall__factory>;
-    getContractFactory(
       name: "BeneficiaryPool",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BeneficiaryPool__factory>;
