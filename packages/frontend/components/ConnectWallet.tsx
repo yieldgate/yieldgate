@@ -6,6 +6,7 @@ import {
 import React from 'react'
 import { useAccount, useConnect } from 'wagmi'
 import { BlockiesAvatar } from './BlockiesAvatar'
+import ConnectWalletButton from './ConnectWalletButton'
 
 function truncateHash(hash: string, length = 38): string {
   return hash.replace(hash.substring(6, length), '...')
@@ -40,15 +41,7 @@ function ConnectWallet(): JSX.Element {
           </Menu>
         </Flex>
       ) : (
-        <Button
-          w="220px"
-          variant="solid"
-          onClick={() => {
-            connect(data.connectors[0])
-          }}
-        >
-          Connect Wallet
-        </Button>
+        <ConnectWalletButton />
       )}
     </>
   )

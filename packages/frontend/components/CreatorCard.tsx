@@ -7,6 +7,7 @@ import { FC, useState } from 'react'
 import { YieldGate as YieldGateType } from 'types/typechain'
 import { useAccount, useSigner } from 'wagmi'
 import { BlockiesAvatar } from './BlockiesAvatar'
+import ConnectWalletButton from './ConnectWalletButton'
 
 export interface CreatorCardProps {
   creator: Creator
@@ -15,7 +16,8 @@ export const CreatorCard: FC<CreatorCardProps> = ({creator}) => {
   const [{ data, error, loading }, getSigner] = useSigner()
   const [{ data: accountData }, disconnect] = useAccount()
   const YieldGateContractAddress = ContractAddresses['80001'].YieldGate
-  const [isLoading, setIsLoading] = useState(false)
+  const [stakeIsLoading, setStakeIsLoading] = useState(false)
+  const [unstakeIsLoading, setUnstakeIsLoading] = useState(false)
 
   // const readBeneficaryPools = async () => {
   //   const provider = ethers.getDefaultProvider(env.rpc.hardhat)
@@ -32,7 +34,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({creator}) => {
   const stake = async () => {
     const signer = await getSigner()
     if (!signer) return
-    setIsLoading(true)
+    setStakeIsLoading(true)
     const contract = new ethers.Contract(
       YieldGateContractAddress,
       YieldGate.abi,
@@ -46,13 +48,13 @@ export const CreatorCard: FC<CreatorCardProps> = ({creator}) => {
     console.log({transaction})
     const receipt = await transaction.wait()
     console.log({receipt})
-    setIsLoading(false)
+    setStakeIsLoading(false)
   }
 
   const unstake = async () => {
     const signer = await getSigner()
     if (!signer) return
-    setIsLoading(true)
+    setUnstakeIsLoading(true)
     const contract = new ethers.Contract(
       YieldGateContractAddress,
       YieldGate.abi,
@@ -63,8 +65,10 @@ export const CreatorCard: FC<CreatorCardProps> = ({creator}) => {
     console.log({transaction})
     const receipt = await transaction.wait()
     console.log({receipt})
-    setIsLoading(false)
+    setUnstakeIsLoading(false)
   }
+
+  if (!creator) return <></>
 
   return <>
     <VStack p={8} spacing={8} borderRadius="md">
@@ -74,12 +78,19 @@ export const CreatorCard: FC<CreatorCardProps> = ({creator}) => {
         width="200px"
         height="200px"
       />
-      <Button w="full" disabled={isLoading} onClick={stake}>
+      <Heading textAlign={'center'}>{creator.displayName || creator.address}</Heading>
+      <VStack w='full'>
+        {accountData
+          ? <>
+            <Button w="full" disabled={stakeIsLoading} onClick={stake} isDisabled={stakeIsLoading} isLoading={stakeIsLoading}>
                   Stake
-      </Button>
-      <Button w="full" disabled={isLoading} onClick={unstake}>
+            </Button>
+            <Button w="full" disabled={stakeIsLoading} onClick={unstake} isDisabled={unstakeIsLoading} isLoading={stakeIsLoading}>
                   Unstake
-      </Button>
+            </Button>
+          </>
+          : <ConnectWalletButton />}
+      </VStack>
       <HStack spacing={8} mx={8}>
         <Flex direction="column" align="center">
           <Heading>{creator?.supportersCount}</Heading>
@@ -94,13 +105,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({creator}) => {
           <Text>Posts</Text>
         </Flex>
       </HStack>
-      <Text>
-                  Reward description. Lorem ipsum dolor sit amet, consectetur
-                  adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                  consequat.
-      </Text>
+      <Text>{creator?.description}</Text>
     </VStack>
 
   </>
