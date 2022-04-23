@@ -1,13 +1,14 @@
-# Yieldgateth
+# Yieldgate
 
-Based on [nextjs-ethereum-starter](https://github.com/ChangoMan/nextjs-ethereum-starter).
+Yield Gate is a new monetisation tool for anyone to start receiving donations, or to support their favourite public goods projects, creators, and security researchers, with yield. No NFTs or tokens, just good old MATIC! Built with ❤️ on top of Aave, Polygon, and others.
 
-Very Cool project!! (Test)
+![Yieldate](https://i.imgur.com/j316O86.png "Yieldgate")
 
 ---
 
 Stack:
 
+Based on [nextjs-ethereum-starter](https://github.com/ChangoMan/nextjs-ethereum-starter).
 - [Typescript](https://www.typescriptlang.org/)
 - [Hardhat](https://hardhat.org/)
 - [TypeChain](https://github.com/ethereum-ts/TypeChain)
@@ -22,7 +23,7 @@ Stack:
 ## Getting Started
 
 ```bash
-# Insatll Yarn (Classic)
+# Install Yarn (Classic)
 
 # Install Dependencies
 yarn install
