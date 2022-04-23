@@ -35,12 +35,12 @@ export const handleAddSupporter = async (
   const { db } = (await connectToDatabase()) as MongoDBConnection
   const creator = await db
     .collection('creators')
-    .findOne({ address: beneficary, projection: { _id: 1, supporters: 1 } })
+    .findOne({ address: beneficary })
 
   let result
   if (creator) {
     if ((creator.supporters || []).includes(supporter))
-      return res.status(200).json({})
+      return res.status(200).json({ isAdded: false })
     // Update the existing creator
     result = await db.collection('creators').updateOne(
       { address: beneficary },
@@ -60,10 +60,44 @@ export const handleAddSupporter = async (
     })
   }
 
-  return result ? res.status(200).json({}) : res.status(500).json({})
+  return result
+    ? res.status(200).json({ isAdded: true })
+    : res.status(500).json({})
 }
 
 export const handleRemoveSupporter = async (
   req: NextApiRequest,
   res: NextApiResponse
-) => {}
+) => {
+  let { supporter, beneficary } = req.body || {}
+  if (!supporter || !beneficary) return res.status(400).end()
+  if (!/^0x[a-fA-F0-9]{40}$/.test(supporter)) return res.status(400).end()
+  if (!/^0x[a-fA-F0-9]{40}$/.test(beneficary)) return res.status(400).end()
+  supporter = supporter.toLowerCase()
+  beneficary = beneficary.toLowerCase()
+
+  const { db } = (await connectToDatabase()) as MongoDBConnection
+  const creator = await db
+    .collection('creators')
+    .findOne({ address: beneficary })
+
+  const supporters = creator?.supporters || []
+  const supporterExists = supporters.includes(supporter)
+
+  if (!supporterExists) return res.status(200).json({ isRemoved: false })
+
+  const newSupporters = supporters.splice(supporters.indexOf(supporter), 1)
+
+  const result = await db.collection('creators').updateOne(
+    { address: beneficary },
+    {
+      $set: {
+        supporters: newSupporters,
+      },
+    }
+  )
+
+  return result
+    ? res.status(200).json({ isRemoved: true })
+    : res.status(500).json({})
+}

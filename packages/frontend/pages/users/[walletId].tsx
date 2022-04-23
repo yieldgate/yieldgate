@@ -1,32 +1,20 @@
 import {
-  Grid,
-  GridItem,
-  Container,
-  Text,
-  Heading,
-  Flex,
-  HStack,
-  VStack,
-  Button,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
+  Container, Flex, Grid,
+  GridItem, Heading, Modal, ModalBody,
+  ModalCloseButton, ModalContent,
+  ModalHeader, ModalOverlay, Text, useDisclosure, VStack
 } from '@chakra-ui/react'
-import { BlockiesAvatar } from '@components/BlockiesAvatar'
+import { CreatorCard } from '@components/CreatorCard'
 import Feed from '@components/Feed'
 import Layout from '@components/layout/Layout'
-import SponsorsCard from '@components/SponsorsCard'
 import NewPostForm from '@components/NewPostForm'
+import SponsorsCard from '@components/SponsorsCard'
+import StakeAmountForm from '@components/StakeAmountForm'
 import { Creator } from '@entities/Creator.entity'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { useAsyncEffect } from 'use-async-effect'
-import StakeAmountForm from '@components/StakeAmountForm'
 
 export default function UsersPage() {
   const router = useRouter()
@@ -96,44 +84,11 @@ export default function UsersPage() {
         <Container maxW="5xl">
           <Grid templateColumns="300px 1fr" gap={10}>
             <Flex direction="column" gap={10}>
-              <VStack p={8} spacing={8} borderRadius="md" bg="gray.200">
-                <BlockiesAvatar
-                  address={creator?.address}
-                  borderRadius="full"
-                  width="200px"
-                  height="200px"
-                />
-                <Button
-                  w="full"
-                  bg="gray.900"
-                  color="gray.100"
-                  onClick={onOpen}
-                >
-                  Stake
-                </Button>
-                <HStack spacing={8} mx={8}>
-                  <Flex direction="column" align="center">
-                    <Heading>{creator?.supportersCount}</Heading>
-                    <Text>Supporters</Text>
-                  </Flex>
-                  {/* <Flex direction="column" align="center">
-                <Heading>{creator.supportersCount}</Heading>
-                <Text>ETH staked</Text>
-              </Flex> */}
-                  <Flex direction="column" align="center">
-                    <Heading>{creator?.postsCount}</Heading>
-                    <Text>Posts</Text>
-                  </Flex>
-                </HStack>
-                <Text>
-                  Reward description. Lorem ipsum dolor sit amet, consectetur
-                  adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                  dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                  consequat.
-                </Text>
+              <VStack position='sticky' top='4' mt='4'>
+                <CreatorCard creator={creator}/>
+
+                <SponsorsCard sponsors={creator?.supporters} />
               </VStack>
-              <SponsorsCard sponsors={creator?.supporters} />
             </Flex>
             <GridItem>
               <NewPostForm />

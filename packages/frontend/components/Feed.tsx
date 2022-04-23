@@ -12,8 +12,8 @@ interface FeedProps {
 function Feed({ feed, isLocked }: FeedProps): JSX.Element {
   return (
     <Box display="flex-column" sx={{ '> div + div': { mt: '30px' } }}>
-      {feed.map((post) => (
-        <Post key={post._id} isLocked={isLocked} post={post} />
+      {feed.map((post, idx) => (
+        <Post key={idx} isLocked={isLocked} post={post} />
       ))}
     </Box>
   )
