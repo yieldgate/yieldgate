@@ -1,8 +1,7 @@
 {
-  "name": "nextjs-ethereum-starter-hardhat",
-  "author": "@huntarosan",
+  "name": "hardhat",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "scripts": {
     "chain": "npx hardhat node",
     "compile": "npx hardhat compile",
