@@ -10,6 +10,7 @@ import { BlockiesAvatar } from '@components/BlockiesAvatar'
 import Feed from '@components/Feed'
 import Layout from '@components/layout/Layout'
 import SponsorsCard from '@components/SponsorsCard'
+import NewPostForm from '@components/NewPostForm'
 import { Creator } from '@entities/Creator.entity'
 import { useRouter } from 'next/router'
 import * as React from 'react'
@@ -78,6 +79,7 @@ export default function UsersPage() {
               <SponsorsCard />
             </Flex>
             <GridItem>
+              <NewPostForm />
               <Heading>Perry Mason</Heading>
               <Text>The most influential creator in web3</Text>
               <Text>
