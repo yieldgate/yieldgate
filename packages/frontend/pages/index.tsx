@@ -42,13 +42,13 @@ export default function IndexPage({ creators }: IndexPageProps) {
   return (
     <Layout>
       <Flex
-        bgImage="images/banner-background.png"
+        bgImage="/images/banner-background.png"
         bgPos="center"
         bgSize="cover"
       >
         <Container maxW="5xl" py={24}>
           <Flex direction="column" align="start" gap={3}>
-            <Image src="images/logo-yieldgate-long.svg" h="70px" mb={12} />
+            <Image src="/images/logo-yieldgate-long.svg" h="70px" mb={12} />
             <Text fontSize="3xl">
               Get your fans support you by letting them stake coins for your
               benefit
