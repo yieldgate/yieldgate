@@ -34,8 +34,7 @@ export default function IndexPage({ creators }: IndexPageProps) {
           <Flex direction="column" align="start" gap={3}>
             <Image src="images/logo-yieldgate-long.svg" h="70px" mb={12} />
             <Text fontSize="3xl">
-              Get your fans support you by letting them stake coins for your
-              benefit
+              Let your fans stake coins on your behalf
             </Text>
             <Button size="lg">Create on Yieldgate</Button>
           </Flex>
@@ -47,12 +46,7 @@ export default function IndexPage({ creators }: IndexPageProps) {
             What's Yieldgate?
           </Heading>
           <Text maxW="50em" alignSelf="center" fontSize="xl">
-            Vivamus in scelerisque nunc. Ut quis turpis venenatis, gravida
-            tortor ut, suscipit mi. Proin cursus porttitor justo eget maximus.
-            Morbi auctor lacus id placerat luctus. Phasellus sagittis ultricies
-            elit, nec egestas odio interdum vel. Aenean porta porta ligula, vel
-            iaculis erat condimentum sit amet. Pellentesque posuere sem sit amet
-            feugiat mollis.
+          Yieldgate is a monetisation tool for anyone to start receiving donations, or to support their favourite public goods projects, creators, and security researchers, with yield. No NFTs or tokens, just good old MATIC! Built with ❤️ on top of Aave, Polygon.
           </Text>
         </Flex>
         <Flex direction="column">
@@ -61,31 +55,28 @@ export default function IndexPage({ creators }: IndexPageProps) {
           </Heading>
           <Grid gridTemplateColumns="repeat(3, 1fr)" gap={10}>
             <Flex direction="column" border="1px">
-              <Image fallbackSrc="https://via.placeholder.com/150" h={52} />
+              <Image fallbackSrc="https://i.imgur.com/2UFgYhq.png" h={52} />
               <Text p={5} fontSize="xl">
-                Vivamus in scelerisque nunc. Ut quis turpis venenatis, gravida
-                tortor ut, suscipit mi.
+                Sign in with your wallet
               </Text>
             </Flex>
             <Flex direction="column" border="1px">
-              <Image fallbackSrc="https://via.placeholder.com/150" h={52} />
+              <Image fallbackSrc="https://i.imgur.com/EkHEXRH.png" h={52} />
               <Text p={5} fontSize="xl">
-                Aenean porta porta ligula, vel iaculis erat condimentum sit
-                amet. Pellentesque posuere sem sit amet feugiat mollis.
+              Edit your profile and make your first post
               </Text>
             </Flex>
             <Flex direction="column" border="1px">
-              <Image fallbackSrc="https://via.placeholder.com/150" h={52} />
+              <Image fallbackSrc="https://i.imgur.com/8Ee8EMr.png" h={52} />
               <Text p={5} fontSize="xl">
-                Phasellus sagittis ultricies elit, nec egestas odio interdum
-                vel.
+              Share your Yieldgate profile to start receiving donations from your supporters in yield!
               </Text>
             </Flex>
           </Grid>
         </Flex>
         <Flex direction="column">
           <Heading mt={24} mb={12} textAlign="center">
-            Sponsor a creator
+            Explore and sponsor creators
           </Heading>
           <InputGroup>
             <InputLeftElement
