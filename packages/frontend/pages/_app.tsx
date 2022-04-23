@@ -22,11 +22,7 @@ const dappConfig: Config = {
     [ChainId.Mumbai]: env.rpc.polygonMumbai,
     [ChainId.Polygon]: env.rpc.polygonMainnet,
   },
-  supportedChains: [
-    ChainId.Localhost,
-    ChainId.Mumbai,
-    ChainId.Polygon,
-  ],
+  supportedChains: env.supportedChains,
   multicallAddresses: {
     ...MULTICALL_ADDRESSES,
     [ChainId.Localhost]: ContractAddresses[ChainId.Localhost].MulticallContract,
