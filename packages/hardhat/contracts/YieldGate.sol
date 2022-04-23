@@ -65,18 +65,30 @@ contract YieldGate {
     // It is the accrued interest on all staked ether.
     // It can be withdrawn by the beneficiary with claim.
     function claimable(address beneficiary) public view returns (uint256) {
-        return beneficiaryPools[beneficiary].claimable();
+        BeneficiaryPool bpool =  beneficiaryPools[beneficiary];
+        if (address(bpool) == address(0)) {
+            return 0;
+        }
+        return bpool.claimable();
     }
 
     // staked returns the total staked ether on behalf of the beneficiary.
     function staked(address beneficiary) public view returns (uint256) {
-        return beneficiaryPools[beneficiary].staked();
+        BeneficiaryPool bpool =  beneficiaryPools[beneficiary];
+        if (address(bpool) == address(0)) {
+            return 0;
+        }
+        return bpool.staked();
     }
 
     function supporterStaked(address supporter, address beneficiary)
     public view returns (uint256)
     {
-        return beneficiaryPools[beneficiary].supporters(supporter);
+        BeneficiaryPool bpool =  beneficiaryPools[beneficiary];
+        if (address(bpool) == address(0)) {
+            return 0;
+        }
+        return bpool.supporters(supporter);
     }
 
     function checkStaked(address beneficiary) public view {
