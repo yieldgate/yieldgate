@@ -4,6 +4,12 @@ export const env = {
 
   supportedChains: JSON.parse(process.env.NEXT_PUBLIC_SUPPORTED_CHAINS),
 
+  infuraApiKey: process.env.NEXT_PUBLIC_INFURA_API_KEY,
+
+  alchemyApiKeys: {
+    mumbai: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY_MUMBAI,
+  },
+
   rpc: {
     hardhat: process.env.NEXT_PUBLIC_RPC_HARDHAT,
     polygonMainnet: process.env.NEXT_PUBLIC_RPC_POLYGON_MUMBAI,

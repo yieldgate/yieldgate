@@ -24,23 +24,23 @@ interface BeneficiaryPoolInterface extends ethers.utils.Interface {
   functions: {
     "claim()": FunctionFragment;
     "earned()": FunctionFragment;
-    "init(address,address,address)": FunctionFragment;
-    "stake()": FunctionFragment;
+    "init(address,address,address,address)": FunctionFragment;
+    "stake(address)": FunctionFragment;
     "staked()": FunctionFragment;
     "supporters(address)": FunctionFragment;
-    "unstake()": FunctionFragment;
+    "unstake(address)": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "claim", values?: undefined): string;
   encodeFunctionData(functionFragment: "earned", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "init",
-    values: [string, string, string]
+    values: [string, string, string, string]
   ): string;
-  encodeFunctionData(functionFragment: "stake", values?: undefined): string;
+  encodeFunctionData(functionFragment: "stake", values: [string]): string;
   encodeFunctionData(functionFragment: "staked", values?: undefined): string;
   encodeFunctionData(functionFragment: "supporters", values: [string]): string;
-  encodeFunctionData(functionFragment: "unstake", values?: undefined): string;
+  encodeFunctionData(functionFragment: "unstake", values: [string]): string;
 
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "earned", data: BytesLike): Result;
@@ -103,12 +103,14 @@ export class BeneficiaryPool extends BaseContract {
 
     init(
       _pool: string,
+      _wethgw: string,
       _token: string,
       _beneficiary: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     stake(
+      supporter: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -117,6 +119,7 @@ export class BeneficiaryPool extends BaseContract {
     supporters(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
     unstake(
+      supporter: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
@@ -127,12 +130,14 @@ export class BeneficiaryPool extends BaseContract {
 
   init(
     _pool: string,
+    _wethgw: string,
     _token: string,
     _beneficiary: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   stake(
+    supporter: string,
     overrides?: PayableOverrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -141,6 +146,7 @@ export class BeneficiaryPool extends BaseContract {
   supporters(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   unstake(
+    supporter: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -151,18 +157,19 @@ export class BeneficiaryPool extends BaseContract {
 
     init(
       _pool: string,
+      _wethgw: string,
       _token: string,
       _beneficiary: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    stake(overrides?: CallOverrides): Promise<void>;
+    stake(supporter: string, overrides?: CallOverrides): Promise<void>;
 
     staked(overrides?: CallOverrides): Promise<BigNumber>;
 
     supporters(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    unstake(overrides?: CallOverrides): Promise<void>;
+    unstake(supporter: string, overrides?: CallOverrides): Promise<void>;
   };
 
   filters: {};
@@ -174,12 +181,14 @@ export class BeneficiaryPool extends BaseContract {
 
     init(
       _pool: string,
+      _wethgw: string,
       _token: string,
       _beneficiary: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     stake(
+      supporter: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -188,6 +197,7 @@ export class BeneficiaryPool extends BaseContract {
     supporters(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     unstake(
+      supporter: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
@@ -199,12 +209,14 @@ export class BeneficiaryPool extends BaseContract {
 
     init(
       _pool: string,
+      _wethgw: string,
       _token: string,
       _beneficiary: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     stake(
+      supporter: string,
       overrides?: PayableOverrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -216,6 +228,7 @@ export class BeneficiaryPool extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     unstake(
+      supporter: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

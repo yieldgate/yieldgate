@@ -10,21 +10,34 @@ import "@openzeppelin/contracts/proxy/Clones.sol";
 contract YieldGate {
     address beneficiaryPoolLib;
     address pool;
+    address wethgw;
     address token;
 
     // beneficiary => BeneficiaryPool
     mapping(address => BeneficiaryPool) public beneficiaryPools;
 
-    constructor(address wethGateway, address aWETH) {
+    constructor(address _pool, address wethGateway, address aWETH) {
         console.log(
-            "Deploying YieldGate with pool %s and token %s",
+            "Deploying YieldGate with pool %s, wETHgw %s, token %s",
+            _pool,
             wethGateway,
             aWETH
         );
-        pool = wethGateway;
+        pool = _pool;
+        wethgw = wethGateway;
         token = aWETH;
 
         beneficiaryPoolLib = address(new BeneficiaryPool());
+    }
+
+    function stake(address beneficiary) public payable {
+        address bpool = getOrDeployPool(beneficiary);
+        BeneficiaryPool(bpool).stake(msg.sender);
+    }
+
+    function unstake(address beneficiary) public {
+        address bpool = getOrDeployPool(beneficiary);
+        BeneficiaryPool(bpool).unstake(payable(msg.sender));
     }
 
     function getOrDeployPool(address beneficiary) public returns (address) {
@@ -39,7 +52,7 @@ contract YieldGate {
         BeneficiaryPool bpool = BeneficiaryPool(
             Clones.clone(beneficiaryPoolLib)
         );
-        bpool.init(pool, token, beneficiary);
+        bpool.init(pool, wethgw, token, beneficiary);
         beneficiaryPools[beneficiary] = bpool;
         return address(bpool);
     }
@@ -58,7 +71,8 @@ contract YieldGate {
 }
 
 contract BeneficiaryPool {
-    IWETHGateway pool;
+    address pool;
+    IWETHGateway wethgw;
     IAToken token;
     address beneficiary;
 
@@ -67,38 +81,43 @@ contract BeneficiaryPool {
 
     function init(
         address _pool,
+        address _wethgw,
         address _token,
         address _beneficiary
     ) public {
         require(beneficiary == address(0), "already initialized");
 
         console.log(
-            "Deploying BeneficiaryPool with pool %s and token %s for %s",
+            "Deploying BeneficiaryPool with pool %s, wETHgw %s for %s",
             _pool,
-            _token,
+            _wethgw,
             _beneficiary
         );
 
-        pool = IWETHGateway(_pool);
+        pool = _pool;
+        wethgw = IWETHGateway(_wethgw);
         token = IAToken(_token);
         beneficiary = _beneficiary;
     }
 
     // Stakes the sent ether, registering the caller as a supporter.
-    function stake() public payable {
+    function stake(address supporter) public payable {
         console.log("Staking %s for %s", msg.value, beneficiary);
 
-        supporters[msg.sender] += msg.value;
+        supporters[supporter] += msg.value;
+
+        wethgw.depositETH(pool, address(this), 0);
     }
 
     // Unstakes all previously staked ether by the calling supporter.
     // The beneficiary keeps all generated yield.
-    function unstake() public {
-        uint256 sstake = supporters[msg.sender];
+    function unstake(address payable supporter) public {
+        uint256 sstake = supporters[supporter];
         console.log("Unstaking %s for %s", sstake, beneficiary);
-        supporters[msg.sender] = 0;
-        // TODO:
-        // * withdraw base stake from pool to caller
+        supporters[supporter] = 0;
+
+        require(token.approve(address(wethgw), sstake), "ethgw approval failed");
+        wethgw.withdrawETH(pool, sstake, supporter);
     }
 
     // claim sends the accrued interest to the beneficiary of this pool. The

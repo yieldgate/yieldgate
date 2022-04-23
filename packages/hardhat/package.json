@@ -5,7 +5,7 @@
   "scripts": {
     "chain": "npx hardhat node",
     "compile": "npx hardhat compile",
-    "deploy": "npx hardhat run scripts/deploy.ts --network hardhat",
+    "deploy": "npx hardhat run scripts/deploy.ts --network localhost",
     "deploy:mumbai": "npx hardhat run scripts/deploy.ts --network mumbai"
   },
   "devDependencies": {

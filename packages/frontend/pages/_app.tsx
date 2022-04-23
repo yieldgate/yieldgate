@@ -1,9 +1,7 @@
 import { ApolloProvider } from '@apollo/client'
 import { ChakraProvider } from '@chakra-ui/react'
-// import { Provider as WagmiProvider } from 'wagmi'
-import {
-  ChainId
-} from '@usedapp/core'
+import { ChainId } from '@usedapp/core'
+import { providers } from 'ethers'
 import type { AppProps } from 'next/app'
 import React from 'react'
 import { defaultChains, InjectedConnector, Provider as WagmiProvider } from 'wagmi'
@@ -28,14 +26,9 @@ export const INFURA_ID = '460f40a260564ac4a4f4b3fffb032dad'
 
 const chains = defaultChains.filter((chain) => (env.supportedChains || []).includes(chain.id))
 const connectors = ({ chainId }) => {
-  const rpcUrl = {
-    [ChainId.Localhost]: env.rpc.hardhat,
-    [ChainId.Mumbai]: env.rpc.polygonMumbai,
-    [ChainId.Polygon]: env.rpc.polygonMainnet,
-  }[chainId]
   return [
     new InjectedConnector({
-      chains,
+      chains: defaultChains,
       options: {
         shimDisconnect: true,
       },
@@ -43,13 +36,17 @@ const connectors = ({ chainId }) => {
   ]
 }
 
+const provider = ({ chainId }) => {
+  if (chainId === ChainId.Localhost) return new providers.JsonRpcProvider(env.rpc.hardhat)
+  return new providers.InfuraProvider(chainId, env.infuraApiKey)
+}
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   const apolloClient = useApollo(pageProps)
   return (
     <ApolloProvider client={apolloClient}>
       {/* <DAppProvider config={dappConfig}> */}
-      <WagmiProvider autoConnect connectors={connectors}>
+      <WagmiProvider autoConnect connectors={connectors} provider={provider}>
         <ChakraProvider>
           <Component {...pageProps} />
         </ChakraProvider>

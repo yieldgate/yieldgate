@@ -8,7 +8,7 @@ function Navbar(): JSX.Element {
     <Box borderBottom="1px">
       <Container maxW="5xl" py={4}>
         <Flex alignItems="center" justify="space-between">
-          <Image src="images/logo-yieldgate.svg" boxSize={7} />
+          <Image src="/images/logo-yieldgate.svg" boxSize={7} />
           <ConnectWallet />
         </Flex>
       </Container>

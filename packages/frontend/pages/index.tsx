@@ -10,29 +10,45 @@ import {
   InputGroup,
   InputLeftElement,
   Container,
+  Link,
 } from '@chakra-ui/react'
 import Layout from '@components/layout/Layout'
 import { Creator } from '@entities/Creator.entity'
 import { env } from '@lib/environment'
 import { GetServerSideProps } from 'next'
-import Link from 'next/link'
+import NextLink from 'next/link'
 import { BsSearch } from 'react-icons/bs'
 
 export interface IndexPageProps {
   creators: Creator[]
 }
 
+function CreatorCard(props: Creator): JSX.Element {
+  return (
+    <NextLink href={`/users/${props.address}`} passHref>
+      <Link>
+        <Flex direction="column" border="1px" p={8} borderRadius="md">
+          <Text key={props._id} decoration={'underline'}></Text>
+          <Box as="pre" overflow="scroll" bg="gray.200">
+            <code>{JSON.stringify(props, null, 2)}</code>
+          </Box>
+        </Flex>
+      </Link>
+    </NextLink>
+  )
+}
+
 export default function IndexPage({ creators }: IndexPageProps) {
   return (
     <Layout>
       <Flex
-        bgImage="images/banner-background.png"
+        bgImage="/images/banner-background.png"
         bgPos="center"
         bgSize="cover"
       >
         <Container maxW="5xl" py={24}>
           <Flex direction="column" align="start" gap={3}>
-            <Image src="images/logo-yieldgate-long.svg" h="70px" mb={12} />
+            <Image src="/images/logo-yieldgate-long.svg" h="70px" mb={12} />
             <Text fontSize="3xl">
               Let your fans stake coins on your behalf
             </Text>
@@ -78,25 +94,19 @@ export default function IndexPage({ creators }: IndexPageProps) {
           <Heading mt={24} mb={12} textAlign="center">
             Explore and sponsor creators
           </Heading>
-          <InputGroup>
+          <InputGroup size="lg">
             <InputLeftElement
               pointerEvents="none"
               children={<BsSearch size={20} />}
             />
             <Input placeholder="Find creator" />
           </InputGroup>
+          <Flex direction="column" gap={8} py={8}>
+            {creators.map((creator) => (
+              <CreatorCard key={creator._id} {...creator} />
+            ))}
+          </Flex>
         </Flex>
-        <Box as="details" my={5}>
-          <summary>Creators</summary>
-          {creators.map((creator) => (
-            <Text key={creator._id} decoration={'underline'}>
-              <Link href={`/users/${creator.address}`}>{creator.address}</Link>
-            </Text>
-          ))}
-          <Box as="pre" overflow="scroll" bg="gray.200">
-            <code>{JSON.stringify(creators, null, 2)}</code>
-          </Box>
-        </Box>
       </Container>
     </Layout>
   )
