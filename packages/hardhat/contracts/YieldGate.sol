@@ -105,6 +105,8 @@ contract BeneficiaryPool {
         console.log("Staking %s for %s", msg.value, beneficiary);
 
         supporters[supporter] += msg.value;
+
+        wethgw.depositETH(pool, address(this), 0);
     }
 
     // Unstakes all previously staked ether by the calling supporter.
@@ -113,9 +115,9 @@ contract BeneficiaryPool {
         uint256 sstake = supporters[supporter];
         console.log("Unstaking %s for %s", sstake, beneficiary);
         supporters[supporter] = 0;
-        // TODO:
-        // * withdraw base stake from pool to caller
-        supporter.transfer(sstake);
+
+        require(token.approve(address(wethgw), sstake), "ethgw approval failed");
+        wethgw.withdrawETH(pool, sstake, supporter);
     }
 
     // claim sends the accrued interest to the beneficiary of this pool. The
