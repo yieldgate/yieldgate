@@ -1,12 +1,11 @@
 import {
   Button,
-  Flex,
-  Image,
-  Menu,
+  Flex, Menu,
   MenuButton, MenuItem, MenuList, Text
 } from '@chakra-ui/react'
 import React from 'react'
 import { useAccount, useConnect } from 'wagmi'
+import { BlockiesAvatar } from './BlockiesAvatar'
 
 function truncateHash(hash: string, length = 38): string {
   return hash.replace(hash.substring(6, length), '...')
@@ -27,8 +26,9 @@ function ConnectWallet(): JSX.Element {
           justifyContent={['flex-start', null, null, 'flex-end']}
         >
           {/* <Balance /> */}
-          <Image ml="4" src={accountData.ens?.avatar} alt="ENS Avatar" />
-          <Menu placement="bottom-end">
+          <BlockiesAvatar address={accountData.address} ml="4" borderRadius={'full'}/>
+          {/* <Image ml="4" src={accountData.ens?.avatar} alt="ENS Avatar" /> */}
+          <Menu placement="bottom-end" >
             <MenuButton as={Button} ml="4">
               <Flex direction="column">
                 <Text>{truncateHash(accountData.address)}</Text>

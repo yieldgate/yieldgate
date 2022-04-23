@@ -3,21 +3,12 @@ import {
   AlertDescription,
   AlertIcon,
   AlertTitle,
-  Box,
-  Container,
-  Flex,
+  Box, Flex
 } from '@chakra-ui/react'
 import { useNotifications } from '@usedapp/core'
 import React from 'react'
 import Head, { MetaProps } from './Head'
 import Navbar from './Navbar'
-
-// Extends `window` to add `ethereum`.
-declare global {
-  interface Window {
-    ethereum: any
-  }
-}
 
 // Title text for the various transaction notifications.
 const TRANSACTION_TITLES = {

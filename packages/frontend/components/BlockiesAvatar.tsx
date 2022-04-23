@@ -4,9 +4,10 @@ import { FC, useEffect, useState } from 'react'
 
 export interface BlockiesAvatarProps {
   address: string
-  ml: string
-  width: string | number
-  height: string | number
+  ml?: string
+  borderRadius?: string
+  width?: string | number
+  height?: string | number
 }
 export const BlockiesAvatar: FC<BlockiesAvatarProps> = ({address, ...props}) => {
   const [avatarUri, setAvatarUri] = useState('')

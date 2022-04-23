@@ -26,7 +26,7 @@ export const INFURA_ID = '460f40a260564ac4a4f4b3fffb032dad'
 //   },
 // }
 
-const chains = defaultChains
+const chains = defaultChains.filter((chain) => (env.supportedChains || []).includes(chain.id))
 const connectors = ({ chainId }) => {
   const rpcUrl = {
     [ChainId.Localhost]: env.rpc.hardhat,
