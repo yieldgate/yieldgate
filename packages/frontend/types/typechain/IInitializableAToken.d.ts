@@ -19,40 +19,35 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
-interface YieldGateInterface extends ethers.utils.Interface {
+interface IInitializableATokenInterface extends ethers.utils.Interface {
   functions: {
-    "beneficiaryPools(address)": FunctionFragment;
-    "earned(address)": FunctionFragment;
-    "getOrDeployPool(address)": FunctionFragment;
-    "staked(address)": FunctionFragment;
+    "initialize(address,address,address,address,uint8,string,string,bytes)": FunctionFragment;
   };
 
   encodeFunctionData(
-    functionFragment: "beneficiaryPools",
-    values: [string]
+    functionFragment: "initialize",
+    values: [
+      string,
+      string,
+      string,
+      string,
+      BigNumberish,
+      string,
+      string,
+      BytesLike
+    ]
   ): string;
-  encodeFunctionData(functionFragment: "earned", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "getOrDeployPool",
-    values: [string]
-  ): string;
-  encodeFunctionData(functionFragment: "staked", values: [string]): string;
 
-  decodeFunctionResult(
-    functionFragment: "beneficiaryPools",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "earned", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getOrDeployPool",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "staked", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
 
-  events: {};
+  events: {
+    "Initialized(address,address,address,address,uint8,string,string,bytes)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
 }
 
-export class YieldGate extends BaseContract {
+export class IInitializableAToken extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -93,91 +88,98 @@ export class YieldGate extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: YieldGateInterface;
+  interface: IInitializableATokenInterface;
 
   functions: {
-    beneficiaryPools(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
-    earned(
-      beneficiary: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    getOrDeployPool(
-      beneficiary: string,
+    initialize(
+      pool: string,
+      treasury: string,
+      underlyingAsset: string,
+      incentivesController: string,
+      aTokenDecimals: BigNumberish,
+      aTokenName: string,
+      aTokenSymbol: string,
+      params: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-
-    staked(
-      beneficiary: string,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
   };
 
-  beneficiaryPools(arg0: string, overrides?: CallOverrides): Promise<string>;
-
-  earned(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-  getOrDeployPool(
-    beneficiary: string,
+  initialize(
+    pool: string,
+    treasury: string,
+    underlyingAsset: string,
+    incentivesController: string,
+    aTokenDecimals: BigNumberish,
+    aTokenName: string,
+    aTokenSymbol: string,
+    params: BytesLike,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  staked(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
-
   callStatic: {
-    beneficiaryPools(arg0: string, overrides?: CallOverrides): Promise<string>;
-
-    earned(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    getOrDeployPool(
-      beneficiary: string,
+    initialize(
+      pool: string,
+      treasury: string,
+      underlyingAsset: string,
+      incentivesController: string,
+      aTokenDecimals: BigNumberish,
+      aTokenName: string,
+      aTokenSymbol: string,
+      params: BytesLike,
       overrides?: CallOverrides
-    ): Promise<string>;
-
-    staked(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
+    ): Promise<void>;
   };
 
-  filters: {};
+  filters: {
+    Initialized(
+      underlyingAsset?: string | null,
+      pool?: string | null,
+      treasury?: null,
+      incentivesController?: null,
+      aTokenDecimals?: null,
+      aTokenName?: null,
+      aTokenSymbol?: null,
+      params?: null
+    ): TypedEventFilter<
+      [string, string, string, string, number, string, string, string],
+      {
+        underlyingAsset: string;
+        pool: string;
+        treasury: string;
+        incentivesController: string;
+        aTokenDecimals: number;
+        aTokenName: string;
+        aTokenSymbol: string;
+        params: string;
+      }
+    >;
+  };
 
   estimateGas: {
-    beneficiaryPools(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    earned(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    getOrDeployPool(
-      beneficiary: string,
+    initialize(
+      pool: string,
+      treasury: string,
+      underlyingAsset: string,
+      incentivesController: string,
+      aTokenDecimals: BigNumberish,
+      aTokenName: string,
+      aTokenSymbol: string,
+      params: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
-
-    staked(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    beneficiaryPools(
-      arg0: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    earned(
-      beneficiary: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getOrDeployPool(
-      beneficiary: string,
+    initialize(
+      pool: string,
+      treasury: string,
+      underlyingAsset: string,
+      incentivesController: string,
+      aTokenDecimals: BigNumberish,
+      aTokenName: string,
+      aTokenSymbol: string,
+      params: BytesLike,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    staked(
-      beneficiary: string,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

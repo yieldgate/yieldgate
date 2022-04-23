@@ -13,17 +13,49 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
+      name: "IERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20__factory>;
+    getContractFactory(
+      name: "IAaveIncentivesController",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IAaveIncentivesController__factory>;
+    getContractFactory(
+      name: "IAToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IAToken__factory>;
+    getContractFactory(
+      name: "IInitializableAToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IInitializableAToken__factory>;
+    getContractFactory(
+      name: "IPool",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IPool__factory>;
+    getContractFactory(
+      name: "IPoolAddressesProvider",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IPoolAddressesProvider__factory>;
+    getContractFactory(
+      name: "IScaledBalanceToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IScaledBalanceToken__factory>;
+    getContractFactory(
+      name: "IWETHGateway",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IWETHGateway__factory>;
+    getContractFactory(
       name: "Multicall",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Multicall__factory>;
     getContractFactory(
+      name: "BeneficiaryPool",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.BeneficiaryPool__factory>;
+    getContractFactory(
       name: "YieldGate",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.YieldGate__factory>;
-    getContractFactory(
-      name: "YourContract",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.YourContract__factory>;
 
     // default types
     getContractFactory(
