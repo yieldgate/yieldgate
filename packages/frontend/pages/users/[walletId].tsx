@@ -22,7 +22,7 @@ import StakeAmountForm from '@components/StakeAmountForm'
 import { Creator } from '@entities/Creator.entity'
 import { useRouter } from 'next/router'
 import * as React from 'react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useAsyncEffect } from 'use-async-effect'
 import { useAccount } from 'wagmi'
 
@@ -34,7 +34,8 @@ export default function UsersPage() {
   const [{ data: account }] = useAccount({
     fetchEns: true,
   })
-  const isOwner = walletId && account?.address === walletId
+  const isOwner =
+    walletId && account?.address.toLowerCase() === walletId.toLowerCase()
   const [creator, setCreator] = useState<Creator | null>(null)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
