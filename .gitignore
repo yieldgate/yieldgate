@@ -43,3 +43,4 @@ packages/frontend/build
 # contracts
 packages/frontend/artifacts/*
 !packages/frontend/artifacts/addresses
+!packages/frontend/artifacts/contracts
