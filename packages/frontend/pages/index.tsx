@@ -1,7 +1,9 @@
+import { Text } from '@chakra-ui/react'
 import Layout from '@components/layout/Layout'
 import { Creator } from '@entities/Creator.entity'
 import { env } from '@lib/environment'
 import { GetServerSideProps } from 'next'
+import Link from 'next/link'
 
 export interface IndexPageProps {
   creators: Creator[]
@@ -9,7 +11,11 @@ export interface IndexPageProps {
 export default function IndexPage({creators}: IndexPageProps) {
   return <>
     <Layout>
+      {creators.map((creator) => <Text key={creator._id} decoration={'underline'}>
+        <Link href={`/users/${creator.address}`}>{creator.address}</Link>
+      </Text>)}
       {JSON.stringify(creators)}
+
     </Layout>
   </>
 }
