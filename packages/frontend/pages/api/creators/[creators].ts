@@ -24,15 +24,21 @@ export const handleGetAllCreators = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  console.log('gere')
   const { db } = (await connectToDatabase()) as MongoDBConnection
   const creators = await db
     .collection('creators')
     .find({})
-    .project({ _id: 1, address: 1, displayName: 1, description: 1 })
+    // .project({ _id: 1, address: 1, displayName: 1, description: 1 })
     // .sort({ date: -1 })
     // .limit(20)
     .toArray()
+
+  creators.forEach((creator) => {
+    creator.postsCount = creator.posts?.length
+    delete creator.posts
+    creator.supportersCount = creator.supporters?.length
+    delete creator.supporters
+  })
 
   console.log('Fetched creators:', creators)
 
@@ -52,6 +58,11 @@ export const handleGetCreator = async (
   const creator = await db
     .collection('creators')
     .findOne({ address: address.toLowerCase() })
+
+  if (!creator) return res.status(404).end()
+
+  creator.supportersCount = creator?.supporters?.length
+  creator.postsCount = creator?.posts?.length
 
   console.log('Fetched creator:', creator)
 
