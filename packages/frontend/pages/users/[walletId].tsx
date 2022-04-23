@@ -3,7 +3,6 @@ import {
   Flex,
   Grid,
   GridItem,
-  Heading,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -25,14 +24,17 @@ import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { useAsyncEffect } from 'use-async-effect'
+import { useAccount } from 'wagmi'
 
 export default function UsersPage() {
   const router = useRouter()
   let { walletId } = router.query
   walletId = ((walletId as string) || '').toLowerCase()
 
-  const account = undefined
-  const [isMyPage, setIsMyPage] = useState(false)
+  const [{ data: account }] = useAccount({
+    fetchEns: true,
+  })
+  const isOwner = walletId && account?.address === walletId
   const [creator, setCreator] = useState<Creator | null>(null)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -50,13 +52,6 @@ export default function UsersPage() {
     const { creator }: { creator: Creator } = await res.json()
     return creator
   }
-
-  useEffect(() => {
-    if (!walletId || !account) {
-      setIsMyPage(false)
-    }
-    setIsMyPage(walletId === account)
-  }, [account])
 
   useAsyncEffect(async () => {
     if (!walletId) {
@@ -100,7 +95,7 @@ export default function UsersPage() {
               </VStack>
             </Flex>
             <GridItem>
-              <NewPostForm />
+              {isOwner && <NewPostForm />}
               <Feed feed={creator?.posts || []} isLocked={false} />
             </GridItem>
           </Grid>
