@@ -1,3 +1,4 @@
+import { createCreator } from '@lib/creatorsService'
 import { Db, MongoClient } from 'mongodb'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { connectToDatabase } from '../../../lib/mongodb'
@@ -12,15 +13,13 @@ export default async function handler(
 
   switch (slug) {
     case 'create':
-      return await handleCreateContent(req, res)
-    // case 'get':
-    //   return await handleGetContent(req, res)
+      return await handlePushContent(req, res)
     default:
       return res.status(404).end()
   }
 }
 
-export const handleCreateContent = async (
+export const handlePushContent = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
@@ -41,7 +40,7 @@ export const handleCreateContent = async (
   const creator = await db.collection('creators').findOne({ address })
   let result
   if (creator) {
-    // Create a new creator with the post
+    // Update the existing creator
     result = await db.collection('creators').updateOne(
       { address },
       {
@@ -54,10 +53,8 @@ export const handleCreateContent = async (
       }
     )
   } else {
-    // Update the existing creator
-    result = await db.collection('creators').insertOne({
-      address,
-      supporters: [],
+    // Create a new creator with the post
+    result = await createCreator(db, address, {
       posts: [newPost],
     })
   }
@@ -71,25 +68,3 @@ export const handleCreateContent = async (
     ...newPost,
   })
 }
-
-// export const handleGetContent = async (
-//   req: NextApiRequest,
-//   res: NextApiResponse
-// ) => {
-//   const { owner } = req.body || {}
-//   if (!owner) return res.status(400).end()
-
-//   const { db } = (await connectToDatabase()) as MongoDBConnection
-//   const posts = await db
-//     .collection('posts')
-//     .find({ owner: owner.toLowerCase() })
-//     .sort({ date: -1 })
-//     // .limit(20)
-//     .toArray()
-
-//   console.log('Fetched posts:', posts)
-
-//   return res.status(200).json({
-//     posts,
-//   })
-// }

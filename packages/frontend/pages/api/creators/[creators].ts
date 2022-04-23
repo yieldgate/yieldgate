@@ -15,10 +15,6 @@ export default async function handler(
       return await handleGetCreator(req, res)
     case 'getAllCreators':
       return await handleGetAllCreators(req, res)
-    case 'addSupporter':
-      return await handleAddSupporter(req, res)
-    case 'removeSupporter':
-      return await handleRemoveSupporter(req, res)
     default:
       return res.status(404).end()
   }
@@ -62,18 +58,4 @@ export const handleGetCreator = async (
   return res.status(200).json({
     creator,
   })
-}
-
-export const handleAddSupporter = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
-  // TODO
-}
-
-export const handleRemoveSupporter = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
-  // TODO
 }
