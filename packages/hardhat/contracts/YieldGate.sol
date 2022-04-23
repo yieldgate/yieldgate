@@ -8,10 +8,10 @@ import {IWETHGateway} from "@aave/periphery-v3/contracts/misc/interfaces/IWETHGa
 import "@openzeppelin/contracts/proxy/Clones.sol";
 
 contract YieldGate {
-    address beneficiaryPoolLib;
-    address pool;
-    address wethgw;
-    address token;
+    address immutable beneficiaryPoolLib;
+    address immutable pool;
+    address immutable wethgw;
+    address immutable token;
 
     // beneficiary => BeneficiaryPool
     mapping(address => BeneficiaryPool) public beneficiaryPools;
@@ -90,10 +90,6 @@ contract YieldGate {
         }
         return bpool.supporters(supporter);
     }
-
-    function checkStaked(address beneficiary) public view {
-        return beneficiaryPools[beneficiary].checkStaked(msg.sender);
-    }
 }
 
 contract BeneficiaryPool {
@@ -104,6 +100,8 @@ contract BeneficiaryPool {
 
     // supporter => amount
     mapping(address => uint256) public supporters;
+    // total staked amount
+    uint internal totalStake;
 
     function init(
         address _pool,
@@ -131,6 +129,7 @@ contract BeneficiaryPool {
         console.log("Staking %s for %s", msg.value, beneficiary);
 
         supporters[supporter] += msg.value;
+        totalStake += msg.value;
 
         wethgw.depositETH{value: msg.value}(pool, address(this), 0);
     }
@@ -141,6 +140,7 @@ contract BeneficiaryPool {
         uint256 sstake = supporters[supporter];
         console.log("Unstaking %s for %s", sstake, beneficiary);
         supporters[supporter] = 0;
+        totalStake -= sstake;
 
         withdraw(sstake, supporter);
     }
@@ -165,12 +165,6 @@ contract BeneficiaryPool {
 
     // staked returns the total staked ether by this beneficiary pool.
     function staked() public view returns (uint256) {
-        return token.scaledBalanceOf(address(this));
-    }
-
-    function checkStaked(address supporter) public view {
-        uint s0 = staked();
-        uint s1 = supporters[supporter];
-        require(s0 == s1, "stake mismatch");
+        return totalStake;
     }
 }
