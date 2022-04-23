@@ -1,102 +1,67 @@
 import {
-  Box,
   Button,
+  Flex,
   Image,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  useDisclosure
+  Menu,
+  MenuButton,
+  Text,
+  MenuList,
+  MenuItem,
 } from '@chakra-ui/react'
-import { useEthers } from '@usedapp/core'
+import { CHAIN_NAMES, useEthers } from '@usedapp/core'
+import blockies from 'blockies-ts'
 import React from 'react'
+import Balance from './Balance'
+
+function truncateHash(hash: string, length = 38): string {
+  return hash.replace(hash.substring(6, length), '...')
+}
 
 function ConnectWallet(): JSX.Element {
-  const { activate, activateBrowserWallet } = useEthers()
+  const { account, activateBrowserWallet, activate, deactivate, chainId } =
+    useEthers()
+  console.log(account)
 
-  const { onOpen, isOpen, onClose } = useDisclosure()
+  let blockieImageSrc
+  if (typeof window !== 'undefined') {
+    blockieImageSrc = blockies.create({ seed: account }).toDataURL()
+  }
 
   return (
     <>
-      <Box
-        order={[-1, null, null, 2]}
-        textAlign={['left', null, null, 'right']}
-      >
-        {/* <Button colorScheme="teal" variant="outline" onClick={onOpen}> */}
-        <Button colorScheme="teal" variant="outline" onClick={() => {
-          activateBrowserWallet()
-        }}>
-          Connect to a wallet
+      {account ? (
+        <Flex
+          order={[-1, null, null, 2]}
+          alignItems={'center'}
+          justifyContent={['flex-start', null, null, 'flex-end']}
+        >
+          <Balance />
+          <Image ml="4" src={blockieImageSrc} alt="blockie" />
+          <Menu placement="bottom-end">
+            <MenuButton as={Button} ml="4">
+              <Flex direction="column">
+                <Text>{truncateHash(account)}</Text>
+                <Text fontSize="xs" color="gray.500">
+                  {CHAIN_NAMES[chainId]}
+                </Text>
+              </Flex>
+            </MenuButton>
+            <MenuList>
+              <MenuItem onClick={deactivate}>Disconnect</MenuItem>
+            </MenuList>
+          </Menu>
+        </Flex>
+      ) : (
+        <Button
+          w="220px"
+          variant="solid"
+          onClick={() => {
+            activateBrowserWallet()
+          }}
+        >
+          Connect Wallet
         </Button>
-      </Box>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Connect to a wallet</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Button
-              justifyContent="space-between"
-              width="100%"
-              mb="4"
-              size="lg"
-              variant="outline"
-              rightIcon={
-                <Image
-                  maxWidth="20px"
-                  src="/images/logo-metamask.png"
-                  alt="MetaMask"
-                />
-              }
-              onClick={() => {
-                activateBrowserWallet()
-              }}
-            >
-              MetaMask
-            </Button>
-            {/* <Button
-              justifyContent="space-between"
-              width="100%"
-              mb="4"
-              size="lg"
-              variant="outline"
-              rightIcon={
-                <Image
-                  maxWidth="20px"
-                  src="/images/logo-walletconnect.svg"
-                  alt="WalletConnect"
-                />
-              }
-              onClick={() => {
-                activate(walletconnect)
-              }}
-            >
-              WalletConnect
-            </Button> */}
-            {/* <Button
-              justifyContent="space-between"
-              width="100%"
-              mb="4"
-              size="lg"
-              variant="outline"
-              rightIcon={
-                <Image
-                  maxWidth="20px"
-                  src="/images/logo-coinbase.jpg"
-                  alt="Coinbase Wallet"
-                />
-              }
-              onClick={() => {
-                activate(walletlink)
-              }}
-            >
-              Coinbase Wallet
-            </Button> */}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      )}
     </>
   )
 }

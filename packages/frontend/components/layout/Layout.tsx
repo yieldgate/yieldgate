@@ -4,25 +4,12 @@ import {
   AlertIcon,
   AlertTitle,
   Box,
-  Button,
   Container,
-  Flex,
-  Image,
-  Link,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  SimpleGrid,
-  Text,
 } from '@chakra-ui/react'
-import { CHAIN_NAMES, useEthers, useNotifications } from '@usedapp/core'
-import blockies from 'blockies-ts'
-import NextLink from 'next/link'
+import { useNotifications } from '@usedapp/core'
 import React from 'react'
-import Balance from '../Balance'
-import ConnectWallet from '../ConnectWallet'
 import Head, { MetaProps } from './Head'
+import Navbar from './Navbar'
 
 // Extends `window` to add `ethereum`.
 declare global {
@@ -37,80 +24,19 @@ const TRANSACTION_TITLES = {
   transactionSucceed: 'Local Transaction Completed',
 }
 
-// Takes a long hash string and truncates it.
-function truncateHash(hash: string, length = 38): string {
-  return hash.replace(hash.substring(6, length), '...')
-}
-
 interface LayoutProps {
   children: React.ReactNode
   customMeta?: MetaProps
 }
 
 const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
-  const { account, deactivate, chainId } = useEthers()
   const { notifications } = useNotifications()
-
-  let blockieImageSrc
-  if (typeof window !== 'undefined') {
-    blockieImageSrc = blockies.create({ seed: account }).toDataURL()
-  }
 
   return (
     <>
       <Head customMeta={customMeta} />
       <header>
-        <Container maxWidth="container.xl">
-          <SimpleGrid
-            columns={[1, 1, 1, 2]}
-            alignItems="center"
-            justifyContent="space-between"
-            py="8"
-          >
-            <Flex py={[4, null, null, 0]}>
-              <NextLink href="/" passHref>
-                <Link px="4" py="1">
-                  Home
-                </Link>
-              </NextLink>
-              <NextLink href="/graph-example" passHref>
-                <Link px="4" py="1">
-                  Graph Example
-                </Link>
-              </NextLink>
-              <NextLink href="/signature-example" passHref>
-                <Link px="4" py="1">
-                  Signature Example
-                </Link>
-              </NextLink>
-            </Flex>
-            {account ? (
-              <Flex
-                order={[-1, null, null, 2]}
-                alignItems={'center'}
-                justifyContent={['flex-start', null, null, 'flex-end']}
-              >
-                <Balance />
-                <Image ml="4" src={blockieImageSrc} alt="blockie" />
-                <Menu placement="bottom-end">
-                  <MenuButton as={Button} ml="4">
-                    <Flex direction="column">
-                      <Text>{truncateHash(account)}</Text>
-                      <Text fontSize="xs" color="gray.500">
-                        {CHAIN_NAMES[chainId]}
-                      </Text>
-                    </Flex>
-                  </MenuButton>
-                  <MenuList>
-                    <MenuItem onClick={deactivate}>Disconnect</MenuItem>
-                  </MenuList>
-                </Menu>
-              </Flex>
-            ) : (
-              <ConnectWallet />
-            )}
-          </SimpleGrid>
-        </Container>
+        <Navbar />
       </header>
       <main>
         <Container maxWidth="container.xl">
@@ -135,7 +61,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
                   </AlertTitle>
                   <AlertDescription overflow="hidden">
                     Transaction Hash:{' '}
-                    {truncateHash(notification.transaction.hash, 61)}
+                    {/* {truncateHash(notification.transaction.hash, 61)} */}
                   </AlertDescription>
                 </Box>
               </Alert>
