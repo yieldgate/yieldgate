@@ -24,7 +24,8 @@ interface YieldGateInterface extends ethers.utils.Interface {
   functions: {
     "beneficiaryPools(address)": FunctionFragment;
     "checkStaked(address)": FunctionFragment;
-    "earned(address)": FunctionFragment;
+    "claim()": FunctionFragment;
+    "claimable(address)": FunctionFragment;
     "getOrDeployPool(address)": FunctionFragment;
     "stake(address)": FunctionFragment;
     "staked(address)": FunctionFragment;
@@ -37,7 +38,8 @@ interface YieldGateInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(functionFragment: "checkStaked", values: [string]): string;
-  encodeFunctionData(functionFragment: "earned", values: [string]): string;
+  encodeFunctionData(functionFragment: "claim", values?: undefined): string;
+  encodeFunctionData(functionFragment: "claimable", values: [string]): string;
   encodeFunctionData(
     functionFragment: "getOrDeployPool",
     values: [string]
@@ -58,7 +60,8 @@ interface YieldGateInterface extends ethers.utils.Interface {
     functionFragment: "checkStaked",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "earned", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "claimable", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getOrDeployPool",
     data: BytesLike
@@ -128,7 +131,11 @@ export class YieldGate extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[void]>;
 
-    earned(
+    claim(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    claimable(
       beneficiary: string,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
@@ -164,7 +171,11 @@ export class YieldGate extends BaseContract {
 
   checkStaked(beneficiary: string, overrides?: CallOverrides): Promise<void>;
 
-  earned(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
+  claim(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  claimable(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
 
   getOrDeployPool(
     beneficiary: string,
@@ -194,7 +205,12 @@ export class YieldGate extends BaseContract {
 
     checkStaked(beneficiary: string, overrides?: CallOverrides): Promise<void>;
 
-    earned(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
+    claim(overrides?: CallOverrides): Promise<void>;
+
+    claimable(
+      beneficiary: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getOrDeployPool(
       beneficiary: string,
@@ -227,7 +243,14 @@ export class YieldGate extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    earned(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
+    claim(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    claimable(
+      beneficiary: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getOrDeployPool(
       beneficiary: string,
@@ -264,7 +287,11 @@ export class YieldGate extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    earned(
+    claim(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    claimable(
       beneficiary: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

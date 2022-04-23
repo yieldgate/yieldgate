@@ -40,6 +40,10 @@ contract YieldGate {
         BeneficiaryPool(bpool).unstake(payable(msg.sender));
     }
 
+    function claim() public {
+        beneficiaryPools[msg.sender].claim();
+    }
+
     function getOrDeployPool(address beneficiary) public returns (address) {
         address bpool = address(beneficiaryPools[beneficiary]);
         if (bpool != address(0)) {
@@ -57,11 +61,11 @@ contract YieldGate {
         return address(bpool);
     }
 
-    // earned returns the total earned ether by the provided beneficiary.
+    // claimable returns the total earned ether by the provided beneficiary.
     // It is the accrued interest on all staked ether.
     // It can be withdrawn by the beneficiary with claim.
-    function earned(address beneficiary) public view returns (uint256) {
-        return beneficiaryPools[beneficiary].earned();
+    function claimable(address beneficiary) public view returns (uint256) {
+        return beneficiaryPools[beneficiary].claimable();
     }
 
     // staked returns the total staked ether on behalf of the beneficiary.
@@ -132,7 +136,7 @@ contract BeneficiaryPool {
     // claim sends the accrued interest to the beneficiary of this pool. The
     // stake remains at the yield pool and continues generating yield.
     function claim() public {
-        withdraw(earned(), beneficiary);
+        withdraw(claimable(), beneficiary);
     }
 
     function withdraw(uint amount, address receiver) internal {
@@ -140,10 +144,10 @@ contract BeneficiaryPool {
         wethgw.withdrawETH(pool, amount, receiver);
     }
 
-    // earned returns the total earned ether by the provided beneficiary.
+    // claimable returns the total earned ether by the provided beneficiary.
     // It is the accrued interest on all staked ether.
     // It can be withdrawn by the beneficiary with claim.
-    function earned() public view returns (uint256) {
+    function claimable() public view returns (uint256) {
         return token.balanceOf(address(this)) - staked();
     }
 

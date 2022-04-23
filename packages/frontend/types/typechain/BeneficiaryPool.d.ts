@@ -24,7 +24,7 @@ interface BeneficiaryPoolInterface extends ethers.utils.Interface {
   functions: {
     "checkStaked(address)": FunctionFragment;
     "claim()": FunctionFragment;
-    "earned()": FunctionFragment;
+    "claimable()": FunctionFragment;
     "init(address,address,address,address)": FunctionFragment;
     "stake(address)": FunctionFragment;
     "staked()": FunctionFragment;
@@ -34,7 +34,7 @@ interface BeneficiaryPoolInterface extends ethers.utils.Interface {
 
   encodeFunctionData(functionFragment: "checkStaked", values: [string]): string;
   encodeFunctionData(functionFragment: "claim", values?: undefined): string;
-  encodeFunctionData(functionFragment: "earned", values?: undefined): string;
+  encodeFunctionData(functionFragment: "claimable", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "init",
     values: [string, string, string, string]
@@ -49,7 +49,7 @@ interface BeneficiaryPoolInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "earned", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "claimable", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "staked", data: BytesLike): Result;
@@ -109,7 +109,7 @@ export class BeneficiaryPool extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
-    earned(overrides?: CallOverrides): Promise<[BigNumber]>;
+    claimable(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     init(
       _pool: string,
@@ -140,7 +140,7 @@ export class BeneficiaryPool extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  earned(overrides?: CallOverrides): Promise<BigNumber>;
+  claimable(overrides?: CallOverrides): Promise<BigNumber>;
 
   init(
     _pool: string,
@@ -169,7 +169,7 @@ export class BeneficiaryPool extends BaseContract {
 
     claim(overrides?: CallOverrides): Promise<void>;
 
-    earned(overrides?: CallOverrides): Promise<BigNumber>;
+    claimable(overrides?: CallOverrides): Promise<BigNumber>;
 
     init(
       _pool: string,
@@ -200,7 +200,7 @@ export class BeneficiaryPool extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
-    earned(overrides?: CallOverrides): Promise<BigNumber>;
+    claimable(overrides?: CallOverrides): Promise<BigNumber>;
 
     init(
       _pool: string,
@@ -235,7 +235,7 @@ export class BeneficiaryPool extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
-    earned(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    claimable(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     init(
       _pool: string,
