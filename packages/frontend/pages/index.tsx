@@ -1,9 +1,17 @@
 import {
   Button,
-  Container, Flex, Grid, Heading, HStack, Image, Input,
+  Container,
+  Flex,
+  Grid,
+  Heading,
+  HStack,
+  Image,
+  Input,
   InputGroup,
-  InputLeftElement, Link,
-  Spacer, Text
+  InputLeftElement,
+  Link,
+  Spacer,
+  Text,
 } from '@chakra-ui/react'
 import { BlockiesAvatar } from '@components/BlockiesAvatar'
 import Layout from '@components/layout/Layout'
@@ -70,10 +78,13 @@ export default function IndexPage({ creators }: IndexPageProps) {
           <Flex direction="column" align="start" gap={3}>
             <Image src="/images/logo-yieldgate-long.svg" h="70px" mb={2} />
             <Text fontSize="3xl">Let your fans stake coins on your behalf</Text>
-            {accountData
-              && <NextLink href={`/users/${accountData.address}`} passHref>
-                <Button size="lg" mt='6'>Create on Yieldgate</Button>
-              </NextLink>}
+            {accountData && (
+              <NextLink href={`/users/${accountData.address}`} passHref>
+                <Button size="lg" mt="6">
+                  Create on Yieldgate
+                </Button>
+              </NextLink>
+            )}
           </Flex>
         </Container>
       </Flex>
@@ -94,20 +105,47 @@ export default function IndexPage({ creators }: IndexPageProps) {
             How does it work?
           </Heading>
           <Grid gridTemplateColumns="repeat(3, 1fr)" gap={10}>
-            <Flex direction="column" border="1px" borderRadius="md">
-              <Image fallbackSrc="https://i.imgur.com/2UFgYhq.png" h={52} />
+            <Flex
+              direction="column"
+              border="1px"
+              borderRadius="md"
+              overflow="hidden"
+            >
+              <Image
+                src="/images/step-1.png"
+                fallbackSrc="https://i.imgur.com/2UFgYhq.png"
+                h={52}
+              />
               <Text p={5} fontSize="xl">
                 Sign in with your wallet
               </Text>
             </Flex>
-            <Flex direction="column" border="1px" borderRadius="md">
-              <Image fallbackSrc="https://i.imgur.com/EkHEXRH.png" h={52} />
+            <Flex
+              direction="column"
+              border="1px"
+              borderRadius="md"
+              overflow="hidden"
+            >
+              <Image
+                src="/images/step-2.png"
+                fallbackSrc="https://i.imgur.com/EkHEXRH.png"
+                h={52}
+              />
               <Text p={5} fontSize="xl">
                 Edit your profile and make your first post
               </Text>
             </Flex>
-            <Flex direction="column" border="1px" borderRadius="md">
-              <Image fallbackSrc="https://i.imgur.com/8Ee8EMr.png" h={52} />
+            <Flex
+              direction="column"
+              border="1px"
+              borderRadius="md"
+              overflow="hidden"
+            >
+              <Image
+                src="/images/step-3.png"
+                fallbackSrc="https://i.imgur.com/8Ee8EMr.png"
+                h={52}
+              />
               <Text p={5} fontSize="xl">
                 Share your Yieldgate profile to start receiving donations from
                 your supporters in yield!
