@@ -1,42 +1,60 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// When running the script with `hardhat run <script>` you'll find the Hardhat
-// Runtime Environment's members available in the global scope.
-import { Contract } from 'ethers';
-import { config, ethers } from 'hardhat';
-import fs from 'fs';
+import fs from "fs";
+import hre, { config, ethers } from "hardhat";
+import path from "path";
 
 async function main() {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile
-  // manually to make sure everything is compiled
-  // await hre.run('compile');
+  const YourContract = await ethers.getContractFactory("YourContract");
+  const yourContract = await YourContract.deploy("Hello, Hardhat!");
+  await yourContract.deployed();
+  console.log("YourContract deployed to:", yourContract.address);
 
-  fs.unlinkSync(`${config.paths.artifacts}/contracts/contractAddress.ts`);
-
-  // We get the contract to deploy
-  const YourContract = await ethers.getContractFactory('YourContract');
-  const contract = await YourContract.deploy('Hello, Hardhat!');
-  await contract.deployed();
-  saveFrontendFiles(contract, "YourContract");
-  console.log('YourContract deployed to:', contract.address);
-
-  const MulticallContract = await ethers.getContractFactory('Multicall');
+  const MulticallContract = await ethers.getContractFactory("Multicall");
   const multicallContract = await MulticallContract.deploy();
   await multicallContract.deployed();
-  saveFrontendFiles(multicallContract, "MulticallContract");
-  console.log('Multicall deployed to:', multicallContract.address);
+  console.log("Multicall deployed to:", multicallContract.address);
+
+  saveFrontendAddressFiles({
+    YourContract: yourContract.address,
+    MulticallContract: multicallContract.address,
+  });
 }
 
-// https://github.com/nomiclabs/hardhat-hackathon-boilerplate/blob/master/scripts/deploy.js
-function saveFrontendFiles(contract: Contract, contractName: string) {
-  fs.appendFileSync(
-    `${config.paths.artifacts}/contracts/contractAddress.ts`,
-    `export const ${contractName} = '${contract.address}'\n`
+/**
+ * Helper function to store contract addresses in .ts file
+ */
+function saveFrontendAddressFiles(contracts: any) {
+  // Create adresses/ directory
+  const addressesDir = path.join(config.paths.artifacts, `addresses`);
+  fs.mkdirSync(addressesDir, { recursive: true });
+  // Lowercase all addresses
+  for (let contractKey of Object.keys(contracts)) {
+    contracts[contractKey] = contracts[contractKey].toLowerCase();
+  }
+  // Create {chainId}.ts
+  const addressesFilePath = path.join(
+    addressesDir,
+    `${hre.network.config.chainId}.ts`
   );
+  const addressesFileContents = `export const ContractAddresses_${
+    hre.network.config.chainId
+  } = ${JSON.stringify(contracts, null, 2)}`;
+  fs.writeFileSync(addressesFilePath, addressesFileContents);
+  // Create index.ts
+  const chainIds = fs
+    .readdirSync(addressesDir)
+    .filter((name) => name?.endsWith(".ts") && name !== "index.ts")
+    .map((name) => name?.replace(".ts", ""));
+  let indexFileContents = chainIds.reduce(
+    (acc, val) => acc + `import { ContractAddresses_${val} } from './${val}'\n`,
+    ""
+  );
+  indexFileContents += `export const ContractAddresses = {`;
+  indexFileContents += `${chainIds.reduce(
+    (acc, val) => acc + `'${val}': ContractAddresses_${val}\n`,
+    ""
+  )}}`;
+  const indexFilePath = path.join(addressesDir, "index.ts");
+  fs.writeFileSync(indexFilePath, indexFileContents);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

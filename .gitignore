@@ -41,5 +41,5 @@ packages/frontend/out/
 # production
 packages/frontend/build
 # contracts
-packages/frontend/artifacts
-!packages/frontend/artifacts/contracts/contractAddress.ts
+packages/frontend/artifacts/*
+!packages/frontend/artifacts/addresses

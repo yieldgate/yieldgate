@@ -2,7 +2,7 @@ import { Box, Button, Divider, Heading, Input, Text } from '@chakra-ui/react'
 import { ChainId, useEthers, useSendTransaction } from '@usedapp/core'
 import { ethers, providers, utils } from 'ethers'
 import React, { useReducer } from 'react'
-import { YourContract as LOCAL_CONTRACT_ADDRESS } from '../artifacts/contracts/contractAddress'
+import { ContractAddresses } from '../artifacts/addresses/'
 import YourContract from '../artifacts/contracts/YourContract.sol/YourContract.json'
 import Layout from '../components/layout/Layout'
 import { YourContract as YourContractType } from '../types/typechain'
@@ -81,7 +81,7 @@ function HomeIndex(): JSX.Element {
   const CONTRACT_ADDRESS =
     chainId === ChainId.Ropsten
       ? ROPSTEN_CONTRACT_ADDRESS
-      : LOCAL_CONTRACT_ADDRESS
+      : ContractAddresses[ChainId['Localhost']].YourContract
 
   // Use the localProvider as the signer to send ETH to our wallet
   const { sendTransaction } = useSendTransaction({

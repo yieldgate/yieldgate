@@ -3,8 +3,8 @@ export const env = {
   url: process.env.NEXT_PUBLIC_URL,
 
   rpc: {
-    hardhat: process.env.RPC_HARDHAT,
-    polygonMainnet: process.env.RPC_POLYGON_MUMBAI,
-    polygonMumbai: process.env.RPC_POLYGON,
+    hardhat: process.env.NEXT_PUBLIC_RPC_HARDHAT,
+    polygonMainnet: process.env.NEXT_PUBLIC_RPC_POLYGON_MUMBAI,
+    polygonMumbai: process.env.NEXT_PUBLIC_RPC_POLYGON,
   },
 }
