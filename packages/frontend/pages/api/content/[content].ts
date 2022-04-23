@@ -13,8 +13,8 @@ export default async function handler(
   switch (slug) {
     case 'create':
       return await handleCreateContent(req, res)
-    case 'get':
-      return await handleGetContent(req, res)
+    // case 'get':
+    //   return await handleGetContent(req, res)
     default:
       return res.status(404).end()
   }
@@ -27,49 +27,69 @@ export const handleCreateContent = async (
   const post = req.body || {}
   if (!post?.owner || !post?.title || !post?.content)
     return res.status(400).end()
-
-  const { owner, title, content } = post
+  const { title, content } = post
   const newPost = {
     date: new Date().toUTCString(),
-    owner: owner.toLowerCase(),
     title,
     content,
   }
 
   const { db } = (await connectToDatabase()) as MongoDBConnection
 
-  db.collection('posts').insertOne(newPost, (error, response) => {
-    const _id = response?.insertedId
-    if (error || !_id) {
-      console.error('Error while saving post', newPost, error)
-      return res.status(500).end()
-    }
-    console.log('New post inserted', _id, newPost)
-    return res.status(200).json({
-      _id,
-      ...newPost,
+  // Fetch creator
+  const address = post.owner.toLowerCase()
+  const creator = await db.collection('creators').findOne({ address })
+  let result
+  if (creator) {
+    // Create a new creator with the post
+    result = await db.collection('creators').updateOne(
+      { address },
+      {
+        $push: {
+          posts: {
+            $each: [newPost],
+            $position: 0,
+          },
+        },
+      }
+    )
+  } else {
+    // Update the existing creator
+    result = await db.collection('creators').insertOne({
+      address,
+      supporters: [],
+      posts: [newPost],
     })
-  })
-}
+  }
 
-export const handleGetContent = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
-  const { owner } = req.body || {}
-  if (!owner) return res.status(400).end()
-
-  const { db } = (await connectToDatabase()) as MongoDBConnection
-  const posts = await db
-    .collection('posts')
-    .find({ owner: owner.toLowerCase() })
-    .sort({ date: -1 })
-    // .limit(20)
-    .toArray()
-
-  console.log('Fetched posts:', posts)
+  // Create new post
+  if (!result) {
+    return res.status(500).end()
+  }
 
   return res.status(200).json({
-    posts,
+    ...newPost,
   })
 }
+
+// export const handleGetContent = async (
+//   req: NextApiRequest,
+//   res: NextApiResponse
+// ) => {
+//   const { owner } = req.body || {}
+//   if (!owner) return res.status(400).end()
+
+//   const { db } = (await connectToDatabase()) as MongoDBConnection
+//   const posts = await db
+//     .collection('posts')
+//     .find({ owner: owner.toLowerCase() })
+//     .sort({ date: -1 })
+//     // .limit(20)
+//     .toArray()
+
+//   console.log('Fetched posts:', posts)
+
+//   return res.status(200).json({
+//     posts,
+//   })
+// }

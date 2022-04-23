@@ -1,7 +1,7 @@
 import { BlockiesAvatar } from '@components/BlockiesAvatar'
 import Feed from '@components/Feed'
 import Layout from '@components/layout/Layout'
-import { Post } from '@entities/Post.entity'
+import { Creator } from '@entities/Creator.entity'
 import { useEthers } from '@usedapp/core'
 import { useRouter } from 'next/router'
 import * as React from 'react'
@@ -19,21 +19,22 @@ export default function UsersPage() {
   
   const { account, chainId } = useEthers()
   const [isMyPage, setIsMyPage] = useState(false)
-  const [posts, setPosts] = useState<Post[]>([])
+  const [creator, setCreator] = useState<Creator | null>(null)
+  // const [posts, setPosts] = useState<Post[]>([])
 
-  const fetchPosts = async (): Promise<Post[]> => {
-    const res = await fetch('/api/content/get',{
+  const fetchCreator = async (): Promise<Creator> => {
+    const res = await fetch('/api/creators/getCreator',{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        owner: walletId,
+        address: walletId,
       })
     })
 
-    const { posts }: { posts: Post[] } = await res.json()
-    return posts
+    const { creator }: { creator: Creator } = await res.json()
+    return creator
   }
 
   useEffect(() => {
@@ -45,18 +46,17 @@ export default function UsersPage() {
 
   useAsyncEffect(async () => {
     if (!walletId) {
-      setPosts([])
+      setCreator(null)
       return
     }
-
-    const posts = await fetchPosts()
-    setPosts(posts)
-  }, [walletId, chainId])
+    const creator = await fetchCreator()
+    setCreator(creator)
+  }, [walletId])
 
   return <>
     <Layout>
       <BlockiesAvatar address={walletId} ml="4" width={250} height={250} />
-      <Feed feed={posts} isLocked={false} />
+      <Feed feed={creator?.posts || []} isLocked={false} />
     </Layout>
   </>
 }
