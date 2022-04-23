@@ -1,14 +1,18 @@
 import * as React from 'react'
-import { Flex, Image } from '@chakra-ui/react'
+import { Box, Flex, Image, Container } from '@chakra-ui/react'
 
 import ConnectWallet from '@components/ConnectWallet'
 
 function Navbar(): JSX.Element {
   return (
-    <Flex alignItems="center" justify="space-between" borderBottom="1px" p="2">
-      <Image src="images/logo-yieldgate.svg" boxSize={7} />
-      <ConnectWallet />
-    </Flex>
+    <Box borderBottom="1px">
+      <Container maxW="5xl" py={4}>
+        <Flex alignItems="center" justify="space-between">
+          <Image src="images/logo-yieldgate.svg" boxSize={7} />
+          <ConnectWallet />
+        </Flex>
+      </Container>
+    </Box>
   )
 }
 
