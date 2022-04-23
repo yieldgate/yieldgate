@@ -18,7 +18,7 @@ export const INFURA_ID = '460f40a260564ac4a4f4b3fffb032dad'
 
 const dappConfig: Config = {
   readOnlyUrls: {
-    [ChainId.Localhost]: 'http://127.0.0.1:8545',
+    [ChainId.Localhost]: env.rpc.hardhat,
     [ChainId.Mumbai]: env.rpc.polygonMumbai,
     [ChainId.Polygon]: env.rpc.polygonMainnet,
   },
@@ -30,8 +30,6 @@ const dappConfig: Config = {
   multicallAddresses: {
     ...MULTICALL_ADDRESSES,
     [ChainId.Localhost]: ContractAddresses[ChainId.Localhost].MulticallContract,
-    [ChainId.Mumbai]: ContractAddresses[ChainId.Localhost].MulticallContract,
-    [ChainId.Polygon]: ContractAddresses[ChainId.Localhost].MulticallContract,
   },
 }
 
