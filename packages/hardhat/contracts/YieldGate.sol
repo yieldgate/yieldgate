@@ -32,7 +32,7 @@ contract YieldGate {
 
     function stake(address beneficiary) public payable {
         address bpool = getOrDeployPool(beneficiary);
-        BeneficiaryPool(bpool).stake(msg.sender);
+        BeneficiaryPool(bpool).stake{value: msg.value}(msg.sender);
     }
 
     function unstake(address beneficiary) public {
