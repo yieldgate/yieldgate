@@ -1,26 +1,18 @@
 import {
-  Box,
-  Text,
-  Heading,
   Button,
-  Flex,
-  Image,
-  Grid,
-  Input,
+  Container, Flex, Grid, Heading, HStack, Image, Input,
   InputGroup,
-  InputLeftElement,
-  Container,
-  Link,
-  Spacer,
-  HStack,
+  InputLeftElement, Link,
+  Spacer, Text
 } from '@chakra-ui/react'
+import { BlockiesAvatar } from '@components/BlockiesAvatar'
 import Layout from '@components/layout/Layout'
 import { Creator } from '@entities/Creator.entity'
 import { env } from '@lib/environment'
 import { GetServerSideProps } from 'next'
 import NextLink from 'next/link'
 import { BsSearch } from 'react-icons/bs'
-import { BlockiesAvatar } from '@components/BlockiesAvatar'
+import { useAccount } from 'wagmi'
 
 export interface IndexPageProps {
   creators: Creator[]
@@ -65,6 +57,8 @@ function CreatorCard(props: Creator): JSX.Element {
 }
 
 export default function IndexPage({ creators }: IndexPageProps) {
+  const [{ data: accountData }] = useAccount()
+
   return (
     <Layout>
       <Flex
@@ -74,9 +68,12 @@ export default function IndexPage({ creators }: IndexPageProps) {
       >
         <Container maxW="5xl" py={24}>
           <Flex direction="column" align="start" gap={3}>
-            <Image src="/images/logo-yieldgate-long.svg" h="70px" mb={12} />
+            <Image src="/images/logo-yieldgate-long.svg" h="70px" mb={2} />
             <Text fontSize="3xl">Let your fans stake coins on your behalf</Text>
-            <Button size="lg">Create on Yieldgate</Button>
+            {accountData
+              && <NextLink href={`/users/${accountData.address}`} passHref>
+                <Button size="lg" mt='6'>Create on Yieldgate</Button>
+              </NextLink>}
           </Flex>
         </Container>
       </Flex>

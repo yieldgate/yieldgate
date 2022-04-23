@@ -4,7 +4,10 @@ import {
 import React from 'react'
 import { useConnect } from 'wagmi'
 
-function ConnectWalletButton(): JSX.Element {
+export type ConnectWalletButtonProps = {
+  title?: string
+}
+function ConnectWalletButton({title}: ConnectWalletButtonProps): JSX.Element {
   const [{ data, error }, connect] = useConnect()
 
   return (
@@ -16,7 +19,7 @@ function ConnectWalletButton(): JSX.Element {
           connect(data.connectors[0])
         }}
       >
-          Connect Wallet
+        {title || 'Connect Wallet'}
       </Button>
     </>
   )

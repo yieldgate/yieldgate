@@ -11,6 +11,10 @@ import { useAccount, useProvider, useSigner } from 'wagmi'
 import { BlockiesAvatar } from './BlockiesAvatar'
 import ConnectWalletButton from './ConnectWalletButton'
 
+function truncateHash(hash: string, length = 38): string {
+  return hash.replace(hash.substring(6, length), '...')
+}
+
 export interface CreatorCardProps {
   creator: Creator
 }
@@ -151,7 +155,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({creator}) => {
         height="200px"
       />
       <VStack w='full'>
-        <Heading textAlign={'center'}>{creator.displayName || creator.address}</Heading>
+        <Heading textAlign={'center'}>{creator.displayName || truncateHash(creator.address)}</Heading>
         <Text textAlign={'center'}>{creator?.description}</Text>
       </VStack>
 
