@@ -51,20 +51,24 @@ export const handleGetCreator = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  const { address } = req.body || {}
+  let { address } = req.body || {}
   if (!address) return res.status(400).end()
+  if (!/^0x[a-fA-F0-9]{40}$/.test(address)) return res.status(400).end()
+  address = address.toLowerCase()
 
   const { db } = (await connectToDatabase()) as MongoDBConnection
-  const creator = await db
-    .collection('creators')
-    .findOne({ address: address.toLowerCase() })
-
-  if (!creator) return res.status(404).end()
-
-  creator.supportersCount = creator?.supporters?.length
-  creator.postsCount = creator?.posts?.length
+  let creator: any = await db.collection('creators').findOne({ address })
 
   console.log('Fetched creator:', creator)
+  if (!creator) {
+    creator = {
+      _id: address,
+      address,
+    }
+  }
+
+  creator.supportersCount = creator?.supporters?.length || 0
+  creator.postsCount = creator?.posts?.length || 0
 
   return res.status(200).json({
     creator,
