@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { connectToDatabase } from '../../../lib/mongodb'
 
 export interface Post {
-  id: string
+  _id: string
   date: string
   owner: string
   title: string
@@ -47,14 +47,14 @@ export const handleCreateContent = async (
   const { db } = (await connectToDatabase()) as MongoDBConnection
 
   db.collection('posts').insertOne(newPost, (error, response) => {
-    const id = response?.insertedId
-    if (error || !id) {
+    const _id = response?.insertedId
+    if (error || !_id) {
       console.error('Error while saving post', newPost, error)
       return res.status(500).end()
     }
-    console.log('New post inserted', id, newPost)
+    console.log('New post inserted', _id, newPost)
     return res.status(200).json({
-      id,
+      _id,
       ...newPost,
     })
   })
