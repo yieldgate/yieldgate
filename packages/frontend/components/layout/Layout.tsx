@@ -14,7 +14,7 @@ import {
   MenuItem,
   MenuList,
   SimpleGrid,
-  Text
+  Text,
 } from '@chakra-ui/react'
 import { CHAIN_NAMES, useEthers, useNotifications } from '@usedapp/core'
 import blockies from 'blockies-ts'
@@ -31,10 +31,6 @@ declare global {
   }
 }
 
-/**
- * Constants & Helpers
- */
-
 // Title text for the various transaction notifications.
 const TRANSACTION_TITLES = {
   transactionStarted: 'Local Transaction Started',
@@ -46,17 +42,11 @@ function truncateHash(hash: string, length = 38): string {
   return hash.replace(hash.substring(6, length), '...')
 }
 
-/**
- * Prop Types
- */
 interface LayoutProps {
   children: React.ReactNode
   customMeta?: MetaProps
 }
 
-/**
- * Component
- */
 const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
   const { account, deactivate, chainId } = useEthers()
   const { notifications } = useNotifications()
@@ -104,9 +94,11 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
                 <Image ml="4" src={blockieImageSrc} alt="blockie" />
                 <Menu placement="bottom-end">
                   <MenuButton as={Button} ml="4">
-                    <Flex direction='column'>
+                    <Flex direction="column">
                       <Text>{truncateHash(account)}</Text>
-                      <Text fontSize='xs' color='gray.500'>{CHAIN_NAMES[chainId]}</Text>
+                      <Text fontSize="xs" color="gray.500">
+                        {CHAIN_NAMES[chainId]}
+                      </Text>
                     </Flex>
                   </MenuButton>
                   <MenuList>
@@ -151,14 +143,7 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
           })}
         </Container>
       </main>
-      <footer>
-        <Container mt="8" py="8" maxWidth="container.xl">
-          <Text>
-            Built by{' '}
-            <Link href="https://twitter.com/hunterhchang">Hunter Chang</Link>
-          </Text>
-        </Container>
-      </footer>
+      <Box as="footer">Built with ❤️ on top Aave, Polygon and others.</Box>
     </>
   )
 }

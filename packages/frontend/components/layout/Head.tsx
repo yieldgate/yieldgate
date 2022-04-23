@@ -1,11 +1,11 @@
 import NextHead from 'next/head'
 import { useRouter } from 'next/router'
-import React from 'react'
+import * as React from 'react'
 
 /**
  * Constants & Helpers
  */
-export const WEBSITE_HOST_URL = 'https://nextjs-ethereum-starter.vercel.app/'
+export const WEBSITE_HOST_URL = 'https://yieldgate.vercel.app/'
 
 /**
  * Prop Types
@@ -23,8 +23,8 @@ export interface MetaProps {
 const Head = ({ customMeta }: { customMeta?: MetaProps }): JSX.Element => {
   const router = useRouter()
   const meta: MetaProps = {
-    title: 'Next.js Ethereum Starter',
-    description: 'Ethers.js - Hardhat - Next.js - Typescript',
+    title: 'Yieldgate',
+    description: 'Support creators with yield',
     image: `${WEBSITE_HOST_URL}/images/site-preview.png`,
     type: 'website',
     ...customMeta,
