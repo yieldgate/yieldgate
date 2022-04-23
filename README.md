@@ -2,7 +2,7 @@
 
 Based on [nextjs-ethereum-starter](https://github.com/ChangoMan/nextjs-ethereum-starter).
 
-Very Cool project!
+Very Cool project!! (Test)
 
 ---
 
