@@ -68,6 +68,16 @@ contract YieldGate {
     function staked(address beneficiary) public view returns (uint256) {
         return beneficiaryPools[beneficiary].staked();
     }
+
+    function supporterStaked(address supporter, address beneficiary)
+    public view returns (uint256)
+    {
+        return beneficiaryPools[beneficiary].supporters(supporter);
+    }
+
+    function checkStaked(address beneficiary) public view {
+        return beneficiaryPools[beneficiary].checkStaked(msg.sender);
+    }
 }
 
 contract BeneficiaryPool {
@@ -116,14 +126,18 @@ contract BeneficiaryPool {
         console.log("Unstaking %s for %s", sstake, beneficiary);
         supporters[supporter] = 0;
 
-        require(token.approve(address(wethgw), sstake), "ethgw approval failed");
-        wethgw.withdrawETH(pool, sstake, supporter);
+        withdraw(sstake, supporter);
     }
 
     // claim sends the accrued interest to the beneficiary of this pool. The
     // stake remains at the yield pool and continues generating yield.
-    function claim() public view {
-        console.log("Claiming for %s", msg.sender);
+    function claim() public {
+        withdraw(earned(), beneficiary);
+    }
+
+    function withdraw(uint amount, address receiver) internal {
+        require(token.approve(address(wethgw), amount), "ethgw approval failed");
+        wethgw.withdrawETH(pool, amount, receiver);
     }
 
     // earned returns the total earned ether by the provided beneficiary.
@@ -136,5 +150,11 @@ contract BeneficiaryPool {
     // staked returns the total staked ether by this beneficiary pool.
     function staked() public view returns (uint256) {
         return token.scaledBalanceOf(address(this));
+    }
+
+    function checkStaked(address supporter) public view {
+        uint s0 = staked();
+        uint s1 = supporters[supporter];
+        require(s0 == s1, "stake mismatch");
     }
 }

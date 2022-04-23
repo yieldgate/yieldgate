@@ -23,10 +23,12 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 interface YieldGateInterface extends ethers.utils.Interface {
   functions: {
     "beneficiaryPools(address)": FunctionFragment;
+    "checkStaked(address)": FunctionFragment;
     "earned(address)": FunctionFragment;
     "getOrDeployPool(address)": FunctionFragment;
     "stake(address)": FunctionFragment;
     "staked(address)": FunctionFragment;
+    "supporterStaked(address,address)": FunctionFragment;
     "unstake(address)": FunctionFragment;
   };
 
@@ -34,6 +36,7 @@ interface YieldGateInterface extends ethers.utils.Interface {
     functionFragment: "beneficiaryPools",
     values: [string]
   ): string;
+  encodeFunctionData(functionFragment: "checkStaked", values: [string]): string;
   encodeFunctionData(functionFragment: "earned", values: [string]): string;
   encodeFunctionData(
     functionFragment: "getOrDeployPool",
@@ -41,10 +44,18 @@ interface YieldGateInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "stake", values: [string]): string;
   encodeFunctionData(functionFragment: "staked", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "supporterStaked",
+    values: [string, string]
+  ): string;
   encodeFunctionData(functionFragment: "unstake", values: [string]): string;
 
   decodeFunctionResult(
     functionFragment: "beneficiaryPools",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "checkStaked",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "earned", data: BytesLike): Result;
@@ -54,6 +65,10 @@ interface YieldGateInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "staked", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "supporterStaked",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "unstake", data: BytesLike): Result;
 
   events: {};
@@ -108,6 +123,11 @@ export class YieldGate extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    checkStaked(
+      beneficiary: string,
+      overrides?: CallOverrides
+    ): Promise<[void]>;
+
     earned(
       beneficiary: string,
       overrides?: CallOverrides
@@ -128,6 +148,12 @@ export class YieldGate extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    supporterStaked(
+      supporter: string,
+      beneficiary: string,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     unstake(
       beneficiary: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -135,6 +161,8 @@ export class YieldGate extends BaseContract {
   };
 
   beneficiaryPools(arg0: string, overrides?: CallOverrides): Promise<string>;
+
+  checkStaked(beneficiary: string, overrides?: CallOverrides): Promise<void>;
 
   earned(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -150,6 +178,12 @@ export class YieldGate extends BaseContract {
 
   staked(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+  supporterStaked(
+    supporter: string,
+    beneficiary: string,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   unstake(
     beneficiary: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -157,6 +191,8 @@ export class YieldGate extends BaseContract {
 
   callStatic: {
     beneficiaryPools(arg0: string, overrides?: CallOverrides): Promise<string>;
+
+    checkStaked(beneficiary: string, overrides?: CallOverrides): Promise<void>;
 
     earned(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -169,6 +205,12 @@ export class YieldGate extends BaseContract {
 
     staked(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+    supporterStaked(
+      supporter: string,
+      beneficiary: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     unstake(beneficiary: string, overrides?: CallOverrides): Promise<void>;
   };
 
@@ -177,6 +219,11 @@ export class YieldGate extends BaseContract {
   estimateGas: {
     beneficiaryPools(
       arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    checkStaked(
+      beneficiary: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -194,6 +241,12 @@ export class YieldGate extends BaseContract {
 
     staked(beneficiary: string, overrides?: CallOverrides): Promise<BigNumber>;
 
+    supporterStaked(
+      supporter: string,
+      beneficiary: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     unstake(
       beneficiary: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -203,6 +256,11 @@ export class YieldGate extends BaseContract {
   populateTransaction: {
     beneficiaryPools(
       arg0: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    checkStaked(
+      beneficiary: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -222,6 +280,12 @@ export class YieldGate extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     staked(
+      beneficiary: string,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    supporterStaked(
+      supporter: string,
       beneficiary: string,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
