@@ -130,15 +130,11 @@ contract BeneficiaryPool {
     // It is the accrued interest on all staked ether.
     // It can be withdrawn by the beneficiary with claim.
     function earned() public view returns (uint256) {
-        uint256 c = 0; // TODO: read from aToken
-        console.log("Earned by %s: %s", beneficiary, c);
-        return c;
+        return token.balanceOf(address(this)) - staked();
     }
 
-    // staked returns the total staked ether by this pool.
+    // staked returns the total staked ether by this beneficiary pool.
     function staked() public view returns (uint256) {
-        uint256 s = 0; // TODO: read from aToken
-        console.log("Total staked for %s: %s", beneficiary, s);
-        return s;
+        return token.scaledBalanceOf(address(this));
     }
 }
