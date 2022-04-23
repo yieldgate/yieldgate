@@ -22,7 +22,6 @@ import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
 interface BeneficiaryPoolInterface extends ethers.utils.Interface {
   functions: {
-    "checkStaked(address)": FunctionFragment;
     "claim()": FunctionFragment;
     "claimable()": FunctionFragment;
     "init(address,address,address,address)": FunctionFragment;
@@ -32,7 +31,6 @@ interface BeneficiaryPoolInterface extends ethers.utils.Interface {
     "unstake(address)": FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: "checkStaked", values: [string]): string;
   encodeFunctionData(functionFragment: "claim", values?: undefined): string;
   encodeFunctionData(functionFragment: "claimable", values?: undefined): string;
   encodeFunctionData(
@@ -44,10 +42,6 @@ interface BeneficiaryPoolInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "supporters", values: [string]): string;
   encodeFunctionData(functionFragment: "unstake", values: [string]): string;
 
-  decodeFunctionResult(
-    functionFragment: "checkStaked",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "claimable", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
@@ -103,8 +97,6 @@ export class BeneficiaryPool extends BaseContract {
   interface: BeneficiaryPoolInterface;
 
   functions: {
-    checkStaked(supporter: string, overrides?: CallOverrides): Promise<[void]>;
-
     claim(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -133,8 +125,6 @@ export class BeneficiaryPool extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
-
-  checkStaked(supporter: string, overrides?: CallOverrides): Promise<void>;
 
   claim(
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -165,8 +155,6 @@ export class BeneficiaryPool extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    checkStaked(supporter: string, overrides?: CallOverrides): Promise<void>;
-
     claim(overrides?: CallOverrides): Promise<void>;
 
     claimable(overrides?: CallOverrides): Promise<BigNumber>;
@@ -191,11 +179,6 @@ export class BeneficiaryPool extends BaseContract {
   filters: {};
 
   estimateGas: {
-    checkStaked(
-      supporter: string,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     claim(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -226,11 +209,6 @@ export class BeneficiaryPool extends BaseContract {
   };
 
   populateTransaction: {
-    checkStaked(
-      supporter: string,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     claim(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;

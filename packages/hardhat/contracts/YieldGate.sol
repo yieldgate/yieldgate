@@ -1,8 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.3;
 
-import "hardhat/console.sol";
-
 import {IAToken} from "@aave/core-v3/contracts/interfaces/IAToken.sol";
 import {IWETHGateway} from "@aave/periphery-v3/contracts/misc/interfaces/IWETHGateway.sol";
 import "@openzeppelin/contracts/proxy/Clones.sol";
@@ -17,12 +15,6 @@ contract YieldGate {
     mapping(address => BeneficiaryPool) public beneficiaryPools;
 
     constructor(address _pool, address wethGateway, address aWETH) {
-        console.log(
-            "Deploying YieldGate with pool %s, wETHgw %s, token %s",
-            _pool,
-            wethGateway,
-            aWETH
-        );
         pool = _pool;
         wethgw = wethGateway;
         token = aWETH;
@@ -111,13 +103,6 @@ contract BeneficiaryPool {
     ) public {
         require(beneficiary == address(0), "already initialized");
 
-        console.log(
-            "Deploying BeneficiaryPool with pool %s, wETHgw %s for %s",
-            _pool,
-            _wethgw,
-            _beneficiary
-        );
-
         pool = _pool;
         wethgw = IWETHGateway(_wethgw);
         token = IAToken(_token);
@@ -126,8 +111,6 @@ contract BeneficiaryPool {
 
     // Stakes the sent ether, registering the caller as a supporter.
     function stake(address supporter) public payable {
-        console.log("Staking %s for %s", msg.value, beneficiary);
-
         supporters[supporter] += msg.value;
         totalStake += msg.value;
 
@@ -138,7 +121,6 @@ contract BeneficiaryPool {
     // The beneficiary keeps all generated yield.
     function unstake(address payable supporter) public {
         uint256 sstake = supporters[supporter];
-        console.log("Unstaking %s for %s", sstake, beneficiary);
         supporters[supporter] = 0;
         totalStake -= sstake;
 
