@@ -1,7 +1,7 @@
 import Layout from '@components/layout/Layout'
 import { Creator } from '@entities/Creator.entity'
 import { env } from '@lib/environment'
-import { GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
 
 export interface IndexPageProps {
   creators: Creator[]
@@ -14,7 +14,7 @@ export default function IndexPage({creators}: IndexPageProps) {
   </>
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const res = await fetch(`${env.url}/api/creators/getAllCreators`,{
     method: 'GET',
     headers: {
@@ -28,7 +28,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       creators,
     } as IndexPageProps,
-    revalidate: 60,
+    // revalidate: 60,
   }
 }
 
