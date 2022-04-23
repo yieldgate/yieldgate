@@ -1,4 +1,4 @@
-import { Image } from '@chakra-ui/react'
+import { Image, Box } from '@chakra-ui/react'
 import blockies from 'blockies-ts'
 import { FC, useEffect, useState } from 'react'
 
@@ -9,7 +9,10 @@ export interface BlockiesAvatarProps {
   width?: string | number
   height?: string | number
 }
-export const BlockiesAvatar: FC<BlockiesAvatarProps> = ({address, ...props}) => {
+export const BlockiesAvatar: FC<BlockiesAvatarProps> = ({
+  address,
+  ...props
+}) => {
   const [avatarUri, setAvatarUri] = useState('')
   useEffect(() => {
     let blockieImageSrc
@@ -19,7 +22,15 @@ export const BlockiesAvatar: FC<BlockiesAvatarProps> = ({address, ...props}) => 
     setAvatarUri(blockieImageSrc)
   }, [])
 
-  return <>
-    <Image src={avatarUri} fallbackSrc="https://via.placeholder.com/150" alt={address} style={{ 'imageRendering': 'pixelated' }} {...props}/>
-  </>
+  return (
+    <Box border="1px" borderRadius="md">
+      <Image
+        src={avatarUri}
+        fallbackSrc="https://via.placeholder.com/150"
+        alt={address}
+        style={{ imageRendering: 'pixelated' }}
+        {...props}
+      />
+    </Box>
+  )
 }
