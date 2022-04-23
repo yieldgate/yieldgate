@@ -1,8 +1,18 @@
 import {
-  Container, Flex, Grid,
-  GridItem, Heading, Modal, ModalBody,
-  ModalCloseButton, ModalContent,
-  ModalHeader, ModalOverlay, Text, useDisclosure, VStack
+  Container,
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useDisclosure,
+  VStack,
 } from '@chakra-ui/react'
 import { CreatorCard } from '@components/CreatorCard'
 import Feed from '@components/Feed'
@@ -19,7 +29,7 @@ import { useAsyncEffect } from 'use-async-effect'
 export default function UsersPage() {
   const router = useRouter()
   let { walletId } = router.query
-  walletId = (walletId as string || '').toLowerCase()
+  walletId = ((walletId as string) || '').toLowerCase()
 
   const account = undefined
   const [isMyPage, setIsMyPage] = useState(false)
@@ -82,30 +92,15 @@ export default function UsersPage() {
       </Modal>
       <Layout>
         <Container maxW="5xl">
-          <Grid templateColumns="300px 1fr" gap={10}>
+          <Grid templateColumns="300px 1fr" gap={10} py={10}>
             <Flex direction="column" gap={10}>
-              <VStack position='sticky' top='4' mt='4'>
-                <CreatorCard creator={creator}/>
-
+              <VStack position="sticky" top="4" mt="4">
+                <CreatorCard creator={creator} />
                 <SponsorsCard sponsors={creator?.supporters} />
               </VStack>
             </Flex>
             <GridItem>
               <NewPostForm />
-              <Heading>Perry Mason</Heading>
-              <Text>The most influential creator in web3</Text>
-              <Text>
-                Proin pulvinar lectus massa, at ornare arcu pellentesque in.
-                Aliquam eget pulvinar dui, ac finibus purus. Sed sollicitudin
-                est quis nunc porta commodo. Fusce commodo arcu non metus
-                bibendum, vel finibus odio sagittis. Praesent et dolor sit amet
-                enim porta sodales nec in tortor. Vestibulum metus metus, dictum
-                sit amet erat vel, blandit ornare est. Vivamus porta enim sed
-                orci varius mattis. Fusce at volutpat nunc. Nunc varius feugiat
-                ornare. Sed non sapien maximus, consectetur metus vel,
-                condimentum magna. Pellentesque in ipsum ac dui tempor ornare.
-                Nunc non risus nec risus sollicitudin rutrum vitae ut metus.
-              </Text>
               <Feed feed={creator?.posts || []} isLocked={false} />
             </GridItem>
           </Grid>

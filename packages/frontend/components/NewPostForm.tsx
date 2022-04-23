@@ -13,7 +13,7 @@ function NewPostForm() {
   const [isVisible, setIsVisible] = React.useState(false)
 
   return (
-    <VStack align="stretch" spacing={3}>
+    <VStack align="stretch" spacing={3} mb="30px">
       <Button onClick={() => setIsVisible((prev) => !prev)}>
         {isVisible ? 'Hide post form' : 'Create a post'}
       </Button>
