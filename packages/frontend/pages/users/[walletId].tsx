@@ -19,15 +19,8 @@ import { useAsyncEffect } from 'use-async-effect'
 export default function UsersPage() {
   const router = useRouter()
   let { walletId } = router.query
-  if (
-    typeof walletId !== 'string' ||
-    !/^0x[a-fA-F0-9]{40}$/.test(walletId as string)
-  ) {
-    return <>Not a valid address</>
-  }
-  walletId = walletId.toLowerCase()
+  walletId = (walletId as string || '').toLowerCase()
 
-  // const { account } = useEthers()
   const account = undefined
   const [isMyPage, setIsMyPage] = useState(false)
   const [creator, setCreator] = useState<Creator | null>(null)
@@ -63,6 +56,13 @@ export default function UsersPage() {
     const creator = await fetchCreator()
     setCreator(creator)
   }, [walletId])
+
+  if (
+    typeof walletId !== 'string' ||
+    !/^0x[a-fA-F0-9]{40}$/.test(walletId as string)
+  ) {
+    return <>Not a valid address</>
+  }
 
   return (
     <>
