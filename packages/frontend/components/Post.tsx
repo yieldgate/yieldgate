@@ -1,4 +1,4 @@
-import { Box, Heading } from '@chakra-ui/react'
+import { Box, Divider, Heading } from '@chakra-ui/react'
 import type { Post as PostType } from '@entities/Post.entity'
 import dayjs from 'dayjs'
 import md from 'markdown-it'
@@ -64,7 +64,7 @@ function Post({
       <Box as="span" color="gray.400" fontSize="lg">
         {formatDateTime(date)}
       </Box>
-      {/* <div dangerouslySetInnerHTML={{ __html: md().render(content) }} /> */}
+      <Divider mt='4' />
       <Box
         dangerouslySetInnerHTML={{ __html: md().render(content) }}
         mt={5}

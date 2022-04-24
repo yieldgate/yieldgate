@@ -1,3 +1,5 @@
+import { ContractAddresses } from '@artifacts/addresses'
+import YieldGate from '@artifacts/contracts/YieldGate.sol/YieldGate.json'
 import {
   Container,
   Flex,
@@ -11,7 +13,7 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
-  VStack,
+  VStack
 } from '@chakra-ui/react'
 import { CreatorCard } from '@components/CreatorCard'
 import Feed from '@components/Feed'
@@ -20,9 +22,12 @@ import NewPostForm from '@components/NewPostForm'
 import SponsorsCard from '@components/SponsorsCard'
 import StakeAmountForm from '@components/StakeAmountForm'
 import { Creator } from '@entities/Creator.entity'
+import { env } from '@lib/environment'
+import { ethers } from 'ethers'
 import { useRouter } from 'next/router'
 import * as React from 'react'
 import { useState } from 'react'
+import { YieldGate as YieldGateType } from 'types/typechain'
 import { useAsyncEffect } from 'use-async-effect'
 import { useAccount } from 'wagmi'
 
@@ -30,7 +35,6 @@ export default function UsersPage() {
   const router = useRouter()
   let { walletId } = router.query
   walletId = ((walletId as string) || '').toLowerCase()
-
   const [{ data: account }] = useAccount({
     fetchEns: true,
   })
@@ -40,6 +44,7 @@ export default function UsersPage() {
     account?.address.toLowerCase() === walletId.toLowerCase()
   const [creator, setCreator] = useState<Creator | null>(null)
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [{ data: accountData }, disconnect] = useAccount()
 
   const fetchCreator = async (): Promise<Creator> => {
     const res = await fetch('/api/creators/getCreator', {
@@ -64,6 +69,29 @@ export default function UsersPage() {
     const creator = await fetchCreator()
     setCreator(creator)
   }, [walletId])
+
+  const YieldGateContractAddress = ContractAddresses['80001'].YieldGate
+  const [supporterIsStaking, setSupporterIsStaking] = useState(false)
+  const readSupporterStakedAmount = async () => {
+    const provider = ethers.getDefaultProvider(env.rpc.polygonMumbai)
+    const supporter = accountData?.address
+    const beneficiary = creator?.address
+    if (!supporter || !beneficiary) {
+      setSupporterIsStaking(false)
+      return
+    }
+    const contract = new ethers.Contract(
+      YieldGateContractAddress,
+      YieldGate.abi,
+      provider
+    ) as YieldGateType
+    const value = await contract.supporterStaked(supporter, beneficiary)
+    setSupporterIsStaking(value.gt(0))
+  }
+  React.useEffect(() => {
+    readSupporterStakedAmount()
+  }, [accountData?.address, creator?.address])
+
 
   if (
     typeof walletId !== 'string' ||
@@ -98,13 +126,13 @@ export default function UsersPage() {
                 width="full"
                 align="stretch"
               >
-                <CreatorCard creator={creator} isOwner={isOwner} />
+                <CreatorCard creator={creator} isOwner={isOwner} updateContentIsLocked={readSupporterStakedAmount} />
                 <SponsorsCard sponsors={creator?.supporters} />
               </VStack>
             </Flex>
             <GridItem>
               {isOwner && <NewPostForm owner={account.address} />}
-              <Feed feed={creator?.posts || []} isLocked={false} />
+              <Feed feed={creator?.posts || []} isLocked={!supporterIsStaking} />
             </GridItem>
           </Grid>
         </Container>

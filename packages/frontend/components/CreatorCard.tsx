@@ -2,12 +2,13 @@ import { ContractAddresses } from '@artifacts/addresses'
 import YieldGate from '@artifacts/contracts/YieldGate.sol/YieldGate.json'
 import {
   Button,
+  Divider,
   Flex,
   Heading,
   HStack,
   Text,
   useToast,
-  VStack,
+  VStack
 } from '@chakra-ui/react'
 import { Confetti } from '@components/Confetti'
 import { Creator } from '@entities/Creator.entity'
@@ -29,8 +30,9 @@ function truncateHash(hash: string, length = 38): string {
 export interface CreatorCardProps {
   creator: Creator
   isOwner: boolean
+  updateContentIsLocked: () => void
 }
-export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner }) => {
+export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateContentIsLocked }) => {
   const { width, height } = useWindowSize()
   const [{ data, error, loading }, getSigner] = useSigner()
   const provider = useProvider()
@@ -136,6 +138,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner }) => {
     // Update UI
     await readTotalStakedAmount()
     await readSupporterStakedAmount()
+    await updateContentIsLocked()
 
     setStakeIsLoading(false)
   }
@@ -225,6 +228,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner }) => {
     // Update UI
     await readTotalStakedAmount()
     await readSupporterStakedAmount()
+    await updateContentIsLocked()
 
     setUnstakeIsLoading(false)
   }
@@ -246,6 +250,8 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner }) => {
           </Heading>
           <Text textAlign={'center'}>{creator?.description}</Text>
         </VStack>
+
+        <Divider />
 
         <VStack w="full">
           {accountData ? (
