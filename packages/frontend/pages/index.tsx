@@ -79,7 +79,11 @@ export default function IndexPage({ creators }: IndexPageProps) {
         <Container maxW="5xl" py={24}>
           <Flex direction="column" align="start" gap={3}>
             <Image src="/images/logo-yieldgate-long.svg" h="70px" mb={2} />
-            <Text fontSize="3xl">Let your fans stake coins on your behalf</Text>
+            <Text fontSize="3xl" fontWeight={700}>
+              Earn yield from your supporters.
+              <br />
+              Support your favourite projects and creators with yield.
+            </Text>
             {accountData && (
               <NextLink href={`/users/${accountData.address}`} passHref>
                 <Button size="lg" mt="6">
@@ -95,11 +99,14 @@ export default function IndexPage({ creators }: IndexPageProps) {
           <Heading mt={24} mb={12} textAlign="center">
             What's Yieldgate?
           </Heading>
-          <Text maxW="50em" alignSelf="center" fontSize="xl">
-            Yieldgate is a monetisation tool for anyone to start receiving
-            donations, or to support their favourite public goods projects,
-            creators, and security researchers, with yield. No NFTs or tokens,
-            just good old MATIC! Built with ❤️ on top of Aave, Polygon.
+          <Text
+            maxW="30em"
+            alignSelf="center"
+            fontSize="2xl"
+            textAlign="center"
+          >
+            Yieldgate is a tool to receive donations, or to support projects and
+            creators, with yield. No NFTs or tokens, just good old MATIC!
           </Text>
         </Flex>
         <Flex direction="column">
@@ -159,6 +166,22 @@ export default function IndexPage({ creators }: IndexPageProps) {
               <CreatorCard key={creator._id} {...creator} />
             ))}
           </Flex>
+        </Flex>
+        <Flex direction="column" mb={40}>
+          <Heading mt={24} mb={24} textAlign="center">
+            On the shoulders of giants
+          </Heading>
+          <Grid
+            templateColumns="1fr 1fr"
+            templateRows="100px 100px"
+            gap="20"
+            placeItems="center"
+          >
+            <Image src="/images/aave.svg" h="60%" />
+            <Image src="/images/polygon.svg" h="70%" />
+            <Image src="/images/walletconnect.svg" h="60%" />
+            <Image src="/images/coinbase.svg" h="50%" />
+          </Grid>
         </Flex>
       </Container>
     </Layout>
