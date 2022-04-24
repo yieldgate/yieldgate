@@ -55,7 +55,7 @@ function Post({
   post: PostType
   isLocked: boolean
 }): JSX.Element {
-  const { _id, content, date, owner, title } = post
+  const { content, date, owner, title } = post
   if (isLocked) {
     return (
       <Box

@@ -65,6 +65,6 @@ export const handlePushContent = async (
   }
 
   return res.status(200).json({
-    ...newPost,
+    newPost,
   })
 }

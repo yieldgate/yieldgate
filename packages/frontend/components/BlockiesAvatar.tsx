@@ -17,7 +17,7 @@ export const BlockiesAvatar: FC<BlockiesAvatarProps> = ({
   useEffect(() => {
     let blockieImageSrc
     if (typeof window !== 'undefined') {
-      blockieImageSrc = blockies.create({ seed: address }).toDataURL()
+      blockieImageSrc = blockies.create({ seed: (address || '').toLowerCase() }).toDataURL()
     }
     setAvatarUri(blockieImageSrc)
   }, [])

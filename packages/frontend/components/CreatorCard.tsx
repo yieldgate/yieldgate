@@ -15,7 +15,7 @@ import {
   Text,
   useDisclosure,
   useToast,
-  VStack,
+  VStack
 } from '@chakra-ui/react'
 import { Confetti } from '@components/Confetti'
 import { Creator } from '@entities/Creator.entity'

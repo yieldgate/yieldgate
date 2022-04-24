@@ -106,7 +106,7 @@ export default function UsersPage() {
               </VStack>
             </Flex>
             <GridItem>
-              {isOwner && <NewPostForm owner={account.address} />}
+              {isOwner && <NewPostForm creator={creator} setCreator={setCreator} />}
               <Feed feed={creator?.posts || []} isLocked={!supporterIsStaking && !isOwner} />
             </GridItem>
           </Grid>
