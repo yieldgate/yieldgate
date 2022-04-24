@@ -29,8 +29,8 @@ export interface IndexPageProps {
 function CreatorCard(props: Creator): JSX.Element {
   return (
     <NextLink href={`/users/${props.address}`} passHref>
-      <Link>
-        <Flex direction="column" bg="gray.100" p={8} borderRadius="md">
+      <Link _hover={{ textDecoration: 'none' }}>
+        <Flex direction="column" border="1px" p={8} borderRadius="md">
           <Flex align="center">
             <BlockiesAvatar
               address={props.address}
