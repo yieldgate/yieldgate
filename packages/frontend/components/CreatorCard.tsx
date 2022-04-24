@@ -25,7 +25,7 @@ import { formatEther } from 'ethers/lib/utils'
 import { FC, useEffect, useState } from 'react'
 import { useWindowSize } from 'react-use'
 import { YieldGate as YieldGateType } from 'types/typechain'
-// import { ClaimedEvent } from 'types/typechain/BeneficiaryPool'
+import { ClaimedEvent } from 'types/typechain/BeneficiaryPool'
 import { useAccount, useProvider, useSigner } from 'wagmi'
 import { BlockiesAvatar } from './BlockiesAvatar'
 import ConnectWalletButton from './ConnectWalletButton'
@@ -149,10 +149,19 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
     await readSupporterStakedAmount()
     await updateContentIsLocked()
 
+    toast({
+      title: 'Amount Staked',
+      description: `You've successfully staked ${value} MATIC`,
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
+    })
+
+    setShowConfetti(true)
     setStakeIsLoading(false)
   }
 
-  const [yieldHasBeenClaimed, setYieldHasBeenClaimed] = useState(false)
+  const [showConfetti, setShowConfetti] = useState(false)
   const claim = async () => {
     // Blockchain Transaction
     const signer = await getSigner()
@@ -177,29 +186,25 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
     const result = await transaction.wait()
     console.log({ receipt: result })
 
-    // const claimedEvent1 = (result.events || []).filter(
-    //   (e) => e.event === 'Claimed'
-    // )?.[0] as ClaimedEvent
-    // console.log({ claimedEvent1 })
-
-    // const claimedEvent2 = (result.events || []).filter(
-    //   (e) => e.address === YieldGateContractAddress
-    // )?.[0] as ClaimedEvent
-    // console.log({ claimedEvent2 })
+    const claimedEvent = (result.events || []).filter(
+      (e) => e.event === 'Claimed'
+    )?.[0] as ClaimedEvent
+    const claimedAmount = ethers.utils.formatUnits(claimedEvent?.args?.amount, 'finney')
+    console.log({claimedEvent, claimedAmount})
 
     // Update UI
     await readClaimableAmount()
 
     toast({
       title: 'Ammount claimed',
-      description: `You've successfully claimed ${123.0} MATIC`,
+      description: `You've successfully claimed ${claimedAmount} mMATIC`,
       status: 'success',
       duration: 5000,
       isClosable: true,
     })
 
     setClaimIsLoading(false)
-    setYieldHasBeenClaimed(true)
+    setShowConfetti(true)
   }
 
   const unstake = async () => {
@@ -239,6 +244,13 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
     await readSupporterStakedAmount()
     await updateContentIsLocked()
 
+    toast({
+      title: 'Amount Unstaked',
+      description: `You've successfully unstaked ${supporterStakedAmount.toFixed(2)} MATIC`,
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
+    })
     setUnstakeIsLoading(false)
   }
 
@@ -345,7 +357,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
       </VStack>
 
       {/* Confetti after claim */}
-      {yieldHasBeenClaimed && <Confetti />}
+      {showConfetti && <Confetti />}
     </>
   )
 }

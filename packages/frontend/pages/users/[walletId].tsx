@@ -107,7 +107,7 @@ export default function UsersPage() {
             </Flex>
             <GridItem>
               {isOwner && <NewPostForm owner={account.address} />}
-              <Feed feed={creator?.posts || []} isLocked={!supporterIsStaking} />
+              <Feed feed={creator?.posts || []} isLocked={!supporterIsStaking && !isOwner} />
             </GridItem>
           </Grid>
         </Container>
