@@ -20,8 +20,8 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
       <Box as="main">
         {children}
       </Box>
-      <Flex as="footer" borderTop="1px" p={2} justify="center">
-        Built with ❤️ on top Aave, Polygon and others.
+      <Flex as="footer" borderTop="1px" p={2} justify="center" mt='12'>
+        Built with ❤️ at ETHGlobal Amsterdam 🇳🇱
       </Flex>
     </>
   )
