@@ -44,3 +44,5 @@ packages/frontend/build
 packages/frontend/artifacts/*
 !packages/frontend/artifacts/addresses
 !packages/frontend/artifacts/contracts
+# typescript
+*.tsbuildinfo
