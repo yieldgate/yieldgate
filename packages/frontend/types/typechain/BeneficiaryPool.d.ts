@@ -50,8 +50,16 @@ interface BeneficiaryPoolInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "supporters", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unstake", data: BytesLike): Result;
 
-  events: {};
+  events: {
+    "Claimed(address,uint256)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "Claimed"): EventFragment;
 }
+
+export type ClaimedEvent = TypedEvent<
+  [string, BigNumber] & { beneficiary: string; amount: BigNumber }
+>;
 
 export class BeneficiaryPool extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -176,7 +184,23 @@ export class BeneficiaryPool extends BaseContract {
     unstake(supporter: string, overrides?: CallOverrides): Promise<void>;
   };
 
-  filters: {};
+  filters: {
+    "Claimed(address,uint256)"(
+      beneficiary?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { beneficiary: string; amount: BigNumber }
+    >;
+
+    Claimed(
+      beneficiary?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { beneficiary: string; amount: BigNumber }
+    >;
+  };
 
   estimateGas: {
     claim(

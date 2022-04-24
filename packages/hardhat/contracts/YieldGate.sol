@@ -85,6 +85,8 @@ contract YieldGate {
 }
 
 contract BeneficiaryPool {
+    event Claimed(address indexed beneficiary, uint amount);
+
     address pool;
     IWETHGateway wethgw;
     IAToken token;
@@ -130,7 +132,9 @@ contract BeneficiaryPool {
     // claim sends the accrued interest to the beneficiary of this pool. The
     // stake remains at the yield pool and continues generating yield.
     function claim() public {
-        withdraw(claimable(), beneficiary);
+        uint amount = claimable();
+        withdraw(amount, beneficiary);
+        emit Claimed(beneficiary, amount);
     }
 
     function withdraw(uint amount, address receiver) internal {
