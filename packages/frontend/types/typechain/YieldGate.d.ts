@@ -68,8 +68,16 @@ interface YieldGateInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "unstake", data: BytesLike): Result;
 
-  events: {};
+  events: {
+    "Claimed(address,uint256)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "Claimed"): EventFragment;
 }
+
+export type ClaimedEvent = TypedEvent<
+  [string, BigNumber] & { beneficiary: string; amount: BigNumber }
+>;
 
 export class YieldGate extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -215,7 +223,23 @@ export class YieldGate extends BaseContract {
     unstake(beneficiary: string, overrides?: CallOverrides): Promise<void>;
   };
 
-  filters: {};
+  filters: {
+    "Claimed(address,uint256)"(
+      beneficiary?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { beneficiary: string; amount: BigNumber }
+    >;
+
+    Claimed(
+      beneficiary?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, BigNumber],
+      { beneficiary: string; amount: BigNumber }
+    >;
+  };
 
   estimateGas: {
     beneficiaryPools(

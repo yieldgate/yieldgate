@@ -11,7 +11,7 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
-  VStack,
+  VStack
 } from '@chakra-ui/react'
 import { CreatorCard } from '@components/CreatorCard'
 import Feed from '@components/Feed'
@@ -35,7 +35,7 @@ export default function UsersPage() {
     fetchEns: true,
   })
   const isOwner =
-    walletId && account?.address.toLowerCase() === walletId.toLowerCase()
+    walletId && account?.address && account?.address.toLowerCase() === walletId.toLowerCase()
   const [creator, setCreator] = useState<Creator | null>(null)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -91,7 +91,7 @@ export default function UsersPage() {
           <Grid templateColumns="300px 1fr" gap={10} py={10}>
             <Flex direction="column" gap={10}>
               <VStack position="sticky" top="4" mt="4">
-                <CreatorCard creator={creator} />
+                <CreatorCard creator={creator} isOwner={isOwner} />
                 <SponsorsCard sponsors={creator?.supporters} />
               </VStack>
             </Flex>
