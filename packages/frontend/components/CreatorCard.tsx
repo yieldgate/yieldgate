@@ -17,7 +17,7 @@ import { formatEther } from 'ethers/lib/utils'
 import { FC, useEffect, useState } from 'react'
 import { useWindowSize } from 'react-use'
 import { YieldGate as YieldGateType } from 'types/typechain'
-import { ClaimedEvent } from 'types/typechain/BeneficiaryPool'
+// import { ClaimedEvent } from 'types/typechain/BeneficiaryPool'
 import { useAccount, useProvider, useSigner } from 'wagmi'
 import { BlockiesAvatar } from './BlockiesAvatar'
 import ConnectWalletButton from './ConnectWalletButton'
@@ -165,15 +165,15 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner }) => {
     const result = await transaction.wait()
     console.log({ receipt: result })
 
-    const claimedEvent1 = (result.events || []).filter(
-      (e) => e.event === 'Claimed'
-    )?.[0] as ClaimedEvent
-    console.log({ claimedEvent1 })
+    // const claimedEvent1 = (result.events || []).filter(
+    //   (e) => e.event === 'Claimed'
+    // )?.[0] as ClaimedEvent
+    // console.log({ claimedEvent1 })
 
-    const claimedEvent2 = (result.events || []).filter(
-      (e) => e.address === YieldGateContractAddress
-    )?.[0] as ClaimedEvent
-    console.log({ claimedEvent2 })
+    // const claimedEvent2 = (result.events || []).filter(
+    //   (e) => e.address === YieldGateContractAddress
+    // )?.[0] as ClaimedEvent
+    // console.log({ claimedEvent2 })
 
     // Update UI
     await readClaimableAmount()
