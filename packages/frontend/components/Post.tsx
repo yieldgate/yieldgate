@@ -25,7 +25,13 @@ function Lock(): JSX.Element {
   )
 }
 
-function Post({post, isLocked}: { post: PostType, isLocked: boolean }): JSX.Element {
+function Post({
+  post,
+  isLocked,
+}: {
+  post: PostType
+  isLocked: boolean
+}): JSX.Element {
   const { _id, content, date, owner, title } = post
   if (isLocked) {
     return (
@@ -47,8 +53,19 @@ function Post({post, isLocked}: { post: PostType, isLocked: boolean }): JSX.Elem
       sx={{ '> div + div': { mt: '12px' } }}
     >
       <Heading size="lg">{title}</Heading>
-      <Box as="span">{formatDateTime(date)}</Box>
-      <div dangerouslySetInnerHTML={{ __html: md().render(content) }} />
+      <Box as="span" color="gray.400" fontSize="lg">
+        {formatDateTime(date)}
+      </Box>
+      {/* <div dangerouslySetInnerHTML={{ __html: md().render(content) }} /> */}
+      <Box
+        dangerouslySetInnerHTML={{ __html: md().render(content) }}
+        mt={5}
+        sx={{
+          '* + *': { mt: 3 },
+          ol: { ml: 10 },
+          'li + li': { mt: 0 },
+        }}
+      />
     </Box>
   )
 }
