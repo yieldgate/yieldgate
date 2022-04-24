@@ -26,6 +26,7 @@ import { FC, useEffect, useState } from 'react'
 import { useWindowSize } from 'react-use'
 import { YieldGate as YieldGateType } from 'types/typechain'
 import { ClaimedEvent } from 'types/typechain/YieldGate'
+import useAsyncEffect from 'use-async-effect'
 import { useAccount, useProvider, useSigner } from 'wagmi'
 import { BlockiesAvatar } from './BlockiesAvatar'
 import ConnectWalletButton from './ConnectWalletButton'
@@ -55,6 +56,15 @@ export const CreatorCard: FC<CreatorCardProps> = ({
   const [claimIsLoading, setClaimIsLoading] = useState(false)
   const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [ensDomain, setEnsDomain] = useState('')
+  useAsyncEffect(async() => {
+    if (!accountData?.address) {
+      setEnsDomain('')
+      return
+    }
+    setEnsDomain(await ethers.getDefaultProvider(env.rpc.mainnet).lookupAddress(accountData?.address))
+  },[accountData?.address])
+
 
   const [totalAmountStaked, setTotalAmountStaked] = useState(0.0)
   const readTotalStakedAmount = async () => {
@@ -290,7 +300,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({
         />
         <VStack w="full">
           <Heading textAlign={'center'}>
-            {creator.displayName || truncateHash(creator.address)}
+            {creator.displayName || ensDomain || truncateHash(creator.address)}
           </Heading>
           <Text textAlign={'center'}>{creator?.description}</Text>
         </VStack>

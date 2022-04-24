@@ -3,7 +3,11 @@ import {
   Flex, Menu,
   MenuButton, MenuItem, MenuList, Text
 } from '@chakra-ui/react'
-import React from 'react'
+import { env } from '@lib/environment'
+import { ethers } from 'ethers'
+import Link from 'next/link'
+import React, { useState } from 'react'
+import useAsyncEffect from 'use-async-effect'
 import { useAccount, useConnect } from 'wagmi'
 import { BlockiesAvatar } from './BlockiesAvatar'
 import ConnectWalletButton from './ConnectWalletButton'
@@ -14,9 +18,15 @@ function truncateHash(hash: string, length = 38): string {
 
 function ConnectWallet(): JSX.Element {
   const [{ data, error }, connect] = useConnect()
-  const [{ data: accountData }, disconnect] = useAccount({
-    fetchEns: true,
-  })
+  const [{ data: accountData }, disconnect] = useAccount()
+  const [ensDomain, setEnsDomain] = useState('')
+  useAsyncEffect(async() => {
+    if (!accountData?.address) {
+      setEnsDomain('')
+      return
+    }
+    setEnsDomain(await ethers.getDefaultProvider(env.rpc.mainnet).lookupAddress(accountData?.address))
+  },[accountData?.address])
 
   return (
     <>
@@ -27,12 +37,16 @@ function ConnectWallet(): JSX.Element {
           justifyContent={['flex-start', null, null, 'flex-end']}
         >
           {/* <Balance /> */}
-          <BlockiesAvatar address={accountData.address} ml="4" borderRadius={'full'}/>
+          <Link href={`/users/${(accountData?.address || '').toLowerCase()}`} passHref>
+            <div>
+              <BlockiesAvatar address={accountData.address} ml="4" borderRadius={'full'} cursor='pointer'/>
+            </div>
+          </Link>
           {/* <Image ml="4" src={accountData.ens?.avatar} alt="ENS Avatar" /> */}
           <Menu placement="bottom-end" >
             <MenuButton as={Button} ml="4">
               <Flex direction="column">
-                <Text>{truncateHash(accountData.address)}</Text>
+                <Text>{ensDomain || truncateHash(accountData.address)}</Text>
               </Flex>
             </MenuButton>
             <MenuList>

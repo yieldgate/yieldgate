@@ -8,6 +8,7 @@ export interface BlockiesAvatarProps {
   borderRadius?: string
   width?: string | number
   height?: string | number
+  cursor?: string
 }
 export const BlockiesAvatar: FC<BlockiesAvatarProps> = ({
   address,

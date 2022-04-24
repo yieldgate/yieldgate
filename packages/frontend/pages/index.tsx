@@ -1,3 +1,5 @@
+import { ContractAddresses } from '@artifacts/addresses'
+import YieldGate from '@artifacts/contracts/YieldGate.sol/YieldGate.json'
 import {
   Button,
   Container,
@@ -11,15 +13,20 @@ import {
   InputLeftElement,
   Link,
   Spacer,
-  Text,
+  Text
 } from '@chakra-ui/react'
 import { BlockiesAvatar } from '@components/BlockiesAvatar'
 import Layout from '@components/layout/Layout'
 import { Creator } from '@entities/Creator.entity'
 import { env } from '@lib/environment'
+import { ethers } from 'ethers'
+import { formatEther } from 'ethers/lib/utils'
 import { GetServerSideProps } from 'next'
 import NextLink from 'next/link'
+import { useEffect, useState } from 'react'
 import { BsSearch } from 'react-icons/bs'
+import { YieldGate as YieldGateType } from 'types/typechain'
+import useAsyncEffect from 'use-async-effect'
 import { useAccount } from 'wagmi'
 
 export interface IndexPageProps {
@@ -30,33 +37,68 @@ function truncateHash(hash: string, length = 38): string {
   return hash.replace(hash.substring(6, length), '...')
 }
 
-function CreatorCard(props: Creator): JSX.Element {
+function CreatorCard(creator: Creator): JSX.Element {
+  const [totalAmountStaked, setTotalAmountStaked] = useState(0.0)
+  const readTotalStakedAmount = async () => {
+    const provider = ethers.getDefaultProvider(env.rpc.polygonMumbai)
+    const beneficiary = creator?.address
+    if (!beneficiary) {
+      setTotalAmountStaked(0)
+      return
+    }
+    const YieldGateContractAddress = ContractAddresses['80001'].YieldGate
+    const contract = new ethers.Contract(
+      YieldGateContractAddress,
+      YieldGate.abi,
+      provider
+    ) as YieldGateType
+    const value = await contract.staked(beneficiary)
+    setTotalAmountStaked(parseFloat(formatEther(value) || '0'))
+  }
+  useEffect(() => {
+    readTotalStakedAmount()
+  }, [creator?.address])
+
+  const [ensDomain, setEnsDomain] = useState('')
+  useAsyncEffect(async() => {
+    if (!creator?.address) {
+      setEnsDomain('')
+      return
+    }
+    setEnsDomain(await ethers.getDefaultProvider(env.rpc.mainnet).lookupAddress(creator?.address))
+  },[creator?.address])
+
+
   return (
-    <NextLink href={`/users/${props.address}`} passHref>
+    <NextLink href={`/users/${creator.address}`} passHref>
       <Link _hover={{ textDecoration: 'none' }}>
         <Flex direction="column" border="1px" p={8} borderRadius="md">
           <Flex align="center">
             <BlockiesAvatar
-              address={props.address}
+              address={creator.address}
               borderRadius="full"
               width="100px"
               height="100px"
             />
             <Flex direction="column" align="left" mx={8}>
               <Heading>
-                {props.displayName || truncateHash(props.address)}
+                {creator.displayName || ensDomain || truncateHash(creator.address)}
               </Heading>
-              <Text>{props.description}</Text>
+              <Text>{creator.description}</Text>
             </Flex>
             <Spacer />
             <HStack spacing="24px" mx={8}>
               <Flex direction="column" align="center">
-                <Heading>{props.supportersCount}</Heading>
+                <Heading>{creator.supportersCount}</Heading>
                 <Text>Supporters</Text>
               </Flex>
               <Flex direction="column" align="center">
-                <Heading>{props.postsCount}</Heading>
+                <Heading>{creator.postsCount}</Heading>
                 <Text>Posts</Text>
+              </Flex>
+              <Flex direction="column" align="center">
+                <Heading>{totalAmountStaked}</Heading>
+                <Text>MATIC staked</Text>
               </Flex>
             </HStack>
           </Flex>

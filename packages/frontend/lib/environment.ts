@@ -14,5 +14,6 @@ export const env = {
     hardhat: process.env.NEXT_PUBLIC_RPC_HARDHAT,
     polygonMumbai: process.env.NEXT_PUBLIC_RPC_POLYGON_MUMBAI,
     polygonMainnet: process.env.NEXT_PUBLIC_RPC_POLYGON,
+    mainnet: process.env.NEXT_PUBLIC_RPC_MAINNET,
   },
 }
