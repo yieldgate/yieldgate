@@ -1,14 +1,17 @@
-import * as React from 'react'
-import type { AppProps } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
 import { ChainId } from '@usedapp/core'
 import { providers } from 'ethers'
+import type { AppProps } from 'next/app'
+import * as React from 'react'
 import {
   defaultChains,
   InjectedConnector,
-  Provider as WagmiProvider,
+  Provider as WagmiProvider
 } from 'wagmi'
+import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { env } from '../lib/environment'
+
 
 // scaffold-eth's INFURA_ID, SWAP IN YOURS FROM https://infura.io/dashboard/ethereum
 export const INFURA_ID = '460f40a260564ac4a4f4b3fffb032dad'
@@ -35,6 +38,21 @@ const connectors = ({ chainId }) => {
       chains: defaultChains,
       options: {
         shimDisconnect: true,
+      },
+    }),
+    new WalletConnectConnector({
+      options: {
+        chainId: 80001,
+        rpc: {
+          80001: env.rpc.polygonMumbai,
+        },
+        qrcode: true,
+      },
+    }),
+    new CoinbaseWalletConnector({
+      options: {
+        appName: 'Yieldgate.xyz',
+        jsonRpcUrl: env.rpc.polygonMumbai,
       },
     }),
   ]
