@@ -1,27 +1,32 @@
-import {
-  Button, FormControl, FormLabel, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField,
-  NumberInputStepper
-} from '@chakra-ui/react'
+import * as React from 'react'
+import { Button, FormControl, FormLabel, Input } from '@chakra-ui/react'
 
 export interface StakeAmountFormProps {
   stake: (value: string) => void
+  onClose: () => void
 }
-export default function StakeAmountForm({stake}: StakeAmountFormProps) {
+export default function StakeAmountForm({
+  stake,
+  onClose,
+}: StakeAmountFormProps) {
+  const [amount, setAmount] = React.useState('0.1')
+
   return (
-    <form>
+    <>
       <FormControl mt={8}>
         <FormLabel htmlFor="amount">Staking amount in Matic</FormLabel>
-        <NumberInput>
-          <NumberInputField id="amount" />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
+        <Input value={amount} onChange={(e) => setAmount(e.target.value)} />
       </FormControl>
-      <Button my={8} width="full" bg="gray.900" color="gray.100">
+      <Button
+        my={8}
+        width="full"
+        onClick={() => {
+          stake(amount)
+          onClose()
+        }}
+      >
         Stake now
       </Button>
-    </form>
+    </>
   )
 }

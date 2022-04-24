@@ -15,7 +15,7 @@ import {
   Text,
   useDisclosure,
   useToast,
-  VStack
+  VStack,
 } from '@chakra-ui/react'
 import { Confetti } from '@components/Confetti'
 import { Creator } from '@entities/Creator.entity'
@@ -25,7 +25,7 @@ import { formatEther } from 'ethers/lib/utils'
 import { FC, useEffect, useState } from 'react'
 import { useWindowSize } from 'react-use'
 import { YieldGate as YieldGateType } from 'types/typechain'
-import { ClaimedEvent } from 'types/typechain/BeneficiaryPool'
+import { ClaimedEvent } from 'types/typechain/YieldGate'
 import { useAccount, useProvider, useSigner } from 'wagmi'
 import { BlockiesAvatar } from './BlockiesAvatar'
 import ConnectWalletButton from './ConnectWalletButton'
@@ -40,7 +40,11 @@ export interface CreatorCardProps {
   isOwner: boolean
   updateContentIsLocked: () => void
 }
-export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateContentIsLocked }) => {
+export const CreatorCard: FC<CreatorCardProps> = ({
+  creator,
+  isOwner,
+  updateContentIsLocked,
+}) => {
   const { width, height } = useWindowSize()
   const [{ data, error, loading }, getSigner] = useSigner()
   const provider = useProvider()
@@ -189,8 +193,11 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
     const claimedEvent = (result.events || []).filter(
       (e) => e.event === 'Claimed'
     )?.[0] as ClaimedEvent
-    const claimedAmount = ethers.utils.formatUnits(claimedEvent?.args?.amount, 'finney')
-    console.log({claimedEvent, claimedAmount})
+    const claimedAmount = ethers.utils.formatUnits(
+      claimedEvent?.args?.amount,
+      'finney'
+    )
+    console.log({ claimedEvent, claimedAmount })
 
     // Update UI
     await readClaimableAmount()
@@ -246,7 +253,9 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
 
     toast({
       title: 'Amount Unstaked',
-      description: `You've successfully unstaked ${supporterStakedAmount.toFixed(2)} MATIC`,
+      description: `You've successfully unstaked ${supporterStakedAmount.toFixed(
+        2
+      )} MATIC`,
       status: 'success',
       duration: 5000,
       isClosable: true,
@@ -268,7 +277,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
               You can unstake and get the full amount minus gas fees back
               anytime.
             </Text>
-            <StakeAmountForm stake={stake}/>
+            <StakeAmountForm stake={stake} onClose={onClose} />
           </ModalBody>
         </ModalContent>
       </Modal>
