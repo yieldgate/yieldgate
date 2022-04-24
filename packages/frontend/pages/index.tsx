@@ -26,6 +26,10 @@ export interface IndexPageProps {
   creators: Creator[]
 }
 
+function truncateHash(hash: string, length = 38): string {
+  return hash.replace(hash.substring(6, length), '...')
+}
+
 function CreatorCard(props: Creator): JSX.Element {
   return (
     <NextLink href={`/users/${props.address}`} passHref>
@@ -39,7 +43,9 @@ function CreatorCard(props: Creator): JSX.Element {
               height="100px"
             />
             <Flex direction="column" align="left" mx={8}>
-              <Heading>{props.displayName}</Heading>
+              <Heading>
+                {props.displayName || truncateHash(props.address)}
+              </Heading>
               <Text>{props.description}</Text>
             </Flex>
             <Spacer />
@@ -48,10 +54,6 @@ function CreatorCard(props: Creator): JSX.Element {
                 <Heading>{props.supportersCount}</Heading>
                 <Text>Supporters</Text>
               </Flex>
-              {/* <Flex direction="column" align="center">
-                <Heading>{props.supportersCount}</Heading>
-                <Text>ETH staked</Text>
-              </Flex> */}
               <Flex direction="column" align="center">
                 <Heading>{props.postsCount}</Heading>
                 <Text>Posts</Text>
