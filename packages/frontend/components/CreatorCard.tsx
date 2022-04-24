@@ -6,7 +6,14 @@ import {
   Flex,
   Heading,
   HStack,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   Text,
+  useDisclosure,
   useToast,
   VStack
 } from '@chakra-ui/react'
@@ -22,6 +29,7 @@ import { YieldGate as YieldGateType } from 'types/typechain'
 import { useAccount, useProvider, useSigner } from 'wagmi'
 import { BlockiesAvatar } from './BlockiesAvatar'
 import ConnectWalletButton from './ConnectWalletButton'
+import StakeAmountForm from './StakeAmountForm'
 
 function truncateHash(hash: string, length = 38): string {
   return hash.replace(hash.substring(6, length), '...')
@@ -42,6 +50,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
   const [unstakeIsLoading, setUnstakeIsLoading] = useState(false)
   const [claimIsLoading, setClaimIsLoading] = useState(false)
   const toast = useToast()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [totalAmountStaked, setTotalAmountStaked] = useState(0.0)
   const readTotalStakedAmount = async () => {
@@ -104,7 +113,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
     readClaimableAmount()
   }, [creator?.address, accountData?.address])
 
-  const stake = async () => {
+  const stake = async (value: string) => {
     // Blockchain Transaction
     const signer = await getSigner()
     if (!signer) return
@@ -116,7 +125,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
     ) as YieldGateType
     const beneficiary = creator?.address
     const transaction = await contract.stake(beneficiary, {
-      value: ethers.utils.parseEther('0.1'),
+      value: ethers.utils.parseEther(value),
       gasLimit: 2000000,
     })
     console.log({ transaction })
@@ -237,6 +246,20 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
 
   return (
     <>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>How much do you want to stake?</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>
+              You can unstake and get the full amount minus gas fees back
+              anytime.
+            </Text>
+            <StakeAmountForm stake={stake}/>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
       <VStack spacing={8} borderRadius="md" border="1px" p={5}>
         <BlockiesAvatar
           address={creator?.address}
@@ -277,7 +300,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
                   <Button
                     w="full"
                     disabled={stakeIsLoading || unstakeIsLoading}
-                    onClick={stake}
+                    onClick={onOpen}
                     isLoading={stakeIsLoading}
                   >
                     Stake

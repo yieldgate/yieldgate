@@ -4,23 +4,13 @@ import {
   Container,
   Flex,
   Grid,
-  GridItem,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-  useDisclosure,
-  VStack
+  GridItem, VStack
 } from '@chakra-ui/react'
 import { CreatorCard } from '@components/CreatorCard'
 import Feed from '@components/Feed'
 import Layout from '@components/layout/Layout'
 import NewPostForm from '@components/NewPostForm'
 import SponsorsCard from '@components/SponsorsCard'
-import StakeAmountForm from '@components/StakeAmountForm'
 import { Creator } from '@entities/Creator.entity'
 import { env } from '@lib/environment'
 import { ethers } from 'ethers'
@@ -43,7 +33,6 @@ export default function UsersPage() {
     account?.address &&
     account?.address.toLowerCase() === walletId.toLowerCase()
   const [creator, setCreator] = useState<Creator | null>(null)
-  const { isOpen, onOpen, onClose } = useDisclosure()
   const [{ data: accountData }, disconnect] = useAccount()
 
   const fetchCreator = async (): Promise<Creator> => {
@@ -102,20 +91,6 @@ export default function UsersPage() {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>How much do you want to stake?</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text>
-              You can unstake and get the full amount minus gas fees back
-              anytime.
-            </Text>
-            <StakeAmountForm />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
       <Layout>
         <Container maxW="5xl">
           <Grid templateColumns="350px 1fr" gap={10} py={10}>
