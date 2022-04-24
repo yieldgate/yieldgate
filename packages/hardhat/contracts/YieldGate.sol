@@ -85,6 +85,8 @@ contract YieldGate {
 }
 
 contract BeneficiaryPool {
+    event Staked(address indexed beneficiary, address indexed supporter, uint amount);
+    event Unstaked(address indexed beneficiary, address indexed supporter, uint amount);
     event Claimed(address indexed beneficiary, uint amount);
 
     address pool;
@@ -113,10 +115,12 @@ contract BeneficiaryPool {
 
     // Stakes the sent ether, registering the caller as a supporter.
     function stake(address supporter) public payable {
-        supporters[supporter] += msg.value;
-        totalStake += msg.value;
+        uint amount = msg.value;
+        supporters[supporter] += amount;
+        totalStake += amount;
 
-        wethgw.depositETH{value: msg.value}(pool, address(this), 0);
+        wethgw.depositETH{value: amount}(pool, address(this), 0);
+        emit Staked(beneficiary, supporter, amount);
     }
 
     // Unstakes all previously staked ether by the calling supporter.
@@ -127,6 +131,7 @@ contract BeneficiaryPool {
         totalStake -= sstake;
 
         withdraw(sstake, supporter);
+        emit Unstaked(beneficiary, supporter, sstake);
     }
 
     // claim sends the accrued interest to the beneficiary of this pool. The

@@ -52,13 +52,33 @@ interface BeneficiaryPoolInterface extends ethers.utils.Interface {
 
   events: {
     "Claimed(address,uint256)": EventFragment;
+    "Staked(address,address,uint256)": EventFragment;
+    "Unstaked(address,address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Claimed"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Staked"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Unstaked"): EventFragment;
 }
 
 export type ClaimedEvent = TypedEvent<
   [string, BigNumber] & { beneficiary: string; amount: BigNumber }
+>;
+
+export type StakedEvent = TypedEvent<
+  [string, string, BigNumber] & {
+    beneficiary: string;
+    supporter: string;
+    amount: BigNumber;
+  }
+>;
+
+export type UnstakedEvent = TypedEvent<
+  [string, string, BigNumber] & {
+    beneficiary: string;
+    supporter: string;
+    amount: BigNumber;
+  }
 >;
 
 export class BeneficiaryPool extends BaseContract {
@@ -199,6 +219,42 @@ export class BeneficiaryPool extends BaseContract {
     ): TypedEventFilter<
       [string, BigNumber],
       { beneficiary: string; amount: BigNumber }
+    >;
+
+    "Staked(address,address,uint256)"(
+      beneficiary?: string | null,
+      supporter?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber],
+      { beneficiary: string; supporter: string; amount: BigNumber }
+    >;
+
+    Staked(
+      beneficiary?: string | null,
+      supporter?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber],
+      { beneficiary: string; supporter: string; amount: BigNumber }
+    >;
+
+    "Unstaked(address,address,uint256)"(
+      beneficiary?: string | null,
+      supporter?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber],
+      { beneficiary: string; supporter: string; amount: BigNumber }
+    >;
+
+    Unstaked(
+      beneficiary?: string | null,
+      supporter?: string | null,
+      amount?: null
+    ): TypedEventFilter<
+      [string, string, BigNumber],
+      { beneficiary: string; supporter: string; amount: BigNumber }
     >;
   };
 
