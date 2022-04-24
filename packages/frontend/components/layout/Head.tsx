@@ -1,5 +1,4 @@
 import NextHead from 'next/head'
-import { useRouter } from 'next/router'
 import * as React from 'react'
 
 /**
@@ -21,19 +20,19 @@ export interface MetaProps {
  * Component
  */
 const Head = ({ customMeta }: { customMeta?: MetaProps }): JSX.Element => {
-  const router = useRouter()
-  const meta: MetaProps = {
-    title: 'Yieldgate',
-    description: 'Support creators with yield',
-    image: `${WEBSITE_HOST_URL}/images/site-preview.png`,
-    type: 'website',
-    ...customMeta,
-  }
+  // const router = useRouter()
+  // const meta: MetaProps = {
+  //   title: 'Yieldgate',
+  //   description: 'Support creators with yield',
+  //   image: `${WEBSITE_HOST_URL}/images/site-preview.png`,
+  //   type: 'website',
+  //   ...customMeta,
+  // }
 
   return (
     <NextHead>
-      <title>{meta.title}</title>
-      <meta content={meta.description} name="description" />
+      {/* <title>{meta.title}</title> */}
+      {/* <meta content={meta.description} name="description" />
       <meta property="og:url" content={`${WEBSITE_HOST_URL}${router.asPath}`} />
       <link rel="canonical" href={`${WEBSITE_HOST_URL}${router.asPath}`} />
       <meta property="og:type" content={meta.type} />
@@ -45,7 +44,7 @@ const Head = ({ customMeta }: { customMeta?: MetaProps }): JSX.Element => {
       <meta name="twitter:site" content="@huntarosan" />
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />
-      <meta name="twitter:image" content={meta.image} />
+      <meta name="twitter:image" content={meta.image} /> */}
     </NextHead>
   )
 }
