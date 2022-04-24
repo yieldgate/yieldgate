@@ -15,8 +15,6 @@ contract YieldGate {
     address immutable wethgw;
     address immutable token;
 
-    event Claimed(address indexed beneficiary, uint256 amount);
-
     // beneficiary => BeneficiaryPool
     mapping(address => BeneficiaryPool) public beneficiaryPools;
 
@@ -101,18 +99,6 @@ contract YieldGate {
 }
 
 contract BeneficiaryPool {
-    event Staked(
-        address indexed beneficiary,
-        address indexed supporter,
-        uint256 amount
-    );
-    event Unstaked(
-        address indexed beneficiary,
-        address indexed supporter,
-        uint256 amount
-    );
-    event Claimed(address indexed beneficiary, uint256 amount);
-
     address pool;
     IWETHGateway wethgw;
     IAToken token;
@@ -138,7 +124,7 @@ contract BeneficiaryPool {
     }
 
     // Stakes the sent ether, registering the caller as a supporter.
-    function stake(address supporter) public payable {
+    function stake(address supporter) public payable returns (uint) {
         uint256 amount = msg.value;
         supporters[supporter] += amount;
         totalStake += amount;
@@ -160,7 +146,7 @@ contract BeneficiaryPool {
 
     // claim sends the accrued interest to the beneficiary of this pool. The
     // stake remains at the yield pool and continues generating yield.
-    function claim() public {
+    function claim() public returns (uint) {
         uint256 amount = claimable();
         withdraw(amount, beneficiary);
         return amount;
