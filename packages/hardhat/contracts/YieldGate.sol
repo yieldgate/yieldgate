@@ -6,6 +6,10 @@ import {IWETHGateway} from "@aave/periphery-v3/contracts/misc/interfaces/IWETHGa
 import "@openzeppelin/contracts/proxy/Clones.sol";
 
 contract YieldGate {
+    event Staked(address indexed beneficiary, address indexed supporter, uint amount);
+    event Unstaked(address indexed beneficiary, address indexed supporter, uint amount);
+    event Claimed(address indexed beneficiary, uint amount);
+
     address immutable beneficiaryPoolLib;
     address immutable pool;
     address immutable wethgw;
@@ -30,12 +34,15 @@ contract YieldGate {
 
     function stake(address beneficiary) public payable {
         address bpool = getOrDeployPool(beneficiary);
-        BeneficiaryPool(bpool).stake{value: msg.value}(msg.sender);
+        uint amount = msg.value;
+        BeneficiaryPool(bpool).stake{value: amount}(msg.sender);
+        emit Staked(beneficiary, msg.sender, amount);
     }
 
     function unstake(address beneficiary) public {
         address bpool = getOrDeployPool(beneficiary);
-        BeneficiaryPool(bpool).unstake(payable(msg.sender));
+        uint amount = BeneficiaryPool(bpool).unstake(payable(msg.sender));
+        emit Unstaked(beneficiary, msg.sender, amount);
     }
 
     function claim() public {
@@ -137,18 +144,18 @@ contract BeneficiaryPool {
         totalStake += amount;
 
         wethgw.depositETH{value: amount}(pool, address(this), 0);
-        emit Staked(beneficiary, supporter, amount);
+        return amount;
     }
 
     // Unstakes all previously staked ether by the calling supporter.
     // The beneficiary keeps all generated yield.
-    function unstake(address payable supporter) public {
+    function unstake(address payable supporter) public returns (uint) {
         uint256 sstake = supporters[supporter];
         supporters[supporter] = 0;
         totalStake -= sstake;
 
         withdraw(sstake, supporter);
-        emit Unstaked(beneficiary, supporter, sstake);
+        return sstake;
     }
 
     // claim sends the accrued interest to the beneficiary of this pool. The
@@ -156,7 +163,7 @@ contract BeneficiaryPool {
     function claim() public {
         uint256 amount = claimable();
         withdraw(amount, beneficiary);
-        emit Claimed(beneficiary, amount);
+        return amount;
     }
 
     function withdraw(uint256 amount, address receiver) internal {

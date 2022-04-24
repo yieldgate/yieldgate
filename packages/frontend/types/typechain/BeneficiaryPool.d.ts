@@ -50,36 +50,8 @@ interface BeneficiaryPoolInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "supporters", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unstake", data: BytesLike): Result;
 
-  events: {
-    "Claimed(address,uint256)": EventFragment;
-    "Staked(address,address,uint256)": EventFragment;
-    "Unstaked(address,address,uint256)": EventFragment;
-  };
-
-  getEvent(nameOrSignatureOrTopic: "Claimed"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Staked"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Unstaked"): EventFragment;
+  events: {};
 }
-
-export type ClaimedEvent = TypedEvent<
-  [string, BigNumber] & { beneficiary: string; amount: BigNumber }
->;
-
-export type StakedEvent = TypedEvent<
-  [string, string, BigNumber] & {
-    beneficiary: string;
-    supporter: string;
-    amount: BigNumber;
-  }
->;
-
-export type UnstakedEvent = TypedEvent<
-  [string, string, BigNumber] & {
-    beneficiary: string;
-    supporter: string;
-    amount: BigNumber;
-  }
->;
 
 export class BeneficiaryPool extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -183,7 +155,7 @@ export class BeneficiaryPool extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
-    claim(overrides?: CallOverrides): Promise<void>;
+    claim(overrides?: CallOverrides): Promise<BigNumber>;
 
     claimable(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -195,68 +167,16 @@ export class BeneficiaryPool extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    stake(supporter: string, overrides?: CallOverrides): Promise<void>;
+    stake(supporter: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     staked(overrides?: CallOverrides): Promise<BigNumber>;
 
     supporters(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    unstake(supporter: string, overrides?: CallOverrides): Promise<void>;
+    unstake(supporter: string, overrides?: CallOverrides): Promise<BigNumber>;
   };
 
-  filters: {
-    "Claimed(address,uint256)"(
-      beneficiary?: string | null,
-      amount?: null
-    ): TypedEventFilter<
-      [string, BigNumber],
-      { beneficiary: string; amount: BigNumber }
-    >;
-
-    Claimed(
-      beneficiary?: string | null,
-      amount?: null
-    ): TypedEventFilter<
-      [string, BigNumber],
-      { beneficiary: string; amount: BigNumber }
-    >;
-
-    "Staked(address,address,uint256)"(
-      beneficiary?: string | null,
-      supporter?: string | null,
-      amount?: null
-    ): TypedEventFilter<
-      [string, string, BigNumber],
-      { beneficiary: string; supporter: string; amount: BigNumber }
-    >;
-
-    Staked(
-      beneficiary?: string | null,
-      supporter?: string | null,
-      amount?: null
-    ): TypedEventFilter<
-      [string, string, BigNumber],
-      { beneficiary: string; supporter: string; amount: BigNumber }
-    >;
-
-    "Unstaked(address,address,uint256)"(
-      beneficiary?: string | null,
-      supporter?: string | null,
-      amount?: null
-    ): TypedEventFilter<
-      [string, string, BigNumber],
-      { beneficiary: string; supporter: string; amount: BigNumber }
-    >;
-
-    Unstaked(
-      beneficiary?: string | null,
-      supporter?: string | null,
-      amount?: null
-    ): TypedEventFilter<
-      [string, string, BigNumber],
-      { beneficiary: string; supporter: string; amount: BigNumber }
-    >;
-  };
+  filters: {};
 
   estimateGas: {
     claim(
