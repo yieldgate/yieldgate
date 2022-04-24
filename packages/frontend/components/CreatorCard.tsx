@@ -1,6 +1,14 @@
 import { ContractAddresses } from '@artifacts/addresses'
 import YieldGate from '@artifacts/contracts/YieldGate.sol/YieldGate.json'
-import { Button, Flex, Heading, HStack, Text, useToast, VStack } from '@chakra-ui/react'
+import {
+  Button,
+  Flex,
+  Heading,
+  HStack,
+  Text,
+  useToast,
+  VStack,
+} from '@chakra-ui/react'
 import { Confetti } from '@components/Confetti'
 import { Creator } from '@entities/Creator.entity'
 import { env } from '@lib/environment'
@@ -22,7 +30,7 @@ export interface CreatorCardProps {
   creator: Creator
   isOwner: boolean
 }
-export const CreatorCard: FC<CreatorCardProps> = ({creator, isOwner}) => {
+export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner }) => {
   const { width, height } = useWindowSize()
   const [{ data, error, loading }, getSigner] = useSigner()
   const provider = useProvider()
@@ -52,7 +60,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({creator, isOwner}) => {
   useEffect(() => {
     readTotalStakedAmount()
   }, [creator?.address])
-  
+
   const [supporterStakedAmount, setSupporterStakedAmount] = useState(0.0)
   const readSupporterStakedAmount = async () => {
     const provider = ethers.getDefaultProvider(env.rpc.polygonMumbai)
@@ -109,17 +117,17 @@ export const CreatorCard: FC<CreatorCardProps> = ({creator, isOwner}) => {
       value: ethers.utils.parseEther('0.1'),
       gasLimit: 2000000,
     })
-    console.log({transaction})
+    console.log({ transaction })
     const receipt = await transaction.wait()
-    console.log({receipt})
+    console.log({ receipt })
 
     // Database Transaction
     const res = await fetch('/api/supporters/add', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        supporter:accountData?.address,
-        beneficary:beneficiary,
+        supporter: accountData?.address,
+        beneficary: beneficiary,
       }),
     })
     const { isAdded } = await res.json()
@@ -139,7 +147,11 @@ export const CreatorCard: FC<CreatorCardProps> = ({creator, isOwner}) => {
     if (!signer) return
     const supporter = accountData?.address
     const beneficiary = creator?.address
-    if (!supporter || !beneficiary || supporter.toLowerCase() !== beneficiary.toLowerCase()) {
+    if (
+      !supporter ||
+      !beneficiary ||
+      supporter.toLowerCase() !== beneficiary.toLowerCase()
+    ) {
       return
     }
     setClaimIsLoading(true)
@@ -149,15 +161,19 @@ export const CreatorCard: FC<CreatorCardProps> = ({creator, isOwner}) => {
       signer
     ) as YieldGateType
     const transaction = await contract.claim()
-    console.log({transaction})
+    console.log({ transaction })
     const result = await transaction.wait()
     console.log({ receipt: result })
-    
-    const claimedEvent1 = (result.events || []).filter(e => e.event === 'Claimed')?.[0] as ClaimedEvent
-    console.log({claimedEvent1})
 
-    const claimedEvent2  = (result.events || []).filter(e => e.address === YieldGateContractAddress)?.[0] as ClaimedEvent
-    console.log({claimedEvent2})
+    const claimedEvent1 = (result.events || []).filter(
+      (e) => e.event === 'Claimed'
+    )?.[0] as ClaimedEvent
+    console.log({ claimedEvent1 })
+
+    const claimedEvent2 = (result.events || []).filter(
+      (e) => e.address === YieldGateContractAddress
+    )?.[0] as ClaimedEvent
+    console.log({ claimedEvent2 })
 
     // Update UI
     await readClaimableAmount()
@@ -189,20 +205,20 @@ export const CreatorCard: FC<CreatorCardProps> = ({creator, isOwner}) => {
       signer
     ) as YieldGateType
     const transaction = await contract.unstake(beneficiary)
-    console.log({transaction})
+    console.log({ transaction })
     const receipt = await transaction.wait()
-    console.log({receipt})
+    console.log({ receipt })
 
     // Database Transaction
     const res = await fetch('/api/supporters/remove', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         supporter: supporter,
         beneficary: beneficiary,
       }),
     })
-    console.log({res})
+    console.log({ res })
     const { isRemoved } = await res.json()
     if (isRemoved) creator.supportersCount--
 
@@ -215,59 +231,92 @@ export const CreatorCard: FC<CreatorCardProps> = ({creator, isOwner}) => {
 
   if (!creator) return <></>
 
-  return <>
-    <VStack p={8} spacing={8} borderRadius="md">
-      <BlockiesAvatar
-        address={creator?.address}
-        borderRadius="full"
-        width="200px"
-        height="200px"
-      />
-      <VStack w='full'>
-        <Heading textAlign={'center'}>{creator.displayName || truncateHash(creator.address)}</Heading>
-        <Text textAlign={'center'}>{creator?.description}</Text>
+  return (
+    <>
+      <VStack spacing={8} borderRadius="md" border="1px" p={5}>
+        <BlockiesAvatar
+          address={creator?.address}
+          borderRadius="full"
+          width="200px"
+          height="200px"
+        />
+        <VStack w="full">
+          <Heading textAlign={'center'}>
+            {creator.displayName || truncateHash(creator.address)}
+          </Heading>
+          <Text textAlign={'center'}>{creator?.description}</Text>
+        </VStack>
+
+        <VStack w="full">
+          {accountData ? (
+            <>
+              {isOwner ? (
+                <Button
+                  w="full"
+                  py={'7'}
+                  colorScheme="whatsapp"
+                  disabled={claimIsLoading}
+                  onClick={claim}
+                  isLoading={claimIsLoading}
+                >
+                  <VStack spacing={'1'}>
+                    <Text>Claim</Text>
+                    <Text fontSize={'xs'} opacity=".75">
+                      {parseFloat(claimableAmount).toFixed(9)} mMATIC
+                    </Text>
+                  </VStack>
+                </Button>
+              ) : (
+                <>
+                  <Button
+                    w="full"
+                    disabled={stakeIsLoading || unstakeIsLoading}
+                    onClick={stake}
+                    isLoading={stakeIsLoading}
+                  >
+                    Stake
+                  </Button>
+                  {!!supporterStakedAmount && (
+                    <Button
+                      w="full"
+                      py={'7'}
+                      disabled={stakeIsLoading || unstakeIsLoading}
+                      onClick={unstake}
+                      isLoading={unstakeIsLoading}
+                    >
+                      <VStack spacing={'1'}>
+                        <Text>Unstake</Text>
+                        <Text fontSize={'xs'} color="gray.500">
+                          You staked {supporterStakedAmount.toFixed(2)} MATIC
+                        </Text>
+                      </VStack>
+                    </Button>
+                  )}
+                </>
+              )}
+            </>
+          ) : (
+            <ConnectWalletButton />
+          )}
+        </VStack>
+        <HStack spacing={8} mx={8}>
+          <Flex direction="column" align="center">
+            <Heading>{creator?.supportersCount}</Heading>
+            <Text>Supporters</Text>
+          </Flex>
+          <Flex direction="column" align="center">
+            <Heading>{totalAmountStaked.toFixed(1)}</Heading>
+            <Text>MATIC staked</Text>
+          </Flex>
+          <Flex direction="column" align="center">
+            <Heading>{creator?.postsCount}</Heading>
+            <Text>Posts</Text>
+          </Flex>
+        </HStack>
       </VStack>
 
-      <VStack w='full'>
-        {accountData 
-          ? <>
-            {isOwner
-              ? <Button w="full" py={'7'} colorScheme='whatsapp' disabled={claimIsLoading} onClick={claim} isLoading={claimIsLoading} >
-                <VStack spacing={'1'}>
-                  <Text>Claim</Text>
-                  <Text fontSize={'xs'} opacity='.75'>{parseFloat(claimableAmount).toFixed(9)} mMATIC</Text>
-                </VStack>
-              </Button>
-              : <>
-                <Button w="full" disabled={stakeIsLoading || unstakeIsLoading} onClick={stake} isLoading={stakeIsLoading}>Stake</Button>
-                {!!supporterStakedAmount &&
-                  <Button w="full" py={'7'} disabled={stakeIsLoading || unstakeIsLoading} onClick={unstake} isLoading={unstakeIsLoading}>
-                    <VStack spacing={'1'}>
-                      <Text>Unstake</Text>
-                      <Text fontSize={'xs'} color='gray.500'>You staked {supporterStakedAmount.toFixed(2)} MATIC</Text>
-                    </VStack>
-                  </Button>}
-              </>}
-          </>
-          : <ConnectWalletButton />}
-      </VStack>
-      <HStack spacing={8} mx={8}>
-        <Flex direction="column" align="center">
-          <Heading>{creator?.supportersCount}</Heading>
-          <Text>Supporters</Text>
-        </Flex>
-        <Flex direction="column" align="center">
-          <Heading>{totalAmountStaked.toFixed(1)}</Heading>
-          <Text>MATIC staked</Text>
-        </Flex>
-        <Flex direction="column" align="center">
-          <Heading>{creator?.postsCount}</Heading>
-          <Text>Posts</Text>
-        </Flex>
-      </HStack>
-    </VStack>
-
-    {/* Confetti after claim */}
-    {yieldHasBeenClaimed && <Confetti />}
-  </>
+      {/* Confetti after claim */}
+      {yieldHasBeenClaimed && <Confetti />}
+    </>
+  )
 }
