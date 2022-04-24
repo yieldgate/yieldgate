@@ -44,8 +44,8 @@ contract YieldGate {
     }
 
     function claim() public {
-        beneficiaryPools[msg.sender].claim();
-        emit Claimed(msg.sender, 123);
+        uint amount = beneficiaryPools[msg.sender].claim();
+        emit Claimed(msg.sender, amount);
     }
 
     function getOrDeployPool(address beneficiary) public returns (address) {
