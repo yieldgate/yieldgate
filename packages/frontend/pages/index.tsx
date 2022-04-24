@@ -113,11 +113,7 @@ export default function IndexPage({ creators }: IndexPageProps) {
               borderRadius="md"
               overflow="hidden"
             >
-              <Image
-                src="/images/step-1.png"
-                fallbackSrc="https://i.imgur.com/2UFgYhq.png"
-                h={52}
-              />
+              <Image src="/images/step-1.png" h={52} />
               <Text p={5} fontSize="xl">
                 Sign in with your wallet
               </Text>
@@ -128,11 +124,7 @@ export default function IndexPage({ creators }: IndexPageProps) {
               borderRadius="md"
               overflow="hidden"
             >
-              <Image
-                src="/images/step-2.png"
-                fallbackSrc="https://i.imgur.com/EkHEXRH.png"
-                h={52}
-              />
+              <Image src="/images/step-2.png" h={52} />
               <Text p={5} fontSize="xl">
                 Edit your profile and make your first post
               </Text>
@@ -143,11 +135,7 @@ export default function IndexPage({ creators }: IndexPageProps) {
               borderRadius="md"
               overflow="hidden"
             >
-              <Image
-                src="/images/step-3.png"
-                fallbackSrc="https://i.imgur.com/8Ee8EMr.png"
-                h={52}
-              />
+              <Image src="/images/step-3.png" h={52} />
               <Text p={5} fontSize="xl">
                 Share your Yieldgate profile to start receiving donations from
                 your supporters in yield!
