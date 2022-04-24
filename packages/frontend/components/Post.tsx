@@ -15,6 +15,8 @@ function Lock(): JSX.Element {
       sx={{ '> div + div': { mt: '8px' } }}
       p="5"
       overflow="hidden"
+      mt={5}
+      borderRadius="md"
     >
       <Box h="24px" w="95%" bg="gray.500" />
       <Box h="24px" w="98%" bg="gray.500" />
@@ -35,12 +37,18 @@ function Post({
   const { _id, content, date, owner, title } = post
   if (isLocked) {
     return (
-      <Box border="1px" borderRadius="md" display="flex-column">
-        <Lock />
-        <Box padding="5">
-          <Heading size="lg">{title}</Heading>
-          <Box as="span">{formatDateTime(date)}</Box>
+      <Box
+        border="1px"
+        borderRadius="md"
+        padding="5"
+        display="flex-column"
+        sx={{ '> div + div': { mt: '12px' } }}
+      >
+        <Heading size="lg">{title}</Heading>
+        <Box as="span" color="gray.400" fontSize="lg">
+          {formatDateTime(date)}
         </Box>
+        <Lock />
       </Box>
     )
   }

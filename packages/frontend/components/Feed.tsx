@@ -3,7 +3,6 @@ import { Post as PostType } from '@entities/Post.entity'
 import * as React from 'react'
 import Post from './Post'
 
-
 interface FeedProps {
   isLocked: boolean
   feed: PostType[]
