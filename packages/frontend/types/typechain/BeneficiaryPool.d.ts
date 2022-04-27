@@ -24,7 +24,7 @@ interface BeneficiaryPoolInterface extends ethers.utils.Interface {
   functions: {
     "claim()": FunctionFragment;
     "claimable()": FunctionFragment;
-    "init(address,address,address,address)": FunctionFragment;
+    "init(address,address)": FunctionFragment;
     "stake(address)": FunctionFragment;
     "staked()": FunctionFragment;
     "supporters(address)": FunctionFragment;
@@ -35,7 +35,7 @@ interface BeneficiaryPoolInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "claimable", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "init",
-    values: [string, string, string, string]
+    values: [string, string]
   ): string;
   encodeFunctionData(functionFragment: "stake", values: [string]): string;
   encodeFunctionData(functionFragment: "staked", values?: undefined): string;
@@ -104,9 +104,7 @@ export class BeneficiaryPool extends BaseContract {
     claimable(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     init(
-      _pool: string,
-      _wethgw: string,
-      _token: string,
+      _gate: string,
       _beneficiary: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -133,9 +131,7 @@ export class BeneficiaryPool extends BaseContract {
   claimable(overrides?: CallOverrides): Promise<BigNumber>;
 
   init(
-    _pool: string,
-    _wethgw: string,
-    _token: string,
+    _gate: string,
     _beneficiary: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -160,9 +156,7 @@ export class BeneficiaryPool extends BaseContract {
     claimable(overrides?: CallOverrides): Promise<BigNumber>;
 
     init(
-      _pool: string,
-      _wethgw: string,
-      _token: string,
+      _gate: string,
       _beneficiary: string,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -186,9 +180,7 @@ export class BeneficiaryPool extends BaseContract {
     claimable(overrides?: CallOverrides): Promise<BigNumber>;
 
     init(
-      _pool: string,
-      _wethgw: string,
-      _token: string,
+      _gate: string,
       _beneficiary: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -216,9 +208,7 @@ export class BeneficiaryPool extends BaseContract {
     claimable(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     init(
-      _pool: string,
-      _wethgw: string,
-      _token: string,
+      _gate: string,
       _beneficiary: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
