@@ -41,8 +41,8 @@ const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
           Built with ❤️ at ETHGlobal Amsterdam 🇳🇱
         </GridItem>
         <GridItem justifySelf="end">
-          <NextLink href="mailto:yieldgate@decentr.al" passHref>
-            <Link>yieldgate@decentr.al</Link>
+          <NextLink href="mailto:hi@yieldgate.xyz" passHref>
+            <Link>hi@yieldgate.xyz</Link>
           </NextLink>
         </GridItem>
       </Grid>

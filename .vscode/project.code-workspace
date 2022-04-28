@@ -1,0 +1,24 @@
+{
+  "folders": [
+    {
+      "name": "_ROOT",
+      "path": "../"
+    },
+    {
+      "name": "Frontend",
+      "path": "../packages/frontend"
+    },
+    {
+      "name": "Hardhat",
+      "path": "../packages/hardhat"
+    },
+  ],
+  "settings": {
+    "files.exclude": {
+      "node_modules/": true,
+      "**/yarn.lock": true,
+      "**/yarn-error.log": true,
+      "packages/hardhat/cache": true,
+    },
+  }
+}
