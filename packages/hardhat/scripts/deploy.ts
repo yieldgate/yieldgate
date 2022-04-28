@@ -2,15 +2,22 @@ import fs from "fs";
 import hre, { config, ethers } from "hardhat";
 import path from "path";
 
+import { AaveAddresses } from "./aave-addresses";
+
 async function main() {
+  const aave = AaveAddresses[hre.network.name];
+  if (aave === undefined) {
+    throw new Error(`No Aave addresses for network ${hre.network.name}`);
+  }
+
   const YieldGate = await ethers.getContractFactory("YieldGate");
   const yieldGateContract = await YieldGate.deploy(
-    "0x6C9fB0D5bD9429eb9Cd96B85B81d872281771E6B", // pool
-    "0x2a58E9bbb5434FdA7FF78051a4B82cb0EF669C17", // wETHGateway
-    "0x89a6AE840b3F8f489418933A220315eeA36d11fF" // native aToken
+    aave.pool,
+    aave.wETHGateway,
+    aave.nativeAToken
   );
   console.log(
-    "deployment transaction",
+    "YieldGate deployment transaction: ",
     yieldGateContract.deployTransaction.hash
   );
   await yieldGateContract.deployed();
