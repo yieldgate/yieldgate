@@ -1,7 +1,6 @@
 import fs from "fs";
 import hre, { config, ethers } from "hardhat";
 import path from "path";
-
 import { AaveAddresses } from "./aave-addresses";
 
 async function main() {
@@ -33,7 +32,7 @@ async function main() {
  */
 function saveFrontendAddressFiles(contracts: any) {
   // Create adresses/ directory
-  const addressesDir = path.join(config.paths.artifacts, `addresses`);
+  const addressesDir = path.join(config.paths.artifacts, `../addresses`);
   fs.mkdirSync(addressesDir, { recursive: true });
   // Lowercase all addresses
   for (let contractKey of Object.keys(contracts)) {

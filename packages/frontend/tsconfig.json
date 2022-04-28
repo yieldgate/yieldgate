@@ -30,6 +30,9 @@
       ],
       "@artifacts/*": [
         "./artifacts/*"
+      ],
+      "@addresses/*": [
+        "./addresses/*"
       ]
     },
     "incremental": true

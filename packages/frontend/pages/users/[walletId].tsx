@@ -1,4 +1,4 @@
-import { ContractAddresses } from '@artifacts/addresses'
+import { ContractAddresses } from '@addresses/index'
 import YieldGate from '@artifacts/contracts/YieldGate.sol/YieldGate.json'
 import {
   Container,

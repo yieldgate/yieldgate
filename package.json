@@ -4,12 +4,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "yarn workspace frontend dev",
-    "build": "yarn workspace frontend build",
-    "start": "yarn workspace frontend start",
-    "chain": "yarn workspace hardhat chain",
-    "deploy": "yarn workspace hardhat deploy",
-    "compile": "yarn workspace hardhat compile"
+    "dev": "yarn hardhat:clean && yarn hardhat:compile && yarn frontend:dev",
+    "frontend:dev": "yarn workspace frontend dev",
+    "frontend:build": "yarn workspace frontend build",
+    "frontend:start": "yarn workspace frontend start",
+    "hardhat:clean": "yarn workspace hardhat clean",
+    "hardhat:compile": "yarn workspace hardhat compile",
+    "hardhat:chain": "yarn workspace hardhat chain",
+    "hardhat:deploy": "yarn workspace hardhat deploy"
   },
   "workspaces": {
     "packages": [
