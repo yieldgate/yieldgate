@@ -3,4 +3,4 @@ coverage
 .next/
 out/
 build
-artifacts/*
+artifacts
