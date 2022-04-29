@@ -2,23 +2,11 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { IERC20 } from "./IERC20";
-export type { IAaveIncentivesController } from "./IAaveIncentivesController";
-export type { IAToken } from "./IAToken";
-export type { IInitializableAToken } from "./IInitializableAToken";
-export type { IPool } from "./IPool";
-export type { IPoolAddressesProvider } from "./IPoolAddressesProvider";
-export type { IScaledBalanceToken } from "./IScaledBalanceToken";
 export type { IWETHGateway } from "./IWETHGateway";
 export type { BeneficiaryPool } from "./BeneficiaryPool";
 export type { YieldGate } from "./YieldGate";
 
 export { IERC20__factory } from "./factories/IERC20__factory";
-export { IAaveIncentivesController__factory } from "./factories/IAaveIncentivesController__factory";
-export { IAToken__factory } from "./factories/IAToken__factory";
-export { IInitializableAToken__factory } from "./factories/IInitializableAToken__factory";
-export { IPool__factory } from "./factories/IPool__factory";
-export { IPoolAddressesProvider__factory } from "./factories/IPoolAddressesProvider__factory";
-export { IScaledBalanceToken__factory } from "./factories/IScaledBalanceToken__factory";
 export { IWETHGateway__factory } from "./factories/IWETHGateway__factory";
 export { BeneficiaryPool__factory } from "./factories/BeneficiaryPool__factory";
 export { YieldGate__factory } from "./factories/YieldGate__factory";

@@ -17,38 +17,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
-      name: "IAaveIncentivesController",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IAaveIncentivesController__factory>;
-    getContractFactory(
-      name: "IAToken",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IAToken__factory>;
-    getContractFactory(
-      name: "IInitializableAToken",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IInitializableAToken__factory>;
-    getContractFactory(
-      name: "IPool",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IPool__factory>;
-    getContractFactory(
-      name: "IPoolAddressesProvider",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IPoolAddressesProvider__factory>;
-    getContractFactory(
-      name: "IScaledBalanceToken",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IScaledBalanceToken__factory>;
-    getContractFactory(
-      name: "IWETHGateway",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IWETHGateway__factory>;
-    getContractFactory(
-      name: "IERC20",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC20__factory>;
-    getContractFactory(
       name: "IWETHGateway",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IWETHGateway__factory>;
@@ -61,46 +29,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.YieldGate__factory>;
 
-    getContractAt(
-      name: "IERC20",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC20>;
-    getContractAt(
-      name: "IAaveIncentivesController",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IAaveIncentivesController>;
-    getContractAt(
-      name: "IAToken",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IAToken>;
-    getContractAt(
-      name: "IInitializableAToken",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IInitializableAToken>;
-    getContractAt(
-      name: "IPool",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IPool>;
-    getContractAt(
-      name: "IPoolAddressesProvider",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IPoolAddressesProvider>;
-    getContractAt(
-      name: "IScaledBalanceToken",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IScaledBalanceToken>;
-    getContractAt(
-      name: "IWETHGateway",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IWETHGateway>;
     getContractAt(
       name: "IERC20",
       address: string,
