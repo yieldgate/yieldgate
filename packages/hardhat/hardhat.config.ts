@@ -1,5 +1,6 @@
 import "@nomiclabs/hardhat-ethers";
 import "@nomiclabs/hardhat-waffle";
+import "@nomiclabs/hardhat-etherscan";
 import "@typechain/hardhat";
 import * as dotenv from "dotenv";
 import { task } from "hardhat/config";
@@ -61,6 +62,9 @@ const config: HardhatUserConfig = {
   },
   typechain: {
     outDir: "../frontend/types/typechain",
+  },
+  etherscan: {
+    apiKey: `${process.env.ETHERSCAN_API_KEY}`,
   },
 };
 
