@@ -45,6 +45,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IWETHGateway__factory>;
     getContractFactory(
+      name: "IERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20__factory>;
+    getContractFactory(
+      name: "IWETHGateway",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IWETHGateway__factory>;
+    getContractFactory(
       name: "BeneficiaryPool",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.BeneficiaryPool__factory>;
@@ -88,6 +96,16 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IScaledBalanceToken>;
+    getContractAt(
+      name: "IWETHGateway",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IWETHGateway>;
+    getContractAt(
+      name: "IERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20>;
     getContractAt(
       name: "IWETHGateway",
       address: string,

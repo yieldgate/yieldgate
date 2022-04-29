@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.3;
+pragma solidity ^0.8.10;
 
-import {IAToken} from "@aave/core-v3/contracts/interfaces/IAToken.sol";
-import {IWETHGateway} from "@aave/periphery-v3/contracts/misc/interfaces/IWETHGateway.sol";
+import {IWETHGateway} from "./deps/Aave.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/proxy/Clones.sol";
 
 contract YieldGate {
@@ -13,7 +13,7 @@ contract YieldGate {
     address immutable beneficiaryPoolLib;
     address immutable public pool;
     IWETHGateway immutable public wethgw;
-    IAToken immutable public token;
+    IERC20 immutable public token;
 
     // beneficiary => BeneficiaryPool
     mapping(address => BeneficiaryPool) public beneficiaryPools;
@@ -25,7 +25,7 @@ contract YieldGate {
     ) {
         pool = _pool;
         wethgw = IWETHGateway(wethGateway);
-        token = IAToken(aWETH);
+        token = IERC20(aWETH);
 
         BeneficiaryPool bp = new BeneficiaryPool();
         // init it so no one else can (RIP Parity Multisig)
