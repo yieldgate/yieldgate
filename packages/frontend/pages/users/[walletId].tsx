@@ -1,10 +1,11 @@
 import { ContractAddresses } from '@addresses/index'
 import YieldGate from '@artifacts/contracts/YieldGate.sol/YieldGate.json'
 import {
+  Center,
   Container,
   Flex,
   Grid,
-  GridItem, VStack
+  GridItem, Spinner, VStack
 } from '@chakra-ui/react'
 import { CreatorCard } from '@components/CreatorCard'
 import Feed from '@components/Feed'
@@ -25,15 +26,12 @@ export default function UsersPage() {
   const router = useRouter()
   let { walletId } = router.query
   walletId = ((walletId as string) || '').toLowerCase()
-  const [{ data: account }] = useAccount({
-    fetchEns: true,
-  })
+  const { data: accountData } = useAccount()
   const isOwner =
     walletId &&
-    account?.address &&
-    account?.address.toLowerCase() === walletId.toLowerCase()
+    accountData?.address &&
+    accountData?.address.toLowerCase() === walletId.toLowerCase()
   const [creator, setCreator] = useState<Creator | null>(null)
-  const [{ data: accountData }, disconnect] = useAccount()
 
   const fetchCreator = async (): Promise<Creator> => {
     const res = await fetch('/api/creators/getCreator', {
@@ -89,6 +87,12 @@ export default function UsersPage() {
     return <>Not a valid address</>
   }
 
+  if (!creator) return <>
+    <Center>
+      <Spinner size='xl' my='100' />
+    </Center>
+  </>
+
   return (
     <>
       <Layout>
@@ -101,7 +105,7 @@ export default function UsersPage() {
                 width="full"
                 align="stretch"
               >
-                <CreatorCard creator={creator} isOwner={isOwner} updateContentIsLocked={readSupporterStakedAmount} />
+                <CreatorCard creator={creator} isOwner={!!isOwner} updateContentIsLocked={readSupporterStakedAmount} />
                 <SponsorsCard sponsors={creator?.supporters} />
               </VStack>
             </Flex>

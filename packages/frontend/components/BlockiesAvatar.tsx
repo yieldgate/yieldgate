@@ -3,7 +3,7 @@ import blockies from 'blockies-ts'
 import { FC, useEffect, useState } from 'react'
 
 export interface BlockiesAvatarProps {
-  address: string
+  address: string | undefined
   ml?: string
   borderRadius?: string
   width?: string | number
@@ -16,10 +16,8 @@ export const BlockiesAvatar: FC<BlockiesAvatarProps> = ({
 }) => {
   const [avatarUri, setAvatarUri] = useState('')
   useEffect(() => {
-    let blockieImageSrc
-    if (typeof window !== 'undefined') {
-      blockieImageSrc = blockies.create({ seed: (address || '').toLowerCase() }).toDataURL()
-    }
+    if (typeof window === 'undefined') return
+    const blockieImageSrc = blockies.create({ seed: (address || '').toLowerCase() }).toDataURL()
     setAvatarUri(blockieImageSrc)
   }, [])
 
@@ -28,7 +26,7 @@ export const BlockiesAvatar: FC<BlockiesAvatarProps> = ({
       <Image
         src={avatarUri}
         fallbackSrc="https://via.placeholder.com/150"
-        alt={address}
+        alt={address || ''}
         style={{ imageRendering: 'pixelated' }}
         {...props}
       />

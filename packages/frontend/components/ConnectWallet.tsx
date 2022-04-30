@@ -8,7 +8,7 @@ import { ethers } from 'ethers'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import useAsyncEffect from 'use-async-effect'
-import { useAccount, useConnect } from 'wagmi'
+import { useAccount, useDisconnect } from 'wagmi'
 import { BlockiesAvatar } from './BlockiesAvatar'
 import ConnectWalletButton from './ConnectWalletButton'
 
@@ -17,15 +17,16 @@ function truncateHash(hash: string, length = 38): string {
 }
 
 function ConnectWallet(): JSX.Element {
-  const [{ data, error }, connect] = useConnect()
-  const [{ data: accountData }, disconnect] = useAccount()
-  const [ensDomain, setEnsDomain] = useState('')
+  const { data: accountData} = useAccount()
+  const {disconnect} = useDisconnect()
+  const [ensDomain, setEnsDomain] = useState<string | null>(null)
   useAsyncEffect(async() => {
     if (!accountData?.address) {
       setEnsDomain('')
       return
     }
-    setEnsDomain(await ethers.getDefaultProvider(env.rpc.mainnet).lookupAddress(accountData?.address))
+    const ens = await ethers.getDefaultProvider(env.rpc.mainnet).lookupAddress(accountData?.address)
+    setEnsDomain(ens)
   },[accountData?.address])
 
   return (
@@ -46,11 +47,11 @@ function ConnectWallet(): JSX.Element {
           <Menu placement="bottom-end" >
             <MenuButton as={Button} ml="4">
               <Flex direction="column">
-                <Text>{ensDomain || truncateHash(accountData.address)}</Text>
+                <Text>{ensDomain || truncateHash(accountData.address || '')}</Text>
               </Flex>
             </MenuButton>
             <MenuList>
-              <MenuItem onClick={disconnect}>Disconnect</MenuItem>
+              <MenuItem onClick={() => disconnect()}>Disconnect</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

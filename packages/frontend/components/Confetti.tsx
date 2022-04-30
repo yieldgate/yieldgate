@@ -3,7 +3,7 @@ import ReactCanvasConfetti from 'react-canvas-confetti'
 
 export const Confetti: FC = () => {
   const confettiAnimationRef = useRef(null)
-  const getconfettiAnimationInstance = useCallback((instance) => {
+  const getconfettiAnimationInstance = useCallback((instance: any) => {
     confettiAnimationRef.current = instance
   }, [])
   const confettiAnimationOptions: CSSProperties = {
@@ -14,7 +14,7 @@ export const Confetti: FC = () => {
     top: 0,
     left: 0
   }
-  const makeShot = useCallback((particleRatio, opts) => {
+  const makeShot = useCallback((particleRatio: any, opts: any) => {
     (confettiAnimationRef?.current as any)?.({
       ...opts,
       origin: { y: 0.5 },

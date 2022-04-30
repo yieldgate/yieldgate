@@ -23,11 +23,10 @@ import { env } from '@lib/environment'
 import { ethers } from 'ethers'
 import { formatEther } from 'ethers/lib/utils'
 import { FC, useEffect, useState } from 'react'
-import { useWindowSize } from 'react-use'
 import { YieldGate as YieldGateType } from 'types/typechain'
-import { ClaimedEvent } from 'types/typechain/YieldGate'
+import { ClaimedEvent } from 'types/typechain/contracts/YieldGate.sol/YieldGate'
 import useAsyncEffect from 'use-async-effect'
-import { useAccount, useProvider, useSigner } from 'wagmi'
+import { useAccount, useSigner } from 'wagmi'
 import { BlockiesAvatar } from './BlockiesAvatar'
 import ConnectWalletButton from './ConnectWalletButton'
 import StakeAmountForm from './StakeAmountForm'
@@ -46,23 +45,22 @@ export const CreatorCard: FC<CreatorCardProps> = ({
   isOwner,
   updateContentIsLocked,
 }) => {
-  const { width, height } = useWindowSize()
-  const [{ data, error, loading }, getSigner] = useSigner()
-  const provider = useProvider()
-  const [{ data: accountData }, disconnect] = useAccount()
+  const { data: signer, refetch: refetchSigner } = useSigner()
+  const { data: accountData } = useAccount()
   const YieldGateContractAddress = ContractAddresses['80001'].YieldGate
   const [stakeIsLoading, setStakeIsLoading] = useState(false)
   const [unstakeIsLoading, setUnstakeIsLoading] = useState(false)
   const [claimIsLoading, setClaimIsLoading] = useState(false)
   const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [ensDomain, setEnsDomain] = useState('')
+  const [ensDomain, setEnsDomain] = useState<string | null>(null)
   useAsyncEffect(async() => {
     if (!accountData?.address) {
       setEnsDomain('')
       return
     }
-    setEnsDomain(await ethers.getDefaultProvider(env.rpc.mainnet).lookupAddress(accountData?.address))
+    const ens = await ethers.getDefaultProvider(env.rpc.mainnet).lookupAddress(accountData?.address)
+    setEnsDomain(ens)
   },[accountData?.address])
 
 
@@ -129,7 +127,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({
 
   const stake = async (value: string) => {
     // Blockchain Transaction
-    const signer = await getSigner()
+    await refetchSigner()
     if (!signer) return
     setStakeIsLoading(true)
     const contract = new ethers.Contract(
@@ -156,7 +154,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({
       }),
     })
     const { isAdded } = await res.json()
-    if (isAdded) creator.supportersCount++
+    if (isAdded) creator.supportersCount = (creator?.supportersCount || 0) + 1
 
     // Update UI
     await readTotalStakedAmount()
@@ -178,7 +176,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({
   const [showConfetti, setShowConfetti] = useState(false)
   const claim = async () => {
     // Blockchain Transaction
-    const signer = await getSigner()
+    await refetchSigner()
     if (!signer) return
     const supporter = accountData?.address
     const beneficiary = creator?.address
@@ -225,7 +223,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({
   }
 
   const unstake = async () => {
-    const signer = await getSigner()
+    await refetchSigner()
     if (!signer) return
     const supporter = accountData?.address
     const beneficiary = creator?.address
@@ -254,7 +252,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({
     })
     console.log({ res })
     const { isRemoved } = await res.json()
-    if (isRemoved) creator.supportersCount--
+    if (isRemoved) creator.supportersCount = Math.max(0, (creator?.supportersCount || 0) - 1)
 
     // Update UI
     await readTotalStakedAmount()

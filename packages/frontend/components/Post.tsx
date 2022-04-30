@@ -5,7 +5,7 @@ import {
   Grid,
   GridItem,
   Heading,
-  Icon,
+  Icon
 } from '@chakra-ui/react'
 import type { Post as PostType } from '@entities/Post.entity'
 import dayjs from 'dayjs'
@@ -55,7 +55,7 @@ function Post({
   post: PostType
   isLocked: boolean
 }): JSX.Element {
-  const { content, date, owner, title } = post
+  const { content, date, title } = post
   if (isLocked) {
     return (
       <Box

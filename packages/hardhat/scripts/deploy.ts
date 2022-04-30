@@ -1,3 +1,4 @@
+import "@nomiclabs/hardhat-ethers";
 import fs from "fs";
 import hre, { config, ethers } from "hardhat";
 import path from "path";

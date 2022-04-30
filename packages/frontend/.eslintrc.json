@@ -1,12 +1,17 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "plugins": [
-    "@typescript-eslint"
-  ],
+  "plugins": ["@typescript-eslint"],
   "extends": [
-    "plugin:@next/next/recommended"
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "react/no-unescaped-entities": "off",
+    "react/no-children-prop": "off",
     "semi": [
       "warn",
       "never"

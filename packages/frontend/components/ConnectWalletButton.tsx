@@ -8,7 +8,7 @@ export type ConnectWalletButtonProps = {
   title?: string
 }
 function ConnectWalletButton({title}: ConnectWalletButtonProps): JSX.Element {
-  const [{ data, error }, connect] = useConnect()
+  const { connectors, connect } = useConnect()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
@@ -19,7 +19,7 @@ function ConnectWalletButton({title}: ConnectWalletButtonProps): JSX.Element {
           <ModalHeader>Connect your wallet of choice</ModalHeader>
           <ModalBody>
             <VStack align={'stretch'} pb='4'>
-              {data.connectors?.map((connector) => (
+              {connectors?.map((connector) => (
                 <Button key={connector.id} onClick={() => connect(connector)}>
                   {connector.name}
                 </Button>
