@@ -4,6 +4,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "predev": "npm run hardhat:clean && npm run hardhat:compile",
+    "prebuild": "npm run hardhat:clean && npm run hardhat:compile",
     "dev": "npm run frontend:dev",
     "build": "npm run frontend:build",
     "frontend:dev": "npm run dev -w @yieldgate/frontend",
