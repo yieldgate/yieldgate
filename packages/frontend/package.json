@@ -3,6 +3,8 @@
   "license": "MIT",
   "version": "0.0.1",
   "scripts": {
+    "predev": "yarn workspace @yieldgate/hardhat clean && yarn workspace @yieldgate/hardhat compile",
+    "prebuild": "yarn workspace @yieldgate/hardhat clean && yarn workspace @yieldgate/hardhat compile",
     "dev": "NODE_ENV=development && next dev",
     "build": "NODE_ENV=production && next build",
     "start": "NODE_ENV=production && next start",

@@ -4,8 +4,6 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "predev": "yarn hardhat:clean && yarn hardhat:compile",
-    "prebuild": "yarn hardhat:clean && yarn hardhat:compile",
     "dev": "yarn frontend:dev",
     "build": "yarn frontend:build",
     "frontend:dev": "yarn workspace @yieldgate/frontend dev",
