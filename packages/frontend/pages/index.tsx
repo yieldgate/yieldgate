@@ -19,6 +19,7 @@ import { BlockiesAvatar } from '@components/BlockiesAvatar'
 import Layout from '@components/layout/Layout'
 import { Creator } from '@entities/Creator.entity'
 import { env } from '@lib/environment'
+import { useIsSSR } from '@lib/useIsSSR'
 import { ethers } from 'ethers'
 import { formatEther } from 'ethers/lib/utils'
 import { GetServerSideProps } from 'next'
@@ -111,6 +112,7 @@ function CreatorCard(creator: Creator): JSX.Element {
 
 export default function IndexPage({ creators }: IndexPageProps) {
   const { data: accountData } = useAccount()
+  const isSSR = useIsSSR()
 
   return (
     <Layout>
@@ -127,7 +129,7 @@ export default function IndexPage({ creators }: IndexPageProps) {
               <br />
               Support your favourite projects and creators with yield.
             </Text>
-            {accountData && (
+            {!isSSR && accountData && (
               <NextLink href={`/users/${accountData.address}`} passHref>
                 <Button size="lg" mt="6">
                   Create on Yieldgate
@@ -245,6 +247,5 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       creators,
     } as IndexPageProps,
-    // revalidate: 60,
   }
 }

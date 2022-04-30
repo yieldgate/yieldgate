@@ -138,7 +138,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({
     const beneficiary = creator?.address
     const transaction = await contract.stake(beneficiary, {
       value: ethers.utils.parseEther(value),
-      gasLimit: 2000000,
+      gasLimit: 400000,
     })
     console.log({ transaction })
     const receipt = await transaction.wait()
@@ -193,7 +193,9 @@ export const CreatorCard: FC<CreatorCardProps> = ({
       YieldGate.abi,
       signer
     ) as YieldGateType
-    const transaction = await contract.claim()
+    const transaction = await contract.claim({
+      gasLimit: 400000
+    })
     console.log({ transaction })
     const result = await transaction.wait()
     console.log({ receipt: result })
@@ -236,7 +238,9 @@ export const CreatorCard: FC<CreatorCardProps> = ({
       YieldGate.abi,
       signer
     ) as YieldGateType
-    const transaction = await contract.unstake(beneficiary)
+    const transaction = await contract.unstake(beneficiary, {
+      gasLimit: 400000
+    })
     console.log({ transaction })
     const receipt = await transaction.wait()
     console.log({ receipt })
