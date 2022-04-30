@@ -3,6 +3,12 @@
 /.pnp
 .pnp.js
 
+# yarn 
+.pnp.*
+.yarn/*
+yarn.lock
+.yarnrc
+
 # misc
 .DS_Store
 *.pem
@@ -20,12 +26,3 @@ yarn-error.log*
 
 # vercel
 .vercel
-
-# yarn 
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
