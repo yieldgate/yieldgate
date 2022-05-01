@@ -9,4 +9,7 @@ export interface Creator {
   postsCount?: number
   displayName?: string
   description?: string
+
+  // added on runtime
+  ensName?: string
 }

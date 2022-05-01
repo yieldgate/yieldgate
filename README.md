@@ -1,6 +1,8 @@
 # Yieldgate
 
-Yield Gate is a new monetisation tool for anyone to start receiving donations, or to support their favourite public goods projects, creators, and security researchers, with yield. No NFTs or tokens, just good old MATIC! Built with ❤️ on top of Aave, Polygon, and others.
+Yieldgate is a protocol that allows anyone to start earning and building products with programmable yield.
+
+Built with ❤️ on top of Aave, Polygon, and others.
 
 ![Yieldate](https://i.imgur.com/j316O86.png "Yieldgate")
 

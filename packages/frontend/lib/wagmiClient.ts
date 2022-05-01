@@ -1,4 +1,4 @@
-import { InjectedConnector } from '@wagmi/core'
+import { allChains, Chain, InjectedConnector } from '@wagmi/core'
 import { ethers, providers } from 'ethers'
 import { chain, Connector, createClient } from 'wagmi'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
@@ -20,9 +20,19 @@ export const rpcsByChainId: IRPCMap = {
   [chain.polygon.id]: env.rpc.polygon,
 }
 
+export const defaultChain: Chain = allChains.filter(
+  (chain) => parseInt(env.defaultChain) === chain.id
+)[0]
+
+export const supportedChains: Chain[] = allChains.filter((chain) =>
+  env.supportedChains.includes(chain.id)
+)
+
 export const connectors = ({ chainId }: { chainId?: number }): Connector[] => {
   return [
-    new InjectedConnector(),
+    new InjectedConnector({
+      chains: supportedChains,
+    }),
     new WalletConnectConnector({
       options: {
         chainId,
@@ -40,11 +50,10 @@ export const connectors = ({ chainId }: { chainId?: number }): Connector[] => {
 }
 
 export const provider = ({ chainId }: { chainId?: number }) => {
-  if (!chainId) return ethers.getDefaultProvider()
-  const rpc = rpcsByChainId?.[chainId]
+  const rpc = rpcsByChainId?.[chainId || 0]
   return rpc
     ? new providers.JsonRpcProvider(rpc, chainId)
-    : new providers.InfuraProvider(chainId, env.infuraApiKey)
+    : ethers.getDefaultProvider()
 }
 
 export const wagmiClient = createClient({
