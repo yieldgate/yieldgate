@@ -1,19 +1,16 @@
 import { Box, Flex, Grid, GridItem, Icon, Link } from '@chakra-ui/react'
-import React from 'react'
-import Head, { MetaProps } from './Head'
-import Navbar from './Navbar'
-import { BsTwitter, BsGithub } from 'react-icons/bs'
 import NextLink from 'next/link'
+import React from 'react'
+import { BsGithub, BsTwitter } from 'react-icons/bs'
+import Navbar from './Navbar'
 
 interface LayoutProps {
   children: React.ReactNode
-  customMeta?: MetaProps
 }
 
-const Layout = ({ children, customMeta }: LayoutProps): JSX.Element => {
+const Layout = ({ children }: LayoutProps): JSX.Element => {
   return (
     <>
-      <Head customMeta={customMeta} />
       <header>
         <Navbar />
       </header>

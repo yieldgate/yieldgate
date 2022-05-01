@@ -1,8 +1,5 @@
 import { connectToDatabase } from '@lib/mongodb'
-import { Db, MongoClient } from 'mongodb'
 import { NextApiRequest, NextApiResponse } from 'next'
-
-export type MongoDBConnection = { db: Db; client: MongoClient }
 
 export default async function handler(
   req: NextApiRequest,
@@ -24,7 +21,7 @@ export const handleGetAllCreators = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  const { db } = (await connectToDatabase()) as MongoDBConnection
+  const { db } = await connectToDatabase()
   const creators = await db
     .collection('creators')
     .find({})
@@ -40,7 +37,7 @@ export const handleGetAllCreators = async (
     delete creator.supporters
   })
 
-  console.log('Fetched creators:', creators)
+  // console.log('Fetched creators:', creators)
 
   return res.status(200).json({
     creators,
@@ -56,10 +53,10 @@ export const handleGetCreator = async (
   if (!/^0x[a-fA-F0-9]{40}$/.test(address)) return res.status(400).end()
   address = address.toLowerCase()
 
-  const { db } = (await connectToDatabase()) as MongoDBConnection
+  const { db } = await connectToDatabase()
   let creator: any = await db.collection('creators').findOne({ address })
 
-  console.log('Fetched creator:', creator)
+  // console.log('Fetched creator:', creator)
   if (!creator) {
     creator = {
       _id: address,

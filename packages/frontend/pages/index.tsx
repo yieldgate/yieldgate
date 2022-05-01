@@ -19,6 +19,7 @@ import { BlockiesAvatar } from '@components/BlockiesAvatar'
 import Layout from '@components/layout/Layout'
 import { Creator } from '@entities/Creator.entity'
 import { env } from '@lib/environment'
+import { useIsSSR } from '@lib/useIsSSR'
 import { ethers } from 'ethers'
 import { formatEther } from 'ethers/lib/utils'
 import { GetServerSideProps } from 'next'
@@ -59,13 +60,14 @@ function CreatorCard(creator: Creator): JSX.Element {
     readTotalStakedAmount()
   }, [creator?.address])
 
-  const [ensDomain, setEnsDomain] = useState('')
+  const [ensDomain, setEnsDomain] = useState<string | null>(null)
   useAsyncEffect(async() => {
     if (!creator?.address) {
       setEnsDomain('')
       return
     }
-    setEnsDomain(await ethers.getDefaultProvider(env.rpc.mainnet).lookupAddress(creator?.address))
+    const ens = await ethers.getDefaultProvider(env.rpc.mainnet).lookupAddress(creator?.address)
+    setEnsDomain(ens)
   },[creator?.address])
 
 
@@ -109,7 +111,8 @@ function CreatorCard(creator: Creator): JSX.Element {
 }
 
 export default function IndexPage({ creators }: IndexPageProps) {
-  const [{ data: accountData }] = useAccount()
+  const { data: accountData } = useAccount()
+  const isSSR = useIsSSR()
 
   return (
     <Layout>
@@ -120,13 +123,13 @@ export default function IndexPage({ creators }: IndexPageProps) {
       >
         <Container maxW="5xl" py={24}>
           <Flex direction="column" align="start" gap={3}>
-            <Image src="/images/logo-yieldgate-long.svg" h="70px" mb={2} />
+            <Image src="/images/logo-yieldgate-long.svg" h="70px" mb={2} alt="Yieldgate Cover Image" />
             <Text fontSize="3xl" fontWeight={700}>
               Earn yield from your supporters.
               <br />
               Support your favourite projects and creators with yield.
             </Text>
-            {accountData && (
+            {!isSSR && accountData && (
               <NextLink href={`/users/${accountData.address}`} passHref>
                 <Button size="lg" mt="6">
                   Create on Yieldgate
@@ -162,7 +165,7 @@ export default function IndexPage({ creators }: IndexPageProps) {
               borderRadius="md"
               overflow="hidden"
             >
-              <Image src="/images/step-1.png" h={52} />
+              <Image src="/images/step-1.png" h={52} alt="Step 1" />
               <Text p={5} fontSize="xl">
                 Sign in with your wallet
               </Text>
@@ -173,7 +176,7 @@ export default function IndexPage({ creators }: IndexPageProps) {
               borderRadius="md"
               overflow="hidden"
             >
-              <Image src="/images/step-2.png" h={52} />
+              <Image src="/images/step-2.png" h={52} alt="Step 2" />
               <Text p={5} fontSize="xl">
                 Edit your profile and make your first post
               </Text>
@@ -184,7 +187,7 @@ export default function IndexPage({ creators }: IndexPageProps) {
               borderRadius="md"
               overflow="hidden"
             >
-              <Image src="/images/step-3.png" h={52} />
+              <Image src="/images/step-3.png" h={52} alt="Step 3" />
               <Text p={5} fontSize="xl">
                 Share your Yieldgate profile to start receiving donations from
                 your supporters in yield!
@@ -219,10 +222,10 @@ export default function IndexPage({ creators }: IndexPageProps) {
             gap="20"
             placeItems="center"
           >
-            <Image src="/images/aave.svg" h="60%" />
-            <Image src="/images/polygon.svg" h="70%" />
-            <Image src="/images/walletconnect.svg" h="60%" />
-            <Image src="/images/coinbase.svg" h="50%" />
+            <Image src="/images/aave.svg" h="60%" alt="AAVE" />
+            <Image src="/images/polygon.svg" h="70%" alt="Polygon" />
+            <Image src="/images/walletconnect.svg" h="60%" alt="WalletConnect" />
+            <Image src="/images/coinbase.svg" h="50%" alt="Coinbase" />
           </Grid>
         </Flex>
       </Container>
@@ -230,7 +233,7 @@ export default function IndexPage({ creators }: IndexPageProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async () => {
   const res = await fetch(`${env.url}/api/creators/getAllCreators`, {
     method: 'GET',
     headers: {
@@ -244,6 +247,5 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     props: {
       creators,
     } as IndexPageProps,
-    // revalidate: 60,
   }
 }

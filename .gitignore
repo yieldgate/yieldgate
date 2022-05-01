@@ -3,6 +3,12 @@
 /.pnp
 .pnp.js
 
+# yarn 
+.pnp.*
+.yarn/*
+yarn.lock
+.yarnrc
+
 # misc
 .DS_Store
 *.pem

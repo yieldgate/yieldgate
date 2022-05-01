@@ -4,22 +4,22 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "yarn hardhat:clean && yarn hardhat:compile && yarn frontend:dev",
-    "frontend:dev": "yarn workspace frontend dev",
-    "frontend:build": "yarn workspace frontend build",
-    "frontend:start": "yarn workspace frontend start",
-    "hardhat:clean": "yarn workspace hardhat clean",
-    "hardhat:compile": "yarn workspace hardhat compile",
-    "hardhat:chain": "yarn workspace hardhat chain",
-    "hardhat:deploy": "yarn workspace hardhat deploy"
+    "predev": "npm run hardhat:clean && npm run hardhat:compile",
+    "prebuild": "npm run hardhat:clean && npm run hardhat:compile",
+    "dev": "npm run frontend:dev",
+    "build": "npm run frontend:build",
+    "frontend:dev": "npm run dev -w @yieldgate/frontend",
+    "frontend:build": "npm run build -w @yieldgate/frontend",
+    "frontend:start": "npm run start -w @yieldgate/frontend",
+    "hardhat:clean": "npm run clean -w @yieldgate/hardhat",
+    "hardhat:compile": "npm run compile -w @yieldgate/hardhat",
+    "hardhat:typechain": "npm run typechain -w @yieldgate/hardhat",
+    "hardhat:chain": "npm run chain -w @yieldgate/hardhat",
+    "hardhat:deploy": "npm run deploy -w @yieldgate/hardhat"
   },
   "workspaces": {
     "packages": [
       "packages/*"
-    ],
-    "nohoist": [
-      "**/hardhat",
-      "**/hardhat/**"
     ]
   }
 }
