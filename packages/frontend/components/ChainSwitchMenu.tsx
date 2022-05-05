@@ -5,7 +5,7 @@ import { Chain, useNetwork } from 'wagmi'
 
 export interface ChainSwitchMenuProps extends MenuButtonProps {}
 export const ChainSwitchMenu: FC<ChainSwitchMenuProps> = ({...props}) => {
-  const { activeChain, chains, switchNetwork } = useNetwork()
+  const { activeChain, chains, switchNetworkAsync } = useNetwork()
   const [mainnets, setMainnets] = useState<Chain[]>([])
   const [testnets, setTestnets] = useState<Chain[]>([])
   useEffect(() => {
@@ -18,8 +18,8 @@ export const ChainSwitchMenu: FC<ChainSwitchMenuProps> = ({...props}) => {
     <MenuGroup title={title}>
       {chains.map((chain) => (
         <MenuItem key={chain.id} minH='48px' bg={chain.id === activeChain!.id ? 'gray.200' : 'white'}
-          disabled={!switchNetwork || chain.id === activeChain!.id}
-          onClick={() => switchNetwork?.(chain.id)}>
+          disabled={!switchNetworkAsync || chain.id === activeChain!.id}
+          onClick={() => switchNetworkAsync?.(chain.id)}>
           <Image src={`/icons/networks/${chain.id || 1}.svg`} alt={chain.name}
             boxSize='2rem' mr='12px' />
           <Text fontWeight={'semibold'}>

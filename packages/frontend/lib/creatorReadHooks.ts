@@ -22,10 +22,7 @@ export const useTotalAmountStaked = ({
   }>({})
 
   const refetch = async (chainId: string) => {
-    if (!beneficiary) {
-      setTotalAmountsStaked({})
-      return
-    }
+    if (!beneficiary) return
     setIsLoading(true)
     const contract = new ethers.Contract(
       contractAddresses.YieldGate,
@@ -36,21 +33,20 @@ export const useTotalAmountStaked = ({
     try {
       value = await contract.staked(beneficiary)
     } catch (e) {}
-    setTotalAmountsStaked({
-      ...totalAmountsStaked,
+    setTotalAmountsStaked((prev) => ({
+      ...prev,
       [chainId]: parseFloat(formatEther(value) || '0.0'),
-    })
+    }))
     setIsLoading(false)
   }
   useEffect(() => {
     refetch(contractChainId)
   }, [beneficiary, contractChainId])
 
-  const totalAmountStaked = totalAmountsStaked[contractChainId]
   return {
     isLoading,
     totalAmountsStaked,
-    totalAmountStaked,
+    totalAmountStaked: totalAmountsStaked[contractChainId],
     contractChain,
     contractChainId,
     refetch: async () => {
@@ -77,10 +73,7 @@ export const useSupporterAmountStaked = ({
   }>({})
 
   const refetch = async (chainId: string) => {
-    if (!supporter || !beneficiary) {
-      setSupporterAmountsStaked({})
-      return
-    }
+    if (!supporter || !beneficiary) return
     setIsLoading(true)
     const contract = new ethers.Contract(
       contractAddresses.YieldGate,
@@ -91,21 +84,20 @@ export const useSupporterAmountStaked = ({
     try {
       value = await contract.supporterStaked(supporter, beneficiary)
     } catch (e) {}
-    setSupporterAmountsStaked({
-      ...supporterAmountsStaked,
+    setSupporterAmountsStaked((prev) => ({
+      ...prev,
       [chainId]: parseFloat(formatEther(value) || '0.0'),
-    })
+    }))
     setIsLoading(false)
   }
   useEffect(() => {
     refetch(contractChainId)
   }, [supporter, beneficiary, contractChainId])
 
-  const supporterAmountStaked = supporterAmountsStaked[contractChainId]
   return {
     isLoading,
     supporterAmountsStaked,
-    supporterAmountStaked,
+    supporterAmountStaked: supporterAmountsStaked[contractChainId],
     contractChain,
     contractChainId,
     refetch: async () => {
@@ -130,10 +122,7 @@ export const useClaimableAmount = ({
   }>({})
 
   const refetch = async (chainId: string) => {
-    if (!beneficiary) {
-      setClaimableAmounts({})
-      return
-    }
+    if (!beneficiary) return
     setIsLoading(true)
     const contract = new ethers.Contract(
       contractAddresses.YieldGate,
@@ -143,24 +132,21 @@ export const useClaimableAmount = ({
     let value = BigNumber.from(0)
     try {
       value = await contract.claimable(beneficiary)
-    } catch (e) {
-      console.log('Here3')
-    }
-    setClaimableAmounts({
-      ...claimableAmounts,
+    } catch (e) {}
+    setClaimableAmounts((prev) => ({
+      ...prev,
       [chainId]: parseFloat(formatUnits(value, 'finney') || '0.0'),
-    })
+    }))
     setIsLoading(false)
   }
   useEffect(() => {
     refetch(contractChainId)
   }, [beneficiary, contractChainId])
 
-  const claimableAmount = claimableAmounts[contractChainId]
   return {
     isLoading,
     claimableAmounts,
-    claimableAmount,
+    claimableAmount: claimableAmounts[contractChainId],
     contractChain,
     contractChainId,
     refetch: async () => {
