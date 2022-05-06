@@ -19,7 +19,7 @@ export const BlockiesAvatar: FC<BlockiesAvatarProps> = ({
     if (typeof window === 'undefined') return
     const blockieImageSrc = blockies.create({ seed: (address || '').toLowerCase() }).toDataURL()
     setAvatarUri(blockieImageSrc)
-  }, [])
+  }, [address])
 
   return (
     <Box>
