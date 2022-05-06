@@ -17,9 +17,7 @@
     "hardhat:chain": "npm run chain -w @yieldgate/hardhat",
     "hardhat:deploy": "npm run deploy -w @yieldgate/hardhat"
   },
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  }
+  "workspaces": [
+    "packages/*"
+  ]
 }

@@ -1,6 +1,8 @@
 # Yieldgate
 
-Yield Gate is a new monetisation tool for anyone to start receiving donations, or to support their favourite public goods projects, creators, and security researchers, with yield. No NFTs or tokens, just good old MATIC! Built with ❤️ on top of Aave, Polygon, and others.
+Yieldgate is a protocol that allows anyone to start earning and building products with programmable yield.
+
+Built with ❤️ on top of Aave, Polygon, and others.
 
 ![Yieldate](https://i.imgur.com/j316O86.png "Yieldgate")
 
@@ -22,11 +24,13 @@ cp packages/hardhat/.env.example packages/hardhat/.env && nano packages/hardhat/
 
 # Generate types, artifacts & start frontend
 npm run dev
+# … or only start frontend if types are generated previously
+npm run frontend:dev
 
-# Startup hardhat network and deploy contracts locally
-# NOTE: Has to be done in different terminals
-npm run chain
-npm run deploy
+# Optional: Start local hardhat network and deploy contracts
+# NOTE: Execute those in different terminals
+npm run hardhat:chain
+npm run hardhat:deploy  
 ```
 
 ## Stack 
