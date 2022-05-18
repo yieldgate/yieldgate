@@ -141,18 +141,44 @@ export default function IndexPage({ creators }: IndexPageProps) {
           </Heading>
           <Grid
             templateColumns="1fr 1fr"
+            sx={{
+              '@media (max-width: 600px)': {
+                gridTemplateColumns: '1fr',
+              },
+            }}
             templateRows="100px 100px"
-            gap="20"
+            px="10"
+            gap="10"
             placeItems="center"
           >
-            <Image src="/images/aave.svg" h="60%" alt="AAVE" />
-            <Image src="/images/polygon.svg" h="70%" alt="Polygon" />
+            <Image
+              src="/images/aave.svg"
+              alt="AAVE"
+              w="90%"
+              maxH="14"
+              objectFit="contain"
+            />
+            <Image
+              src="/images/polygon.svg"
+              alt="Polygon"
+              w="90%"
+              maxH="14"
+              objectFit="contain"
+            />
             <Image
               src="/images/walletconnect.svg"
-              h="60%"
               alt="WalletConnect"
+              w="100%"
+              maxH="16"
+              objectFit="contain"
             />
-            <Image src="/images/coinbase.svg" h="50%" alt="Coinbase" />
+            <Image
+              src="/images/coinbase.svg"
+              alt="Coinbase"
+              w="90%"
+              maxH="14"
+              objectFit="contain"
+            />
           </Grid>
         </Flex>
       </Container>
