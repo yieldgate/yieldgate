@@ -21,6 +21,7 @@ export const BlockiesAvatar = ({
       src={avatarDataUrl}
       fallbackSrc="https://via.placeholder.com/150"
       alt={address}
+      borderRadius="full"
       sx={{ imageRendering: 'pixelated' }}
       {...rest}
     />
