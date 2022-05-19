@@ -1,4 +1,4 @@
-import { Box, Flex, Grid, GridItem, Icon, Link } from '@chakra-ui/react'
+import { Box, Flex, Grid, GridItem, Icon, Link, Text } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import React from 'react'
 import { BsGithub, BsTwitter } from 'react-icons/bs'
@@ -10,19 +10,27 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps): JSX.Element => {
   return (
-    <>
+    <Flex direction="column" minH="100vh">
       <header>
         <Navbar />
       </header>
-      <Box as="main">{children}</Box>
+      <Box as="main" flexGrow={1}>
+        {children}
+      </Box>
       <Grid
         as="footer"
+        templateAreas={{
+          base: '"love" "email" "social"',
+          md: '"social love email"',
+        }}
+        templateColumns={{ base: '1fr', md: '180px 1fr 180px' }}
+        placeItems="center"
+        gap="4"
         borderTop="1px"
-        p={5}
         mt="12"
-        templateColumns="300px 1fr 300px"
+        p="5"
       >
-        <Flex gap={5}>
+        <Flex gap="4" gridArea="social" justifySelf={{ md: 'start' }}>
           <NextLink href="https://twitter.com/yieldgate" passHref>
             <Link>
               <Icon as={BsTwitter} boxSize="8" color="gray.700" />
@@ -34,16 +42,19 @@ const Layout = ({ children }: LayoutProps): JSX.Element => {
             </Link>
           </NextLink>
         </Flex>
-        <GridItem placeSelf="center">
-          Built with ❤️ at ETHGlobal Amsterdam 🇳🇱
+        <GridItem textAlign="center" gridArea="love">
+          Built with ❤️ at ETHGlobal{' '}
+          <Text as="span" whiteSpace="nowrap">
+            Amsterdam 🇳🇱
+          </Text>
         </GridItem>
-        <GridItem justifySelf="end">
+        <GridItem gridArea="email" justifySelf={{ md: 'end' }}>
           <NextLink href="mailto:hi@yieldgate.xyz" passHref>
             <Link>hi@yieldgate.xyz</Link>
           </NextLink>
         </GridItem>
       </Grid>
-    </>
+    </Flex>
   )
 }
 
