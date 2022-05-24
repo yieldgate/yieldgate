@@ -33,10 +33,10 @@ export const ChainSwitchMenu: FC<ChainSwitchMenuProps> = ({...props}) => {
 
   return <>
     <Menu >
-      <Tooltip label={activeChain.name} aria-label={activeChain.name}>
+      <Tooltip label={activeChain.name} aria-label={activeChain.name} gutter={10}>
         <MenuButton as={Button} rightIcon={<BsChevronDown />} bgColor={activeChain?.unsupported ? 'red.100' : ''} {...props}>
           {activeChain?.unsupported
-            ? <Text>Unsupported Chain</Text>
+            ? <Text>Invalid Chain</Text>
             : <Image src={`/icons/networks/${activeChain.id}.svg`} alt={activeChain.name} boxSize='1.5rem' mr="1" />}
         </MenuButton>
       </Tooltip>

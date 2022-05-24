@@ -38,7 +38,6 @@ export const CreatorCard: FC<CreatorCardProps> = ({
       <CreatorCardDetails creator={creator} />
 
       <Divider />
-
       <VStack w="full">
         {accountData
           ? activeChain?.unsupported

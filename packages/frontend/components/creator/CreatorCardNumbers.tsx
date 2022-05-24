@@ -1,4 +1,4 @@
-import { Flex, Heading, HStack, Spinner, Text } from '@chakra-ui/react'
+import { Flex, Heading, HStack, Spinner, Text, useMediaQuery } from '@chakra-ui/react'
 import { Creator } from '@entities/Creator.entity'
 import { FC } from 'react'
 import { Chain } from 'wagmi'
@@ -15,6 +15,8 @@ export const CreatorCardNumbers: FC<CreatorCardNumbersProps> = ({
   totalAmountStakedIsLoading: isLoading,
   contractChain,
 }) => {
+  const [isMobile] = useMediaQuery('(max-width: 500px)') 
+
   return (
     <>
       <HStack spacing={8} mx={8} wrap="wrap" placeContent="center">
@@ -31,7 +33,7 @@ export const CreatorCardNumbers: FC<CreatorCardNumbersProps> = ({
             <Heading>{totalAmountStaked || '0.0'}</Heading>
           )}
           <Text textAlign="center">
-            Staked {contractChain?.nativeCurrency?.symbol || 'ETH'}
+            {!isMobile && 'Staked '} {contractChain?.nativeCurrency?.symbol || 'ETH'}
           </Text>
         </Flex>
         <Flex direction="column" align="center">

@@ -1,3 +1,4 @@
+import type { ButtonProps } from '@chakra-ui/react'
 import {
   Button,
   Modal,
@@ -6,9 +7,8 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-  VStack,
+  VStack
 } from '@chakra-ui/react'
-import type { ButtonProps } from '@chakra-ui/react'
 import React from 'react'
 import { useConnect } from 'wagmi'
 

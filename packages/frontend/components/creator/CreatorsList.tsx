@@ -1,5 +1,5 @@
 import {
-  Button,
+  Box, Button,
   Flex,
   Grid,
   Heading,
@@ -7,11 +7,9 @@ import {
   InputGroup,
   InputLeftElement,
   Link,
-  Spinner,
-  Text,
-  VStack,
+  Spinner, StackProps, Text,
+  VStack
 } from '@chakra-ui/react'
-import type { StackProps } from '@chakra-ui/react'
 import { Creator } from '@entities/Creator.entity'
 import { useTotalAmountStaked } from '@lib/creatorReadHooks'
 import { truncateHash } from '@lib/truncateHash'
@@ -35,9 +33,10 @@ const Stat = ({
 }: StatProps): JSX.Element => {
   return (
     <VStack spacing="0" {...rest}>
-      <Text fontSize={{ base: '2xl', lg: '3xl' }} fontWeight="bold">
-        {isLoading ? <Spinner /> : value}
-      </Text>
+      {isLoading
+        ? <Box flexGrow={1} display='flex' justifyContent={'center'} alignItems={'center'}><Spinner /></Box>
+        : <Text fontSize={{ base: '2xl', lg: '3xl' }} fontWeight="bold">{value}</Text>
+      }
       <Text
         fontSize={{ base: 'sm', lg: 'md' }}
         textAlign="center"
