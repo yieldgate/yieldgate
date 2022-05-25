@@ -1,4 +1,12 @@
-import { Button, Container, Flex, Grid, Heading, Image, Text } from '@chakra-ui/react'
+import {
+  Button,
+  Container,
+  Flex,
+  Grid,
+  Heading,
+  Image,
+  Text,
+} from '@chakra-ui/react'
 import { CreatorsList } from '@components/creator/CreatorsList'
 import Layout from '@components/layout/Layout'
 import { Creator } from '@entities/Creator.entity'
@@ -24,7 +32,12 @@ export default function IndexPage({ creators }: IndexPageProps) {
       >
         <Container maxW="5xl" py={24}>
           <Flex direction="column" align="start" gap={3}>
-            <Image src="/images/logo-yieldgate-long.svg" h="70px" mb={2} alt="Yieldgate Cover Image" />
+            <Image
+              src="/images/logo-yieldgate-long.svg"
+              h="70px"
+              mb={2}
+              alt="Yieldgate Cover Image"
+            />
             <Text fontSize="3xl" fontWeight={700}>
               Earn yield from your supporters.
               <br />
@@ -51,21 +64,36 @@ export default function IndexPage({ creators }: IndexPageProps) {
             fontSize="2xl"
             textAlign="center"
           >
-            Yieldgate is a protocol that allows anyone to start earning and building products with programmable yield.
+            Yieldgate is a protocol that allows anyone to start earning and
+            building products with programmable yield.
           </Text>
         </Flex>
         <Flex direction="column">
           <Heading mt={24} mb={12} textAlign="center">
             How does it work?
           </Heading>
-          <Grid gridTemplateColumns="repeat(3, 1fr)" gap={10}>
+          <Grid
+            gap="5"
+            gridTemplateColumns="repeat(3, 1fr)"
+            sx={{
+              '@media (max-width: 600px)': {
+                gridTemplateColumns: '1fr',
+              },
+            }}
+          >
             <Flex
               direction="column"
               border="1px"
               borderRadius="md"
               overflow="hidden"
             >
-              <Image src="/images/step-1.png" h={52} alt="Step 1" />
+              <Image
+                src="/images/step-1.png"
+                alt="Step 1"
+                maxH="48"
+                objectFit="cover"
+                objectPosition="top"
+              />
               <Text p={5} fontSize="xl">
                 Sign in with your wallet
               </Text>
@@ -76,7 +104,13 @@ export default function IndexPage({ creators }: IndexPageProps) {
               borderRadius="md"
               overflow="hidden"
             >
-              <Image src="/images/step-2.png" h={52} alt="Step 2" />
+              <Image
+                src="/images/step-2.png"
+                alt="Step 2"
+                maxH="48"
+                objectFit="cover"
+                objectPosition="top"
+              />
               <Text p={5} fontSize="xl">
                 Edit your profile and make your first post
               </Text>
@@ -87,10 +121,15 @@ export default function IndexPage({ creators }: IndexPageProps) {
               borderRadius="md"
               overflow="hidden"
             >
-              <Image src="/images/step-3.png" h={52} alt="Step 3" />
+              <Image
+                src="/images/step-3.png"
+                alt="Step 3"
+                maxH="48"
+                objectFit="cover"
+                objectPosition="top"
+              />
               <Text p={5} fontSize="xl">
-                Share your Yieldgate profile to start receiving donations from
-                your supporters in yield!
+                Start receiving yield from your supporters!
               </Text>
             </Flex>
           </Grid>
@@ -102,14 +141,44 @@ export default function IndexPage({ creators }: IndexPageProps) {
           </Heading>
           <Grid
             templateColumns="1fr 1fr"
+            sx={{
+              '@media (max-width: 600px)': {
+                gridTemplateColumns: '1fr',
+              },
+            }}
             templateRows="100px 100px"
-            gap="20"
+            px="10"
+            gap="10"
             placeItems="center"
           >
-            <Image src="/images/aave.svg" h="60%" alt="AAVE" />
-            <Image src="/images/polygon.svg" h="70%" alt="Polygon" />
-            <Image src="/images/walletconnect.svg" h="60%" alt="WalletConnect" />
-            <Image src="/images/coinbase.svg" h="50%" alt="Coinbase" />
+            <Image
+              src="/images/aave.svg"
+              alt="AAVE"
+              w="90%"
+              maxH="14"
+              objectFit="contain"
+            />
+            <Image
+              src="/images/polygon.svg"
+              alt="Polygon"
+              w="90%"
+              maxH="14"
+              objectFit="contain"
+            />
+            <Image
+              src="/images/walletconnect.svg"
+              alt="WalletConnect"
+              w="100%"
+              maxH="16"
+              objectFit="contain"
+            />
+            <Image
+              src="/images/coinbase.svg"
+              alt="Coinbase"
+              w="90%"
+              maxH="14"
+              objectFit="contain"
+            />
           </Grid>
         </Flex>
       </Container>

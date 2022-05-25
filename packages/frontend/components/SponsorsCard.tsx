@@ -1,4 +1,4 @@
-import { Flex, Heading, WrapItem, Wrap } from '@chakra-ui/react'
+import { Flex, Heading, Tooltip, Wrap, WrapItem } from '@chakra-ui/react'
 import { BlockiesAvatar } from './BlockiesAvatar'
 
 interface BlockiesAvatarProps {
@@ -13,9 +13,11 @@ function SponsorsCard({ sponsors }: BlockiesAvatarProps) {
       <Heading size="lg">Sponsors</Heading>
       <Wrap display="flex">
         {sponsors.map((sponsor) => (
-          <WrapItem key={sponsor}>
-            <BlockiesAvatar address={sponsor} borderRadius="full" width={12} />
-          </WrapItem>
+          <Tooltip key={sponsor} label={sponsor} fontSize={12} whiteSpace='nowrap'>
+            <WrapItem >
+              <BlockiesAvatar address={sponsor} borderRadius="full" width={12} />
+            </WrapItem>
+          </Tooltip>
         ))}
       </Wrap>
     </Flex>

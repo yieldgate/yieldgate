@@ -1,4 +1,11 @@
-import { Center, Container, Flex, Grid, GridItem, Spinner, VStack } from '@chakra-ui/react'
+import {
+  Center,
+  Container,
+  Grid,
+  GridItem,
+  Spinner,
+  VStack
+} from '@chakra-ui/react'
 import { CreatorCard } from '@components/creator/CreatorCard'
 import Feed from '@components/Feed'
 import Layout from '@components/layout/Layout'
@@ -21,14 +28,18 @@ export default function UsersPage() {
     accountData?.address &&
     accountData?.address.toLowerCase() === walletId.toLowerCase()
   const [creator, setCreator] = useState<Creator | null>(null)
-  const { supporterAmountStaked, refetch: refetchSupporterAmountStaked } = useSupporterAmountStaked({ supporter: accountData?.address, beneficiary: creator?.address })
+  const { supporterAmountStaked, refetch: refetchSupporterAmountStaked } =
+    useSupporterAmountStaked({
+      supporter: accountData?.address,
+      beneficiary: creator?.address,
+    })
   const [contentIsLocked, setContentIsLocked] = useState(true)
-  
+
   // Content Lock
   useEffect(() => {
     setContentIsLocked(!isOwner && (supporterAmountStaked || 0) <= 0)
   }, [supporterAmountStaked])
-  
+
   // Fetch Creator
   const fetchCreator = async (): Promise<Creator> => {
     const res = await fetch('/api/creators/getCreator', {
@@ -61,33 +72,46 @@ export default function UsersPage() {
     return <>Not a valid address</>
   }
 
-  if (!creator) return <>
-    <Center>
-      <Spinner size='xl' my='100' />
-    </Center>
-  </>
+  if (!creator)
+    return (
+      <>
+        <Center>
+          <Spinner size="xl" my="100" />
+        </Center>
+      </>
+    )
 
-  return (<>
+  return (
     <Layout>
       <Container maxW="5xl">
-        <Grid templateColumns="350px 1fr" gap={10} py={10}>
-          <Flex direction="column" gap={10} width="full">
-            <VStack
-              position="sticky"
-              spacing={8}
-              width="full"
-              align="stretch"
-            >
-              <CreatorCard creator={creator} isOwner={!!isOwner} updateContentIsLocked={refetchSupporterAmountStaked} />
-              <SponsorsCard sponsors={creator?.supporters} />
-            </VStack>
-          </Flex>
+        <Grid
+          templateColumns={{ base: '1fr', md: 'auto 1fr' }}
+          placeItems="start stretch"
+          gap={10}
+          py={10}
+        >
+          <VStack
+            position={{ base: 'static', md: 'sticky' }}
+            top="8"
+            spacing={8}
+            width="full"
+            align="stretch"
+          >
+            <CreatorCard
+              creator={creator}
+              isOwner={!!isOwner}
+              updateContentIsLocked={refetchSupporterAmountStaked}
+            />
+            <SponsorsCard sponsors={creator?.supporters} />
+          </VStack>
           <GridItem>
-            {isOwner && <NewPostForm creator={creator} setCreator={setCreator} />}
+            {isOwner && (
+              <NewPostForm creator={creator} setCreator={setCreator} />
+            )}
             <Feed feed={creator?.posts || []} isLocked={contentIsLocked} />
           </GridItem>
         </Grid>
       </Container>
     </Layout>
-  </>)
+  )
 }

@@ -8,21 +8,24 @@ import { FC } from 'react'
 export interface CreatorCardDetailsProps {
   creator: Creator
 }
-export const CreatorCardDetails: FC<CreatorCardDetailsProps> = ({creator}) => {
-  const {ensDomain} = useEnsDomain({address: creator.address})
+export const CreatorCardDetails: FC<CreatorCardDetailsProps> = ({
+  creator,
+}) => {
+  const { ensDomain } = useEnsDomain({ address: creator.address })
 
-  return <>
-    <BlockiesAvatar
-      address={creator?.address}
-      borderRadius="full"
-      width="200px"
-      height="200px"
-    />
-    <VStack w="full">
-      <Heading textAlign={'center'}>
-        {creator.displayName || ensDomain || truncateHash(creator.address)}
-      </Heading>
-      <Text textAlign={'center'}>{creator?.description}</Text>
-    </VStack>
-  </>
+  return (
+    <>
+      <BlockiesAvatar
+        address={creator?.address}
+        borderRadius="full"
+        width={{ base: '120px', md: '200px' }}
+      />
+      <VStack w="full">
+        <Heading textAlign={'center'}>
+          {creator.displayName || ensDomain || truncateHash(creator.address)}
+        </Heading>
+        <Text textAlign={'center'}>{creator?.description}</Text>
+      </VStack>
+    </>
+  )
 }

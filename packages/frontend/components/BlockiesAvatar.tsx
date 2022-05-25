@@ -1,35 +1,29 @@
-import { Box, Image } from '@chakra-ui/react'
 import blockies from 'blockies-ts'
-import { FC, useEffect, useState } from 'react'
+import { Image } from '@chakra-ui/react'
+import type { ImageProps } from '@chakra-ui/react'
+import { useMemo } from 'react'
 
-export interface BlockiesAvatarProps {
-  address: string | undefined
-  ml?: string
-  borderRadius?: string
-  width?: string | number
-  height?: string | number
-  cursor?: string
+export interface BlockiesAvatarProps extends ImageProps {
+  address?: string
 }
-export const BlockiesAvatar: FC<BlockiesAvatarProps> = ({
-  address,
-  ...props
-}) => {
-  const [avatarUri, setAvatarUri] = useState('')
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const blockieImageSrc = blockies.create({ seed: (address || '').toLowerCase() }).toDataURL()
-    setAvatarUri(blockieImageSrc)
-  }, [address])
+
+export const BlockiesAvatar = ({
+  address = '',
+  ...rest
+}: BlockiesAvatarProps): JSX.Element => {
+  const avatarDataUrl = useMemo(
+    () => blockies.create({ seed: address.toLowerCase() }).toDataURL(),
+    [address]
+  )
 
   return (
-    <Box>
-      <Image
-        src={avatarUri}
-        fallbackSrc="https://via.placeholder.com/150"
-        alt={address || ''}
-        style={{ imageRendering: 'pixelated' }}
-        {...props}
-      />
-    </Box>
+    <Image
+      src={avatarDataUrl}
+      fallbackSrc="https://via.placeholder.com/150"
+      alt={address}
+      borderRadius="full"
+      sx={{ imageRendering: 'pixelated' }}
+      {...rest}
+    />
   )
 }

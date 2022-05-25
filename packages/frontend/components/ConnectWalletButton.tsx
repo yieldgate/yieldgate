@@ -1,13 +1,18 @@
+import type { ButtonProps } from '@chakra-ui/react'
 import {
-  Button, Modal, ModalBody, ModalContent, ModalHeader, ModalOverlay, useDisclosure, VStack
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+  VStack
 } from '@chakra-ui/react'
 import React from 'react'
 import { useConnect } from 'wagmi'
 
-export type ConnectWalletButtonProps = {
-  title?: string
-}
-function ConnectWalletButton({title}: ConnectWalletButtonProps): JSX.Element {
+function ConnectWalletButton({ children, ...rest }: ButtonProps): JSX.Element {
   const { connectors, connect } = useConnect()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -18,7 +23,7 @@ function ConnectWalletButton({title}: ConnectWalletButtonProps): JSX.Element {
         <ModalContent>
           <ModalHeader>Connect your wallet of choice</ModalHeader>
           <ModalBody>
-            <VStack align={'stretch'} pb='4'>
+            <VStack align={'stretch'} pb="4">
               {connectors?.map((connector) => (
                 <Button key={connector.id} onClick={() => connect(connector)}>
                   {connector.name}
@@ -29,12 +34,8 @@ function ConnectWalletButton({title}: ConnectWalletButtonProps): JSX.Element {
         </ModalContent>
       </Modal>
 
-      <Button
-        w="220px"
-        variant="solid"
-        onClick={onOpen}
-      >
-        {title || 'Connect Wallet'}
+      <Button w="200px" variant="solid" onClick={onOpen} {...rest}>
+        {children || 'Connect Wallet'}
       </Button>
     </>
   )
