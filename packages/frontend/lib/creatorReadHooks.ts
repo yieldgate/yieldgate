@@ -32,7 +32,9 @@ export const useTotalAmountStaked = ({
     let value = BigNumber.from(0)
     try {
       value = await contract.staked(beneficiary)
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
     setTotalAmountsStaked((prev) => ({
       ...prev,
       [chainId]: parseFloat(formatEther(value) || '0.0'),
@@ -83,7 +85,9 @@ export const useSupporterAmountStaked = ({
     let value = BigNumber.from(0)
     try {
       value = await contract.supporterStaked(supporter, beneficiary)
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
     setSupporterAmountsStaked((prev) => ({
       ...prev,
       [chainId]: parseFloat(formatEther(value) || '0.0'),
@@ -132,7 +136,9 @@ export const useClaimableAmount = ({
     let value = BigNumber.from(0)
     try {
       value = await contract.claimable(beneficiary)
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
     setClaimableAmounts((prev) => ({
       ...prev,
       [chainId]: parseFloat(formatUnits(value, 'finney') || '0.0'),

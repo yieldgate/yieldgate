@@ -56,7 +56,7 @@ export default function IndexPage({ creators }: IndexPageProps) {
       <Container maxW="5xl">
         <Flex direction="column">
           <Heading mt={24} mb={12} textAlign="center">
-            What's Yieldgate?
+            {"What's Yieldgate?"}
           </Heading>
           <Text
             maxW="30em"
