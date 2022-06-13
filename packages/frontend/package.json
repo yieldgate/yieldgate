@@ -9,8 +9,8 @@
     "type-check": "tsc --pretty --noEmit",
     "format": "prettier --write .",
     "lint": "eslint . --ext ts --ext tsx --ext js",
-    "test": "jest",
-    "test-all": "npm run lint && npm run type-check && npm run test"
+    "test": "jest --passWithNoTests",
+    "validate": "npm run lint && npm run type-check && npm run test && npm run format && npm run build"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.8.8",
