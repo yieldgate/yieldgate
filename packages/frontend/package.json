@@ -3,14 +3,13 @@
   "license": "MIT",
   "version": "0.0.1",
   "scripts": {
-    "dev": "NODE_ENV=development && next dev",
-    "build": "NODE_ENV=production && next build",
-    "start": "NODE_ENV=production && next start",
+    "dev": "NODE_ENV=development next dev",
+    "build": "NODE_ENV=production next build",
+    "start": "NODE_ENV=production next start",
     "type-check": "tsc --pretty --noEmit",
     "format": "prettier --write .",
-    "lint": "eslint . --ext ts --ext tsx --ext js",
-    "test": "jest --passWithNoTests",
-    "validate": "npm run lint && npm run type-check && npm run test && npm run format && npm run build"
+    "lint": "eslint --ext .js,.ts,.tsx --fix .",
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.8.8",
@@ -48,7 +47,6 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^28.0.3",
     "jest-watch-typeahead": "^1.1.0",
-    "lint-staged": "^12.4.1",
     "prettier": "^2.6.2",
     "typescript": "^4.6.4"
   }

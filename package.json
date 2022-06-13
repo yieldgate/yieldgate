@@ -11,7 +11,6 @@
     "frontend:dev": "npm run dev -w @yieldgate/frontend",
     "frontend:build": "npm run build -w @yieldgate/frontend",
     "frontend:start": "npm run start -w @yieldgate/frontend",
-    "frontend:validate": "npm run validate -w @yieldgate/frontend",
     "hardhat:clean": "npm run clean -w @yieldgate/hardhat",
     "hardhat:compile": "npm run compile -w @yieldgate/hardhat",
     "hardhat:typechain": "npm run typechain -w @yieldgate/hardhat",
@@ -23,6 +22,7 @@
     "packages/*"
   ],
   "devDependencies": {
-    "husky": "^8.0.0"
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.1"
   }
 }
