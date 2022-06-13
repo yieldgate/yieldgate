@@ -1,5 +1,18 @@
 import YieldGate from '@artifacts/contracts/YieldGate.sol/YieldGate.json'
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner, Text, useDisclosure, useToast, VStack } from '@chakra-ui/react'
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Spinner,
+  Text,
+  useDisclosure,
+  useToast,
+  VStack,
+} from '@chakra-ui/react'
 import StakeAmountForm from '@components/StakeAmountForm'
 import { Creator } from '@entities/Creator.entity'
 import { useYieldgateContract } from '@lib/useYieldgateContract'
@@ -10,8 +23,8 @@ import { ClaimedEvent } from 'types/typechain/contracts/YieldGate.sol/YieldGate'
 import { useAccount, useSigner } from 'wagmi'
 
 export interface CreatorCardActionsProps {
-  creator: Creator, 
-  isOwner: boolean,
+  creator: Creator
+  isOwner: boolean
   claimableAmount: number
   claimableAmountsIsLoading: boolean
   refetchClaimableAmounts: () => void
@@ -36,7 +49,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
   refetchTotalAmountStaked,
 }) => {
   const { data: signer, refetch: refetchSigner } = useSigner()
-  const {contractChain, contractAddresses} = useYieldgateContract()
+  const { contractChain, contractAddresses } = useYieldgateContract()
   const { data: accountData } = useAccount()
   const [stakeIsLoading, setStakeIsLoading] = useState(false)
   const [unstakeIsLoading, setUnstakeIsLoading] = useState(false)
@@ -49,7 +62,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     await refetchSigner()
     if (!signer) return
     setStakeIsLoading(true)
-    
+
     // Blockchain Transaction
     const contract = new ethers.Contract(
       contractAddresses.YieldGate,
@@ -61,9 +74,9 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
         value: ethers.utils.parseEther(value),
         gasLimit: 500000,
       })
-      console.log({transaction})
+      console.log({ transaction })
       const receipt = await transaction.wait()
-      console.log({receipt})
+      console.log({ receipt })
     } catch (_) {
       setStakeIsLoading(false)
       return
@@ -85,7 +98,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     refetchTotalAmountStaked()
     refetchSupporterAmountStaked()
     updateContentIsLocked()
-    
+
     toast({
       title: 'Amount Staked',
       description: `You've successfully staked ${value} ${contractChain?.nativeCurrency?.symbol}`,
@@ -109,7 +122,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       signer
     ) as YieldGateType
     const transaction = await contract.unstake(creator.address, {
-      gasLimit: 500000
+      gasLimit: 500000,
     })
     console.log({ transaction })
     const receipt = await transaction.wait()
@@ -125,7 +138,8 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       }),
     })
     const { isRemoved } = await res.json()
-    if (isRemoved) creator.supportersCount = Math.max(0, (creator?.supportersCount || 0) - 1)
+    if (isRemoved)
+      creator.supportersCount = Math.max(0, (creator?.supportersCount || 0) - 1)
 
     // Update UI
     refetchTotalAmountStaked()
@@ -134,7 +148,9 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
     toast({
       title: 'Amount Unstaked',
-      description: `You've successfully unstaked ${supporterAmountStaked.toFixed(2)} ${contractChain?.nativeCurrency?.symbol}`,
+      description: `You've successfully unstaked ${supporterAmountStaked.toFixed(
+        2
+      )} ${contractChain?.nativeCurrency?.symbol}`,
       status: 'success',
     })
     setUnstakeIsLoading(false)
@@ -153,7 +169,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       signer
     ) as YieldGateType
     const transaction = await contract.claim({
-      gasLimit: 500000
+      gasLimit: 500000,
     })
     console.log({ transaction })
     const receipt = await transaction.wait()
@@ -180,67 +196,88 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     setShowConfetti(true)
   }
 
-  if (isOwner) return <>
-    {/* Claim */}
-    <Button w="full" py={'7'} colorScheme="whatsapp"
-      disabled={claimIsLoading || claimableAmountsIsLoading || !claimableAmount}
-      onClick={claim}
-      isLoading={claimIsLoading}>
-      <VStack spacing={'1'}>
-        <Text>Claim</Text>
-        {claimableAmountsIsLoading
-          ? <Spinner size={'xs'} />
-          : <Text fontSize={'xs'} opacity=".75">
-            {claimableAmount
-              ? `${claimableAmount.toFixed(8)} m${contractChain?.nativeCurrency?.symbol}`
-              : 'Nothing to claim yet'}
-          </Text>}
-      </VStack>
-    </Button>
-  </>
+  if (isOwner)
+    return (
+      <>
+        {/* Claim */}
+        <Button
+          w="full"
+          py={'7'}
+          colorScheme="whatsapp"
+          disabled={
+            claimIsLoading || claimableAmountsIsLoading || !claimableAmount
+          }
+          onClick={claim}
+          isLoading={claimIsLoading}
+        >
+          <VStack spacing={'1'}>
+            <Text>Claim</Text>
+            {claimableAmountsIsLoading ? (
+              <Spinner size={'xs'} />
+            ) : (
+              <Text fontSize={'xs'} opacity=".75">
+                {claimableAmount
+                  ? `${claimableAmount.toFixed(8)} m${
+                      contractChain?.nativeCurrency?.symbol
+                    }`
+                  : 'Nothing to claim yet'}
+              </Text>
+            )}
+          </VStack>
+        </Button>
+      </>
+    )
 
-  return <>
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>How much do you want to stake?</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Text>
+  return (
+    <>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>How much do you want to stake?</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>
               You can unstake and get the full amount minus gas fees back
               anytime.
-          </Text>
-          <StakeAmountForm stake={stake} onClose={onClose} />
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+            </Text>
+            <StakeAmountForm stake={stake} onClose={onClose} />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
 
-    {/* Stake */}
-    <Button w="full"
-      disabled={stakeIsLoading || unstakeIsLoading}
-      onClick={onOpen}
-      isLoading={stakeIsLoading}>
-      Stake
-    </Button>
+      {/* Stake */}
+      <Button
+        w="full"
+        disabled={stakeIsLoading || unstakeIsLoading}
+        onClick={onOpen}
+        isLoading={stakeIsLoading}
+      >
+        Stake
+      </Button>
 
-    {/* Unstake */}
-    <Button
-      w="full"
-      py={'7'}
-      disabled={stakeIsLoading || unstakeIsLoading || !supporterAmountStaked}
-      onClick={unstake}
-      isLoading={unstakeIsLoading}
-    >
-      <VStack spacing={'1'}>
-        <Text>Unstake</Text>
-        {supporterAmountsIsLoading
-          ? <Spinner size={'xs'} />
-          : <Text fontSize={'xs'} opacity=".75">
-            {supporterAmountStaked
-              ? `${supporterAmountStaked.toFixed(2)} ${contractChain?.nativeCurrency?.symbol}`
-              : 'Nothing to unstake yet'}
-          </Text>}
-      </VStack>
-    </Button>
-  </>
+      {/* Unstake */}
+      <Button
+        w="full"
+        py={'7'}
+        disabled={stakeIsLoading || unstakeIsLoading || !supporterAmountStaked}
+        onClick={unstake}
+        isLoading={unstakeIsLoading}
+      >
+        <VStack spacing={'1'}>
+          <Text>Unstake</Text>
+          {supporterAmountsIsLoading ? (
+            <Spinner size={'xs'} />
+          ) : (
+            <Text fontSize={'xs'} opacity=".75">
+              {supporterAmountStaked
+                ? `${supporterAmountStaked.toFixed(2)} ${
+                    contractChain?.nativeCurrency?.symbol
+                  }`
+                : 'Nothing to unstake yet'}
+            </Text>
+          )}
+        </VStack>
+      </Button>
+    </>
+  )
 }

@@ -13,9 +13,18 @@ function SponsorsCard({ sponsors }: BlockiesAvatarProps) {
       <Heading size="lg">Sponsors</Heading>
       <Wrap display="flex">
         {sponsors.map((sponsor) => (
-          <Tooltip key={sponsor} label={sponsor} fontSize={12} whiteSpace='nowrap'>
-            <WrapItem >
-              <BlockiesAvatar address={sponsor} borderRadius="full" width={12} />
+          <Tooltip
+            key={sponsor}
+            label={sponsor}
+            fontSize={12}
+            whiteSpace="nowrap"
+          >
+            <WrapItem>
+              <BlockiesAvatar
+                address={sponsor}
+                borderRadius="full"
+                width={12}
+              />
             </WrapItem>
           </Tooltip>
         ))}

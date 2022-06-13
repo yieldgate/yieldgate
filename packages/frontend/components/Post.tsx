@@ -5,7 +5,7 @@ import {
   Grid,
   GridItem,
   Heading,
-  Icon
+  Icon,
 } from '@chakra-ui/react'
 import type { Post as PostType } from '@entities/Post.entity'
 import dayjs from 'dayjs'

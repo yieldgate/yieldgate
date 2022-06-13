@@ -4,7 +4,7 @@ import {
   Grid,
   GridItem,
   Spinner,
-  VStack
+  VStack,
 } from '@chakra-ui/react'
 import { CreatorCard } from '@components/creator/CreatorCard'
 import Feed from '@components/Feed'
