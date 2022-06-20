@@ -8,6 +8,7 @@
     "prebuild": "npm run hardhat:clean && npm run hardhat:compile",
     "dev": "npm run frontend:dev",
     "build": "npm run frontend:build",
+    "start": "npm run frontend:start",
     "frontend:dev": "npm run dev -w @yieldgate/frontend",
     "frontend:build": "npm run build -w @yieldgate/frontend",
     "frontend:start": "npm run start -w @yieldgate/frontend",
