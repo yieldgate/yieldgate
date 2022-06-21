@@ -3,10 +3,8 @@ name: Deploy to Vercel CI
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches: [develop]
   push:
-    branches: [develop]
+    branches: [main,develop]
 
 jobs:
   deploy:
@@ -16,11 +14,37 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Deploy
-        uses: BetaHuhn/deploy-to-vercel-action@latest
+      - name: Deploy to Preview
+        uses: BetaHuhn/deploy-to-vercel-action@v1
+        if: github.event_name == 'workflow_dispatch'
         with:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          PR_PREVIEW_DOMAIN: "pr-{PR}.ygyg.vercel.app"
           PRODUCTION: false
+
+      - name: Deploy to Staging
+        uses: BetaHuhn/deploy-to-vercel-action@v1
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          ALIAS_DOMAINS: |
+            staging.ygyg.vercel.app
+          PRODUCTION: false
+
+      - name: Deploy to Production
+        uses: BetaHuhn/deploy-to-vercel-action@v1
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          ALIAS_DOMAINS: |
+            prod.ygyg.vercel.app
+          PRODUCTION: true
