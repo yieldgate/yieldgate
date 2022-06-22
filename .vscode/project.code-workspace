@@ -22,5 +22,8 @@
       "**/.yarn": true,
       "packages/hardhat/cache": true,
     },
+    "eslint.workingDirectories": [
+      { "directory": "./packages/frontend", "changeProcessCWD": true },
+    ]  
   }
 }
