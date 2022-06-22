@@ -23,7 +23,7 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           ALIAS_DOMAINS: |
-            {SHA}.ygyg.vercel.app
+            ygyg-{SHA}.vercel.app
           PRODUCTION: false
 
       - name: Deploy to Staging
@@ -35,7 +35,7 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           ALIAS_DOMAINS: |
-            staging.ygyg.vercel.app
+            ygyg-dev.vercel.app
           PRODUCTION: false
 
       - name: Deploy to Production
@@ -47,6 +47,6 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           ALIAS_DOMAINS: |
-            prod.ygyg.vercel.app
+            ygyg-main.vercel.app
             yieldgate.xyz
           PRODUCTION: true
