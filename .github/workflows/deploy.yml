@@ -22,7 +22,6 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          PR_PREVIEW_DOMAIN: "pr-{PR}.ygyg.vercel.app"
           PRODUCTION: false
 
       - name: Deploy to Staging
@@ -47,4 +46,5 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           ALIAS_DOMAINS: |
             prod.ygyg.vercel.app
+            yieldgate.xyz
           PRODUCTION: true
