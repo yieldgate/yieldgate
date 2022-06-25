@@ -51,9 +51,7 @@ export const connectors = ({ chainId }: { chainId?: number }): Connector[] => {
 
 export const provider = ({ chainId }: { chainId?: number }) => {
   const rpc = rpcsByChainId?.[chainId || 0]
-  return rpc
-    ? new providers.JsonRpcProvider(rpc, chainId)
-    : ethers.getDefaultProvider()
+  return rpc ? new providers.JsonRpcProvider(rpc, chainId) : ethers.getDefaultProvider()
 }
 
 export const wagmiClient = createClient({

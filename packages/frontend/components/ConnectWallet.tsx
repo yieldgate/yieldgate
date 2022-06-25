@@ -1,16 +1,7 @@
-import {
-  Button,
-  Flex,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Text,
-} from '@chakra-ui/react'
+import { Button, Flex, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react'
 import { useEnsDomain } from '@lib/useEnsDomain'
 import { useIsSSR } from '@lib/useIsSSR'
 import Link from 'next/link'
-import React from 'react'
 import { useAccount, useDisconnect } from 'wagmi'
 import { BlockiesAvatar } from './BlockiesAvatar'
 import { ChainSwitchMenu } from './ChainSwitchMenu'
@@ -31,10 +22,7 @@ function ConnectWallet(): JSX.Element {
   return (
     <Flex alignItems={'center'}>
       {/* Avatar */}
-      <Link
-        href={`/users/${(accountData?.address || '').toLowerCase()}`}
-        passHref
-      >
+      <Link href={`/users/${(accountData?.address || '').toLowerCase()}`} passHref>
         <div>
           <BlockiesAvatar
             address={accountData.address}

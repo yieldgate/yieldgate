@@ -138,8 +138,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       }),
     })
     const { isRemoved } = await res.json()
-    if (isRemoved)
-      creator.supportersCount = Math.max(0, (creator?.supportersCount || 0) - 1)
+    if (isRemoved) creator.supportersCount = Math.max(0, (creator?.supportersCount || 0) - 1)
 
     // Update UI
     refetchTotalAmountStaked()
@@ -148,9 +147,9 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
     toast({
       title: 'Amount Unstaked',
-      description: `You've successfully unstaked ${supporterAmountStaked.toFixed(
-        2
-      )} ${contractChain?.nativeCurrency?.symbol}`,
+      description: `You've successfully unstaked ${supporterAmountStaked.toFixed(2)} ${
+        contractChain?.nativeCurrency?.symbol
+      }`,
       status: 'success',
     })
     setUnstakeIsLoading(false)
@@ -178,10 +177,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     const claimedEvent = (receipt.events || []).filter(
       (e) => e.event === 'Claimed'
     )?.[0] as ClaimedEvent
-    const claimedAmount = ethers.utils.formatUnits(
-      claimedEvent?.args?.amount,
-      'finney'
-    )
+    const claimedAmount = ethers.utils.formatUnits(claimedEvent?.args?.amount, 'finney')
     console.log({ claimedEvent, claimedAmount })
 
     // Update UI
@@ -204,9 +200,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
           w="full"
           py={'7'}
           colorScheme="whatsapp"
-          disabled={
-            claimIsLoading || claimableAmountsIsLoading || !claimableAmount
-          }
+          disabled={claimIsLoading || claimableAmountsIsLoading || !claimableAmount}
           onClick={claim}
           isLoading={claimIsLoading}
         >
@@ -217,9 +211,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
             ) : (
               <Text fontSize={'xs'} opacity=".75">
                 {claimableAmount
-                  ? `${claimableAmount.toFixed(8)} m${
-                      contractChain?.nativeCurrency?.symbol
-                    }`
+                  ? `${claimableAmount.toFixed(8)} m${contractChain?.nativeCurrency?.symbol}`
                   : 'Nothing to claim yet'}
               </Text>
             )}
@@ -236,10 +228,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
           <ModalHeader>How much do you want to stake?</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>
-              You can unstake and get the full amount minus gas fees back
-              anytime.
-            </Text>
+            <Text>You can unstake and get the full amount minus gas fees back anytime.</Text>
             <StakeAmountForm stake={stake} onClose={onClose} />
           </ModalBody>
         </ModalContent>
@@ -270,9 +259,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
           ) : (
             <Text fontSize={'xs'} opacity=".75">
               {supporterAmountStaked
-                ? `${supporterAmountStaked.toFixed(2)} ${
-                    contractChain?.nativeCurrency?.symbol
-                  }`
+                ? `${supporterAmountStaked.toFixed(2)} ${contractChain?.nativeCurrency?.symbol}`
                 : 'Nothing to unstake yet'}
             </Text>
           )}

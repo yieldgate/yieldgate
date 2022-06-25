@@ -1,12 +1,4 @@
-import {
-  Button,
-  Container,
-  Flex,
-  Grid,
-  Heading,
-  Image,
-  Text,
-} from '@chakra-ui/react'
+import { Button, Container, Flex, Grid, Heading, Image, Text } from '@chakra-ui/react'
 import { CreatorsList } from '@components/creator/CreatorsList'
 import Layout from '@components/layout/Layout'
 import { Creator } from '@entities/Creator.entity'
@@ -25,11 +17,7 @@ export default function IndexPage({ creators }: IndexPageProps) {
 
   return (
     <Layout>
-      <Flex
-        bgImage="/images/banner-background.png"
-        bgPos="center"
-        bgSize="cover"
-      >
+      <Flex bgImage="/images/banner-background.png" bgPos="center" bgSize="cover">
         <Container maxW="5xl" py={24}>
           <Flex direction="column" align="start" gap={3}>
             <Image
@@ -58,14 +46,9 @@ export default function IndexPage({ creators }: IndexPageProps) {
           <Heading mt={24} mb={12} textAlign="center">
             {"What's Yieldgate?"}
           </Heading>
-          <Text
-            maxW="30em"
-            alignSelf="center"
-            fontSize="2xl"
-            textAlign="center"
-          >
-            Yieldgate is a protocol that allows anyone to start earning and
-            building products with programmable yield.
+          <Text maxW="30em" alignSelf="center" fontSize="2xl" textAlign="center">
+            Yieldgate is a protocol that allows anyone to start earning and building products with
+            programmable yield.
           </Text>
         </Flex>
         <Flex direction="column">
@@ -81,12 +64,7 @@ export default function IndexPage({ creators }: IndexPageProps) {
               },
             }}
           >
-            <Flex
-              direction="column"
-              border="1px"
-              borderRadius="md"
-              overflow="hidden"
-            >
+            <Flex direction="column" border="1px" borderRadius="md" overflow="hidden">
               <Image
                 src="/images/step-1.png"
                 alt="Step 1"
@@ -98,12 +76,7 @@ export default function IndexPage({ creators }: IndexPageProps) {
                 Sign in with your wallet
               </Text>
             </Flex>
-            <Flex
-              direction="column"
-              border="1px"
-              borderRadius="md"
-              overflow="hidden"
-            >
+            <Flex direction="column" border="1px" borderRadius="md" overflow="hidden">
               <Image
                 src="/images/step-2.png"
                 alt="Step 2"
@@ -115,12 +88,7 @@ export default function IndexPage({ creators }: IndexPageProps) {
                 Edit your profile and make your first post
               </Text>
             </Flex>
-            <Flex
-              direction="column"
-              border="1px"
-              borderRadius="md"
-              overflow="hidden"
-            >
+            <Flex direction="column" border="1px" borderRadius="md" overflow="hidden">
               <Image
                 src="/images/step-3.png"
                 alt="Step 3"
@@ -151,20 +119,8 @@ export default function IndexPage({ creators }: IndexPageProps) {
             gap="10"
             placeItems="center"
           >
-            <Image
-              src="/images/aave.svg"
-              alt="AAVE"
-              w="90%"
-              maxH="14"
-              objectFit="contain"
-            />
-            <Image
-              src="/images/polygon.svg"
-              alt="Polygon"
-              w="90%"
-              maxH="14"
-              objectFit="contain"
-            />
+            <Image src="/images/aave.svg" alt="AAVE" w="90%" maxH="14" objectFit="contain" />
+            <Image src="/images/polygon.svg" alt="Polygon" w="90%" maxH="14" objectFit="contain" />
             <Image
               src="/images/walletconnect.svg"
               alt="WalletConnect"

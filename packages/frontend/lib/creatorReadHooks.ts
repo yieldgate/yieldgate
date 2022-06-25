@@ -9,14 +9,9 @@ import { YieldGate as YieldGateType } from 'types/typechain'
 /**
  * Returns total staked amount for given beneficiary address
  */
-export const useTotalAmountStaked = ({
-  beneficiary,
-}: {
-  beneficiary: string
-}) => {
+export const useTotalAmountStaked = ({ beneficiary }: { beneficiary: string }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { contractChain, contractChainId, contractAddresses } =
-    useYieldgateContract()
+  const { contractChain, contractChainId, contractAddresses } = useYieldgateContract()
   const [totalAmountsStaked, setTotalAmountsStaked] = useState<{
     [key: string]: number
   }>({})
@@ -68,8 +63,7 @@ export const useSupporterAmountStaked = ({
   beneficiary?: string
 }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { contractChain, contractChainId, contractAddresses } =
-    useYieldgateContract()
+  const { contractChain, contractChainId, contractAddresses } = useYieldgateContract()
   const [supporterAmountsStaked, setSupporterAmountsStaked] = useState<{
     [key: string]: number
   }>({})
@@ -113,14 +107,9 @@ export const useSupporterAmountStaked = ({
 /**
  * Returns total claimable amount for given creator address
  */
-export const useClaimableAmount = ({
-  beneficiary,
-}: {
-  beneficiary?: string
-}) => {
+export const useClaimableAmount = ({ beneficiary }: { beneficiary?: string }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { contractChain, contractChainId, contractAddresses } =
-    useYieldgateContract()
+  const { contractChain, contractChainId, contractAddresses } = useYieldgateContract()
   const [claimableAmounts, setClaimableAmounts] = useState<{
     [key: string]: number
   }>({})

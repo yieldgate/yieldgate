@@ -28,21 +28,11 @@ interface StatProps extends StackProps {
   value: number | string
 }
 
-const Stat = ({
-  isLoading = false,
-  label,
-  value,
-  ...rest
-}: StatProps): JSX.Element => {
+const Stat = ({ isLoading = false, label, value, ...rest }: StatProps): JSX.Element => {
   return (
     <VStack spacing="0" {...rest}>
       {isLoading ? (
-        <Box
-          flexGrow={1}
-          display="flex"
-          justifyContent={'center'}
-          alignItems={'center'}
-        >
+        <Box flexGrow={1} display="flex" justifyContent={'center'} alignItems={'center'}>
           <Spinner />
         </Box>
       ) : (
@@ -50,11 +40,7 @@ const Stat = ({
           {value}
         </Text>
       )}
-      <Text
-        fontSize={{ base: 'sm', lg: 'md' }}
-        textAlign="center"
-        whiteSpace="nowrap"
-      >
+      <Text fontSize={{ base: 'sm', lg: 'md' }} textAlign="center" whiteSpace="nowrap">
         {label}
       </Text>
     </VStack>
@@ -65,9 +51,7 @@ export interface CreatorsListItemProps {
   creator: Creator
 }
 
-export const CreatorsListItem = ({
-  creator,
-}: CreatorsListItemProps): JSX.Element => {
+export const CreatorsListItem = ({ creator }: CreatorsListItemProps): JSX.Element => {
   const isSSR = useIsSSR()
   const { totalAmountStaked, isLoading, contractChain } = useTotalAmountStaked({
     beneficiary: creator.address,
@@ -111,9 +95,7 @@ export const CreatorsListItem = ({
             >
               {creator.displayName || truncateHash(creator.address)}
             </Heading>
-            <Text textAlign={{ base: 'center', md: 'left' }}>
-              {creator.description}
-            </Text>
+            <Text textAlign={{ base: 'center', md: 'left' }}>{creator.description}</Text>
           </Flex>
           <Flex
             gap="2"
@@ -122,12 +104,8 @@ export const CreatorsListItem = ({
             gridArea="stats"
             justifySelf={{ base: 'center', md: 'end' }}
           >
-            {creator.supportersCount && (
-              <Stat label="Supporters" value={creator.supportersCount} />
-            )}
-            {creator.postsCount && (
-              <Stat label="Posts" value={creator.postsCount} />
-            )}
+            {creator.supportersCount && <Stat label="Supporters" value={creator.supportersCount} />}
+            {creator.postsCount && <Stat label="Posts" value={creator.postsCount} />}
             {!isSSR && (
               <Stat
                 isLoading={isLoading}
@@ -174,10 +152,7 @@ export const CreatorsList: FC<CreatorsListProps> = ({ creators }) => {
 
         {/* Search Field */}
         <InputGroup size="lg">
-          <InputLeftElement
-            pointerEvents="none"
-            children={<BsSearch size={20} />}
-          />
+          <InputLeftElement pointerEvents="none" children={<BsSearch size={20} />} />
           <Input
             placeholder="Find creator"
             onChange={(event) => {

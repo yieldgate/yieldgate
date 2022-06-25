@@ -1,15 +1,5 @@
-import {
-  Box,
-  Container,
-  Flex,
-  Grid,
-  GridItem,
-  Icon,
-  Link,
-  Text,
-} from '@chakra-ui/react'
+import { Box, Container, Flex, Grid, GridItem, Icon, Link, Text } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import * as React from 'react'
 import { BsGithub, BsTwitter } from 'react-icons/bs'
 
 function Footer(): JSX.Element {

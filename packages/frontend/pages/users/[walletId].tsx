@@ -1,11 +1,4 @@
-import {
-  Center,
-  Container,
-  Grid,
-  GridItem,
-  Spinner,
-  VStack,
-} from '@chakra-ui/react'
+import { Center, Container, Grid, GridItem, Spinner, VStack } from '@chakra-ui/react'
 import { CreatorCard } from '@components/creator/CreatorCard'
 import Feed from '@components/Feed'
 import Layout from '@components/layout/Layout'
@@ -28,11 +21,12 @@ export default function UsersPage() {
     accountData?.address &&
     accountData?.address.toLowerCase() === walletId.toLowerCase()
   const [creator, setCreator] = useState<Creator | null>(null)
-  const { supporterAmountStaked, refetch: refetchSupporterAmountStaked } =
-    useSupporterAmountStaked({
+  const { supporterAmountStaked, refetch: refetchSupporterAmountStaked } = useSupporterAmountStaked(
+    {
       supporter: accountData?.address,
       beneficiary: creator?.address,
-    })
+    }
+  )
   const [contentIsLocked, setContentIsLocked] = useState(true)
 
   // Content Lock
@@ -65,10 +59,7 @@ export default function UsersPage() {
   }, [walletId])
 
   // Check if wallet-address is valid
-  if (
-    typeof walletId !== 'string' ||
-    !/^0x[a-fA-F0-9]{40}$/.test(walletId as string)
-  ) {
+  if (typeof walletId !== 'string' || !/^0x[a-fA-F0-9]{40}$/.test(walletId as string)) {
     return <>Not a valid address</>
   }
 
@@ -105,9 +96,7 @@ export default function UsersPage() {
             <SponsorsCard sponsors={creator?.supporters} />
           </VStack>
           <GridItem>
-            {isOwner && (
-              <NewPostForm creator={creator} setCreator={setCreator} />
-            )}
+            {isOwner && <NewPostForm creator={creator} setCreator={setCreator} />}
             <Feed feed={creator?.posts || []} isLocked={contentIsLocked} />
           </GridItem>
         </Grid>

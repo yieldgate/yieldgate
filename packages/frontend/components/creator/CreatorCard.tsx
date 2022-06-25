@@ -20,11 +20,7 @@ export interface CreatorCardProps {
   isOwner: boolean
   updateContentIsLocked: () => void
 }
-export const CreatorCard: FC<CreatorCardProps> = ({
-  creator,
-  isOwner,
-  updateContentIsLocked,
-}) => {
+export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateContentIsLocked }) => {
   const { contractChain } = useYieldgateContract()
   const { data: accountData } = useAccount()
   const { activeChain } = useNetwork()

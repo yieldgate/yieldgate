@@ -11,9 +11,7 @@ export const useYieldgateContract = () => {
   const [contractChainId, setContractChainId] = useState<ContractAddressesType>(
     defaultChain.id.toString() as ContractAddressesType
   )
-  const [contractAddresses, setContractAddresses] = useState(
-    ContractAddresses[contractChainId]
-  )
+  const [contractAddresses, setContractAddresses] = useState(ContractAddresses[contractChainId])
 
   useEffect(() => {
     const useDefaultChain = !activeChain?.id || !!activeChain.unsupported

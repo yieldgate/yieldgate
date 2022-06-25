@@ -13,10 +13,7 @@ export interface StakeAmountFormProps {
   stake: (value: string) => void
   onClose: () => void
 }
-export default function StakeAmountForm({
-  stake,
-  onClose,
-}: StakeAmountFormProps) {
+export default function StakeAmountForm({ stake, onClose }: StakeAmountFormProps) {
   const { contractChain } = useYieldgateContract()
   const [amount, setAmount] = React.useState('0.1')
 
