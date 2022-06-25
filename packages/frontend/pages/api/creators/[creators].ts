@@ -1,10 +1,7 @@
 import { connectToDatabase } from '@lib/mongodb'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { creators: slug } = req.query
 
   switch (slug) {
@@ -17,10 +14,7 @@ export default async function handler(
   }
 }
 
-export const handleGetAllCreators = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
+export const handleGetAllCreators = async (req: NextApiRequest, res: NextApiResponse) => {
   const { db } = await connectToDatabase()
   const creators = await db
     .collection('creators')
@@ -44,10 +38,7 @@ export const handleGetAllCreators = async (
   })
 }
 
-export const handleGetCreator = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
+export const handleGetCreator = async (req: NextApiRequest, res: NextApiResponse) => {
   let { address } = req.body || {}
   if (!address) return res.status(400).end()
   if (!/^0x[a-fA-F0-9]{40}$/.test(address)) return res.status(400).end()
