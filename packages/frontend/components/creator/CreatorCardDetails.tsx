@@ -8,9 +8,7 @@ import { FC } from 'react'
 export interface CreatorCardDetailsProps {
   creator: Creator
 }
-export const CreatorCardDetails: FC<CreatorCardDetailsProps> = ({
-  creator,
-}) => {
+export const CreatorCardDetails: FC<CreatorCardDetailsProps> = ({ creator }) => {
   const { ensDomain } = useEnsDomain({ address: creator.address })
 
   return (

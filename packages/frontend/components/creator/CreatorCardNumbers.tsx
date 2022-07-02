@@ -15,7 +15,7 @@ export const CreatorCardNumbers: FC<CreatorCardNumbersProps> = ({
   totalAmountStakedIsLoading: isLoading,
   contractChain,
 }) => {
-  const [isMobile] = useMediaQuery('(max-width: 500px)') 
+  const [isMobile] = useMediaQuery('(max-width: 500px)')
 
   return (
     <>

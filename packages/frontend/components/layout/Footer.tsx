@@ -1,8 +1,6 @@
 import { Box, Container, Flex, Grid, GridItem, Icon, Link, Text } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import * as React from 'react'
 import { BsGithub, BsTwitter } from 'react-icons/bs'
-
 
 function Footer(): JSX.Element {
   return (
@@ -31,9 +29,9 @@ function Footer(): JSX.Element {
             </NextLink>
           </Flex>
           <GridItem textAlign="center" gridArea="love">
-      Built with ❤️ at ETHGlobal{' '}
+            Built with ❤️ at ETHGlobal{' '}
             <Text as="span" whiteSpace="nowrap">
-        Amsterdam 🇳🇱
+              Amsterdam 🇳🇱
             </Text>
           </GridItem>
           <GridItem gridArea="email" justifySelf={{ md: 'end' }}>

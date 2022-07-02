@@ -1,12 +1,4 @@
-import {
-  Box,
-  Divider,
-  Flex,
-  Grid,
-  GridItem,
-  Heading,
-  Icon
-} from '@chakra-ui/react'
+import { Box, Divider, Flex, Grid, GridItem, Heading, Icon } from '@chakra-ui/react'
 import type { Post as PostType } from '@entities/Post.entity'
 import dayjs from 'dayjs'
 import md from 'markdown-it'
@@ -37,24 +29,14 @@ function Lock(): JSX.Element {
           <Box h="24px" w="76%" bg="gray.300" />
         </Flex>
       </GridItem>
-      <GridItem
-        gridArea="1 / 1 / 1 / 1"
-        alignSelf="center"
-        justifySelf="center"
-      >
+      <GridItem gridArea="1 / 1 / 1 / 1" alignSelf="center" justifySelf="center">
         <Icon as={FaLock} color="gray.600" boxSize="24" />
       </GridItem>
     </Grid>
   )
 }
 
-function Post({
-  post,
-  isLocked,
-}: {
-  post: PostType
-  isLocked: boolean
-}): JSX.Element {
+function Post({ post, isLocked }: { post: PostType; isLocked: boolean }): JSX.Element {
   const { content, date, title } = post
   if (isLocked) {
     return (

@@ -7,9 +7,8 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
-  VStack
+  VStack,
 } from '@chakra-ui/react'
-import React from 'react'
 import { useConnect } from 'wagmi'
 
 function ConnectWalletButton({ children, ...rest }: ButtonProps): JSX.Element {

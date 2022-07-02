@@ -1,28 +1,18 @@
-import {
-  Button, Flex, FormControl,
-  FormLabel,
-  Input,
-  Textarea
-} from '@chakra-ui/react'
+import { Button, Flex, FormControl, FormLabel, Input, Textarea } from '@chakra-ui/react'
 import { Creator } from '@entities/Creator.entity'
 import type { Post } from '@entities/Post.entity'
 import * as React from 'react'
 
-
 export interface NewPostFormProps {
-  creator: Creator,
-  setCreator: (newCreator: any) => void,
+  creator: Creator
+  setCreator: (newCreator: any) => void
 }
 function NewPostForm({ creator, setCreator }: NewPostFormProps) {
   const [title, setTitle] = React.useState('')
   const [content, setContent] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(false)
 
-  const submit = async (
-    owner: string,
-    title: string,
-    content: string
-  ): Promise<Post> => {
+  const submit = async (owner: string, title: string, content: string): Promise<Post> => {
     setIsLoading(true)
     const res = await fetch('/api/content/create', {
       method: 'POST',
@@ -31,13 +21,11 @@ function NewPostForm({ creator, setCreator }: NewPostFormProps) {
       },
       body: JSON.stringify({ owner, title, content }),
     })
-  
+
     const { newPost }: { newPost: Post } = await res.json()
     setIsLoading(false)
     return newPost
   }
-  
-  
 
   return (
     <Flex p={5} border="1px" borderRadius="md" mb={30} direction="column">
@@ -65,10 +53,7 @@ function NewPostForm({ creator, setCreator }: NewPostFormProps) {
           const newPost = await submit(creator.address, title, content)
           setCreator({
             ...creator,
-            posts: [
-              newPost,
-              ...(creator.posts || []),
-            ]
+            posts: [newPost, ...(creator.posts || [])],
           } as Creator)
         }}
         isLoading={isLoading}

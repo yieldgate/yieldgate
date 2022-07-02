@@ -10,9 +10,7 @@ export async function connectToDatabase(): Promise<MongoDBConnection> {
   const uri = env.mongo.uri
   const dbName = process.env.MONGODB_DB
   if (!uri || !dbName) {
-    throw new Error(
-      'Please define the mongo environment variables inside .env.local'
-    )
+    throw new Error('Please define the mongo environment variables inside .env.local')
   }
 
   if (cachedClient && cachedDb) {

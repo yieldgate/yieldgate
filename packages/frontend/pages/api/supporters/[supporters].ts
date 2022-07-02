@@ -5,10 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 export type MongoDBConnection = { db: Db; client: MongoClient }
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { supporters: slug } = req.query
 
   switch (slug) {
@@ -21,10 +18,7 @@ export default async function handler(
   }
 }
 
-export const handleAddSupporter = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
+export const handleAddSupporter = async (req: NextApiRequest, res: NextApiResponse) => {
   let { supporter, beneficary } = req.body || {}
   if (!supporter || !beneficary) return res.status(400).end()
   if (!/^0x[a-fA-F0-9]{40}$/.test(supporter)) return res.status(400).end()
@@ -33,9 +27,7 @@ export const handleAddSupporter = async (
   beneficary = beneficary.toLowerCase()
 
   const { db } = (await connectToDatabase()) as MongoDBConnection
-  const creator = await db
-    .collection('creators')
-    .findOne({ address: beneficary })
+  const creator = await db.collection('creators').findOne({ address: beneficary })
 
   let result
   if (creator) {
@@ -60,15 +52,10 @@ export const handleAddSupporter = async (
     })
   }
 
-  return result
-    ? res.status(200).json({ isAdded: true })
-    : res.status(500).json({})
+  return result ? res.status(200).json({ isAdded: true }) : res.status(500).json({})
 }
 
-export const handleRemoveSupporter = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
+export const handleRemoveSupporter = async (req: NextApiRequest, res: NextApiResponse) => {
   let { supporter, beneficary } = req.body || {}
   if (!supporter || !beneficary) return res.status(400).end()
   if (!/^0x[a-fA-F0-9]{40}$/.test(supporter)) return res.status(400).end()
@@ -77,9 +64,7 @@ export const handleRemoveSupporter = async (
   beneficary = beneficary.toLowerCase()
 
   const { db } = (await connectToDatabase()) as MongoDBConnection
-  const creator = await db
-    .collection('creators')
-    .findOne({ address: beneficary })
+  const creator = await db.collection('creators').findOne({ address: beneficary })
 
   const supporters = creator?.supporters || []
   const supporterExists = supporters.includes(supporter)
@@ -97,7 +82,5 @@ export const handleRemoveSupporter = async (
     }
   )
 
-  return result
-    ? res.status(200).json({ isRemoved: true })
-    : res.status(500).json({})
+  return result ? res.status(200).json({ isRemoved: true }) : res.status(500).json({})
 }

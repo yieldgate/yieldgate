@@ -9,14 +9,9 @@ import { YieldGate as YieldGateType } from 'types/typechain'
 /**
  * Returns total staked amount for given beneficiary address
  */
-export const useTotalAmountStaked = ({
-  beneficiary,
-}: {
-  beneficiary: string
-}) => {
+export const useTotalAmountStaked = ({ beneficiary }: { beneficiary: string }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { contractChain, contractChainId, contractAddresses } =
-    useYieldgateContract()
+  const { contractChain, contractChainId, contractAddresses } = useYieldgateContract()
   const [totalAmountsStaked, setTotalAmountsStaked] = useState<{
     [key: string]: number
   }>({})
@@ -32,7 +27,9 @@ export const useTotalAmountStaked = ({
     let value = BigNumber.from(0)
     try {
       value = await contract.staked(beneficiary)
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
     setTotalAmountsStaked((prev) => ({
       ...prev,
       [chainId]: parseFloat(formatEther(value) || '0.0'),
@@ -66,8 +63,7 @@ export const useSupporterAmountStaked = ({
   beneficiary?: string
 }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { contractChain, contractChainId, contractAddresses } =
-    useYieldgateContract()
+  const { contractChain, contractChainId, contractAddresses } = useYieldgateContract()
   const [supporterAmountsStaked, setSupporterAmountsStaked] = useState<{
     [key: string]: number
   }>({})
@@ -83,7 +79,9 @@ export const useSupporterAmountStaked = ({
     let value = BigNumber.from(0)
     try {
       value = await contract.supporterStaked(supporter, beneficiary)
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
     setSupporterAmountsStaked((prev) => ({
       ...prev,
       [chainId]: parseFloat(formatEther(value) || '0.0'),
@@ -109,14 +107,9 @@ export const useSupporterAmountStaked = ({
 /**
  * Returns total claimable amount for given creator address
  */
-export const useClaimableAmount = ({
-  beneficiary,
-}: {
-  beneficiary?: string
-}) => {
+export const useClaimableAmount = ({ beneficiary }: { beneficiary?: string }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { contractChain, contractChainId, contractAddresses } =
-    useYieldgateContract()
+  const { contractChain, contractChainId, contractAddresses } = useYieldgateContract()
   const [claimableAmounts, setClaimableAmounts] = useState<{
     [key: string]: number
   }>({})
@@ -132,7 +125,9 @@ export const useClaimableAmount = ({
     let value = BigNumber.from(0)
     try {
       value = await contract.claimable(beneficiary)
-    } catch (e) {}
+    } catch (e) {
+      // do nothing
+    }
     setClaimableAmounts((prev) => ({
       ...prev,
       [chainId]: parseFloat(formatUnits(value, 'finney') || '0.0'),

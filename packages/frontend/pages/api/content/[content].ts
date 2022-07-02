@@ -5,10 +5,7 @@ import { connectToDatabase } from '../../../lib/mongodb'
 
 export type MongoDBConnection = { db: Db; client: MongoClient }
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { content: slug } = req.query
 
   switch (slug) {
@@ -19,13 +16,9 @@ export default async function handler(
   }
 }
 
-export const handlePushContent = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
+export const handlePushContent = async (req: NextApiRequest, res: NextApiResponse) => {
   const post = req.body || {}
-  if (!post?.owner || !post?.title || !post?.content)
-    return res.status(400).end()
+  if (!post?.owner || !post?.title || !post?.content) return res.status(400).end()
   const { title, content } = post
   const newPost = {
     date: new Date().toUTCString(),
