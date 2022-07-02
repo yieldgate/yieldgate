@@ -25,6 +25,8 @@ jobs:
           ALIAS_DOMAINS: |
             ygyg-{SHA}.vercel.app
           PRODUCTION: false
+          GITHUB_DEPLOYMENT_ENV: Preview
+          FORCE: true
 
       - name: Deploy to Staging
         uses: BetaHuhn/deploy-to-vercel-action@v1.9.0
@@ -35,8 +37,10 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           ALIAS_DOMAINS: |
-            ygyg-dev.vercel.app
+            ygyg.vercel.app
           PRODUCTION: false
+          GITHUB_DEPLOYMENT_ENV: Staging
+          FORCE: true
 
       - name: Deploy to Production
         uses: BetaHuhn/deploy-to-vercel-action@v1.9.0
@@ -47,6 +51,7 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           ALIAS_DOMAINS: |
-            ygyg-main.vercel.app
             yieldgate.xyz
           PRODUCTION: true
+          GITHUB_DEPLOYMENT_ENV: Production
+          FORCE: true
