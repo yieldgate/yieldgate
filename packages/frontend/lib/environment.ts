@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 export const env = {
-  url: process.env.NEXT_PUBLIC_VERCEL_URL
-    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : process.env.NEXT_PUBLIC_URL,
+  url:
+    process.env.NEXT_PUBLIC_VERCEL_URL && process.env.NEXT_PUBLIC_VERCEL_ENV! === 'preview'
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+      : process.env.NEXT_PUBLIC_URL,
   isProduction: process.env.NEXT_PUBLIC_PRODUCTION_MODE === 'true',
 
   defaultChain: process.env.NEXT_PUBLIC_DEFAULT_CHAIN!,
