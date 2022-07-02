@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 export const env = {
+  url:
+    process.env.NEXT_PUBLIC_VERCEL_URL && process.env.NEXT_PUBLIC_VERCEL_ENV! === 'preview'
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+      : process.env.NEXT_PUBLIC_URL,
   isProduction: process.env.NEXT_PUBLIC_PRODUCTION_MODE === 'true',
-  url: process.env.NEXT_PUBLIC_URL,
 
   defaultChain: process.env.NEXT_PUBLIC_DEFAULT_CHAIN!,
   supportedChains: JSON.parse(process.env.NEXT_PUBLIC_SUPPORTED_CHAINS!),
-
-  infuraApiKey: process.env.NEXT_PUBLIC_INFURA_API_KEY!,
 
   rpc: {
     hardhat: process.env.NEXT_PUBLIC_RPC_HARDHAT!,

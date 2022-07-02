@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Deploy to Vercel CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main,develop]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Deploy to Preview
+        uses: BetaHuhn/deploy-to-vercel-action@v1.9.0
+        if: github.event_name == 'workflow_dispatch'
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          ALIAS_DOMAINS: |
+            ygyg-{SHA}.vercel.app
+          PRODUCTION: false
+
+      - name: Deploy to Staging
+        uses: BetaHuhn/deploy-to-vercel-action@v1.9.0
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          ALIAS_DOMAINS: |
+            ygyg-dev.vercel.app
+          PRODUCTION: false
+
+      - name: Deploy to Production
+        uses: BetaHuhn/deploy-to-vercel-action@v1.9.0
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          ALIAS_DOMAINS: |
+            ygyg-main.vercel.app
+            yieldgate.xyz
+          PRODUCTION: true
