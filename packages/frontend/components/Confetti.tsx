@@ -12,17 +12,17 @@ export const Confetti: FC = () => {
     width: '100%',
     height: '100%',
     top: 0,
-    left: 0
+    left: 0,
   }
   const makeShot = useCallback((particleRatio: any, opts: any) => {
-    (confettiAnimationRef?.current as any)?.({
+    ;(confettiAnimationRef?.current as any)?.({
       ...opts,
       origin: { y: 0.5 },
-      particleCount: Math.floor(200 * particleRatio)
+      particleCount: Math.floor(200 * particleRatio),
     })
   }, [])
   const fire = useCallback(() => {
-    makeShot(.6, {
+    makeShot(0.6, {
       spread: 200,
       decay: 0.75,
       scalar: 1,
@@ -33,8 +33,12 @@ export const Confetti: FC = () => {
     fire()
   }, [])
 
-  return <>
-    <ReactCanvasConfetti
-      refConfetti={getconfettiAnimationInstance} style={confettiAnimationOptions} />
-  </>
+  return (
+    <>
+      <ReactCanvasConfetti
+        refConfetti={getconfettiAnimationInstance}
+        style={confettiAnimationOptions}
+      />
+    </>
+  )
 }
