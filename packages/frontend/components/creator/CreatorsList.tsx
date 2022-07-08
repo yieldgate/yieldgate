@@ -152,7 +152,9 @@ export const CreatorsList: FC<CreatorsListProps> = ({ creators }) => {
 
         {/* Search Field */}
         <InputGroup size="lg">
-          <InputLeftElement pointerEvents="none" children={<BsSearch size={20} />} />
+          <InputLeftElement pointerEvents="none">
+            <BsSearch size={20} />
+          </InputLeftElement>
           <Input
             placeholder="Find creator"
             onChange={(event) => {

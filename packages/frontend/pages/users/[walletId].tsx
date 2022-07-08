@@ -6,6 +6,7 @@ import NewPostForm from '@components/NewPostForm'
 import SponsorsCard from '@components/SponsorsCard'
 import { Creator } from '@entities/Creator.entity'
 import { useSupporterAmountStaked } from '@lib/creatorReadHooks'
+import { ethers } from 'ethers'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useAsyncEffect } from 'use-async-effect'
@@ -15,15 +16,13 @@ export default function UsersPage() {
   const router = useRouter()
   let { walletId } = router.query
   walletId = ((walletId as string) || '').toLowerCase()
-  const { data: accountData } = useAccount()
+  const { address } = useAccount()
   const isOwner =
-    walletId &&
-    accountData?.address &&
-    accountData?.address.toLowerCase() === walletId.toLowerCase()
+    walletId && address && ethers.utils.getAddress(address) === ethers.utils.getAddress(walletId)
   const [creator, setCreator] = useState<Creator | null>(null)
   const { supporterAmountStaked, refetch: refetchSupporterAmountStaked } = useSupporterAmountStaked(
     {
-      supporter: accountData?.address,
+      supporter: address,
       beneficiary: creator?.address,
     }
   )

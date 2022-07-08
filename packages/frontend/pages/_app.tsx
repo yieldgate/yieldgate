@@ -2,7 +2,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { wagmiClient } from '@lib/wagmiClient'
 import { DefaultSeo } from 'next-seo'
 import type { AppProps } from 'next/app'
-import { Provider as WagmiProvider } from 'wagmi'
+import { WagmiConfig } from 'wagmi'
 import { env } from '../lib/environment'
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
@@ -26,11 +26,11 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
         }}
       />
 
-      <WagmiProvider client={wagmiClient}>
+      <WagmiConfig client={wagmiClient}>
         <ChakraProvider>
           <Component {...pageProps} />
         </ChakraProvider>
-      </WagmiProvider>
+      </WagmiConfig>
     </>
   )
 }

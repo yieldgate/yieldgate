@@ -1,10 +1,11 @@
-import { getProvider } from '@wagmi/core'
 import { useState } from 'react'
 import useAsyncEffect from 'use-async-effect'
+import { useProvider } from 'wagmi'
 
 export const useEnsDomain = ({ address }: { address?: string }) => {
   const [ensDomain, setEnsDomain] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
+  const provider = useProvider({ chainId: 1 })
 
   useAsyncEffect(async () => {
     if (!address) {
@@ -12,7 +13,6 @@ export const useEnsDomain = ({ address }: { address?: string }) => {
       return
     }
     setIsLoading(true)
-    const provider = getProvider({ chainId: 1 })
     const ens = await provider.lookupAddress(address)
     setEnsDomain(ens || '')
     setIsLoading(false)

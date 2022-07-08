@@ -12,7 +12,7 @@ export interface IndexPageProps {
   creators: Creator[]
 }
 export default function IndexPage({ creators }: IndexPageProps) {
-  const { data: accountData } = useAccount()
+  const { address } = useAccount()
   const isSSR = useIsSSR()
 
   return (
@@ -31,8 +31,8 @@ export default function IndexPage({ creators }: IndexPageProps) {
               <br />
               Support your favourite projects and creators with yield.
             </Text>
-            {!isSSR && accountData && (
-              <NextLink href={`/users/${accountData.address}`} passHref>
+            {!isSSR && address && (
+              <NextLink href={`/users/${address}`} passHref>
                 <Button size="lg" mt="6">
                   Create on Yieldgate
                 </Button>
