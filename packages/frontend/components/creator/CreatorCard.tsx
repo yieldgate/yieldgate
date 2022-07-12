@@ -7,7 +7,7 @@ import {
   useSupporterAmountStaked,
   useTotalAmountStaked,
 } from '@lib/creatorReadHooks'
-import { useYieldgateContract } from '@lib/useYieldgateContract'
+import { useYieldgateContracts } from '@lib/useYieldgateContracts'
 import { FC, useState } from 'react'
 import { useAccount, useNetwork } from 'wagmi'
 import ConnectWalletButton from '../ConnectWalletButton'
@@ -21,9 +21,9 @@ export interface CreatorCardProps {
   updateContentIsLocked: () => void
 }
 export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateContentIsLocked }) => {
-  const { contractChain } = useYieldgateContract()
-  const { data: accountData } = useAccount()
-  const { activeChain } = useNetwork()
+  const { contractsChain } = useYieldgateContracts()
+  const { address } = useAccount()
+  const { chain } = useNetwork()
   const {
     totalAmountStaked,
     isLoading: totalAmountStakedIsLoading,
@@ -34,7 +34,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
     isLoading: supporterAmountsIsLoading,
     refetch: refetchSupporterAmountStaked,
   } = useSupporterAmountStaked({
-    supporter: accountData?.address,
+    supporter: address,
     beneficiary: creator.address,
   })
   const {
@@ -53,8 +53,8 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
 
         <Divider />
         <VStack w="full">
-          {accountData ? (
-            activeChain?.unsupported ? (
+          {address ? (
+            chain?.unsupported ? (
               <ChainSwitchMenu />
             ) : (
               <CreatorCardActions
@@ -80,7 +80,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
           creator={creator}
           totalAmountStaked={totalAmountStaked}
           totalAmountStakedIsLoading={totalAmountStakedIsLoading}
-          contractChain={contractChain}
+          contractChain={contractsChain}
         />
       </VStack>
 

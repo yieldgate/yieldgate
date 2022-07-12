@@ -12,24 +12,19 @@ function truncateHash(hash: string, length = 38): string {
 }
 
 function ConnectWallet(): JSX.Element {
-  const { data: accountData } = useAccount()
+  const { address } = useAccount()
   const { disconnect } = useDisconnect()
   const isSSR = useIsSSR()
-  const { ensDomain } = useEnsDomain({ address: accountData?.address })
+  const { ensDomain } = useEnsDomain({ address })
 
-  if (isSSR || !accountData?.address) return <ConnectWalletButton />
+  if (isSSR || !address) return <ConnectWalletButton />
 
   return (
     <Flex alignItems={'center'}>
       {/* Avatar */}
-      <Link href={`/users/${(accountData?.address || '').toLowerCase()}`} passHref>
+      <Link href={`/users/${(address || '').toLowerCase()}`} passHref>
         <div>
-          <BlockiesAvatar
-            address={accountData.address}
-            ml="4"
-            borderRadius={'full'}
-            cursor="pointer"
-          />
+          <BlockiesAvatar address={address} ml="4" borderRadius={'full'} cursor="pointer" />
         </div>
       </Link>
 
@@ -40,7 +35,7 @@ function ConnectWallet(): JSX.Element {
       <Menu placement="bottom-end">
         <MenuButton as={Button} ml="4">
           <Flex direction="column">
-            <Text>{ensDomain || truncateHash(accountData.address || '')}</Text>
+            <Text>{ensDomain || truncateHash(address || '')}</Text>
           </Flex>
         </MenuButton>
         <MenuList>

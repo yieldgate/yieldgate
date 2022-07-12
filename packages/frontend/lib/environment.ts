@@ -6,7 +6,7 @@ export const env = {
       : process.env.NEXT_PUBLIC_URL,
   isProduction: process.env.NEXT_PUBLIC_PRODUCTION_MODE === 'true',
 
-  defaultChain: process.env.NEXT_PUBLIC_DEFAULT_CHAIN!,
+  defaultChain: parseInt(process.env.NEXT_PUBLIC_DEFAULT_CHAIN!),
   supportedChains: JSON.parse(process.env.NEXT_PUBLIC_SUPPORTED_CHAINS!),
 
   rpc: {

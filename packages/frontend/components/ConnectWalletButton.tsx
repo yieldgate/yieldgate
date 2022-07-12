@@ -24,7 +24,7 @@ function ConnectWalletButton({ children, ...rest }: ButtonProps): JSX.Element {
           <ModalBody>
             <VStack align={'stretch'} pb="4">
               {connectors?.map((connector) => (
-                <Button key={connector.id} onClick={() => connect(connector)}>
+                <Button key={connector.id} onClick={() => connect({ connector })}>
                   {connector.name}
                 </Button>
               ))}
