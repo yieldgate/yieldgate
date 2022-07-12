@@ -3,6 +3,6 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "mikestead.dotenv",
-    "JuanBlanco.solidity"
+    "NomicFoundation.hardhat-solidity"
   ]
 }

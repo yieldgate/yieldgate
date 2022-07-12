@@ -24,7 +24,11 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.pnpm-debug.log*
 
 # vercel
 .vercel
 .gitsigners
+
+# typescript
+*.tsbuildinfo

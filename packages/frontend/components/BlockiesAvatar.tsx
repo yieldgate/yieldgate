@@ -1,6 +1,7 @@
 import type { ImageProps } from '@chakra-ui/react'
 import { Image } from '@chakra-ui/react'
 import blockies from 'blockies-ts'
+import { ethers } from 'ethers'
 import { useMemo } from 'react'
 
 export interface BlockiesAvatarProps extends ImageProps {
@@ -9,7 +10,7 @@ export interface BlockiesAvatarProps extends ImageProps {
 
 export const BlockiesAvatar = ({ address = '', ...rest }: BlockiesAvatarProps): JSX.Element => {
   const avatarDataUrl = useMemo(
-    () => blockies.create({ seed: address.toLowerCase() }).toDataURL(),
+    () => blockies.create({ seed: ethers.utils.getAddress(address) }).toDataURL(),
     [address]
   )
 

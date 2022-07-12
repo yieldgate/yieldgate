@@ -12,11 +12,12 @@ import {
 } from '@chakra-ui/react'
 import { FC, useEffect, useState } from 'react'
 import { BsChevronDown } from 'react-icons/bs'
-import { Chain, useNetwork } from 'wagmi'
+import { Chain, useNetwork, useSwitchNetwork } from 'wagmi'
 
 export interface ChainSwitchMenuProps extends MenuButtonProps {}
 export const ChainSwitchMenu: FC<ChainSwitchMenuProps> = ({ ...props }) => {
-  const { activeChain, chains, switchNetworkAsync } = useNetwork()
+  const { chain, chains } = useNetwork()
+  const { switchNetworkAsync } = useSwitchNetwork()
   const [mainnets, setMainnets] = useState<Chain[]>([])
   const [testnets, setTestnets] = useState<Chain[]>([])
   useEffect(() => {
@@ -26,7 +27,7 @@ export const ChainSwitchMenu: FC<ChainSwitchMenuProps> = ({ ...props }) => {
   }, [chains])
 
   const ChainsMenuGroup: FC<{ chains: Chain[]; title: string }> = ({ chains, title }) => {
-    if (!activeChain?.id) return <></>
+    if (!chain?.id) return <></>
 
     return (
       <MenuGroup title={title}>
@@ -34,8 +35,8 @@ export const ChainSwitchMenu: FC<ChainSwitchMenuProps> = ({ ...props }) => {
           <MenuItem
             key={chain.id}
             minH="48px"
-            bg={chain.id === activeChain.id ? 'gray.200' : 'white'}
-            disabled={!switchNetworkAsync || chain.id === activeChain.id}
+            bg={chain.id === chain.id ? 'gray.200' : 'white'}
+            disabled={!switchNetworkAsync || chain.id === chain.id}
             onClick={() => switchNetworkAsync?.(chain.id)}
           >
             <Image
@@ -51,24 +52,24 @@ export const ChainSwitchMenu: FC<ChainSwitchMenuProps> = ({ ...props }) => {
     )
   }
 
-  if (!activeChain?.id) return <></>
+  if (!chain?.id) return <></>
 
   return (
     <>
       <Menu>
-        <Tooltip label={activeChain.name} aria-label={activeChain.name} gutter={10}>
+        <Tooltip label={chain.name} aria-label={chain.name} gutter={10}>
           <MenuButton
             as={Button}
             rightIcon={<BsChevronDown />}
-            bgColor={activeChain?.unsupported ? 'red.100' : ''}
+            bgColor={chain?.unsupported ? 'red.100' : ''}
             {...props}
           >
-            {activeChain?.unsupported ? (
+            {chain?.unsupported ? (
               <Text>Invalid Chain</Text>
             ) : (
               <Image
-                src={`/icons/networks/${activeChain.id}.svg`}
-                alt={activeChain.name}
+                src={`/icons/networks/${chain.id}.svg`}
+                alt={chain.name}
                 boxSize="1.5rem"
                 mr="1"
               />

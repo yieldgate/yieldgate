@@ -6,3 +6,4 @@ export const ContractAddresses = {
   '4': ContractAddresses_4,
   '80001': ContractAddresses_80001,
 }
+export type ContractAddressesKey = keyof typeof ContractAddresses

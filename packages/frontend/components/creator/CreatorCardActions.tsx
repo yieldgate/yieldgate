@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react'
 import StakeAmountForm from '@components/StakeAmountForm'
 import { Creator } from '@entities/Creator.entity'
-import { useYieldgateContract } from '@lib/useYieldgateContract'
+import { useYieldgateContracts } from '@lib/useYieldgateContracts'
 import { ethers } from 'ethers'
 import { FC, useState } from 'react'
 import { YieldGate as YieldGateType } from 'types/typechain'
@@ -49,8 +49,8 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
   refetchTotalAmountStaked,
 }) => {
   const { data: signer, refetch: refetchSigner } = useSigner()
-  const { contractChain, contractAddresses } = useYieldgateContract()
-  const { data: accountData } = useAccount()
+  const { contractsChain, contracts } = useYieldgateContracts()
+  const { address } = useAccount()
   const [stakeIsLoading, setStakeIsLoading] = useState(false)
   const [unstakeIsLoading, setUnstakeIsLoading] = useState(false)
   const [claimIsLoading, setClaimIsLoading] = useState(false)
@@ -65,7 +65,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
     // Blockchain Transaction
     const contract = new ethers.Contract(
-      contractAddresses.YieldGate,
+      contracts.YieldGate,
       YieldGate.abi,
       signer
     ) as YieldGateType
@@ -87,7 +87,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        supporter: accountData?.address,
+        supporter: address,
         beneficary: creator.address,
       }),
     })
@@ -101,7 +101,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
     toast({
       title: 'Amount Staked',
-      description: `You've successfully staked ${value} ${contractChain?.nativeCurrency?.symbol}`,
+      description: `You've successfully staked ${value} ${contractsChain?.nativeCurrency?.symbol}`,
       status: 'success',
     })
     setShowConfetti(true)
@@ -117,7 +117,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
     // Blockchain Transaction
     const contract = new ethers.Contract(
-      contractAddresses.YieldGate,
+      contracts.YieldGate,
       YieldGate.abi,
       signer
     ) as YieldGateType
@@ -133,7 +133,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        supporter: accountData?.address,
+        supporter: address,
         beneficary: creator.address,
       }),
     })
@@ -148,7 +148,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     toast({
       title: 'Amount Unstaked',
       description: `You've successfully unstaked ${supporterAmountStaked.toFixed(2)} ${
-        contractChain?.nativeCurrency?.symbol
+        contractsChain?.nativeCurrency?.symbol
       }`,
       status: 'success',
     })
@@ -163,7 +163,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
     // Blockchain Transaction
     const contract = new ethers.Contract(
-      contractAddresses.YieldGate,
+      contracts.YieldGate,
       YieldGate.abi,
       signer
     ) as YieldGateType
@@ -185,7 +185,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
     toast({
       title: 'Ammount claimed',
-      description: `You've successfully claimed ${claimedAmount} m${contractChain?.nativeCurrency?.symbol}`,
+      description: `You've successfully claimed ${claimedAmount} m${contractsChain?.nativeCurrency?.symbol}`,
       status: 'success',
     })
     setClaimIsLoading(false)
@@ -211,7 +211,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
             ) : (
               <Text fontSize={'xs'} opacity=".75">
                 {claimableAmount
-                  ? `${claimableAmount.toFixed(8)} m${contractChain?.nativeCurrency?.symbol}`
+                  ? `${claimableAmount.toFixed(8)} m${contractsChain?.nativeCurrency?.symbol}`
                   : 'Nothing to claim yet'}
               </Text>
             )}
@@ -259,7 +259,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
           ) : (
             <Text fontSize={'xs'} opacity=".75">
               {supporterAmountStaked
-                ? `${supporterAmountStaked.toFixed(2)} ${contractChain?.nativeCurrency?.symbol}`
+                ? `${supporterAmountStaked.toFixed(2)} ${contractsChain?.nativeCurrency?.symbol}`
                 : 'Nothing to unstake yet'}
             </Text>
           )}

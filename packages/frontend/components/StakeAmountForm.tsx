@@ -6,7 +6,7 @@ import {
   InputGroup,
   InputRightAddon,
 } from '@chakra-ui/react'
-import { useYieldgateContract } from '@lib/useYieldgateContract'
+import { useYieldgateContracts } from '@lib/useYieldgateContracts'
 import * as React from 'react'
 
 export interface StakeAmountFormProps {
@@ -14,7 +14,7 @@ export interface StakeAmountFormProps {
   onClose: () => void
 }
 export default function StakeAmountForm({ stake, onClose }: StakeAmountFormProps) {
-  const { contractChain } = useYieldgateContract()
+  const { contractsChain } = useYieldgateContracts()
   const [amount, setAmount] = React.useState('0.1')
 
   return (
@@ -23,7 +23,7 @@ export default function StakeAmountForm({ stake, onClose }: StakeAmountFormProps
         <FormLabel htmlFor="amount">Amount to stake</FormLabel>
         <InputGroup size="sm">
           <Input value={amount} onChange={(e) => setAmount(e.target.value)} />
-          <InputRightAddon children={contractChain?.nativeCurrency?.symbol} />
+          <InputRightAddon>{contractsChain?.nativeCurrency?.symbol}</InputRightAddon>
         </InputGroup>
       </FormControl>
 

@@ -1,5 +1,5 @@
 import YieldGate from '@artifacts/contracts/YieldGate.sol/YieldGate.json'
-import { useYieldgateContract } from '@lib/useYieldgateContract'
+import { useYieldgateContracts } from '@lib/useYieldgateContracts'
 import { getProvider } from '@wagmi/core'
 import { BigNumber, ethers } from 'ethers'
 import { formatEther, formatUnits } from 'ethers/lib/utils'
@@ -11,7 +11,7 @@ import { YieldGate as YieldGateType } from 'types/typechain'
  */
 export const useTotalAmountStaked = ({ beneficiary }: { beneficiary: string }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { contractChain, contractChainId, contractAddresses } = useYieldgateContract()
+  const { contractsChain, contractsChainId, contracts } = useYieldgateContracts()
   const [totalAmountsStaked, setTotalAmountsStaked] = useState<{
     [key: string]: number
   }>({})
@@ -20,7 +20,7 @@ export const useTotalAmountStaked = ({ beneficiary }: { beneficiary: string }) =
     if (!beneficiary) return
     setIsLoading(true)
     const contract = new ethers.Contract(
-      contractAddresses.YieldGate,
+      contracts.YieldGate,
       YieldGate.abi,
       getProvider({ chainId: parseInt(chainId) })
     ) as YieldGateType
@@ -37,17 +37,17 @@ export const useTotalAmountStaked = ({ beneficiary }: { beneficiary: string }) =
     setIsLoading(false)
   }
   useEffect(() => {
-    refetch(contractChainId)
-  }, [beneficiary, contractChainId])
+    refetch(contractsChainId)
+  }, [beneficiary, contractsChainId])
 
   return {
     isLoading,
     totalAmountsStaked,
-    totalAmountStaked: totalAmountsStaked[contractChainId],
-    contractChain,
-    contractChainId,
+    totalAmountStaked: totalAmountsStaked[contractsChainId],
+    contractChain: contractsChain,
+    contractChainId: contractsChainId,
     refetch: async () => {
-      refetch(contractChainId)
+      refetch(contractsChainId)
     },
   }
 }
@@ -63,7 +63,7 @@ export const useSupporterAmountStaked = ({
   beneficiary?: string
 }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { contractChain, contractChainId, contractAddresses } = useYieldgateContract()
+  const { contractsChain, contractsChainId, contracts } = useYieldgateContracts()
   const [supporterAmountsStaked, setSupporterAmountsStaked] = useState<{
     [key: string]: number
   }>({})
@@ -72,7 +72,7 @@ export const useSupporterAmountStaked = ({
     if (!supporter || !beneficiary) return
     setIsLoading(true)
     const contract = new ethers.Contract(
-      contractAddresses.YieldGate,
+      contracts.YieldGate,
       YieldGate.abi,
       getProvider({ chainId: parseInt(chainId) })
     ) as YieldGateType
@@ -89,17 +89,17 @@ export const useSupporterAmountStaked = ({
     setIsLoading(false)
   }
   useEffect(() => {
-    refetch(contractChainId)
-  }, [supporter, beneficiary, contractChainId])
+    refetch(contractsChainId)
+  }, [supporter, beneficiary, contractsChainId])
 
   return {
     isLoading,
     supporterAmountsStaked,
-    supporterAmountStaked: supporterAmountsStaked[contractChainId],
-    contractChain,
-    contractChainId,
+    supporterAmountStaked: supporterAmountsStaked[contractsChainId],
+    contractChain: contractsChain,
+    contractChainId: contractsChainId,
     refetch: async () => {
-      refetch(contractChainId)
+      refetch(contractsChainId)
     },
   }
 }
@@ -109,7 +109,7 @@ export const useSupporterAmountStaked = ({
  */
 export const useClaimableAmount = ({ beneficiary }: { beneficiary?: string }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { contractChain, contractChainId, contractAddresses } = useYieldgateContract()
+  const { contractsChain, contractsChainId, contracts } = useYieldgateContracts()
   const [claimableAmounts, setClaimableAmounts] = useState<{
     [key: string]: number
   }>({})
@@ -118,7 +118,7 @@ export const useClaimableAmount = ({ beneficiary }: { beneficiary?: string }) =>
     if (!beneficiary) return
     setIsLoading(true)
     const contract = new ethers.Contract(
-      contractAddresses.YieldGate,
+      contracts.YieldGate,
       YieldGate.abi,
       getProvider({ chainId: parseInt(chainId) })
     ) as YieldGateType
@@ -135,17 +135,17 @@ export const useClaimableAmount = ({ beneficiary }: { beneficiary?: string }) =>
     setIsLoading(false)
   }
   useEffect(() => {
-    refetch(contractChainId)
-  }, [beneficiary, contractChainId])
+    refetch(contractsChainId)
+  }, [beneficiary, contractsChainId])
 
   return {
     isLoading,
     claimableAmounts,
-    claimableAmount: claimableAmounts[contractChainId],
-    contractChain,
-    contractChainId,
+    claimableAmount: claimableAmounts[contractsChainId],
+    contractChain: contractsChain,
+    contractChainId: contractsChainId,
     refetch: async () => {
-      refetch(contractChainId)
+      refetch(contractsChainId)
     },
   }
 }

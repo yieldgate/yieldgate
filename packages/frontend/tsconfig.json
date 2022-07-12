@@ -20,7 +20,7 @@
       "@lib/*": ["./lib/*"],
       "@entities/*": ["./entities/*"],
       "@artifacts/*": ["./artifacts/*"],
-      "@addresses/*": ["./addresses/*"]
+      "@addresses": ["./addresses/addresses"]
     }
   },
   "exclude": ["node_modules", ".next", "out"],
