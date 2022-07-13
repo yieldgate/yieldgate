@@ -6,13 +6,16 @@ import path from 'path'
 /**
  * Helper function to store contract addresses in .ts files
  */
-export const saveFrontendAddressFiles = async (contracts: any, doPrettify: boolean = true) => {
+export const saveFrontendAddressFiles = async (
+  contracts: Record<string, string>,
+  doPrettify = true
+) => {
   // Create adresses/ directory
   const addressesDir = path.join(config.paths.artifacts, `../addresses`)
   fs.mkdirSync(addressesDir, { recursive: true })
 
   // Lowercase all addresses
-  for (let contractKey of Object.keys(contracts)) {
+  for (const contractKey of Object.keys(contracts)) {
     contracts[contractKey] = ethers.utils.getAddress(contracts[contractKey])
   }
 
