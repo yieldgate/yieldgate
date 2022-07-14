@@ -1,15 +1,9 @@
-import '@nomiclabs/hardhat-ethers'
-import '@nomiclabs/hardhat-etherscan'
-import '@nomiclabs/hardhat-waffle'
-import '@typechain/hardhat'
+import '@nomicfoundation/hardhat-toolbox'
 import * as dotenv from 'dotenv'
 import { HardhatUserConfig } from 'hardhat/types'
 import path from 'path'
 dotenv.config()
 
-/**
- * @type import('hardhat/config').HardhatUserConfig
- */
 const config: HardhatUserConfig = {
   solidity: '0.8.10',
   paths: {
