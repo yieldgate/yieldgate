@@ -1,4 +1,4 @@
-import '@nomiclabs/hardhat-ethers'
+import '@nomicfoundation/hardhat-toolbox'
 import hre, { ethers } from 'hardhat'
 import { AaveAddresses } from '../shared/aaveAddresses'
 import { saveFrontendAddressFiles } from '../shared/saveFrontendAddressFiles'
