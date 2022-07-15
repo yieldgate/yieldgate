@@ -21,6 +21,7 @@
       "**/yarn.lock": true,
       "**/yarn-error.log": true,
       "**/.yarn": true,
+      "**/.turbo": true,
       "packages/hardhat/cache": true
     },
     "editor.defaultFormatter": "esbenp.prettier-vscode",

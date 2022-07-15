@@ -3,13 +3,15 @@
   "license": "MIT",
   "version": "0.0.1",
   "scripts": {
-    "clean": "npx hardhat clean",
-    "compile": "npx hardhat compile",
-    "chain": "npx hardhat node",
-    "typechain": "npx hardhat typechain",
-    "deploy": "npx hardhat run scripts/deploy.ts",
-    "deploy:mumbai": "npx hardhat run scripts/deploy.ts --network mumbai",
-    "format": "prettier --write ."
+    "clean": "pnpm hardhat clean",
+    "compile": "pnpm hardhat compile",
+    "build": "pnpm clean && pnpm compile",
+    "chain": "pnpm hardhat node",
+    "typechain": "pnpm hardhat typechain",
+    "deploy": "pnpm hardhat run scripts/deploy.ts",
+    "deploy:mumbai": "pnpm hardhat run scripts/deploy.ts --network mumbai",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx --fix .",
+    "format": "pnpm lint && prettier --write ."
   },
   "devDependencies": {
     "@ethersproject/abi": "^5.6.4",

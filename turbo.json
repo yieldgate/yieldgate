@@ -1,0 +1,21 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "baseBranch": "origin/main",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "artifacts/**"]
+    },
+    "@yieldgate/frontend#build": {
+      "dependsOn": ["@yieldgate/hardhat#build"],
+      "outputs": [".next/**", "artifacts/**"]
+    },
+    "@yieldgate/frontend#dev": {
+      "dependsOn": ["@yieldgate/hardhat#build"],
+      "outputs": [".next/**", "artifacts/**"]
+    },
+    "format": {
+      "dependsOn": ["^format"]
+    }
+  }
+}

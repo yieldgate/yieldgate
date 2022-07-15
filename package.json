@@ -15,23 +15,18 @@
     }
   },
   "scripts": {
-    "predev": "pnpm hardhat:clean && pnpm hardhat:compile",
-    "dev": "pnpm frontend:dev",
-    "build": "pnpm hardhat:build && pnpm frontend:build",
-    "start": "pnpm frontend:start",
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "format": "turbo run format",
     "frontend:dev": "pnpm --filter frontend dev",
-    "frontend:build": "pnpm --filter frontend build",
     "frontend:start": "pnpm --filter frontend start",
-    "hardhat:build": "pnpm hardhat:clean && pnpm hardhat:compile",
-    "hardhat:clean": "pnpm --filter hardhat clean",
-    "hardhat:compile": "pnpm --filter hardhat compile",
-    "format": "pnpm --filter frontend format && pnpm --filter hardhat format",
     "prepare": "husky install"
   },
   "devDependencies": {
     "eslint-config-custom": "^0.0.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
+    "turbo": "^1.3.1",
     "typescript": "^4.7.4"
   }
 }
