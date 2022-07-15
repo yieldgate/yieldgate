@@ -29,7 +29,6 @@
       "source.organizeImports": true,
       "source.fixAll.eslint": true
     },
-    "eslint.workingDirectories": [{ "directory": "./packages/frontend", "changeProcessCWD": true }],
     "peacock.color": "#e6f293",
     "workbench.colorCustomizations": {
       "sash.hoverBorder": "#f1f7c1",
