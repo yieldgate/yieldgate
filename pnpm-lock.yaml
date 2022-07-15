@@ -7,12 +7,14 @@ importers:
       eslint-config-custom: ^0.0.0
       husky: ^8.0.1
       lint-staged: ^13.0.3
+      next: ^12.2.2
       turbo: ^1.3.1
       typescript: ^4.7.4
     devDependencies:
       eslint-config-custom: 0.0.0_4x5o4skxv6sl53vpwefgt23khm
       husky: 8.0.1
       lint-staged: 13.0.3
+      next: 12.2.2_sfoxds7t5ydpegc3knd667wn6m
       turbo: 1.3.1
       typescript: 4.7.4
 
@@ -2207,7 +2209,6 @@ packages:
 
   /@next/env/12.2.2:
     resolution: {integrity: sha512-BqDwE4gDl1F608TpnNxZqrCn6g48MBjvmWFEmeX5wEXDXh3IkAOw6ASKUgjT8H4OUePYFqghDFUss5ZhnbOUjw==}
-    dev: false
 
   /@next/eslint-plugin-next/12.2.2:
     resolution: {integrity: sha512-XOi0WzJhGH3Lk51SkSu9eZxF+IY1ZZhWcJTIGBycAbWU877IQa6+6KxMATWCOs7c+bmp6Sd8KywXJaDRxzu0JA==}
@@ -2221,7 +2222,6 @@ packages:
     cpu: [arm]
     os: [android]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-android-arm64/12.2.2:
@@ -2230,7 +2230,6 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-darwin-arm64/12.2.2:
@@ -2239,7 +2238,6 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-darwin-x64/12.2.2:
@@ -2248,7 +2246,6 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-freebsd-x64/12.2.2:
@@ -2257,7 +2254,6 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-linux-arm-gnueabihf/12.2.2:
@@ -2266,7 +2262,6 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-linux-arm64-gnu/12.2.2:
@@ -2275,7 +2270,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-linux-arm64-musl/12.2.2:
@@ -2284,7 +2278,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-linux-x64-gnu/12.2.2:
@@ -2293,7 +2286,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-linux-x64-musl/12.2.2:
@@ -2302,7 +2294,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-win32-arm64-msvc/12.2.2:
@@ -2311,7 +2302,6 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-win32-ia32-msvc/12.2.2:
@@ -2320,7 +2310,6 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@next/swc-win32-x64-msvc/12.2.2:
@@ -2329,7 +2318,6 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: false
     optional: true
 
   /@noble/hashes/1.1.2:
@@ -2662,7 +2650,6 @@ packages:
     resolution: {integrity: sha512-556Az0VX7WR6UdoTn4htt/l3zPQ7bsQWK+HqdG4swV7beUCxo/BqmvbOpUkTIm/9ih86LIf1qsUnywNL3obGHw==}
     dependencies:
       tslib: 2.4.0
-    dev: false
 
   /@szmarczak/http-timer/1.1.2:
     resolution: {integrity: sha512-XIB2XbzHTN6ieIjfIMV9hlVcfPU26s2vafYWQcZHWXHOxiaRZYEDKEwdl129Zyg50+foYV2jCgtrqSA6qNuNSA==}
@@ -3816,7 +3803,7 @@ packages:
   /axios/0.21.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.4
     transitivePeerDependencies:
       - debug
     dev: false
@@ -6137,7 +6124,7 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /follow-redirects/1.15.1:
+  /follow-redirects/1.15.1_debug@4.3.4:
     resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
     engines: {node: '>=4.0'}
     peerDependencies:
@@ -6145,6 +6132,8 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dependencies:
+      debug: 4.3.4
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -8523,7 +8512,6 @@ packages:
     resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
-    dev: false
 
   /natural-compare/1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
@@ -8541,7 +8529,7 @@ packages:
   /next-seo/5.4.0_6s32wxz5ps7aqzzuo7qur6i26m:
     resolution: {integrity: sha512-R9DhajPwJnR/lsF2hZ8cN8uqr5CVITsRrCG1AF5+ufcaybKYOvnH8sH9MaH4/hpkps3PQ9H71S7J7SPYixAYzQ==}
     peerDependencies:
-      next: ^8.1.1-canary.54 || >=9.0.0
+      next: ^8.1.1-canary.54 || >=9.0.0 || ^12.2.2
       react: '>=16.0.0 || ^17.0.2'
       react-dom: '>=16.0.0 || ^17.0.2'
     dependencies:
@@ -8598,6 +8586,51 @@ packages:
       - '@babel/core'
       - babel-plugin-macros
     dev: false
+
+  /next/12.2.2_sfoxds7t5ydpegc3knd667wn6m:
+    resolution: {integrity: sha512-zAYFY45aBry/PlKONqtlloRFqU/We3zWYdn2NoGvDZkoYUYQSJC8WMcalS5C19MxbCZLUVCX7D7a6gTGgl2yLg==}
+    engines: {node: '>=12.22.0'}
+    hasBin: true
+    peerDependencies:
+      fibers: '>= 3.1.0'
+      node-sass: ^6.0.0 || ^7.0.0
+      react: ^17.0.2 || ^18.0.0-0
+      react-dom: ^17.0.2 || ^18.0.0-0
+      sass: ^1.3.0
+    peerDependenciesMeta:
+      fibers:
+        optional: true
+      node-sass:
+        optional: true
+      sass:
+        optional: true
+    dependencies:
+      '@next/env': 12.2.2
+      '@swc/helpers': 0.4.2
+      caniuse-lite: 1.0.30001366
+      postcss: 8.4.5
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      styled-jsx: 5.0.2_react@17.0.2
+      use-sync-external-store: 1.1.0_react@17.0.2
+    optionalDependencies:
+      '@next/swc-android-arm-eabi': 12.2.2
+      '@next/swc-android-arm64': 12.2.2
+      '@next/swc-darwin-arm64': 12.2.2
+      '@next/swc-darwin-x64': 12.2.2
+      '@next/swc-freebsd-x64': 12.2.2
+      '@next/swc-linux-arm-gnueabihf': 12.2.2
+      '@next/swc-linux-arm64-gnu': 12.2.2
+      '@next/swc-linux-arm64-musl': 12.2.2
+      '@next/swc-linux-x64-gnu': 12.2.2
+      '@next/swc-linux-x64-musl': 12.2.2
+      '@next/swc-win32-arm64-msvc': 12.2.2
+      '@next/swc-win32-ia32-msvc': 12.2.2
+      '@next/swc-win32-x64-msvc': 12.2.2
+    transitivePeerDependencies:
+      - '@babel/core'
+      - babel-plugin-macros
+    dev: true
 
   /node-addon-api/2.0.2:
     resolution: {integrity: sha512-Ntyt4AIXyaLIuMHF6IOoTakB3K+RWxwtsHNRxllEoA6vPwP9o4866g6YWDLUdnucilZhmkxiHwHr11gAENw+QA==}
@@ -9082,7 +9115,6 @@ packages:
       nanoid: 3.3.4
       picocolors: 1.0.0
       source-map-js: 1.0.2
-    dev: false
 
   /preact/10.10.0:
     resolution: {integrity: sha512-fszkg1iJJjq68I4lI8ZsmBiaoQiQHbxf1lNq+72EmC/mZOsFF5zn3k1yv9QGoFgIXzgsdSKtYymLJsrJPoamjQ==}
@@ -10034,7 +10066,7 @@ packages:
     dependencies:
       command-exists: 1.2.9
       commander: 3.0.2
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.4
       fs-extra: 0.30.0
       js-sha3: 0.8.0
       memorystream: 0.3.1
@@ -10076,7 +10108,6 @@ packages:
   /source-map-js/1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
     engines: {node: '>=0.10.0'}
-    dev: false
 
   /source-map-support/0.5.13:
     resolution: {integrity: sha512-SHSKFHadjVA5oR4PPqhtAVdcBWwRYVd6g6cAXnIbRiIwc2EhPrTuKUBdSLvlEKyIP3GCf89fltvcZiP9MMFA1w==}
@@ -10365,6 +10396,22 @@ packages:
       '@babel/core': 7.18.6
       react: 17.0.2
     dev: false
+
+  /styled-jsx/5.0.2_react@17.0.2:
+    resolution: {integrity: sha512-LqPQrbBh3egD57NBcHET4qcgshPks+yblyhPlH2GY8oaDgKs8SK4C3dBh3oSJjgzJ3G5t1SYEZGHkP+QEpX9EQ==}
+    engines: {node: '>= 12.0.0'}
+    peerDependencies:
+      '@babel/core': '*'
+      babel-plugin-macros: '*'
+      react: '>= 16.8.0 || 17.x.x || ^18.0.0-0 || ^17.0.2'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      babel-plugin-macros:
+        optional: true
+    dependencies:
+      react: 17.0.2
+    dev: true
 
   /stylis/4.0.13:
     resolution: {integrity: sha512-xGPXiFVl4YED9Jh7Euv2V220mriG9u4B2TA6Ybjc1catrstKD2PpIdU3U0RKpkVBC2EhmL/F0sPCr9vrFTNRag==}
@@ -11054,7 +11101,6 @@ packages:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^17.0.2
     dependencies:
       react: 17.0.2
-    dev: false
 
   /use-sync-external-store/1.2.0_react@17.0.2:
     resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
