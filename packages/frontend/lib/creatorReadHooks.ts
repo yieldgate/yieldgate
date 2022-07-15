@@ -1,10 +1,10 @@
 import YieldGate from '@artifacts/contracts/YieldGate.sol/YieldGate.json'
 import { useYieldgateContracts } from '@lib/useYieldgateContracts'
-import { getProvider } from '@wagmi/core'
-import { BigNumber, ethers } from 'ethers'
+import { BigNumber, ethers, getDefaultProvider } from 'ethers'
 import { formatEther, formatUnits } from 'ethers/lib/utils'
 import { useEffect, useState } from 'react'
 import { YieldGate as YieldGateType } from 'types/typechain'
+import { rpcsByChainId } from './wagmiClient'
 
 /**
  * Returns total staked amount for given beneficiary address
@@ -22,7 +22,7 @@ export const useTotalAmountStaked = ({ beneficiary }: { beneficiary: string }) =
     const contract = new ethers.Contract(
       contracts.YieldGate,
       YieldGate.abi,
-      getProvider({ chainId: parseInt(chainId) })
+      getDefaultProvider(rpcsByChainId[parseInt(chainId)])
     ) as YieldGateType
     let value = BigNumber.from(0)
     try {
@@ -74,7 +74,7 @@ export const useSupporterAmountStaked = ({
     const contract = new ethers.Contract(
       contracts.YieldGate,
       YieldGate.abi,
-      getProvider({ chainId: parseInt(chainId) })
+      getDefaultProvider(rpcsByChainId[parseInt(chainId)])
     ) as YieldGateType
     let value = BigNumber.from(0)
     try {
@@ -120,7 +120,7 @@ export const useClaimableAmount = ({ beneficiary }: { beneficiary?: string }) =>
     const contract = new ethers.Contract(
       contracts.YieldGate,
       YieldGate.abi,
-      getProvider({ chainId: parseInt(chainId) })
+      getDefaultProvider(rpcsByChainId[parseInt(chainId)])
     ) as YieldGateType
     let value = BigNumber.from(0)
     try {
