@@ -8,7 +8,7 @@
     "start": "NODE_ENV=production next start",
     "type-check": "tsc --pretty --noEmit",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx --fix .",
-    "format": "pnpm lint && prettier --write .",
+    "format": "prettier --write .",
     "test": "jest --passWithNoTests"
   },
   "dependencies": {
