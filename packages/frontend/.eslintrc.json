@@ -1,6 +1,13 @@
 {
   "root": true,
-  "extends": ["../../.eslintrc.json", "next/core-web-vitals", "prettier"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "next/core-web-vitals",
+    "prettier"
+  ],
   "rules": {
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-empty-interface": "off",
