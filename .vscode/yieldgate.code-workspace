@@ -17,9 +17,11 @@
     "files.exclude": {
       "**/node_modules/": true,
       "**/package-lock.json": true,
+      "**/pnpm-lock.yaml": true,
       "**/yarn.lock": true,
       "**/yarn-error.log": true,
       "**/.yarn": true,
+      "**/.turbo": true,
       "packages/hardhat/cache": true
     },
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -28,9 +30,6 @@
       "source.organizeImports": true,
       "source.fixAll.eslint": true
     },
-    "eslint.workingDirectories": [
-      { "directory": "./packages/frontend", "changeProcessCWD": true }
-    ],
     "peacock.color": "#e6f293",
     "workbench.colorCustomizations": {
       "sash.hoverBorder": "#f1f7c1",

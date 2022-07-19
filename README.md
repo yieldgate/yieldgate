@@ -4,38 +4,38 @@ Yieldgate is a protocol that allows anyone to start earning and building product
 
 Built with ❤️ on top of Aave, Polygon, and others.
 
-![Yieldate](https://i.imgur.com/j316O86.png "Yieldgate")
+![Yieldate](https://i.imgur.com/j316O86.png 'Yieldgate')
 
 ---
 
 ## Getting Started
 
 ```bash
-# IMPORTANT: When using Yarn there is a bug that prevents `ts-node` from
-#            being installed even though it's in `./packages/hardhat/package.json`.
-#            → Solution is to switch back to npm for now.
+# Install (or update) pnpm
+npm i -g pnpm
 
-# Install Dependencies
-npm install
+# Install project dependencies
+pnpm install
 
 # Copy & fill environments
 cp packages/frontend/.env.local.example packages/frontend/.env.local && nano packages/frontend/.env.local
 cp packages/hardhat/.env.example packages/hardhat/.env && nano packages/hardhat/.env
 
 # Generate types, artifacts & start frontend
-npm run dev
+pnpm run dev
 # … or only start frontend if types are generated previously
-npm run frontend:dev
+pnpm run frontend:dev
 
 # Optional: Start local hardhat network and deploy contracts
 # NOTE: Execute those in different terminals
-npm run hardhat:chain
-npm run hardhat:deploy  
+pnpm run hardhat:chain
+pnpm run hardhat:deploy
 ```
 
-## Stack 
+## Stack
 
 Based on [nextjs-ethereum-starter](https://github.com/ChangoMan/nextjs-ethereum-starter).
+
 - [Typescript](https://www.typescriptlang.org/)
 - [Hardhat](https://hardhat.org/)
 - [TypeChain](https://github.com/ethereum-ts/TypeChain)

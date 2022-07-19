@@ -1,0 +1,43 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "baseBranch": "origin/main",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "artifacts/**"]
+    },
+    "@yieldgate/frontend#build": {
+      "dependsOn": ["@yieldgate/hardhat#build"],
+      "outputs": [".next/**", "artifacts/**"]
+    },
+    "@yieldgate/frontend#dev": {
+      "dependsOn": ["@yieldgate/hardhat#build"],
+      "outputs": [".next/**", "artifacts/**"]
+    },
+    "format": {
+      "dependsOn": ["^format"]
+    }
+  },
+  "globalDependencies": [
+    ".env",
+    ".env.local",
+    "tsconfig.json",
+    ".eslintrc.json",
+    "$PRIVATE_KEY_MUMBAI",
+    "$ALCHEMY_API_MUMBAI",
+    "$PRIVATE_KEY_RINKEBY",
+    "$ALCHEMY_API_RINKEBY",
+    "$ETHERSCAN_API_KEY",
+    "$NEXT_PUBLIC_PRODUCTION_MODE",
+    "$NEXT_PUBLIC_URL",
+    "$NEXT_PUBLIC_DEFAULT_CHAIN",
+    "$NEXT_PUBLIC_SUPPORTED_CHAINS",
+    "$NEXT_PUBLIC_RPC_HARDHAT",
+    "$NEXT_PUBLIC_RPC_POLYGON_MUMBAI",
+    "$NEXT_PUBLIC_RPC_RINKEBY",
+    "$NEXT_PUBLIC_RPC_POLYGON",
+    "$NEXT_PUBLIC_RPC_MAINNET",
+    "$MONGODB_URI",
+    "$MONGODB_DB"
+  ]
+}
