@@ -1,5 +1,5 @@
 import { Box, Container, Flex, Image, Link } from '@chakra-ui/react'
-import ConnectWallet from '@components/ConnectWallet'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import NextLink from 'next/link'
 
 function Navbar(): JSX.Element {
@@ -12,7 +12,7 @@ function Navbar(): JSX.Element {
               <Image src="/images/logo-yieldgate.svg" boxSize={7} alt="Yieldgate Logo" />
             </Link>
           </NextLink>
-          <ConnectWallet />
+          <ConnectButton />
         </Flex>
       </Container>
     </Box>

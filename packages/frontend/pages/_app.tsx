@@ -1,10 +1,13 @@
 import { ChakraProvider } from '@chakra-ui/react'
-import { wagmiClient } from '@lib/wagmiClient'
+import { chains, wagmiClient } from '@lib/wagmiClient'
+import { lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
+import '@rainbow-me/rainbowkit/styles.css'
 import { DefaultSeo } from 'next-seo'
 import type { AppProps } from 'next/app'
 import { WagmiConfig } from 'wagmi'
-import { env } from '../lib/environment'
 import '../styles/tailwind.css'
+
+import { env } from '@lib/environment'
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
@@ -28,9 +31,20 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
       />
 
       <WagmiConfig client={wagmiClient}>
-        <ChakraProvider>
-          <Component {...pageProps} />
-        </ChakraProvider>
+        <RainbowKitProvider
+          chains={chains}
+          theme={lightTheme({
+            accentColor: '#edf2f7',
+            accentColorForeground: '#1a202c',
+            borderRadius: 'medium',
+            fontStack: 'system',
+            overlayBlur: 'small',
+          })}
+        >
+          <ChakraProvider>
+            <Component {...pageProps} />
+          </ChakraProvider>
+        </RainbowKitProvider>
       </WagmiConfig>
     </>
   )
