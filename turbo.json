@@ -14,9 +14,14 @@
       "dependsOn": ["@yieldgate/hardhat#build"],
       "outputs": [".next/**", "artifacts/**"]
     },
-    "format": {
-      "dependsOn": ["^format"]
-    }
+    "lint": {
+      "outputs": []
+    },
+    "//#lint": {
+      "outputs": []
+    },
+    "format": {},
+    "//#format": {}
   },
   "globalDependencies": [
     ".env",
