@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Lint+Build
+    name: Lint+Test
     timeout-minutes: 15
     runs-on: ubuntu-latest
 
@@ -29,4 +29,4 @@ jobs:
         run: pnpm install
 
       - name: Lint
-        run: pnpm lint
+        run: pnpm lint:all
