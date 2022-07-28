@@ -18,7 +18,10 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
-    "format": "turbo run format",
+    "lint:all": "turbo run lint",
+    "lint": "prettier . --check",
+    "format:all": "turbo run format",
+    "format": "prettier . --write",
     "frontend:dev": "pnpm --filter frontend dev",
     "frontend:start": "pnpm --filter frontend start",
     "prepare": "husky install"
