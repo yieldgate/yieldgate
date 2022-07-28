@@ -4,7 +4,7 @@ name: Deploy to Vercel CI
 on:
   workflow_dispatch:
   push:
-    branches: [main,develop]
+    branches: [main, develop]
 
 jobs:
   deploy:
