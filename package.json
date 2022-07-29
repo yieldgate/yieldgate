@@ -20,8 +20,8 @@
     "build": "turbo run build",
     "lint:all": "turbo run lint",
     "lint": "prettier . --check",
-    "format:all": "turbo run format",
-    "format": "prettier . --write",
+    "lint:fix:all": "turbo run lint:fix",
+    "lint:fix": "prettier . --write",
     "frontend:dev": "pnpm --filter frontend dev",
     "frontend:start": "pnpm --filter frontend start",
     "prepare": "husky install"
