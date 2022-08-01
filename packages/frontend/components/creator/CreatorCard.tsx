@@ -9,7 +9,7 @@ import {
 import { useYieldgateContracts } from '@lib/useYieldgateContracts'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { FC, useState } from 'react'
-import { useAccount } from 'wagmi'
+import { useAccount, useNetwork } from 'wagmi'
 import { CreatorCardActions } from './CreatorCardActions'
 import { CreatorCardDetails } from './CreatorCardDetails'
 import { CreatorCardNumbers } from './CreatorCardNumbers'
@@ -22,6 +22,7 @@ export interface CreatorCardProps {
 export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateContentIsLocked }) => {
   const { contractsChain } = useYieldgateContracts()
   const { address } = useAccount()
+  const { chain } = useNetwork()
   const {
     totalAmountStaked,
     isLoading: totalAmountStakedIsLoading,
@@ -51,7 +52,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
 
         <Divider />
         <VStack w="full">
-          {address ? (
+          {address && chain && !chain.unsupported ? (
             <CreatorCardActions
               creator={creator}
               isOwner={isOwner}
