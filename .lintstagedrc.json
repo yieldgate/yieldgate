@@ -1,4 +1,3 @@
 {
-  "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
-  "*.{md,html,css,json,yml}": "prettier --write"
+  "*.{md,html,css,json,yml,yaml}": "prettier --write --loglevel debug"
 }
