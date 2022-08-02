@@ -20,8 +20,8 @@
     "//#lint": {
       "outputs": []
     },
-    "format": {},
-    "//#format": {}
+    "lint:fix": {},
+    "//#lint:fix": {}
   },
   "globalDependencies": [
     ".env",
