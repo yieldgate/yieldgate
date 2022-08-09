@@ -1,9 +1,8 @@
+import { getDefaultWallets } from '@rainbow-me/rainbowkit'
 import { allChains, Chain, chain, configureChains, createClient } from 'wagmi'
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
-import { InjectedConnector } from 'wagmi/connectors/injected'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { publicProvider } from 'wagmi/providers/public'
+
 import { env } from './environment'
 
 /**
@@ -25,7 +24,7 @@ export const supportedChains: Chain[] = allChains.filter((chain) =>
   env.supportedChains.includes(chain.id)
 )
 
-const { provider } = configureChains(
+export const { chains, provider } = configureChains(
   Array.from(new Set([defaultChain, chain.mainnet, ...supportedChains])),
   [
     jsonRpcProvider({
@@ -38,21 +37,10 @@ const { provider } = configureChains(
   ]
 )
 
-export const connectors = [
-  new InjectedConnector({
-    chains: supportedChains,
-  }),
-  new WalletConnectConnector({
-    options: {
-      qrcode: true,
-    },
-  }),
-  new CoinbaseWalletConnector({
-    options: {
-      appName: 'Yieldgate.xyz',
-    },
-  }),
-]
+export const { connectors } = getDefaultWallets({
+  appName: 'Yieldgate',
+  chains,
+})
 
 export const wagmiClient = createClient({
   autoConnect: true,

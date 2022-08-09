@@ -1,5 +1,4 @@
 import { Divider, VStack } from '@chakra-ui/react'
-import { ChainSwitchMenu } from '@components/ChainSwitchMenu'
 import { Confetti } from '@components/Confetti'
 import { Creator } from '@entities/Creator.entity'
 import {
@@ -8,9 +7,9 @@ import {
   useTotalAmountStaked,
 } from '@lib/creatorReadHooks'
 import { useYieldgateContracts } from '@lib/useYieldgateContracts'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { FC, useState } from 'react'
 import { useAccount, useNetwork } from 'wagmi'
-import ConnectWalletButton from '../ConnectWalletButton'
 import { CreatorCardActions } from './CreatorCardActions'
 import { CreatorCardDetails } from './CreatorCardDetails'
 import { CreatorCardNumbers } from './CreatorCardNumbers'
@@ -44,7 +43,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
   } = useClaimableAmount({ beneficiary: creator.address })
   const [showConfetti, setShowConfetti] = useState(false)
 
-  if (!creator) return <></>
+  if (!creator) return null
 
   return (
     <>
@@ -53,26 +52,22 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
 
         <Divider />
         <VStack w="full">
-          {address ? (
-            chain?.unsupported ? (
-              <ChainSwitchMenu />
-            ) : (
-              <CreatorCardActions
-                creator={creator}
-                isOwner={isOwner}
-                updateContentIsLocked={updateContentIsLocked}
-                setShowConfetti={setShowConfetti}
-                supporterAmountStaked={supporterAmountStaked}
-                supporterAmountsIsLoading={supporterAmountsIsLoading}
-                refetchSupporterAmountStaked={refetchSupporterAmountStaked}
-                refetchTotalAmountStaked={refetchTotalAmountStaked}
-                claimableAmount={claimableAmount}
-                claimableAmountsIsLoading={claimableAmountsIsLoading}
-                refetchClaimableAmounts={refetchClaimableAmounts}
-              />
-            )
+          {address && chain && !chain.unsupported ? (
+            <CreatorCardActions
+              creator={creator}
+              isOwner={isOwner}
+              updateContentIsLocked={updateContentIsLocked}
+              setShowConfetti={setShowConfetti}
+              supporterAmountStaked={supporterAmountStaked}
+              supporterAmountsIsLoading={supporterAmountsIsLoading}
+              refetchSupporterAmountStaked={refetchSupporterAmountStaked}
+              refetchTotalAmountStaked={refetchTotalAmountStaked}
+              claimableAmount={claimableAmount}
+              claimableAmountsIsLoading={claimableAmountsIsLoading}
+              refetchClaimableAmounts={refetchClaimableAmounts}
+            />
           ) : (
-            <ConnectWalletButton />
+            <ConnectButton />
           )}
         </VStack>
 
