@@ -30,6 +30,9 @@
       "source.organizeImports": true,
       "source.fixAll.eslint": true
     },
+    "files.associations": {
+      "*.css": "tailwindcss"
+    },
     "peacock.color": "#e6f293",
     "workbench.colorCustomizations": {
       "sash.hoverBorder": "#f1f7c1",
