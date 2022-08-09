@@ -4,6 +4,7 @@ import { DefaultSeo } from 'next-seo'
 import type { AppProps } from 'next/app'
 import { WagmiConfig } from 'wagmi'
 import { env } from '../lib/environment'
+import '../styles/tailwind.css'
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
