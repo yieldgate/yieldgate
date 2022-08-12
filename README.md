@@ -4,7 +4,7 @@ Yieldgate is a protocol that allows anyone to start earning and building product
 
 Built with ❤️ on top of Aave, Polygon, and others.
 
-![Yieldate](https://i.imgur.com/j316O86.png 'Yieldgate')
+![Yieldate](https://i.imgur.com/j316O86.png "Yieldgate")
 
 ---
 

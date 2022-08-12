@@ -9,9 +9,9 @@ contract YieldGate {
     event PoolDeployed(address indexed beneficiary, address indexed deployer, address aavePool);
 
     address immutable beneficiaryPoolLib;
-    address immutable public aavePool;
-    IWETHGateway immutable public wethgw;
-    IERC20 immutable public token;
+    address public immutable aavePool;
+    IWETHGateway public immutable wethgw;
+    IERC20 public immutable token;
 
     // beneficiary => BeneficiaryPool
     mapping(address => BeneficiaryPool) public beneficiaryPools;
@@ -32,9 +32,7 @@ contract YieldGate {
     }
 
     function deployPool(address beneficiary) external returns (address) {
-        BeneficiaryPool bpool = BeneficiaryPool(
-            Clones.clone(beneficiaryPoolLib)
-        );
+        BeneficiaryPool bpool = BeneficiaryPool(Clones.clone(beneficiaryPoolLib));
         bpool.init(address(this), beneficiary);
         beneficiaryPools[beneficiary] = bpool;
         return address(bpool);
@@ -60,11 +58,7 @@ contract YieldGate {
         return bpool.staked();
     }
 
-    function supporterStaked(address supporter, address beneficiary)
-        public
-        view
-        returns (uint256)
-    {
+    function supporterStaked(address supporter, address beneficiary) public view returns (uint256) {
         BeneficiaryPool bpool = beneficiaryPools[beneficiary];
         if (address(bpool) == address(0)) {
             return 0;
@@ -94,10 +88,7 @@ contract BeneficiaryPool {
     // Initializes this contract's parameters after deployment. This is called
     // by the pool factory, i.e. the Yieldgate main contract, right after
     // deployment. Can only be called once.
-    function init(
-        address _gate,
-        address _beneficiary
-    ) public {
+    function init(address _gate, address _beneficiary) public {
         require(address(gate) == address(0), "already initialized");
 
         gate = YieldGate(_gate);
@@ -140,10 +131,7 @@ contract BeneficiaryPool {
     }
 
     function withdraw(uint256 amount, address receiver) internal {
-        require(
-            gate.token().approve(address(gate.wethgw()), amount),
-            "ethgw approval failed"
-        );
+        require(gate.token().approve(address(gate.wethgw()), amount), "ethgw approval failed");
         gate.wethgw().withdrawETH(gate.aavePool(), amount, receiver);
     }
 
