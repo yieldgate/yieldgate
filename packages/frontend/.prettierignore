@@ -1,7 +1,10 @@
 node_modules
 .next
+out
 yarn.lock
 package-lock.json
+pnpm-lock.yaml
 public
 types/typechain
 artifacts
+deployments/*.json
