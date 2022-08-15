@@ -16,14 +16,14 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["./components/*"],
-      "@lib/*": ["./lib/*"],
-      "@entities/*": ["./entities/*"],
-      "@artifacts/*": ["./artifacts/*"],
-      "@addresses": ["./addresses/addresses"]
+      "@components/*": ["./src/components/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@entities/*": ["./src/entities/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@deployments/*": ["./src/deployments/*"]
     }
   },
   "exclude": ["node_modules", ".next", "out"],
   "include": ["next-env.d.ts", "**/*.js", "**/*.ts", "**/*.tsx", "**/*.json"],
-  "types": ["types"]
+  "types": ["src/types"]
 }
