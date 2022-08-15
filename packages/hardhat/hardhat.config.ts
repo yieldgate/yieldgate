@@ -1,14 +1,12 @@
 import '@nomicfoundation/hardhat-toolbox'
 import * as dotenv from 'dotenv'
+import 'hardhat-deploy'
 import { HardhatUserConfig } from 'hardhat/types'
 import path from 'path'
 dotenv.config()
 
 const config: HardhatUserConfig = {
   solidity: '0.8.10',
-  paths: {
-    artifacts: path.resolve('../frontend/artifacts'),
-  },
   networks: {
     hardhat: {
       chainId: 1337,
@@ -35,7 +33,7 @@ const config: HardhatUserConfig = {
     },
   },
   typechain: {
-    outDir: path.resolve('../frontend/types/typechain'),
+    outDir: path.resolve('../frontend/src/types/typechain'),
   },
   etherscan: {
     apiKey: `${process.env.ETHERSCAN_API_KEY}`,
