@@ -21,6 +21,11 @@ export const AaveAddresses: Record<
     wETHGateway: '0x509B2506FbA1BD41765F6A82C7B0Dd4229191768',
     nativeAToken: '0xec6E5B3Bd3e8CC74756Af812994361d8D1EF30F8',
   },
+  goerli: {
+    pool: '0x368EedF3f56ad10b9bC57eed4Dac65B26Bb667f6',
+    wETHGateway: '0xd5B55D3Ed89FDa19124ceB5baB620328287b915d',
+    nativeAToken: '0x27B4692C93959048833f40702b22FE3578E77759',
+  },
   arbrinkeby: {
     // Arbitrum Rinkeby
     pool: '0x9C55a3C34de5fd46004Fa44a55490108f7cE388F',
