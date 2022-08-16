@@ -5,15 +5,15 @@ import { Chain } from 'wagmi'
 
 export interface CreatorCardNumbersProps {
   creator: Creator
-  totalAmountStaked: number
+  totalAmountStaked: number | undefined
   totalAmountStakedIsLoading: boolean
-  contractChain: Chain
+  contractsChain: Chain
 }
 export const CreatorCardNumbers: FC<CreatorCardNumbersProps> = ({
   creator,
   totalAmountStaked,
   totalAmountStakedIsLoading: isLoading,
-  contractChain,
+  contractsChain,
 }) => {
   const [isMobile] = useMediaQuery('(max-width: 500px)')
 
@@ -33,7 +33,7 @@ export const CreatorCardNumbers: FC<CreatorCardNumbersProps> = ({
             <Heading>{totalAmountStaked || '0.0'}</Heading>
           )}
           <Text textAlign="center">
-            {!isMobile && 'Staked '} {contractChain?.nativeCurrency?.symbol || 'ETH'}
+            {!isMobile && 'Staked '} {contractsChain?.nativeCurrency?.symbol || 'ETH'}
           </Text>
         </Flex>
         <Flex direction="column" align="center">

@@ -6,7 +6,7 @@ import {
   InputGroup,
   InputRightAddon,
 } from '@chakra-ui/react'
-import { useYieldgateContracts } from '@lib/useYieldgateContracts'
+import { useDeployments } from '@lib/useDeployments'
 import * as React from 'react'
 
 export interface StakeAmountFormProps {
@@ -14,7 +14,7 @@ export interface StakeAmountFormProps {
   onClose: () => void
 }
 export default function StakeAmountForm({ stake, onClose }: StakeAmountFormProps) {
-  const { contractsChain } = useYieldgateContracts()
+  const { contractsChain } = useDeployments()
   const [amount, setAmount] = React.useState('0.1')
 
   return (

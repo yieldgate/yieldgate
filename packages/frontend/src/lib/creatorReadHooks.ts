@@ -1,29 +1,30 @@
-import YieldGate from '@artifacts/contracts/YieldGate.sol/YieldGate.json'
-import { useYieldgateContracts } from '@lib/useYieldgateContracts'
+import { env } from '@lib/environment'
 import { BigNumber, ethers, getDefaultProvider } from 'ethers'
 import { formatEther, formatUnits } from 'ethers/lib/utils'
 import { useEffect, useState } from 'react'
-import { YieldGate as YieldGateType } from 'types/typechain'
-import { rpcsByChainId } from './wagmiClient'
+import { YieldGate } from 'src/types/typechain'
+import { useDeployments } from './useDeployments'
 
 /**
  * Returns total staked amount for given beneficiary address
  */
 export const useTotalAmountStaked = ({ beneficiary }: { beneficiary: string }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { contractsChain, contractsChainId, contracts } = useYieldgateContracts()
+  const { contracts, contractsChain, contractsChainId } = useDeployments()
+
   const [totalAmountsStaked, setTotalAmountsStaked] = useState<{
     [key: string]: number
   }>({})
 
-  const refetch = async (chainId: string) => {
-    if (!beneficiary) return
+  const refetch = async (chainId: number | undefined) => {
+    if (!beneficiary || !contracts || !chainId) return
     setIsLoading(true)
+    const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
     const contract = new ethers.Contract(
-      contracts.YieldGate,
-      YieldGate.abi,
-      getDefaultProvider(rpcsByChainId[parseInt(chainId)])
-    ) as YieldGateType
+      contracts.YieldGate.address,
+      contracts.YieldGate.abi,
+      provider
+    ) as YieldGate
     let value = BigNumber.from(0)
     try {
       value = await contract.staked(beneficiary)
@@ -43,7 +44,7 @@ export const useTotalAmountStaked = ({ beneficiary }: { beneficiary: string }) =
   return {
     isLoading,
     totalAmountsStaked,
-    totalAmountStaked: totalAmountsStaked[contractsChainId],
+    totalAmountStaked: contractsChainId && totalAmountsStaked[contractsChainId],
     contractChain: contractsChain,
     contractChainId: contractsChainId,
     refetch: async () => {
@@ -63,19 +64,20 @@ export const useSupporterAmountStaked = ({
   beneficiary?: string
 }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { contractsChain, contractsChainId, contracts } = useYieldgateContracts()
+  const { contractsChain, contractsChainId, contracts } = useDeployments()
   const [supporterAmountsStaked, setSupporterAmountsStaked] = useState<{
     [key: string]: number
   }>({})
 
-  const refetch = async (chainId: string) => {
-    if (!supporter || !beneficiary) return
+  const refetch = async (chainId: number | undefined) => {
+    if (!supporter || !beneficiary || !contracts || !chainId) return
     setIsLoading(true)
+    const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
     const contract = new ethers.Contract(
-      contracts.YieldGate,
-      YieldGate.abi,
-      getDefaultProvider(rpcsByChainId[parseInt(chainId)])
-    ) as YieldGateType
+      contracts.YieldGate.address,
+      contracts.YieldGate.abi,
+      provider
+    ) as YieldGate
     let value = BigNumber.from(0)
     try {
       value = await contract.supporterStaked(supporter, beneficiary)
@@ -95,7 +97,7 @@ export const useSupporterAmountStaked = ({
   return {
     isLoading,
     supporterAmountsStaked,
-    supporterAmountStaked: supporterAmountsStaked[contractsChainId],
+    supporterAmountStaked: contractsChainId && supporterAmountsStaked[contractsChainId],
     contractChain: contractsChain,
     contractChainId: contractsChainId,
     refetch: async () => {
@@ -109,19 +111,20 @@ export const useSupporterAmountStaked = ({
  */
 export const useClaimableAmount = ({ beneficiary }: { beneficiary?: string }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const { contractsChain, contractsChainId, contracts } = useYieldgateContracts()
+  const { contractsChain, contractsChainId, contracts } = useDeployments()
   const [claimableAmounts, setClaimableAmounts] = useState<{
     [key: string]: number
   }>({})
 
-  const refetch = async (chainId: string) => {
-    if (!beneficiary) return
+  const refetch = async (chainId: number | undefined) => {
+    if (!beneficiary || !contracts || !chainId) return
     setIsLoading(true)
+    const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
     const contract = new ethers.Contract(
-      contracts.YieldGate,
-      YieldGate.abi,
-      getDefaultProvider(rpcsByChainId[parseInt(chainId)])
-    ) as YieldGateType
+      contracts.YieldGate.address,
+      contracts.YieldGate.abi,
+      provider
+    ) as YieldGate
     let value = BigNumber.from(0)
     try {
       value = await contract.claimable(beneficiary)
@@ -141,7 +144,7 @@ export const useClaimableAmount = ({ beneficiary }: { beneficiary?: string }) =>
   return {
     isLoading,
     claimableAmounts,
-    claimableAmount: claimableAmounts[contractsChainId],
+    claimableAmount: contractsChainId && claimableAmounts[contractsChainId],
     contractChain: contractsChain,
     contractChainId: contractsChainId,
     refetch: async () => {

@@ -6,7 +6,7 @@ import {
   useSupporterAmountStaked,
   useTotalAmountStaked,
 } from '@lib/creatorReadHooks'
-import { useYieldgateContracts } from '@lib/useYieldgateContracts'
+import { useDeployments } from '@lib/useDeployments'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { FC, useState } from 'react'
 import { useAccount, useNetwork } from 'wagmi'
@@ -20,7 +20,7 @@ export interface CreatorCardProps {
   updateContentIsLocked: () => void
 }
 export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateContentIsLocked }) => {
-  const { contractsChain } = useYieldgateContracts()
+  const { contractsChain } = useDeployments()
   const { address } = useAccount()
   const { chain } = useNetwork()
   const {
@@ -71,12 +71,14 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
           )}
         </VStack>
 
-        <CreatorCardNumbers
-          creator={creator}
-          totalAmountStaked={totalAmountStaked}
-          totalAmountStakedIsLoading={totalAmountStakedIsLoading}
-          contractChain={contractsChain}
-        />
+        {contractsChain && (
+          <CreatorCardNumbers
+            creator={creator}
+            totalAmountStaked={totalAmountStaked}
+            totalAmountStakedIsLoading={totalAmountStakedIsLoading}
+            contractsChain={contractsChain}
+          />
+        )}
       </VStack>
 
       {/* Confetti after claim */}

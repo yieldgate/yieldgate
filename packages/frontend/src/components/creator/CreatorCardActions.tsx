@@ -1,4 +1,3 @@
-import YieldGate from '@artifacts/contracts/YieldGate.sol/YieldGate.json'
 import {
   Button,
   Modal,
@@ -15,22 +14,22 @@ import {
 } from '@chakra-ui/react'
 import StakeAmountForm from '@components/StakeAmountForm'
 import { Creator } from '@entities/Creator.entity'
-import { useYieldgateContracts } from '@lib/useYieldgateContracts'
+import { useDeployments } from '@lib/useDeployments'
 import { ethers } from 'ethers'
 import { FC, useState } from 'react'
-import { YieldGate as YieldGateType } from 'types/typechain'
-import { ClaimedEvent } from 'types/typechain/contracts/YieldGate.sol/YieldGate'
+import { YieldGate } from 'src/types/typechain'
+import { ClaimedEvent } from 'src/types/typechain/contracts/YieldGate.sol/YieldGate'
 import { useAccount, useSigner } from 'wagmi'
 
 export interface CreatorCardActionsProps {
   creator: Creator
   isOwner: boolean
-  claimableAmount: number
+  claimableAmount: number | undefined
   claimableAmountsIsLoading: boolean
   refetchClaimableAmounts: () => void
   updateContentIsLocked: () => void
   setShowConfetti: (_: boolean) => void
-  supporterAmountStaked: number
+  supporterAmountStaked: number | undefined
   supporterAmountsIsLoading: boolean
   refetchSupporterAmountStaked: () => void
   refetchTotalAmountStaked: () => void
@@ -49,7 +48,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
   refetchTotalAmountStaked,
 }) => {
   const { data: signer, refetch: refetchSigner } = useSigner()
-  const { contractsChain, contracts } = useYieldgateContracts()
+  const { contractsChain, contracts } = useDeployments()
   const { address } = useAccount()
   const [stakeIsLoading, setStakeIsLoading] = useState(false)
   const [unstakeIsLoading, setUnstakeIsLoading] = useState(false)
@@ -60,15 +59,15 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
   // Stake
   const stake = async (value: string) => {
     await refetchSigner()
-    if (!signer) return
+    if (!signer || !contracts) return
     setStakeIsLoading(true)
 
     // Blockchain Transaction
     const contract = new ethers.Contract(
-      contracts.YieldGate,
-      YieldGate.abi,
+      contracts.YieldGate.address,
+      contracts.YieldGate.abi,
       signer
-    ) as YieldGateType
+    ) as YieldGate
     try {
       const transaction = await contract.stake(creator.address, {
         value: ethers.utils.parseEther(value),
@@ -112,15 +111,15 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
   const unstake = async () => {
     await refetchSigner()
-    if (!signer) return
+    if (!signer || !contracts) return
     setUnstakeIsLoading(true)
 
     // Blockchain Transaction
     const contract = new ethers.Contract(
-      contracts.YieldGate,
-      YieldGate.abi,
+      contracts.YieldGate.address,
+      contracts.YieldGate.abi,
       signer
-    ) as YieldGateType
+    ) as YieldGate
     const transaction = await contract.unstake(creator.address, {
       gasLimit: 500000,
     })
@@ -147,7 +146,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
     toast({
       title: 'Amount Unstaked',
-      description: `You've successfully unstaked ${supporterAmountStaked.toFixed(2)} ${
+      description: `You've successfully unstaked ${supporterAmountStaked?.toFixed(2)} ${
         contractsChain?.nativeCurrency?.symbol
       }`,
       status: 'success',
@@ -158,15 +157,15 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
   // Claim
   const claim = async () => {
     await refetchSigner()
-    if (!signer) return
+    if (!signer || !contracts) return
     setClaimIsLoading(true)
 
     // Blockchain Transaction
     const contract = new ethers.Contract(
-      contracts.YieldGate,
-      YieldGate.abi,
+      contracts.YieldGate.address,
+      contracts.YieldGate.abi,
       signer
-    ) as YieldGateType
+    ) as YieldGate
     const transaction = await contract.claim({
       gasLimit: 500000,
     })
