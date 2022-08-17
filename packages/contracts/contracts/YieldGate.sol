@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/proxy/Clones.sol";
 
 contract YieldGate {
-    event PoolDeployed(address indexed beneficiary, address indexed deployer, address aavePool);
+    event PoolDeployed(address indexed beneficiary, address indexed deployer, address pool);
 
     address immutable beneficiaryPoolLib;
     address public immutable aavePool;
@@ -35,6 +35,8 @@ contract YieldGate {
         BeneficiaryPool bpool = BeneficiaryPool(Clones.clone(beneficiaryPoolLib));
         bpool.init(address(this), beneficiary);
         beneficiaryPools[beneficiary] = bpool;
+
+        emit PoolDeployed(beneficiary, msg.sender, address(bpool));
         return address(bpool);
     }
 
