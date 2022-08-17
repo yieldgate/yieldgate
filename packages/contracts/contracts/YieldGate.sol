@@ -70,12 +70,26 @@ contract YieldGate {
 }
 
 contract BeneficiaryPool {
-    event Staked(address indexed beneficiary, address indexed supporter, uint256 amount);
+    event Staked(
+        address indexed beneficiary,
+        address indexed supporter,
+        uint256 amount,
+        uint256 lockTimeout
+    );
     event Unstaked(address indexed beneficiary, address indexed supporter, uint256 amount);
     event Claimed(address indexed beneficiary, uint256 amount);
+    event ParametersChanged(address indexed beneficiary, uint256 minAmount, uint256 minDuration);
 
     YieldGate public gate;
     address public beneficiary;
+
+    // Minimum required amount to stake.
+    uint256 public minAmount;
+    // Minimum required staking duration (in seconds).
+    uint256 public minDuration;
+    // Records when a supporter is allowed to unstake again. This has the added
+    // benefit that future changes to the duration do not affect current stakes.
+    mapping(address => uint256) public lockTimeouts;
 
     // supporter => amount
     mapping(address => uint256) public supporters;
@@ -95,23 +109,62 @@ contract BeneficiaryPool {
 
         gate = YieldGate(_gate);
         beneficiary = _beneficiary;
+
+        emitParametersChanged(0, 0);
+    }
+
+    // To save gas, add individual parameter setters.
+
+    function setMinAmount(uint256 _minAmount) external onlyBeneficiary {
+        minAmount = _minAmount;
+        emitParametersChanged(_minAmount, minDuration);
+    }
+
+    function setMinDuration(uint256 _minDuration) external onlyBeneficiary {
+        minDuration = _minDuration;
+        emitParametersChanged(minAmount, _minDuration);
+    }
+
+    function setParameters(uint256 _minAmount, uint256 _minDuration) external onlyBeneficiary {
+        minAmount = _minAmount;
+        minDuration = _minDuration;
+        emitParametersChanged(_minAmount, _minDuration);
+    }
+
+    function emitParametersChanged(uint256 _minAmount, uint256 _minDuration) internal {
+        emit ParametersChanged(beneficiary, _minAmount, _minDuration);
     }
 
     // Stakes the sent ether on behalf of the provided supporter. The supporter
     // is usually msg.sender if staking on the transaction sender's behalf.
+    // The staking timeout is reset on each call, so prior stake is re-locked.
     function stake(address supporter) public payable {
         uint256 amount = msg.value;
+        require(amount > 0 && supporters[supporter] + amount >= minAmount, "amount too low");
+
         supporters[supporter] += amount;
         totalStake += amount;
+        uint256 timeout = 0;
+        if (minDuration > 0) {
+            timeout = block.timestamp + minDuration;
+            lockTimeouts[supporter] = timeout;
+        }
+        // On purpose, don't reset timeout in the edge-case where supporter
+        // removed minimum duration after prior stake by this supporter.
 
         gate.wethgw().depositETH{value: amount}(gate.aavePool(), address(this), 0);
-        emit Staked(beneficiary, supporter, amount);
+        emit Staked(beneficiary, supporter, amount, timeout);
     }
 
     // Unstakes all previously staked ether by the calling supporter.
     // The beneficiary keeps all generated yield.
+    // If a minimum staking duration was set by the beneficiary at the time of
+    // staking, it is checked that the timeout has elapsed.
     function unstake() public returns (uint256) {
         address supporter = msg.sender;
+        uint256 timeout = lockTimeouts[supporter]; // 0 ok
+        require(block.timestamp > timeout, "stake still locked");
+
         uint256 amount = supporters[supporter];
         require(amount > 0, "no supporter");
 
