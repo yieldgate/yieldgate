@@ -10,8 +10,9 @@
     "typechain": "pnpm hardhat typechain",
     "deploy": "pnpm hardhat run scripts/deploy.ts",
     "deploy:mumbai": "pnpm hardhat run scripts/deploy.ts --network mumbai",
-    "lint": "prettier . --check && pnpm eslint && pnpm solhint",
-    "lint:fix": "prettier . --write && pnpm eslint --fix && pnpm solhint --fix",
+    "lint": "pnpm prettier --check && pnpm eslint && pnpm solhint",
+    "lint:fix": "pnpm prettier --write && pnpm eslint --fix && pnpm solhint --fix",
+    "prettier": "prettier --plugin=prettier-plugin-solidity .",
     "eslint": "eslint . --ext .js,.ts",
     "solhint": "solhint 'contracts/**/*.sol'"
   },

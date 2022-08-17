@@ -6,14 +6,12 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/proxy/Clones.sol";
 
 contract YieldGate {
-    event Staked(address indexed beneficiary, address indexed supporter, uint256 amount);
-    event Unstaked(address indexed beneficiary, address indexed supporter, uint256 amount);
-    event Claimed(address indexed beneficiary, uint256 amount);
+    event PoolDeployed(address indexed beneficiary, address indexed deployer, address aavePool);
 
     address immutable beneficiaryPoolLib;
-    address immutable public pool;
-    IWETHGateway immutable public wethgw;
-    IERC20 immutable public token;
+    address public immutable aavePool;
+    IWETHGateway public immutable wethgw;
+    IERC20 public immutable token;
 
     // beneficiary => BeneficiaryPool
     mapping(address => BeneficiaryPool) public beneficiaryPools;
@@ -23,7 +21,7 @@ contract YieldGate {
         address wethGateway,
         address aWETH
     ) {
-        pool = _pool;
+        aavePool = _pool;
         wethgw = IWETHGateway(wethGateway);
         token = IERC20(aWETH);
 
@@ -33,36 +31,8 @@ contract YieldGate {
         beneficiaryPoolLib = address(bp);
     }
 
-    function stake(address beneficiary) public payable {
-        address bpool = getOrDeployPool(beneficiary);
-        uint256 amount = msg.value;
-        BeneficiaryPool(bpool).stake{value: amount}(msg.sender);
-        emit Staked(beneficiary, msg.sender, amount);
-    }
-
-    function unstake(address beneficiary) public {
-        address bpool = getOrDeployPool(beneficiary);
-        uint256 amount = BeneficiaryPool(bpool).unstake(msg.sender);
-        emit Unstaked(beneficiary, msg.sender, amount);
-    }
-
-    function claim() public {
-        uint256 amount = beneficiaryPools[msg.sender].claim();
-        emit Claimed(msg.sender, amount);
-    }
-
-    function getOrDeployPool(address beneficiary) public returns (address) {
-        address bpool = address(beneficiaryPools[beneficiary]);
-        if (bpool != address(0)) {
-            return bpool;
-        }
-        return deployPool(beneficiary);
-    }
-
-    function deployPool(address beneficiary) internal returns (address) {
-        BeneficiaryPool bpool = BeneficiaryPool(
-            Clones.clone(beneficiaryPoolLib)
-        );
+    function deployPool(address beneficiary) external returns (address) {
+        BeneficiaryPool bpool = BeneficiaryPool(Clones.clone(beneficiaryPoolLib));
         bpool.init(address(this), beneficiary);
         beneficiaryPools[beneficiary] = bpool;
         return address(bpool);
@@ -88,11 +58,7 @@ contract YieldGate {
         return bpool.staked();
     }
 
-    function supporterStaked(address supporter, address beneficiary)
-        public
-        view
-        returns (uint256)
-    {
+    function supporterStaked(address supporter, address beneficiary) public view returns (uint256) {
         BeneficiaryPool bpool = beneficiaryPools[beneficiary];
         if (address(bpool) == address(0)) {
             return 0;
@@ -102,64 +68,71 @@ contract YieldGate {
 }
 
 contract BeneficiaryPool {
+    event Staked(address indexed beneficiary, address indexed supporter, uint256 amount);
+    event Unstaked(address indexed beneficiary, address indexed supporter, uint256 amount);
+    event Claimed(address indexed beneficiary, uint256 amount);
+
     YieldGate gate;
-    address beneficiary;
+    address public beneficiary;
 
     // supporter => amount
     mapping(address => uint256) public supporters;
     // total staked amount
     uint256 internal totalStake;
 
-    modifier onlyGate() {
-        require(msg.sender == address(gate), "only YieldGate");
+    modifier onlyBeneficiary() {
+        require(msg.sender == beneficiary, "only beneficiary");
         _;
     }
 
-    function init(
-        address _gate,
-        address _beneficiary
-    ) public {
-        require(beneficiary == address(0), "already initialized");
+    // Initializes this contract's parameters after deployment. This is called
+    // by the pool factory, i.e. the Yieldgate main contract, right after
+    // deployment. Can only be called once.
+    function init(address _gate, address _beneficiary) public {
+        require(address(gate) == address(0), "already initialized");
 
         gate = YieldGate(_gate);
         beneficiary = _beneficiary;
     }
 
-    // Stakes the sent ether, registering the caller as a supporter.
-    function stake(address supporter) public payable onlyGate returns (uint256) {
+    // Stakes the sent ether on behalf of the provided supporter. The supporter
+    // is usually msg.sender if staking on the transaction sender's behalf.
+    function stake(address supporter) public payable {
         uint256 amount = msg.value;
         supporters[supporter] += amount;
         totalStake += amount;
 
-        gate.wethgw().depositETH{value: amount}(gate.pool(), address(this), 0);
-        return amount;
+        gate.wethgw().depositETH{value: amount}(gate.aavePool(), address(this), 0);
+        emit Staked(beneficiary, supporter, amount);
     }
 
     // Unstakes all previously staked ether by the calling supporter.
     // The beneficiary keeps all generated yield.
-    function unstake(address supporter) public onlyGate returns (uint256) {
+    function unstake() public returns (uint256) {
+        address supporter = msg.sender;
         uint256 amount = supporters[supporter];
+        require(amount >= 0, "no supporter");
+
         supporters[supporter] = 0;
         totalStake -= amount;
 
         withdraw(amount, supporter);
+        emit Unstaked(beneficiary, supporter, amount);
         return amount;
     }
 
-    // claim sends the accrued interest to the beneficiary of this pool. The
-    // stake remains at the yield pool and continues generating yield.
-    function claim() public onlyGate returns (uint256) {
+    // claim sends the accrued interest to the beneficiary of this pool. Staked
+    // ether remains at the yield pool and continues generating yield.
+    function claim() public onlyBeneficiary returns (uint256) {
         uint256 amount = claimable();
         withdraw(amount, beneficiary);
+        emit Claimed(beneficiary, amount);
         return amount;
     }
 
     function withdraw(uint256 amount, address receiver) internal {
-        require(
-            gate.token().approve(address(gate.wethgw()), amount),
-            "ethgw approval failed"
-        );
-        gate.wethgw().withdrawETH(gate.pool(), amount, receiver);
+        require(gate.token().approve(address(gate.wethgw()), amount), "ethgw approval failed");
+        gate.wethgw().withdrawETH(gate.aavePool(), amount, receiver);
     }
 
     // claimable returns the total earned ether by the provided beneficiary.
