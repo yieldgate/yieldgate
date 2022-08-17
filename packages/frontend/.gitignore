@@ -1,5 +1,3 @@
-*.tsbuildinfo
-coverage
 .next/
 out/
 build

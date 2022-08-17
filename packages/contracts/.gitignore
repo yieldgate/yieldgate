@@ -1,8 +1,5 @@
-node_modules
 .env
 cache
 artifacts
 deployments/localhost
-coverage
-coverage.json
 typechain-types
