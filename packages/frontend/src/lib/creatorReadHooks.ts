@@ -1,8 +1,8 @@
 import { env } from '@lib/environment'
+import { YieldGate } from '@yieldgate/contracts/typechain-types'
 import { BigNumber, ethers, getDefaultProvider } from 'ethers'
 import { formatEther, formatUnits } from 'ethers/lib/utils'
 import { useEffect, useState } from 'react'
-import { YieldGate } from 'src/types/typechain'
 import { useDeployments } from './useDeployments'
 
 /**

@@ -15,11 +15,16 @@ import {
 import StakeAmountForm from '@components/StakeAmountForm'
 import { Creator } from '@entities/Creator.entity'
 import { useDeployments } from '@lib/useDeployments'
-import { ethers } from 'ethers'
+import BeneficiaryPoolAbi from '@yieldgate/contracts/artifacts/contracts/YieldGate.sol/BeneficiaryPool.json'
+import { YieldGate } from '@yieldgate/contracts/typechain-types'
+import {
+  BeneficiaryPool,
+  ClaimedEvent,
+} from '@yieldgate/contracts/typechain-types/contracts/YieldGate.sol/BeneficiaryPool'
+import { BigNumber, ethers, Event } from 'ethers'
 import { FC, useState } from 'react'
-import { YieldGate } from 'src/types/typechain'
-import { ClaimedEvent } from 'src/types/typechain/contracts/YieldGate.sol/YieldGate'
-import { useAccount, useSigner } from 'wagmi'
+import useAsyncEffect from 'use-async-effect'
+import { useAccount, useProvider, useSigner } from 'wagmi'
 
 export interface CreatorCardActionsProps {
   creator: Creator
@@ -48,35 +53,96 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
   refetchTotalAmountStaked,
 }) => {
   const { data: signer, refetch: refetchSigner } = useSigner()
+  const provider = useProvider()
   const { contractsChain, contracts } = useDeployments()
   const { address } = useAccount()
   const [stakeIsLoading, setStakeIsLoading] = useState(false)
+  const [deployIsLoading, setDeployIsLoading] = useState(false)
   const [unstakeIsLoading, setUnstakeIsLoading] = useState(false)
   const [claimIsLoading, setClaimIsLoading] = useState(false)
   const toast = useToast()
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const [poolAddress, setPoolAddress] = useState<string | false>()
+
+  // Fetch address of creator-pool and build contract object
+  useAsyncEffect(async () => {
+    if (deployIsLoading) return
+    if (!creator?.address || !provider || !contracts) {
+      setPoolAddress(undefined)
+      return
+    }
+    const factoryContract = new ethers.Contract(
+      contracts.YieldGate.address,
+      contracts.YieldGate.abi,
+      provider
+    ) as YieldGate
+    const poolAddress = await factoryContract.beneficiaryPools(creator.address)
+    if (!poolAddress || BigNumber.from(poolAddress).eq(0)) {
+      setPoolAddress(false) // No pool deployed yet
+      return
+    }
+    setPoolAddress(poolAddress)
+  }, [contracts, provider, creator?.address, deployIsLoading])
+
+  // Deploy Pool
+  const deploy = async () => {
+    await refetchSigner()
+    if (!signer || !contracts) return
+    setDeployIsLoading(true)
+
+    // Blockchain Transaction
+    try {
+      const contract = new ethers.Contract(
+        contracts.YieldGate.address,
+        contracts.YieldGate.abi,
+        signer
+      ) as YieldGate
+      const transaction = await contract.deployPool(creator.address, {
+        gasLimit: 500000,
+      })
+      console.log({ transaction })
+      const receipt = await transaction.wait()
+      console.log({ receipt })
+    } catch (e) {
+      console.error('Error while deploying pool:', e)
+      setDeployIsLoading(false)
+      return
+    }
+
+    // Update UI
+    refetchTotalAmountStaked()
+    refetchSupporterAmountStaked()
+    updateContentIsLocked()
+
+    toast({
+      title: 'Pool Deployed',
+      description: `You've successfully created a pool. It can now be staked on the creators behalf.`,
+      status: 'success',
+    })
+    setDeployIsLoading(false)
+  }
 
   // Stake
   const stake = async (value: string) => {
     await refetchSigner()
-    if (!signer || !contracts) return
+    if (!poolAddress || !contracts || !signer || !address) return
     setStakeIsLoading(true)
 
-    // Blockchain Transaction
-    const contract = new ethers.Contract(
-      contracts.YieldGate.address,
-      contracts.YieldGate.abi,
-      signer
-    ) as YieldGate
     try {
-      const transaction = await contract.stake(creator.address, {
+      const poolContract = new ethers.Contract(
+        poolAddress,
+        BeneficiaryPoolAbi.abi,
+        signer
+      ) as BeneficiaryPool
+      const transaction = await poolContract.stake(address, {
         value: ethers.utils.parseEther(value),
         gasLimit: 500000,
       })
       console.log({ transaction })
       const receipt = await transaction.wait()
       console.log({ receipt })
-    } catch (_) {
+    } catch (e) {
+      console.error('Error while staking:', e)
       setStakeIsLoading(false)
       return
     }
@@ -108,24 +174,29 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
   }
 
   // Unstake
-
   const unstake = async () => {
     await refetchSigner()
-    if (!signer || !contracts) return
+    if (!poolAddress || !contracts || !signer) return
     setUnstakeIsLoading(true)
 
     // Blockchain Transaction
-    const contract = new ethers.Contract(
-      contracts.YieldGate.address,
-      contracts.YieldGate.abi,
-      signer
-    ) as YieldGate
-    const transaction = await contract.unstake(creator.address, {
-      gasLimit: 500000,
-    })
-    console.log({ transaction })
-    const receipt = await transaction.wait()
-    console.log({ receipt })
+    try {
+      const poolContract = new ethers.Contract(
+        poolAddress,
+        BeneficiaryPoolAbi.abi,
+        signer
+      ) as BeneficiaryPool
+      const transaction = await poolContract.unstake({
+        gasLimit: 500000,
+      })
+      console.log({ transaction })
+      const receipt = await transaction.wait()
+      console.log({ receipt })
+    } catch (e) {
+      console.error('Error while unstaking:', e)
+      setUnstakeIsLoading(false)
+      return
+    }
 
     // Database Transaction
     const res = await fetch('/api/supporters/remove', {
@@ -157,27 +228,33 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
   // Claim
   const claim = async () => {
     await refetchSigner()
-    if (!signer || !contracts) return
+    if (!poolAddress || !contracts || !signer) return
     setClaimIsLoading(true)
 
     // Blockchain Transaction
-    const contract = new ethers.Contract(
-      contracts.YieldGate.address,
-      contracts.YieldGate.abi,
-      signer
-    ) as YieldGate
-    const transaction = await contract.claim({
-      gasLimit: 500000,
-    })
-    console.log({ transaction })
-    const receipt = await transaction.wait()
-    console.log({ receipt })
-
-    const claimedEvent = (receipt.events || []).filter(
-      (e) => e.event === 'Claimed'
-    )?.[0] as ClaimedEvent
-    const claimedAmount = ethers.utils.formatUnits(claimedEvent?.args?.amount, 'finney')
-    console.log({ claimedEvent, claimedAmount })
+    let claimedAmount
+    try {
+      const poolContract = new ethers.Contract(
+        poolAddress,
+        BeneficiaryPoolAbi.abi,
+        signer
+      ) as BeneficiaryPool
+      const transaction = await poolContract.claim({
+        gasLimit: 500000,
+      })
+      console.log({ transaction })
+      const receipt = await transaction.wait()
+      console.log({ receipt })
+      const claimedEvent = (receipt.events || []).filter(
+        (e: Event) => e.event === 'Claimed'
+      )?.[0] as ClaimedEvent
+      claimedAmount = ethers.utils.formatUnits(claimedEvent?.args?.amount, 'finney')
+      console.log({ claimedEvent, claimedAmount })
+    } catch (e) {
+      console.error('Error while claiming:', e)
+      setClaimIsLoading(false)
+      return
+    }
 
     // Update UI
     refetchClaimableAmounts()
@@ -190,6 +267,22 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     setClaimIsLoading(false)
     setShowConfetti(true)
   }
+
+  if (!poolAddress)
+    return (
+      <>
+        {/* Deploy */}
+        <Button
+          w="full"
+          py={'7'}
+          disabled={deployIsLoading}
+          onClick={deploy}
+          isLoading={deployIsLoading}
+        >
+          Deploy Pool
+        </Button>
+      </>
+    )
 
   if (isOwner)
     return (
