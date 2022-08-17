@@ -7,11 +7,11 @@
       "outputs": [".next/**", "artifacts/**", "src/types/typechain/**"]
     },
     "@yieldgate/frontend#build": {
-      "dependsOn": ["@yieldgate/hardhat#build"],
+      "dependsOn": ["@yieldgate/contracts#build"],
       "outputs": [".next/**", "artifacts/**", "src/types/typechain/**"]
     },
     "@yieldgate/frontend#dev": {
-      "dependsOn": ["@yieldgate/hardhat#build"],
+      "dependsOn": ["@yieldgate/contracts#build"],
       "outputs": [".next/**", "artifacts/**", "src/types/typechain/**"]
     },
     "lint": {

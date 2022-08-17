@@ -22,8 +22,8 @@
     "lint": "prettier . --check",
     "lint:fix:all": "turbo run lint:fix",
     "lint:fix": "prettier . --write",
-    "dev:frontend": "pnpm --filter frontend dev",
-    "start:frontend": "pnpm --filter frontend start",
+    "dev:frontend": "pnpm run --filter frontend dev",
+    "deploy:contracts": "pnpm run --filter contracts deploy",
     "prepare": "husky install"
   },
   "devDependencies": {

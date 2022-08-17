@@ -20,6 +20,68 @@ importers:
       turbo: 1.4.3
       typescript: 4.7.4
 
+  packages/contracts:
+    specifiers:
+      '@ethersproject/abi': ^5.6.4
+      '@ethersproject/providers': ^5.6.8
+      '@nomicfoundation/hardhat-chai-matchers': ^1.0.2
+      '@nomicfoundation/hardhat-network-helpers': ^1.0.3
+      '@nomicfoundation/hardhat-toolbox': ^1.0.2
+      '@nomiclabs/hardhat-ethers': npm:hardhat-deploy-ethers@0.3.0-beta.13
+      '@nomiclabs/hardhat-etherscan': ^3.1.0
+      '@openzeppelin/contracts': ^4.7.3
+      '@typechain/ethers-v5': ^10.1.0
+      '@typechain/hardhat': ^6.1.2
+      '@types/chai': ^4.3.3
+      '@types/mocha': ^9.1.1
+      '@types/node': ^16.11.48
+      '@typescript-eslint/eslint-plugin': ^5.33.0
+      '@typescript-eslint/parser': ^5.33.0
+      chai: ^4.3.6
+      child-process-promise: ^2.2.1
+      dotenv: ^16.0.1
+      eslint: ^8.22.0
+      eslint-config-prettier: ^8.5.0
+      ethers: ^5.6.9
+      hardhat: ^2.10.1
+      hardhat-deploy: ^0.11.12
+      hardhat-gas-reporter: ^1.0.8
+      solhint: ^3.3.7
+      solidity-coverage: ^0.7.21
+      ts-node: ^10.9.1
+      typechain: ^8.1.0
+      typescript: ^4.7.4
+    devDependencies:
+      '@ethersproject/abi': 5.6.4
+      '@ethersproject/providers': 5.6.8
+      '@nomicfoundation/hardhat-chai-matchers': 1.0.3_x4ufop77ly5gvbdenrezdsgbq4
+      '@nomicfoundation/hardhat-network-helpers': 1.0.4_hardhat@2.10.2
+      '@nomicfoundation/hardhat-toolbox': 1.0.2_setpdjam7hfhtyz7ctip5sw4r4
+      '@nomiclabs/hardhat-ethers': /hardhat-deploy-ethers/0.3.0-beta.13_illgchr2x7f55uzbyysl5sx6wu
+      '@nomiclabs/hardhat-etherscan': 3.1.0_hardhat@2.10.2
+      '@openzeppelin/contracts': 4.7.3
+      '@typechain/ethers-v5': 10.1.0_3a2z4xo3ofaclmnvqkkolsxa2u
+      '@typechain/hardhat': 6.1.2_3xjknlb5byqadtso2k3zq5qgbu
+      '@types/chai': 4.3.3
+      '@types/mocha': 9.1.1
+      '@types/node': 16.11.49
+      '@typescript-eslint/eslint-plugin': 5.33.1_vsoshirnpb7xw6mr7xomgfas2i
+      '@typescript-eslint/parser': 5.33.1_4rv7y5c6xz3vfxwhbrcxxi73bq
+      chai: 4.3.6
+      child-process-promise: 2.2.1
+      dotenv: 16.0.1
+      eslint: 8.22.0
+      eslint-config-prettier: 8.5.0_eslint@8.22.0
+      ethers: 5.6.9
+      hardhat: 2.10.2_6oasmw356qmm23djlsjgkwvrtm
+      hardhat-deploy: 0.11.12
+      hardhat-gas-reporter: 1.0.8_hardhat@2.10.2
+      solhint: 3.3.7
+      solidity-coverage: 0.7.21
+      ts-node: 10.9.1_mc5obqbv5iw2qugqrfomepel3m
+      typechain: 8.1.0_typescript@4.7.4
+      typescript: 4.7.4
+
   packages/frontend:
     specifiers:
       '@chakra-ui/react': ^2.2.6
@@ -105,68 +167,6 @@ importers:
       jest-watch-typeahead: 2.0.0_jest@28.1.3
       postcss: 8.4.16
       tailwindcss: 3.1.8
-      typescript: 4.7.4
-
-  packages/hardhat:
-    specifiers:
-      '@ethersproject/abi': ^5.6.4
-      '@ethersproject/providers': ^5.6.8
-      '@nomicfoundation/hardhat-chai-matchers': ^1.0.2
-      '@nomicfoundation/hardhat-network-helpers': ^1.0.3
-      '@nomicfoundation/hardhat-toolbox': ^1.0.2
-      '@nomiclabs/hardhat-ethers': npm:hardhat-deploy-ethers@0.3.0-beta.13
-      '@nomiclabs/hardhat-etherscan': ^3.1.0
-      '@openzeppelin/contracts': ^4.7.3
-      '@typechain/ethers-v5': ^10.1.0
-      '@typechain/hardhat': ^6.1.2
-      '@types/chai': ^4.3.3
-      '@types/mocha': ^9.1.1
-      '@types/node': ^16.11.48
-      '@typescript-eslint/eslint-plugin': ^5.33.0
-      '@typescript-eslint/parser': ^5.33.0
-      chai: ^4.3.6
-      child-process-promise: ^2.2.1
-      dotenv: ^16.0.1
-      eslint: ^8.22.0
-      eslint-config-prettier: ^8.5.0
-      ethers: ^5.6.9
-      hardhat: ^2.10.1
-      hardhat-deploy: ^0.11.12
-      hardhat-gas-reporter: ^1.0.8
-      solhint: ^3.3.7
-      solidity-coverage: ^0.7.21
-      ts-node: ^10.9.1
-      typechain: ^8.1.0
-      typescript: ^4.7.4
-    devDependencies:
-      '@ethersproject/abi': 5.6.4
-      '@ethersproject/providers': 5.6.8
-      '@nomicfoundation/hardhat-chai-matchers': 1.0.3_x4ufop77ly5gvbdenrezdsgbq4
-      '@nomicfoundation/hardhat-network-helpers': 1.0.4_hardhat@2.10.2
-      '@nomicfoundation/hardhat-toolbox': 1.0.2_setpdjam7hfhtyz7ctip5sw4r4
-      '@nomiclabs/hardhat-ethers': /hardhat-deploy-ethers/0.3.0-beta.13_illgchr2x7f55uzbyysl5sx6wu
-      '@nomiclabs/hardhat-etherscan': 3.1.0_hardhat@2.10.2
-      '@openzeppelin/contracts': 4.7.3
-      '@typechain/ethers-v5': 10.1.0_3a2z4xo3ofaclmnvqkkolsxa2u
-      '@typechain/hardhat': 6.1.2_3xjknlb5byqadtso2k3zq5qgbu
-      '@types/chai': 4.3.3
-      '@types/mocha': 9.1.1
-      '@types/node': 16.11.49
-      '@typescript-eslint/eslint-plugin': 5.33.1_vsoshirnpb7xw6mr7xomgfas2i
-      '@typescript-eslint/parser': 5.33.1_4rv7y5c6xz3vfxwhbrcxxi73bq
-      chai: 4.3.6
-      child-process-promise: 2.2.1
-      dotenv: 16.0.1
-      eslint: 8.22.0
-      eslint-config-prettier: 8.5.0_eslint@8.22.0
-      ethers: 5.6.9
-      hardhat: 2.10.2_6oasmw356qmm23djlsjgkwvrtm
-      hardhat-deploy: 0.11.12
-      hardhat-gas-reporter: 1.0.8_hardhat@2.10.2
-      solhint: 3.3.7
-      solidity-coverage: 0.7.21
-      ts-node: 10.9.1_mc5obqbv5iw2qugqrfomepel3m
-      typechain: 8.1.0_typescript@4.7.4
       typescript: 4.7.4
 
 packages:
@@ -4815,7 +4815,7 @@ packages:
     engines: {node: '>=6'}
     dependencies:
       buffer: 5.7.1
-      immediate: 3.2.3
+      immediate: 3.3.0
       level-concat-iterator: 2.0.1
       level-supports: 1.0.1
       xtend: 4.0.2
@@ -6583,7 +6583,7 @@ packages:
       supports-color:
         optional: true
     dependencies:
-      ms: 2.1.1
+      ms: 2.1.3
       supports-color: 6.0.0
     dev: true
 
@@ -8535,7 +8535,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.0.4
+      minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: true
@@ -8560,6 +8560,7 @@ packages:
       minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
+    dev: true
 
   /glob/7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
@@ -13046,7 +13047,7 @@ packages:
     resolution: {integrity: sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==}
     hasBin: true
     dependencies:
-      glob: 7.2.0
+      glob: 7.2.3
 
   /rimraf/3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}

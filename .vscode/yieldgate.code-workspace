@@ -9,8 +9,8 @@
       "path": "../packages/frontend"
     },
     {
-      "name": "Hardhat",
-      "path": "../packages/hardhat"
+      "name": "Contracts",
+      "path": "../packages/contracts"
     }
   ],
   "settings": {
@@ -22,7 +22,8 @@
       "**/yarn-error.log": true,
       "**/.yarn": true,
       "**/.turbo": true,
-      "packages/hardhat/cache": true
+      "packages/contracts/cache": true,
+      "packages/contracts/artifacts": true
     },
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
