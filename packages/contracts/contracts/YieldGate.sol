@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/proxy/Clones.sol";
 contract YieldGate {
     event PoolDeployed(address indexed beneficiary, address indexed deployer, address pool);
 
-    address immutable beneficiaryPoolLib;
+    address private immutable beneficiaryPoolLib;
     address public immutable aavePool;
     IWETHGateway public immutable wethgw;
     IERC20 public immutable token;
@@ -74,7 +74,7 @@ contract BeneficiaryPool {
     event Unstaked(address indexed beneficiary, address indexed supporter, uint256 amount);
     event Claimed(address indexed beneficiary, uint256 amount);
 
-    YieldGate gate;
+    YieldGate public gate;
     address public beneficiary;
 
     // supporter => amount
