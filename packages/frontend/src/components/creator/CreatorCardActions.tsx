@@ -21,7 +21,7 @@ import {
   BeneficiaryPool,
   ClaimedEvent,
 } from '@yieldgate/contracts/typechain-types/contracts/YieldGate.sol/BeneficiaryPool'
-import { BigNumber, ethers, Event } from 'ethers'
+import { ethers, Event } from 'ethers'
 import { FC, useState } from 'react'
 import useAsyncEffect from 'use-async-effect'
 import { useAccount, useProvider, useSigner } from 'wagmi'
@@ -77,7 +77,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       provider
     ) as YieldGate
     const poolAddress = await factoryContract.beneficiaryPools(creator.address)
-    if (!poolAddress || BigNumber.from(poolAddress).eq(0)) {
+    if (!poolAddress || poolAddress === ethers.constants.AddressZero) {
       setPoolAddress(false) // No pool deployed yet
       return
     }
