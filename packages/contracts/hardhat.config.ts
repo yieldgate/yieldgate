@@ -2,7 +2,6 @@ import '@nomicfoundation/hardhat-toolbox'
 import * as dotenv from 'dotenv'
 import 'hardhat-deploy'
 import { HardhatUserConfig } from 'hardhat/types'
-import path from 'path'
 dotenv.config()
 
 const accounts = [
@@ -41,9 +40,6 @@ const config: HardhatUserConfig = {
     deployer: {
       default: 0,
     },
-  },
-  typechain: {
-    outDir: path.resolve('../frontend/src/types/typechain'),
   },
   etherscan: {
     apiKey: `${process.env.ETHERSCAN_API_KEY}`,

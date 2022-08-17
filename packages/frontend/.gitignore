@@ -3,5 +3,4 @@ coverage
 .next/
 out/
 build
-src/types/typechain/**
 src/deployments/1337.json

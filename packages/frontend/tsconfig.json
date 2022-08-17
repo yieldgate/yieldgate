@@ -20,7 +20,8 @@
       "@lib/*": ["./src/lib/*"],
       "@entities/*": ["./src/entities/*"],
       "@styles/*": ["./src/styles/*"],
-      "@deployments/*": ["./src/deployments/*"]
+      "@deployments/*": ["./src/deployments/*"],
+      "@yieldgate/contracts/*": ["../contracts/*"]
     }
   },
   "exclude": ["node_modules", ".next", "out"],

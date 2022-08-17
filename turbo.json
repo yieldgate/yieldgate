@@ -4,15 +4,15 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "artifacts/**", "src/types/typechain/**"]
+      "outputs": [".next/**", "artifacts/**", "typechain-types/**"]
     },
     "@yieldgate/frontend#build": {
       "dependsOn": ["@yieldgate/contracts#build"],
-      "outputs": [".next/**", "artifacts/**", "src/types/typechain/**"]
+      "outputs": [".next/**", "artifacts/**", "typechain-types/**"]
     },
     "@yieldgate/frontend#dev": {
       "dependsOn": ["@yieldgate/contracts#build"],
-      "outputs": [".next/**", "artifacts/**", "src/types/typechain/**"]
+      "outputs": [".next/**", "artifacts/**", "typechain-types/**"]
     },
     "lint": {
       "outputs": []

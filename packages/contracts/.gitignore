@@ -5,5 +5,4 @@ artifacts
 deployments/localhost
 coverage
 coverage.json
-typechain
 typechain-types

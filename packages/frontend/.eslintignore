@@ -3,5 +3,4 @@
 **/.next/*
 **/artifacts/*
 **/public/*
-**/types/typechain
 **/deployments/*.json
