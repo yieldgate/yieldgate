@@ -12,12 +12,16 @@ export const defaultChain: Chain | undefined = allChains.find(
   (chain) => env.defaultChain === chain.id
 )
 
-export const supportedChains: Chain[] = allChains.filter((chain) =>
-  env.supportedChains.includes(chain.id)
-)
+export const isChainSupported = (chainId?: number): boolean => {
+  return chainId && env.supportedChains.includes(chainId)
+}
+export const supportedChains: Chain[] = allChains.filter((chain) => isChainSupported(chain.id))
 
-export const { chains, provider } = configureChains(
-  Array.from(new Set([defaultChain, chain.mainnet, ...supportedChains])).filter(Boolean) as Chain[],
+export const {
+  chains: [, ...chains],
+  provider,
+} = configureChains(
+  Array.from(new Set([chain.mainnet, defaultChain, ...supportedChains])).filter(Boolean) as Chain[],
   [
     jsonRpcProvider({
       rpc: (chain) => {
