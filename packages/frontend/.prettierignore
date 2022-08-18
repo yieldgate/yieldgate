@@ -5,5 +5,5 @@ yarn.lock
 package-lock.json
 pnpm-lock.yaml
 public
-artifacts
 deployments/*.json
+types/typechain

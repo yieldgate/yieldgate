@@ -2,3 +2,4 @@
 out/
 build
 src/deployments/1337.json
+src/types/typechain

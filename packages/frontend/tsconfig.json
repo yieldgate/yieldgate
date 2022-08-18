@@ -21,7 +21,7 @@
       "@entities/*": ["./src/entities/*"],
       "@styles/*": ["./src/styles/*"],
       "@deployments/*": ["./src/deployments/*"],
-      "@yieldgate/contracts/*": ["../contracts/*"]
+      "@typechain/*": ["./src/types/typechain/*"]
     }
   },
   "exclude": ["node_modules", ".next", "out"],
