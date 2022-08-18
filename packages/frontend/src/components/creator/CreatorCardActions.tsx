@@ -15,12 +15,8 @@ import {
 import StakeAmountForm from '@components/StakeAmountForm'
 import { Creator } from '@entities/Creator.entity'
 import { useDeployments } from '@lib/useDeployments'
-import BeneficiaryPoolAbi from '@yieldgate/contracts/artifacts/contracts/YieldGate.sol/BeneficiaryPool.json'
-import { YieldGate } from '@yieldgate/contracts/typechain-types'
-import {
-  BeneficiaryPool,
-  ClaimedEvent,
-} from '@yieldgate/contracts/typechain-types/contracts/YieldGate.sol/BeneficiaryPool'
+import { ClaimedEvent } from '@typechain/contracts/YieldGate.sol/BeneficiaryPool'
+import { BeneficiaryPool__factory, YieldGate__factory } from '@typechain/index'
 import { ethers, Event } from 'ethers'
 import { FC, useState } from 'react'
 import useAsyncEffect from 'use-async-effect'
@@ -71,11 +67,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       setPoolAddress(undefined)
       return
     }
-    const factoryContract = new ethers.Contract(
-      contracts.YieldGate.address,
-      contracts.YieldGate.abi,
-      provider
-    ) as YieldGate
+    const factoryContract = YieldGate__factory.connect(contracts.YieldGate.address, provider)
     const poolAddress = await factoryContract.beneficiaryPools(creator.address)
     if (!poolAddress || poolAddress === ethers.constants.AddressZero) {
       setPoolAddress(false) // No pool deployed yet
@@ -92,11 +84,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
     // Blockchain Transaction
     try {
-      const contract = new ethers.Contract(
-        contracts.YieldGate.address,
-        contracts.YieldGate.abi,
-        signer
-      ) as YieldGate
+      const contract = YieldGate__factory.connect(contracts.YieldGate.address, signer)
       const transaction = await contract.deployPool(creator.address, {
         gasLimit: 500000,
       })
@@ -129,11 +117,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     setStakeIsLoading(true)
 
     try {
-      const poolContract = new ethers.Contract(
-        poolAddress,
-        BeneficiaryPoolAbi.abi,
-        signer
-      ) as BeneficiaryPool
+      const poolContract = BeneficiaryPool__factory.connect(poolAddress, signer)
       const transaction = await poolContract.stake(address, {
         value: ethers.utils.parseEther(value),
         gasLimit: 500000,
@@ -181,11 +165,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
     // Blockchain Transaction
     try {
-      const poolContract = new ethers.Contract(
-        poolAddress,
-        BeneficiaryPoolAbi.abi,
-        signer
-      ) as BeneficiaryPool
+      const poolContract = BeneficiaryPool__factory.connect(poolAddress, signer)
       const transaction = await poolContract.unstake({
         gasLimit: 500000,
       })
@@ -234,11 +214,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     // Blockchain Transaction
     let claimedAmount
     try {
-      const poolContract = new ethers.Contract(
-        poolAddress,
-        BeneficiaryPoolAbi.abi,
-        signer
-      ) as BeneficiaryPool
+      const poolContract = BeneficiaryPool__factory.connect(poolAddress, signer)
       const transaction = await poolContract.claim({
         gasLimit: 500000,
       })

@@ -1,6 +1,6 @@
 import { env } from '@lib/environment'
-import { YieldGate } from '@yieldgate/contracts/typechain-types'
-import { BigNumber, ethers, getDefaultProvider } from 'ethers'
+import { YieldGate__factory } from '@typechain/index'
+import { BigNumber, getDefaultProvider } from 'ethers'
 import { formatEther, formatUnits } from 'ethers/lib/utils'
 import { useEffect, useState } from 'react'
 import { useDeployments } from './useDeployments'
@@ -20,11 +20,7 @@ export const useTotalAmountStaked = ({ beneficiary }: { beneficiary: string }) =
     if (!beneficiary || !contracts || !chainId) return
     setIsLoading(true)
     const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
-    const contract = new ethers.Contract(
-      contracts.YieldGate.address,
-      contracts.YieldGate.abi,
-      provider
-    ) as YieldGate
+    const contract = YieldGate__factory.connect(contracts.YieldGate.address, provider)
     let value = BigNumber.from(0)
     try {
       value = await contract.staked(beneficiary)
@@ -73,11 +69,7 @@ export const useSupporterAmountStaked = ({
     if (!supporter || !beneficiary || !contracts || !chainId) return
     setIsLoading(true)
     const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
-    const contract = new ethers.Contract(
-      contracts.YieldGate.address,
-      contracts.YieldGate.abi,
-      provider
-    ) as YieldGate
+    const contract = YieldGate__factory.connect(contracts.YieldGate.address, provider)
     let value = BigNumber.from(0)
     try {
       value = await contract.supporterStaked(supporter, beneficiary)
@@ -120,11 +112,7 @@ export const useClaimableAmount = ({ beneficiary }: { beneficiary?: string }) =>
     if (!beneficiary || !contracts || !chainId) return
     setIsLoading(true)
     const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
-    const contract = new ethers.Contract(
-      contracts.YieldGate.address,
-      contracts.YieldGate.abi,
-      provider
-    ) as YieldGate
+    const contract = YieldGate__factory.connect(contracts.YieldGate.address, provider)
     let value = BigNumber.from(0)
     try {
       value = await contract.claimable(beneficiary)
