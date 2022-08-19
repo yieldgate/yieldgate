@@ -6,6 +6,7 @@
     "clean": "pnpm hardhat clean",
     "compile": "pnpm hardhat compile",
     "build": "pnpm clean && pnpm compile",
+    "test": "pnpm hardhat compile && pnpm hardhat test",
     "chain": "pnpm hardhat node",
     "typechain": "pnpm hardhat typechain",
     "lint": "pnpm prettier --check && pnpm eslint && pnpm solhint",
