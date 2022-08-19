@@ -113,7 +113,7 @@ contract BeneficiaryPool {
     function unstake() public returns (uint256) {
         address supporter = msg.sender;
         uint256 amount = supporters[supporter];
-        require(amount >= 0, "no supporter");
+        require(amount > 0, "no supporter");
 
         supporters[supporter] = 0;
         totalStake -= amount;
