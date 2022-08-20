@@ -1,6 +1,6 @@
 //SPDX-License-Identifier: MIT
 
-import { expect } from 'chai'
+import chai, { expect } from 'chai'
 import hre from 'hardhat'
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
 import { smock } from '@defi-wonderland/smock'
@@ -11,6 +11,8 @@ import {
   YieldGate__factory,
   BeneficiaryPool__factory,
 } from '../typechain-types'
+
+chai.use(smock.matchers)
 
 const ethers = hre.ethers
 const ZeroAddr = ethers.constants.AddressZero
@@ -72,32 +74,35 @@ describe('YieldGate', function () {
     )
 
     const poolAsSup = pool.connect(supporter)
-    const value = ethers.utils.parseEther('1')
+    const stake = ethers.utils.parseEther('1')
 
     // 1. Stake
 
-    wETHGateway.depositETH.reverts() // default for wrong input
-    wETHGateway.depositETH.whenCalledWith(aavePool, pool.address, 0).returns()
-
-    const stakeTx = await poolAsSup.stake(supporter.address, { value: value })
-    await expect(stakeTx).to.emit(pool, 'Staked')
+    const stakeTx = await poolAsSup.stake(supporter.address, { value: stake })
+    await expect(stakeTx)
+      .to.emit(pool, 'Staked')
+      .withArgs(beneficiary.address, supporter.address, stake)
     await expect(stakeTx).to.changeEtherBalances(
       [supporter.address, wETHGateway.address],
-      [value.mul(-1), value]
+      [stake.mul(-1), stake]
     )
+    expect(wETHGateway.depositETH).to.be.calledWith(aavePool, pool.address, 0)
 
-    expect(await yieldgate.staked(beneficiary.address)).to.equal(value)
-    expect(await yieldgate.supporterStaked(supporter.address, beneficiary.address)).to.equal(value)
-    expect(await pool.supporters(supporter.address)).to.equal(value)
+    expect(await yieldgate.staked(beneficiary.address)).to.equal(stake)
+    expect(await yieldgate.supporterStaked(supporter.address, beneficiary.address)).to.equal(stake)
+    expect(await pool.supporters(supporter.address)).to.equal(stake)
+    expect(await pool.staked()).to.equal(stake)
 
     // 2. Unstake
 
-    aWETH.approve.whenCalledWith(wETHGateway.address, value).returns(true)
-    wETHGateway.withdrawETH.whenCalledWith(aavePool, value, supporter.address).returns()
+    aWETH.approve.whenCalledWith(wETHGateway.address, stake).returns(true)
     // TODO: smock cannot send ether yet, so wethGateway fake cannot send the
     // stake back at the moment.
 
-    await expect(poolAsSup.unstake()).to.emit(pool, 'Unstaked')
+    await expect(poolAsSup.unstake())
+      .to.emit(pool, 'Unstaked')
+      .withArgs(beneficiary.address, supporter.address, stake)
+    expect(wETHGateway.withdrawETH).to.be.calledWith(aavePool, stake, supporter.address)
     expect(await pool.supporters(supporter.address)).to.equal(0)
     // TODO: assert changed ether balances when fake is able to.
 
