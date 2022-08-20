@@ -1,7 +1,5 @@
-*.tsbuildinfo
-coverage
 .next/
 out/
 build
-artifacts
-types/typechain/**
+src/deployments/1337.json
+src/types/typechain

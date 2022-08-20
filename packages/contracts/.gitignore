@@ -1,0 +1,5 @@
+.env
+cache
+artifacts
+deployments/localhost
+typechain-types

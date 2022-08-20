@@ -19,17 +19,15 @@ pnpm install
 
 # Copy & fill environments
 cp packages/frontend/.env.local.example packages/frontend/.env.local && nano packages/frontend/.env.local
-cp packages/hardhat/.env.example packages/hardhat/.env && nano packages/hardhat/.env
+cp packages/contracts/.env.example packages/contracts/.env && nano packages/contracts/.env
 
 # Generate types, artifacts & start frontend
 pnpm run dev
 # … or only start frontend if types are generated previously
-pnpm run frontend:dev
+pnpm run dev:frontend
 
-# Optional: Start local hardhat network and deploy contracts
-# NOTE: Execute those in different terminals
-pnpm run hardhat:chain
-pnpm run hardhat:deploy
+# Start local hardhat network & deploy contracts
+pnpm run deploy:contracts
 ```
 
 ## Stack
