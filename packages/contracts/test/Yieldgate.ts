@@ -68,6 +68,23 @@ describe('YieldGate', function () {
     expect(await pool.beneficiary()).to.equal(beneficiary.address)
   })
 
+  it('YieldGate views on non-existent pools should return 0', async function () {
+    const { yieldgate, supporter } = await loadFixture(deployYieldGateAndOnePool)
+    const a = supporter.address // just any address without a pool
+
+    expect(await yieldgate.claimable(a)).to.equal(0)
+    expect(await yieldgate.staked(a)).to.equal(0)
+    expect(await yieldgate.supporterStaked(a, a)).to.equal(0)
+  })
+
+  it('Second initialization of pool should revert', async function () {
+    const { yieldgate, beneficiary, pool } = await loadFixture(deployYieldGateAndOnePool)
+
+    await expect(pool.init(yieldgate.address, beneficiary.address)).to.be.revertedWith(
+      'already initialized'
+    )
+  })
+
   it('Staking and unstaking by supporter should restore their balance', async function () {
     const { wETHGateway, aWETH, yieldgate, beneficiary, pool, supporter } = await loadFixture(
       deployYieldGateAndOnePool
@@ -110,7 +127,7 @@ describe('YieldGate', function () {
   })
 
   it('Generated yield should be claimable by beneficiary', async function () {
-    const { wETHGateway, aWETH, beneficiary, pool, supporter } = await loadFixture(
+    const { wETHGateway, aWETH, yieldgate, beneficiary, pool, supporter } = await loadFixture(
       deployYieldGateAndOnePool
     )
 
@@ -124,6 +141,10 @@ describe('YieldGate', function () {
     aWETH.balanceOf.whenCalledWith(pool.address).returns(stake.add(yld))
     expect(await pool.staked()).to.equal(stake)
     expect(await pool.claimable()).to.equal(yld)
+    expect(await yieldgate.claimable(beneficiary.address)).to.equal(yld)
+
+    // try clamining as supporter
+    await expect(pool.connect(supporter).claim()).to.be.revertedWith('only beneficiary')
 
     // claim yield
     aWETH.approve.whenCalledWith(wETHGateway.address, yld).returns(true)
