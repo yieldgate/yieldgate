@@ -108,4 +108,31 @@ describe('YieldGate', function () {
 
     await expect(poolAsSup.unstake()).to.be.revertedWith('no supporter')
   })
+
+  it('Generated yield should be claimable by beneficiary', async function () {
+    const { wETHGateway, aWETH, beneficiary, pool, supporter } = await loadFixture(
+      deployYieldGateAndOnePool
+    )
+
+    const stake = ethers.utils.parseEther('1')
+    const yld = ethers.utils.parseEther('.2')
+
+    // stake
+    await pool.connect(supporter).stake(supporter.address, { value: stake })
+
+    // add yield to balance
+    aWETH.balanceOf.whenCalledWith(pool.address).returns(stake.add(yld))
+    expect(await pool.staked()).to.equal(stake)
+    expect(await pool.claimable()).to.equal(yld)
+
+    // claim yield
+    aWETH.approve.whenCalledWith(wETHGateway.address, yld).returns(true)
+    await expect(pool.claim()).to.emit(pool, 'Claimed').withArgs(beneficiary.address, yld)
+    expect(wETHGateway.withdrawETH).to.be.calledWith(aavePool, yld, beneficiary.address)
+
+    // remove yield from balance
+    aWETH.balanceOf.whenCalledWith(pool.address).returns(stake)
+    expect(await pool.staked()).to.equal(stake)
+    expect(await pool.claimable()).to.equal(0)
+  })
 })
