@@ -3,7 +3,7 @@
   "chainId": "5",
   "contracts": {
     "YieldGate": {
-      "address": "0x66309cCBeAEf5F22d67D3868dAe4B51d3E4DEee5",
+      "address": "0x561f893a8A8Ce9AaB817861A8f1F487776f88C57",
       "abi": [
         {
           "inputs": [
@@ -44,7 +44,7 @@
             {
               "indexed": false,
               "internalType": "address",
-              "name": "aavePool",
+              "name": "pool",
               "type": "address"
             }
           ],
