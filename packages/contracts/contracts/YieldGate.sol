@@ -6,9 +6,9 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/proxy/Clones.sol";
 
 contract YieldGate {
-    event PoolDeployed(address indexed beneficiary, address indexed deployer, address aavePool);
+    event PoolDeployed(address indexed beneficiary, address indexed deployer, address pool);
 
-    address immutable beneficiaryPoolLib;
+    address private immutable beneficiaryPoolLib;
     address public immutable aavePool;
     IWETHGateway public immutable wethgw;
     IERC20 public immutable token;
@@ -35,6 +35,8 @@ contract YieldGate {
         BeneficiaryPool bpool = BeneficiaryPool(Clones.clone(beneficiaryPoolLib));
         bpool.init(address(this), beneficiary);
         beneficiaryPools[beneficiary] = bpool;
+
+        emit PoolDeployed(beneficiary, msg.sender, address(bpool));
         return address(bpool);
     }
 
@@ -72,7 +74,7 @@ contract BeneficiaryPool {
     event Unstaked(address indexed beneficiary, address indexed supporter, uint256 amount);
     event Claimed(address indexed beneficiary, uint256 amount);
 
-    YieldGate gate;
+    YieldGate public gate;
     address public beneficiary;
 
     // supporter => amount
@@ -111,7 +113,7 @@ contract BeneficiaryPool {
     function unstake() public returns (uint256) {
         address supporter = msg.sender;
         uint256 amount = supporters[supporter];
-        require(amount >= 0, "no supporter");
+        require(amount > 0, "no supporter");
 
         supporters[supporter] = 0;
         totalStake -= amount;

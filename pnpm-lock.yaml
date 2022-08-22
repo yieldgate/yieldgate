@@ -22,6 +22,7 @@ importers:
 
   packages/contracts:
     specifiers:
+      '@defi-wonderland/smock': ^2.2.0
       '@ethersproject/abi': ^5.6.4
       '@ethersproject/providers': ^5.6.8
       '@nomicfoundation/hardhat-chai-matchers': ^1.0.2
@@ -52,6 +53,7 @@ importers:
       typechain: ^8.1.0
       typescript: ^4.7.4
     devDependencies:
+      '@defi-wonderland/smock': 2.2.0_pvo35itsit3q2efww225jp2u3i
       '@ethersproject/abi': 5.6.4
       '@ethersproject/providers': 5.6.8
       '@nomicfoundation/hardhat-chai-matchers': 1.0.3_x4ufop77ly5gvbdenrezdsgbq4
@@ -2411,6 +2413,30 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
+  /@defi-wonderland/smock/2.2.0_pvo35itsit3q2efww225jp2u3i:
+    resolution: {integrity: sha512-LbEufBtfSZAzRjusDF3ZovbYfWbsPKZrKcR2+0KW8h7DE6I79ZuDDE+/lQUyKqMk4KaWQ02zSqpRsQuIhovvHg==}
+    peerDependencies:
+      '@ethersproject/abi': ^5
+      '@ethersproject/abstract-provider': ^5
+      '@ethersproject/abstract-signer': ^5
+      '@nomiclabs/hardhat-ethers': ^2 || 0.3.0-beta.13
+      ethers: ^5 || ^5.0.0
+      hardhat: ^2
+    dependencies:
+      '@ethersproject/abi': 5.6.4
+      '@ethersproject/abstract-provider': 5.6.1
+      '@ethersproject/abstract-signer': 5.6.2
+      '@nomiclabs/ethereumjs-vm': 4.2.2
+      '@nomiclabs/hardhat-ethers': /hardhat-deploy-ethers/0.3.0-beta.13_illgchr2x7f55uzbyysl5sx6wu
+      diff: 5.0.0
+      ethers: 5.6.9
+      hardhat: 2.10.2_6oasmw356qmm23djlsjgkwvrtm
+      lodash.isequal: 4.5.0
+      lodash.isequalwith: 4.4.0
+      rxjs: 7.5.6
+      semver: 7.3.7
+    dev: true
+
   /@emotion/babel-plugin/11.10.0_@babel+core@7.18.10:
     resolution: {integrity: sha512-xVnpDAAbtxL1dsuSelU5A7BnY/lftws0wUexNJZTPsvX/1tM4GZJbclgODhvW4E+NH7E5VFcH0bBn30NvniPJA==}
     peerDependencies:
@@ -3542,6 +3568,26 @@ packages:
       ts-node: 10.9.1_mc5obqbv5iw2qugqrfomepel3m
       typechain: 8.1.0_typescript@4.7.4
       typescript: 4.7.4
+    dev: true
+
+  /@nomiclabs/ethereumjs-vm/4.2.2:
+    resolution: {integrity: sha512-8WmX94mMcJaZ7/m7yBbyuS6B+wuOul+eF+RY9fBpGhNaUpyMR/vFIcDojqcWQ4Yafe1tMKY5LDu2yfT4NZgV4Q==}
+    dependencies:
+      async: 2.6.4
+      async-eventemitter: 0.2.4
+      core-js-pure: 3.24.1
+      ethereumjs-account: 3.0.0
+      ethereumjs-block: 2.2.2
+      ethereumjs-blockchain: 4.0.4
+      ethereumjs-common: 1.5.2
+      ethereumjs-tx: 2.1.2
+      ethereumjs-util: 6.2.1
+      fake-merkle-patricia-tree: 1.0.1
+      functional-red-black-tree: 1.0.1
+      merkle-patricia-tree: 3.0.0
+      rustbn.js: 0.2.0
+      safe-buffer: 5.2.1
+      util.promisify: 1.1.1
     dev: true
 
   /@nomiclabs/hardhat-etherscan/3.1.0_hardhat@2.10.2:
@@ -4822,12 +4868,31 @@ packages:
     resolution: {integrity: sha512-HQiug4c+/s3WOvEnDRxXVmNtSG5s2gJM9r19BTcqjp7BWcE48PB+Y2G6jE65kqI0LpsQeMZygt/b60Gi4KxGyA==}
     dev: false
 
+  /abstract-leveldown/2.6.3:
+    resolution: {integrity: sha512-2++wDf/DYqkPR3o5tbfdhF96EfMApo1GpPfzOsR/ZYXdkSmELlvOOEAl9iKkRsktMPHdGjO4rtkBpf2I7TiTeA==}
+    dependencies:
+      xtend: 4.0.2
+    dev: true
+
+  /abstract-leveldown/2.7.2:
+    resolution: {integrity: sha512-+OVvxH2rHVEhWLdbudP6p0+dNMXu8JA1CbhP19T8paTYAcX7oJ4OVjT+ZUVpv7mITxXHqDMej+GdqXBmXkw09w==}
+    dependencies:
+      xtend: 4.0.2
+    dev: true
+
+  /abstract-leveldown/5.0.0:
+    resolution: {integrity: sha512-5mU5P1gXtsMIXg65/rsYGsi93+MlogXZ9FA8JnwKurHQg64bfXwGYVdVdijNTVNOlAsuIiOwHdvFFD5JqCJQ7A==}
+    engines: {node: '>=6'}
+    dependencies:
+      xtend: 4.0.2
+    dev: true
+
   /abstract-leveldown/6.2.3:
     resolution: {integrity: sha512-BsLm5vFMRUrrLeCcRc+G0t2qOaTzpoJQLOubq2XM72eNpjF5UdU5o/5NvlNhx95XHcAvcl8OMXr4mlg/fRgUXQ==}
     engines: {node: '>=6'}
     dependencies:
       buffer: 5.7.1
-      immediate: 3.2.3
+      immediate: 3.3.0
       level-concat-iterator: 2.0.1
       level-supports: 1.0.1
       xtend: 4.0.2
@@ -5978,6 +6043,12 @@ packages:
     resolution: {integrity: sha512-BrgHpW9NURQgzoNyjfq0Wu6VFO6D7IZEmJNdtgNqpzGG8RuNFHt2jQxWlAs4HMe119chBnv+34syEZtc6IhLtA==}
     dev: true
 
+  /checkpoint-store/1.1.0:
+    resolution: {integrity: sha512-J/NdY2WvIx654cc6LWSq/IYFFCUf75fFTgwzFnmbqyORH4MwgiQCgswLLKBGzmsyTI5V7i5bp/So6sMbDWhedg==}
+    dependencies:
+      functional-red-black-tree: 1.0.1
+    dev: true
+
   /child-process-promise/2.2.1:
     resolution: {integrity: sha512-Fi4aNdqBsr0mv+jgWxcZ/7rAIC2mgihrptyVI4foh/rrjY/3BNjfP9+oaiFx/fzim+1ZyCNBae0DlyfQhSugog==}
     dependencies:
@@ -6704,6 +6775,20 @@ packages:
     resolution: {integrity: sha512-0ISdNousHvZT2EiFlZeZAHBUvSxmKswVCEf8hW7KWgG4a8MVEu/3Vb6uWYozkjylyCxe0JBIiRB1jV45S70WVQ==}
     dev: true
 
+  /deferred-leveldown/1.2.2:
+    resolution: {integrity: sha512-uukrWD2bguRtXilKt6cAWKyoXrTSMo5m7crUdLfWQmu8kIm88w3QZoUL+6nhpfKVmhHANER6Re3sKoNoZ3IKMA==}
+    dependencies:
+      abstract-leveldown: 2.6.3
+    dev: true
+
+  /deferred-leveldown/4.0.2:
+    resolution: {integrity: sha512-5fMC8ek8alH16QiV0lTCis610D1Zt1+LA4MS4d63JgS32lrCjTFDUFz2ao09/j2I4Bqb5jL4FZYwu7Jz0XO1ww==}
+    engines: {node: '>=6'}
+    dependencies:
+      abstract-leveldown: 5.0.0
+      inherits: 2.0.4
+    dev: true
+
   /deferred-leveldown/5.3.0:
     resolution: {integrity: sha512-a59VOT+oDy7vtAbLRCZwWgxu2BaCfd5Hk7wxJd48ei7I+nsg8Orlb9CLG0PMZienk9BSUKgeAqkO2+Lw+1+Ukw==}
     engines: {node: '>=6'}
@@ -6954,6 +7039,17 @@ packages:
   /encodeurl/1.0.2:
     resolution: {integrity: sha512-TPJXq8JqFaVYm2CWmPvnP2Iyo4ZSM7/QKcSmuMLDObfpH5fi7RUGmd/rTDf+rut/saiDiQEeVTNgAmJEdAOx0w==}
     engines: {node: '>= 0.8'}
+
+  /encoding-down/5.0.4:
+    resolution: {integrity: sha512-8CIZLDcSKxgzT+zX8ZVfgNbu8Md2wq/iqa1Y7zyVR18QBEAc0Nmzuvj/N5ykSKpfGzjM8qxbaFntLPwnVoUhZw==}
+    engines: {node: '>=6'}
+    dependencies:
+      abstract-leveldown: 5.0.0
+      inherits: 2.0.4
+      level-codec: 9.0.2
+      level-errors: 2.0.1
+      xtend: 4.0.2
+    dev: true
 
   /encoding-down/6.3.0:
     resolution: {integrity: sha512-QKrV0iKR6MZVJV08QY0wp1e7vF6QbhnbQhb07bwpEyuz4uZiZgPlEGdkCROuFkUwdxlFaiPIhjyarH1ee/3vhw==}
@@ -7659,6 +7755,16 @@ packages:
       ethereumjs-util: 5.2.1
     dev: false
 
+  /ethashjs/0.0.8:
+    resolution: {integrity: sha512-/MSbf/r2/Ld8o0l15AymjOTlPqpN8Cr4ByUEA9GtR4x0yAh3TdtDzEg29zMjXCNPI7u6E5fOQdj/Cf9Tc7oVNw==}
+    deprecated: 'New package name format for new versions: @ethereumjs/ethash. Please update.'
+    dependencies:
+      async: 2.6.4
+      buffer-xor: 2.0.2
+      ethereumjs-util: 7.1.5
+      miller-rabin: 4.0.1
+    dev: true
+
   /ethereum-bloom-filters/1.0.10:
     resolution: {integrity: sha512-rxJ5OFN3RwjQxDcFP2Z5+Q9ho4eIdEmSc2ht0fCu8Se9nbXjZ7/031uXoUYJ87KHCOdVeiUuwSnoS7hmYAGVHA==}
     dependencies:
@@ -7700,6 +7806,55 @@ packages:
       ethereumjs-util: 6.2.1
     dev: true
 
+  /ethereumjs-account/3.0.0:
+    resolution: {integrity: sha512-WP6BdscjiiPkQfF9PVfMcwx/rDvfZTjFKY0Uwc09zSQr9JfIVH87dYIJu0gNhBhpmovV4yq295fdllS925fnBA==}
+    deprecated: Please use Util.Account class found on package ethereumjs-util@^7.0.6 https://github.com/ethereumjs/ethereumjs-util/releases/tag/v7.0.6
+    dependencies:
+      ethereumjs-util: 6.2.1
+      rlp: 2.2.7
+      safe-buffer: 5.2.1
+    dev: true
+
+  /ethereumjs-block/2.2.2:
+    resolution: {integrity: sha512-2p49ifhek3h2zeg/+da6XpdFR3GlqY3BIEiqxGF8j9aSRIgkb7M1Ky+yULBKJOu8PAZxfhsYA+HxUk2aCQp3vg==}
+    deprecated: 'New package name format for new versions: @ethereumjs/block. Please update.'
+    dependencies:
+      async: 2.6.4
+      ethereumjs-common: 1.5.2
+      ethereumjs-tx: 2.1.2
+      ethereumjs-util: 5.2.1
+      merkle-patricia-tree: 2.3.2
+    dev: true
+
+  /ethereumjs-blockchain/4.0.4:
+    resolution: {integrity: sha512-zCxaRMUOzzjvX78DTGiKjA+4h2/sF0OYL1QuPux0DHpyq8XiNoF5GYHtb++GUxVlMsMfZV7AVyzbtgcRdIcEPQ==}
+    deprecated: 'New package name format for new versions: @ethereumjs/blockchain. Please update.'
+    dependencies:
+      async: 2.6.4
+      ethashjs: 0.0.8
+      ethereumjs-block: 2.2.2
+      ethereumjs-common: 1.5.2
+      ethereumjs-util: 6.2.1
+      flow-stoplight: 1.0.0
+      level-mem: 3.0.1
+      lru-cache: 5.1.1
+      rlp: 2.2.7
+      semaphore: 1.1.0
+    dev: true
+
+  /ethereumjs-common/1.5.2:
+    resolution: {integrity: sha512-hTfZjwGX52GS2jcVO6E2sx4YuFnf0Fhp5ylo4pEPhEffNln7vS59Hr5sLnp3/QCazFLluuBZ+FZ6J5HTp0EqCA==}
+    deprecated: 'New package name format for new versions: @ethereumjs/common. Please update.'
+    dev: true
+
+  /ethereumjs-tx/2.1.2:
+    resolution: {integrity: sha512-zZEK1onCeiORb0wyCXUvg94Ve5It/K6GD1K+26KfFKodiBiS6d9lfCXlUKGBBdQ+bv7Day+JK0tj1K+BeNFRAw==}
+    deprecated: 'New package name format for new versions: @ethereumjs/tx. Please update.'
+    dependencies:
+      ethereumjs-common: 1.5.2
+      ethereumjs-util: 6.2.1
+    dev: true
+
   /ethereumjs-util/5.2.1:
     resolution: {integrity: sha512-v3kT+7zdyCm1HIqWlLNrHGqHGLpGYIhjeHxQjnDXjLT2FyGJDsd3LWMYUo7pAFRrk86CR3nUJfhC81CCoJNNGQ==}
     dependencies:
@@ -7710,7 +7865,6 @@ packages:
       ethjs-util: 0.1.6
       rlp: 2.2.7
       safe-buffer: 5.2.1
-    dev: false
 
   /ethereumjs-util/6.2.1:
     resolution: {integrity: sha512-W2Ktez4L01Vexijrm5EB6w7dg4n/TgpoYU4avuT5T3Vmnw/eCRtiBrJfQYS/DCSvDIOLn2k57GcHdeBcgVxAqw==}
@@ -7996,6 +8150,12 @@ packages:
     engines: {node: '> 0.1.90'}
     dev: false
 
+  /fake-merkle-patricia-tree/1.0.1:
+    resolution: {integrity: sha512-Tgq37lkc9pUIgIKw5uitNUKcgcYL3R6JvXtKQbOf/ZSavXbidsksgp/pAY6p//uhw0I4yoMsvTSovvVIsk/qxA==}
+    dependencies:
+      checkpoint-store: 1.1.0
+    dev: true
+
   /fast-deep-equal/3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
     dev: true
@@ -8201,6 +8361,10 @@ packages:
     resolution: {integrity: sha512-1gIBiWJNR0tKUNv8gZuk7l9rVX06OuLzY9AoGio7y/JT4V1IZErEMEq2TJS+PFcw/y0RshZ1J/27VfK1UQzYVg==}
     engines: {node: '>=0.4.0'}
     dev: false
+
+  /flow-stoplight/1.0.0:
+    resolution: {integrity: sha512-rDjbZUKpN8OYhB0IE/vY/I8UWO/602IIJEU/76Tv4LvYnwHCk0BCsvz4eRr9n+FQcri7L5cyaXOo0+/Kh4HisA==}
+    dev: true
 
   /fmix/0.1.0:
     resolution: {integrity: sha512-Y6hyofImk9JdzU8k5INtTXX1cu8LDlePWDFU5sftm9H+zKCr5SGrVjdhkvsim646cw5zD0nADj8oHyXMZmCZ9w==}
@@ -9505,6 +9669,10 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
+  /isarray/0.0.1:
+    resolution: {integrity: sha512-D2S+3GLxWH+uhrNEcoh/fnmYeP8E8/zHl644d/jdA0g2uyXvy3sb0qxotE+ne0LtccHknQzWwZEzhak7oJ0COQ==}
+    dev: true
+
   /isarray/1.0.0:
     resolution: {integrity: sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ==}
 
@@ -10380,6 +10548,10 @@ packages:
       language-subtag-registry: 0.3.22
     dev: true
 
+  /level-codec/7.0.1:
+    resolution: {integrity: sha512-Ua/R9B9r3RasXdRmOtd+t9TCOEIIlts+TN/7XTT2unhDaL6sJn83S3rUyljbr6lVtw49N3/yA0HHjpV6Kzb2aQ==}
+    dev: true
+
   /level-codec/9.0.2:
     resolution: {integrity: sha512-UyIwNb1lJBChJnGfjmO0OR+ezh2iVu1Kas3nvBS/BzGnx79dv6g7unpKIDNPMhfdTEGoc7mC8uAu51XEtX+FHQ==}
     engines: {node: '>=6'}
@@ -10392,11 +10564,35 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
+  /level-errors/1.0.5:
+    resolution: {integrity: sha512-/cLUpQduF6bNrWuAC4pwtUKA5t669pCsCi2XbmojG2tFeOr9j6ShtdDCtFFQO1DRt+EVZhx9gPzP9G2bUaG4ig==}
+    dependencies:
+      errno: 0.1.8
+    dev: true
+
   /level-errors/2.0.1:
     resolution: {integrity: sha512-UVprBJXite4gPS+3VznfgDSU8PTRuVX0NXwoWW50KLxd2yw4Y1t2JUR5In1itQnudZqRMT9DlAM3Q//9NCjCFw==}
     engines: {node: '>=6'}
     dependencies:
       errno: 0.1.8
+    dev: true
+
+  /level-iterator-stream/1.3.1:
+    resolution: {integrity: sha512-1qua0RHNtr4nrZBgYlpV0qHHeHpcRRWTxEZJ8xsemoHAXNL5tbooh4tPEEqIqsbWCAJBmUmkwYK/sW5OrFjWWw==}
+    dependencies:
+      inherits: 2.0.4
+      level-errors: 1.0.5
+      readable-stream: 1.0.34
+      xtend: 4.0.2
+    dev: true
+
+  /level-iterator-stream/3.0.1:
+    resolution: {integrity: sha512-nEIQvxEED9yRThxvOrq8Aqziy4EGzrxSZK+QzEFAVuJvQ8glfyZ96GB6BoI4sBbLfjMXm2w4vu3Tkcm9obcY0g==}
+    engines: {node: '>=6'}
+    dependencies:
+      inherits: 2.0.4
+      readable-stream: 2.3.7
+      xtend: 4.0.2
     dev: true
 
   /level-iterator-stream/4.0.2:
@@ -10408,12 +10604,28 @@ packages:
       xtend: 4.0.2
     dev: true
 
+  /level-mem/3.0.1:
+    resolution: {integrity: sha512-LbtfK9+3Ug1UmvvhR2DqLqXiPW1OJ5jEh0a3m9ZgAipiwpSxGj/qaVVy54RG5vAQN1nCuXqjvprCuKSCxcJHBg==}
+    engines: {node: '>=6'}
+    dependencies:
+      level-packager: 4.0.1
+      memdown: 3.0.0
+    dev: true
+
   /level-mem/5.0.1:
     resolution: {integrity: sha512-qd+qUJHXsGSFoHTziptAKXoLX87QjR7v2KMbqncDXPxQuCdsQlzmyX+gwrEHhlzn08vkf8TyipYyMmiC6Gobzg==}
     engines: {node: '>=6'}
     dependencies:
       level-packager: 5.1.1
       memdown: 5.1.0
+    dev: true
+
+  /level-packager/4.0.1:
+    resolution: {integrity: sha512-svCRKfYLn9/4CoFfi+d8krOtrp6RoX8+xm0Na5cgXMqSyRru0AnDYdLl+YI8u1FyS6gGZ94ILLZDE5dh2but3Q==}
+    engines: {node: '>=6'}
+    dependencies:
+      encoding-down: 5.0.4
+      levelup: 3.1.1
     dev: true
 
   /level-packager/5.1.1:
@@ -10431,12 +10643,50 @@ packages:
       xtend: 4.0.2
     dev: true
 
+  /level-ws/0.0.0:
+    resolution: {integrity: sha512-XUTaO/+Db51Uiyp/t7fCMGVFOTdtLS/NIACxE/GHsij15mKzxksZifKVjlXDF41JMUP/oM1Oc4YNGdKnc3dVLw==}
+    dependencies:
+      readable-stream: 1.0.34
+      xtend: 2.1.2
+    dev: true
+
+  /level-ws/1.0.0:
+    resolution: {integrity: sha512-RXEfCmkd6WWFlArh3X8ONvQPm8jNpfA0s/36M4QzLqrLEIt1iJE9WBHLZ5vZJK6haMjJPJGJCQWfjMNnRcq/9Q==}
+    engines: {node: '>=6'}
+    dependencies:
+      inherits: 2.0.4
+      readable-stream: 2.3.7
+      xtend: 4.0.2
+    dev: true
+
   /level-ws/2.0.0:
     resolution: {integrity: sha512-1iv7VXx0G9ec1isqQZ7y5LmoZo/ewAsyDHNA8EFDW5hqH2Kqovm33nSFkSdnLLAK+I5FlT+lo5Cw9itGe+CpQA==}
     engines: {node: '>=6'}
     dependencies:
       inherits: 2.0.4
       readable-stream: 3.6.0
+      xtend: 4.0.2
+    dev: true
+
+  /levelup/1.3.9:
+    resolution: {integrity: sha512-VVGHfKIlmw8w1XqpGOAGwq6sZm2WwWLmlDcULkKWQXEA5EopA8OBNJ2Ck2v6bdk8HeEZSbCSEgzXadyQFm76sQ==}
+    dependencies:
+      deferred-leveldown: 1.2.2
+      level-codec: 7.0.1
+      level-errors: 1.0.5
+      level-iterator-stream: 1.3.1
+      prr: 1.0.1
+      semver: 5.4.1
+      xtend: 4.0.2
+    dev: true
+
+  /levelup/3.1.1:
+    resolution: {integrity: sha512-9N10xRkUU4dShSRRFTBdNaBxofz+PGaIZO962ckboJZiNmLuhVT6FZ6ZKAsICKfUBO76ySaYU6fJWX/jnj3Lcg==}
+    engines: {node: '>=6'}
+    dependencies:
+      deferred-leveldown: 4.0.2
+      level-errors: 2.0.1
+      level-iterator-stream: 3.0.1
       xtend: 4.0.2
     dev: true
 
@@ -10566,6 +10816,14 @@ packages:
   /lodash.debounce/4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
     dev: false
+
+  /lodash.isequal/4.5.0:
+    resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+    dev: true
+
+  /lodash.isequalwith/4.4.0:
+    resolution: {integrity: sha512-dcZON0IalGBpRmJBmMkaoV7d3I80R2O+FrzsZyHdNSFrANq/cgDqKQNmAHE8UEj4+QYWwwhkQOVdLHiAopzlsQ==}
+    dev: true
 
   /lodash.merge/4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
@@ -10750,6 +11008,29 @@ packages:
     engines: {node: '>= 0.6'}
     dev: true
 
+  /memdown/1.4.1:
+    resolution: {integrity: sha512-iVrGHZB8i4OQfM155xx8akvG9FIj+ht14DX5CQkCTG4EHzZ3d3sgckIf/Lm9ivZalEsFuEVnWv2B2WZvbrro2w==}
+    dependencies:
+      abstract-leveldown: 2.7.2
+      functional-red-black-tree: 1.0.1
+      immediate: 3.3.0
+      inherits: 2.0.4
+      ltgt: 2.2.1
+      safe-buffer: 5.1.2
+    dev: true
+
+  /memdown/3.0.0:
+    resolution: {integrity: sha512-tbV02LfZMWLcHcq4tw++NuqMO+FZX8tNJEiD2aNRm48ZZusVg5N8NART+dmBkepJVye986oixErf7jfXboMGMA==}
+    engines: {node: '>=6'}
+    dependencies:
+      abstract-leveldown: 5.0.0
+      functional-red-black-tree: 1.0.1
+      immediate: 3.2.3
+      inherits: 2.0.4
+      ltgt: 2.2.1
+      safe-buffer: 5.1.2
+    dev: true
+
   /memdown/5.1.0:
     resolution: {integrity: sha512-B3J+UizMRAlEArDjWHTMmadet+UKwHd3UjMgGBkZcKAxAYVPS9o0Yeiha4qvz7iGiL2Sb3igUft6p7nbFWctpw==}
     engines: {node: '>=6'}
@@ -10786,6 +11067,31 @@ packages:
   /merge2/1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
+    dev: true
+
+  /merkle-patricia-tree/2.3.2:
+    resolution: {integrity: sha512-81PW5m8oz/pz3GvsAwbauj7Y00rqm81Tzad77tHBwU7pIAtN+TJnMSOJhxBKflSVYhptMMb9RskhqHqrSm1V+g==}
+    dependencies:
+      async: 1.5.2
+      ethereumjs-util: 5.2.1
+      level-ws: 0.0.0
+      levelup: 1.3.9
+      memdown: 1.4.1
+      readable-stream: 2.3.7
+      rlp: 2.2.7
+      semaphore: 1.1.0
+    dev: true
+
+  /merkle-patricia-tree/3.0.0:
+    resolution: {integrity: sha512-soRaMuNf/ILmw3KWbybaCjhx86EYeBbD8ph0edQCTed0JN/rxDt1EBN52Ajre3VyGo+91f8+/rfPIRQnnGMqmQ==}
+    dependencies:
+      async: 2.6.4
+      ethereumjs-util: 5.2.1
+      level-mem: 3.0.1
+      level-ws: 1.0.0
+      readable-stream: 3.6.0
+      rlp: 2.2.7
+      semaphore: 1.1.0
     dev: true
 
   /merkle-patricia-tree/4.2.4:
@@ -11694,6 +12000,10 @@ packages:
 
   /object-inspect/1.12.2:
     resolution: {integrity: sha512-z+cPxW0QGUp0mcqcsgQyLVRDoXFQbXOwBaqyF7VIgI4TWNQsDHrBpUQslRmIfAoYWdYzs6UlKJtB2XJpTaNSpQ==}
+
+  /object-keys/0.4.0:
+    resolution: {integrity: sha512-ncrLw+X55z7bkl5PnUvHwFK9FcGuFYo9gtjws2XtSzL+aZ8tm830P60WJ0dSmFVaSalWieW5MD7kEdnXda9yJw==}
+    dev: true
 
   /object-keys/1.1.1:
     resolution: {integrity: sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==}
@@ -12750,6 +13060,15 @@ packages:
       pify: 2.3.0
     dev: true
 
+  /readable-stream/1.0.34:
+    resolution: {integrity: sha512-ok1qVCJuRkNmvebYikljxJA/UEsKwLl2nI1OmaqAu4/UE+h0wKCHok4XkL/gvi39OacXvw59RJUOFUkDib2rHg==}
+    dependencies:
+      core-util-is: 1.0.3
+      inherits: 2.0.4
+      isarray: 0.0.1
+      string_decoder: 0.10.31
+    dev: true
+
   /readable-stream/2.3.7:
     resolution: {integrity: sha512-Ebho8K4jIbHAxnuxi7o42OrZgF/ZTNcsZj6nRKyUmkhLFq8CHItp/fy6hQZuZmP/n3yZ9VBUbp4zz/mX8hmYPw==}
     dependencies:
@@ -13224,6 +13543,16 @@ packages:
   /semaphore-async-await/1.5.1:
     resolution: {integrity: sha512-b/ptP11hETwYWpeilHXXQiV5UJNJl7ZWWooKRE5eBIYWoom6dZ0SluCIdCtKycsMtZgKWE01/qAw6jblw1YVhg==}
     engines: {node: '>=4.1'}
+    dev: true
+
+  /semaphore/1.1.0:
+    resolution: {integrity: sha512-O4OZEaNtkMd/K0i6js9SL+gqy0ZCBMgUvlSqHKi4IBdjhe7wB8pwztUk1BbZ1fmrvpwFrPbHzqd2w5pTcJH6LA==}
+    engines: {node: '>=0.8.0'}
+    dev: true
+
+  /semver/5.4.1:
+    resolution: {integrity: sha512-WfG/X9+oATh81XtllIo/I8gOiY9EXRdv1cQdyykeXK17YcUW3EXUAi2To4pcH6nZtJPr7ZOpM5OMyWJZm+8Rsg==}
+    hasBin: true
     dev: true
 
   /semver/5.7.1:
@@ -13804,6 +14133,10 @@ packages:
       define-properties: 1.1.4
       es-abstract: 1.20.1
 
+  /string_decoder/0.10.31:
+    resolution: {integrity: sha512-ev2QzSzWPYmy9GuqfIVildA4OdcGLeFZQrq5ys6RtiuF+RQQiZWr8TZNyAcuVXyQRYfEO+MsoB/1BuQVhOJuoQ==}
+    dev: true
+
   /string_decoder/1.1.1:
     resolution: {integrity: sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==}
     dependencies:
@@ -13866,7 +14199,7 @@ packages:
     dev: true
 
   /strip-hex-prefix/1.0.0:
-    resolution: {integrity: sha1-DF8VX+8RUTczd96du1iNoFUA428=}
+    resolution: {integrity: sha512-q8d4ue7JGEiVcypji1bALTos+0pWtyGlivAWyPuTkHzuTCJqrK9sWxYQZUq6Nq3cuyv3bm734IhHvHtGGURU6A==}
     engines: {node: '>=6.5.0', npm: '>=3'}
     dependencies:
       is-hex-prefixed: 1.0.0
@@ -14783,6 +15116,16 @@ packages:
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
+  /util.promisify/1.1.1:
+    resolution: {integrity: sha512-/s3UsZUrIfa6xDhr7zZhnE9SLQ5RIXyYfiVnMMyMDzOc8WhWN4Nbh36H842OyurKbCDAesZOJaVyvmSl6fhGQw==}
+    dependencies:
+      call-bind: 1.0.2
+      define-properties: 1.1.4
+      for-each: 0.3.3
+      has-symbols: 1.0.3
+      object.getownpropertydescriptors: 2.1.4
+    dev: true
+
   /util/0.12.4:
     resolution: {integrity: sha512-bxZ9qtSlGUWSOy9Qa9Xgk11kSslpuZwaxCg4sNIDj6FLucDab2JxnHwyNTCpHMtK1MjoQiWQ6DiUMZYbSrO+Sw==}
     dependencies:
@@ -15461,6 +15804,13 @@ packages:
   /xmlhttprequest/1.8.0:
     resolution: {integrity: sha512-58Im/U0mlVBLM38NdZjHyhuMtCqa61469k2YP/AaPbvCoV9aQGUpbJBj1QRm2ytRiVQBD/fsw7L2bJGDVQswBA==}
     engines: {node: '>=0.4.0'}
+    dev: true
+
+  /xtend/2.1.2:
+    resolution: {integrity: sha512-vMNKzr2rHP9Dp/e1NQFnLQlwlhp9L/LfvnsVdHxN1f+uggyVI3i08uD14GPvCToPkdsRfyPqIyYGmIk58V98ZQ==}
+    engines: {node: '>=0.4'}
+    dependencies:
+      object-keys: 0.4.0
     dev: true
 
   /xtend/4.0.2:

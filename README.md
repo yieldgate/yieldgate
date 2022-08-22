@@ -1,5 +1,8 @@
 # Yieldgate
 
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://yieldgate.mit-license.org/)
+[![codecov](https://codecov.io/gh/yieldgate/yieldgate/branch/develop/graph/badge.svg?token=Y1BVBCAJK5)](https://codecov.io/gh/yieldgate/yieldgate)(Contracts)
+
 Yieldgate is a protocol that allows anyone to start earning and building products with programmable yield.
 
 Built with ❤️ on top of Aave, Polygon, and others.

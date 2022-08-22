@@ -7,8 +7,8 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  build:
-    name: Lint
+  tests:
+    name: Lint&Test
     timeout-minutes: 15
     runs-on: ubuntu-latest
 
@@ -30,3 +30,24 @@ jobs:
 
       - name: Lint
         run: pnpm lint:all
+
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            contracts:
+              - 'packages/contracts/**'
+
+      - name: Contract tests
+        if: steps.changes.outputs.contracts == 'true'
+        run: pnpm run --filter contracts test
+
+      - name: Contract coverage report
+        if: steps.changes.outputs.contracts == 'true'
+        run: pnpm run --filter contracts coverage
+
+      - name: Upload contract coverage report
+        if: steps.changes.outputs.contracts == 'true'
+        uses: codecov/codecov-action@v3
+        with:
+          directory: packages/contracts
