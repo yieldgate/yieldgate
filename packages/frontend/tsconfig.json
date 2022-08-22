@@ -20,10 +20,10 @@
       "@lib/*": ["./src/lib/*"],
       "@entities/*": ["./src/entities/*"],
       "@styles/*": ["./src/styles/*"],
-      "@deployments/*": ["./src/deployments/*"],
-      "@typechain/*": ["./src/types/typechain/*"]
+      "@deployments/*": ["./src/deployments/*"]
     }
   },
+  "references": [{ "path": "../contracts" }],
   "exclude": ["node_modules", ".next", "out"],
   "include": ["next-env.d.ts", "**/*.js", "**/*.ts", "**/*.tsx", "**/*.json"],
   "types": ["src/types"]

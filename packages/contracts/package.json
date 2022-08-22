@@ -5,10 +5,9 @@
   "scripts": {
     "clean": "pnpm hardhat clean",
     "compile": "pnpm hardhat compile",
-    "build": "pnpm clean && pnpm compile && pnpm export-types",
+    "build": "pnpm clean && pnpm compile",
     "chain": "pnpm hardhat node",
     "typechain": "pnpm hardhat typechain",
-    "export-types": "cp -pr ./typechain-types ../frontend/src/types/typechain",
     "lint": "pnpm prettier --check && pnpm eslint && pnpm solhint",
     "lint:fix": "pnpm prettier --write && pnpm eslint --fix && pnpm solhint --fix",
     "prettier": "prettier --plugin=prettier-plugin-solidity .",
