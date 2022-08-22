@@ -1,26 +1,13 @@
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  Spinner,
-  Text,
-  useDisclosure,
-  useToast,
-  VStack,
-} from '@chakra-ui/react'
-import StakeAmountForm from '@components/StakeAmountForm'
+import { Button, Spinner, Text, useDisclosure, useToast, VStack } from '@chakra-ui/react'
 import { Creator } from '@entities/Creator.entity'
 import { useDeployments } from '@lib/useDeployments'
-import { ClaimedEvent } from '@yieldgate/contracts/typechain-types/contracts/YieldGate.sol/BeneficiaryPool'
 import { BeneficiaryPool__factory, YieldGate__factory } from '@yieldgate/contracts/typechain-types'
+import { ClaimedEvent } from '@yieldgate/contracts/typechain-types/contracts/YieldGate.sol/BeneficiaryPool'
 import { ethers, Event } from 'ethers'
 import { FC, useState } from 'react'
 import useAsyncEffect from 'use-async-effect'
 import { useAccount, useProvider, useSigner } from 'wagmi'
+import { SupporterStakeDialog } from './SupporterStakeDialog'
 
 export interface CreatorCardActionsProps {
   creator: Creator
@@ -57,7 +44,11 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
   const [unstakeIsLoading, setUnstakeIsLoading] = useState(false)
   const [claimIsLoading, setClaimIsLoading] = useState(false)
   const toast = useToast()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const {
+    isOpen: stakeDialogIsOpen,
+    onOpen: stakeDialogOnOpen,
+    onClose: stakeDialogOnClose,
+  } = useDisclosure()
   const [poolAddress, setPoolAddress] = useState<string | false>()
 
   // Fetch address of creator-pool and build contract object
@@ -290,23 +281,11 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>How much do you want to stake?</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text>You can unstake and get the full amount minus gas fees back anytime.</Text>
-            <StakeAmountForm stake={stake} onClose={onClose} />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-
       {/* Stake */}
       <Button
         w="full"
         disabled={stakeIsLoading || unstakeIsLoading}
-        onClick={onOpen}
+        onClick={stakeDialogOnOpen}
         isLoading={stakeIsLoading}
       >
         Stake
@@ -333,6 +312,9 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
           )}
         </VStack>
       </Button>
+
+      {/* Dialogs */}
+      <SupporterStakeDialog isOpen={stakeDialogIsOpen} onClose={stakeDialogOnClose} stake={stake} />
     </>
   )
 }
