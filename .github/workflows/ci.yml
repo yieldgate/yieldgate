@@ -38,6 +38,16 @@ jobs:
             contracts:
               - 'packages/contracts/**'
 
-      - name: Contract Tests
+      - name: Contract tests
         if: steps.changes.outputs.contracts == 'true'
         run: pnpm run --filter contracts test
+
+      - name: Contract coverage report
+        if: steps.changes.outputs.contracts == 'true'
+        run: pnpm run --filter contracts coverage
+
+      - name: Upload contract coverage report
+        if: steps.changes.outputs.contracts == 'true'
+        uses: codecov/codecov-action@v3
+        with:
+          directory: packages/contracts
