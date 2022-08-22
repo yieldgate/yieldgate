@@ -8,9 +8,9 @@
     "declaration": true,
     "declarationMap": true,
     "resolveJsonModule": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "composite": true
   },
-  "composite": true,
   "exclude": ["dist", "node_modules", "cache", "artifacts", "deployments"],
   "include": [
     "./scripts/**/*.ts",
