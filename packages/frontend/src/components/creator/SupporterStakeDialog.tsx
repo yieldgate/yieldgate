@@ -14,7 +14,7 @@ import {
   Text,
 } from '@chakra-ui/react'
 import { useDeployments } from '@lib/useDeployments'
-import { FC, useState } from 'react'
+import { FC, useRef, useState } from 'react'
 
 export interface SupporterStakeDialogProps {
   isOpen: boolean
@@ -22,12 +22,13 @@ export interface SupporterStakeDialogProps {
   stake: (_: string) => void
 }
 export const SupporterStakeDialog: FC<SupporterStakeDialogProps> = ({ isOpen, onClose, stake }) => {
+  const initialRef = useRef(null)
   const { contractsChain } = useDeployments()
   const [amount, setAmount] = useState('0.1')
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} initialFocusRef={initialRef}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>How much do you want to stake?</ModalHeader>
@@ -37,13 +38,19 @@ export const SupporterStakeDialog: FC<SupporterStakeDialogProps> = ({ isOpen, on
             <FormControl mt={8}>
               <FormLabel htmlFor="amount">Amount to stake</FormLabel>
               <InputGroup size="sm">
-                <Input value={amount} onChange={(e) => setAmount(e.target.value)} />
+                <Input
+                  value={amount}
+                  onChange={({ target: { value } }) => setAmount(value)}
+                  ref={initialRef}
+                />
                 <InputRightAddon>{contractsChain?.nativeCurrency?.symbol}</InputRightAddon>
               </InputGroup>
             </FormControl>
             <Button
-              my={8}
+              mt={8}
+              mb={4}
               width="full"
+              colorScheme="whatsapp"
               onClick={() => {
                 stake(amount)
                 onClose()
