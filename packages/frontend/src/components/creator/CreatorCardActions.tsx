@@ -7,6 +7,7 @@ import { ethers, Event } from 'ethers'
 import { FC, useState } from 'react'
 import useAsyncEffect from 'use-async-effect'
 import { useAccount, useProvider, useSigner } from 'wagmi'
+import { CreatorPoolParamsDialog } from './CreatorPoolParamsDialog'
 import { SupporterStakeDialog } from './SupporterStakeDialog'
 
 export interface CreatorCardActionsProps {
@@ -43,13 +44,18 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
   const [deployIsLoading, setDeployIsLoading] = useState(false)
   const [unstakeIsLoading, setUnstakeIsLoading] = useState(false)
   const [claimIsLoading, setClaimIsLoading] = useState(false)
+  const [poolAddress, setPoolAddress] = useState<string | false>()
   const toast = useToast()
   const {
     isOpen: stakeDialogIsOpen,
     onOpen: stakeDialogOnOpen,
     onClose: stakeDialogOnClose,
   } = useDisclosure()
-  const [poolAddress, setPoolAddress] = useState<string | false>()
+  const {
+    isOpen: paramsDialogIsOpen,
+    onOpen: paramsDialogOnOpen,
+    onClose: paramsDialogOnClose,
+  } = useDisclosure()
 
   // Fetch address of creator-pool and build contract object
   useAsyncEffect(async () => {
@@ -276,6 +282,14 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
             )}
           </VStack>
         </Button>
+
+        {/* Open Pool Params */}
+        <Button w="full" py={'7'} onClick={paramsDialogOnOpen}>
+          Pool Settings
+        </Button>
+
+        {/* Pool Params Dialog */}
+        <CreatorPoolParamsDialog isOpen={paramsDialogIsOpen} onClose={paramsDialogOnClose} />
       </>
     )
 
@@ -313,7 +327,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
         </VStack>
       </Button>
 
-      {/* Dialogs */}
+      {/* Stake Dialog */}
       <SupporterStakeDialog isOpen={stakeDialogIsOpen} onClose={stakeDialogOnClose} stake={stake} />
     </>
   )
