@@ -1,6 +1,8 @@
 yarn.lock
 package-lock.json
 cache
+/coverage
+/coverage.json
 artifacts
 deployments
 typechain-types
