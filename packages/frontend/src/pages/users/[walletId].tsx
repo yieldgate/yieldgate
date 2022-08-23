@@ -75,7 +75,7 @@ export default function UsersPage() {
     <Layout>
       <Container maxW="5xl">
         <Grid
-          templateColumns={{ base: '1fr', md: 'auto 1fr' }}
+          templateColumns={{ base: '1fr', md: 'minmax(auto, 0.75fr) 1fr' }}
           placeItems="start stretch"
           gap={10}
           py={10}
