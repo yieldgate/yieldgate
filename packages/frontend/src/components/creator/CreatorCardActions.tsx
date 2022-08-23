@@ -4,8 +4,9 @@ import { SupporterStake } from '@lib/creatorReadHooks'
 import { useDeployments } from '@lib/useDeployments'
 import { BeneficiaryPool__factory, YieldGate__factory } from '@yieldgate/contracts/typechain-types'
 import { ClaimedEvent } from '@yieldgate/contracts/typechain-types/contracts/YieldGate.sol/BeneficiaryPool'
+import dayjs from 'dayjs'
 import { ethers, Event } from 'ethers'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useAccount, useSigner } from 'wagmi'
 import { CreatorPoolParamsDialog } from './CreatorPoolParamsDialog'
 import { SupporterStakeDialog } from './SupporterStakeDialog'
@@ -66,6 +67,21 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     onOpen: paramsDialogOnOpen,
     onClose: paramsDialogOnClose,
   } = useDisclosure()
+  const [stakeIsLocked, setStakeIsLocked] = useState<boolean>()
+  const [stakeIsLockedUntilFormatted, setStakeIsLockedUntilFormatted] = useState<string>()
+
+  // Determine whether stake is locked and until when
+  useEffect(() => {
+    if (!supporterStake?.lockTimeout) {
+      setStakeIsLocked(false)
+      setStakeIsLockedUntilFormatted('')
+      return
+    }
+    const lockedUntil = dayjs.unix(supporterStake?.lockTimeout)
+    // const lockedUntil = new Date(supporterStake?.lockTimeout * 1000)
+    // TODO setStakeIsLocked
+    setStakeIsLockedUntilFormatted(lockedUntil.format('YYYY/MM/DD h:mm A'))
+  }, [supporterStake?.lockTimeout])
 
   // Deploy Pool
   const deploy = async () => {
@@ -327,7 +343,9 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
         isLoading={unstakeIsLoading}
       >
         <VStack spacing={'1'}>
-          <Text>Unstake</Text>
+          <Text>
+            {supporterStake?.lockTimeout ? `Unstake at ${stakeIsLockedUntilFormatted}` : 'Unstake'}
+          </Text>
           {supporterStakeIsLoading ? (
             <Spinner size={'xs'} />
           ) : (
@@ -341,7 +359,12 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       </Button>
 
       {/* Stake Dialog */}
-      <SupporterStakeDialog isOpen={stakeDialogIsOpen} onClose={stakeDialogOnClose} stake={stake} />
+      <SupporterStakeDialog
+        isOpen={stakeDialogIsOpen}
+        onClose={stakeDialogOnClose}
+        stake={stake}
+        minDurationDays={minDurationDays}
+      />
     </>
   )
 }
