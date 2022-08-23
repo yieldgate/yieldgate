@@ -5,8 +5,7 @@ import { BeneficiaryPool__factory, YieldGate__factory } from '@yieldgate/contrac
 import { ClaimedEvent } from '@yieldgate/contracts/typechain-types/contracts/YieldGate.sol/BeneficiaryPool'
 import { ethers, Event } from 'ethers'
 import { FC, useState } from 'react'
-import useAsyncEffect from 'use-async-effect'
-import { useAccount, useProvider, useSigner } from 'wagmi'
+import { useAccount, useSigner } from 'wagmi'
 import { CreatorPoolParamsDialog } from './CreatorPoolParamsDialog'
 import { SupporterStakeDialog } from './SupporterStakeDialog'
 
@@ -22,6 +21,12 @@ export interface CreatorCardActionsProps {
   supporterAmountsIsLoading: boolean
   refetchSupporterAmountStaked: () => void
   refetchTotalAmountStaked: () => void
+  poolAddress?: string | false
+  refetchPoolAddress: () => void
+  minAmount?: string
+  minDurationDays?: number
+  refetchPoolParams: () => void
+  poolParamsAreLoading: boolean
 }
 export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
   creator,
@@ -35,16 +40,20 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
   supporterAmountsIsLoading,
   refetchSupporterAmountStaked,
   refetchTotalAmountStaked,
+  poolAddress,
+  refetchPoolAddress,
+  minAmount,
+  minDurationDays,
+  refetchPoolParams,
+  poolParamsAreLoading,
 }) => {
   const { data: signer, refetch: refetchSigner } = useSigner()
-  const provider = useProvider()
   const { contractsChain, contracts } = useDeployments()
   const { address } = useAccount()
   const [stakeIsLoading, setStakeIsLoading] = useState(false)
   const [deployIsLoading, setDeployIsLoading] = useState(false)
   const [unstakeIsLoading, setUnstakeIsLoading] = useState(false)
   const [claimIsLoading, setClaimIsLoading] = useState(false)
-  const [poolAddress, setPoolAddress] = useState<string | false>()
   const toast = useToast()
   const {
     isOpen: stakeDialogIsOpen,
@@ -56,22 +65,6 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     onOpen: paramsDialogOnOpen,
     onClose: paramsDialogOnClose,
   } = useDisclosure()
-
-  // Fetch address of creator-pool and build contract object
-  useAsyncEffect(async () => {
-    if (deployIsLoading) return
-    if (!creator?.address || !provider || !contracts) {
-      setPoolAddress(undefined)
-      return
-    }
-    const factoryContract = YieldGate__factory.connect(contracts.YieldGate.address, provider)
-    const poolAddress = await factoryContract.beneficiaryPools(creator.address)
-    if (!poolAddress || poolAddress === ethers.constants.AddressZero) {
-      setPoolAddress(false) // No pool deployed yet
-      return
-    }
-    setPoolAddress(poolAddress)
-  }, [contracts, provider, creator?.address, deployIsLoading])
 
   // Deploy Pool
   const deploy = async () => {
@@ -98,6 +91,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     refetchTotalAmountStaked()
     refetchSupporterAmountStaked()
     updateContentIsLocked()
+    refetchPoolAddress()
 
     toast({
       title: 'Pool Deployed',
@@ -283,13 +277,31 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
           </VStack>
         </Button>
 
-        {/* Open Pool Params */}
-        <Button w="full" py={'7'} onClick={paramsDialogOnOpen}>
-          Pool Settings
-        </Button>
+        {poolAddress && (
+          <>
+            {/* Open Pool Params */}
+            <Button
+              w="full"
+              py={'7'}
+              onClick={paramsDialogOnOpen}
+              disabled={
+                minAmount === undefined || minDurationDays === undefined || poolParamsAreLoading
+              }
+            >
+              Pool Settings
+            </Button>
 
-        {/* Pool Params Dialog */}
-        <CreatorPoolParamsDialog isOpen={paramsDialogIsOpen} onClose={paramsDialogOnClose} />
+            {/* Pool Params Dialog */}
+            <CreatorPoolParamsDialog
+              isOpen={paramsDialogIsOpen}
+              onClose={paramsDialogOnClose}
+              poolAddress={poolAddress}
+              minAmount={minAmount}
+              minDurationDays={minDurationDays}
+              refetchPoolParams={refetchPoolParams}
+            />
+          </>
+        )}
       </>
     )
 
