@@ -5,7 +5,7 @@ import {
   useClaimableAmount,
   usePoolAddress,
   usePoolParams,
-  useSupporterAmountStaked,
+  useSupporterStake,
   useTotalAmountStaked,
 } from '@lib/creatorReadHooks'
 import { useDeployments } from '@lib/useDeployments'
@@ -31,10 +31,10 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
     refetch: refetchTotalAmountStaked,
   } = useTotalAmountStaked({ beneficiary: creator.address })
   const {
-    supporterAmountStaked,
-    isLoading: supporterAmountsIsLoading,
-    refetch: refetchSupporterAmountStaked,
-  } = useSupporterAmountStaked({
+    supporterStake,
+    isLoading: supporterStakeIsLoading,
+    refetch: refetchSupporterStake,
+  } = useSupporterStake({
     supporter: address,
     beneficiary: creator.address,
   })
@@ -86,9 +86,9 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
               isOwner={isOwner}
               updateContentIsLocked={updateContentIsLocked}
               setShowConfetti={setShowConfetti}
-              supporterAmountStaked={supporterAmountStaked}
-              supporterAmountsIsLoading={supporterAmountsIsLoading}
-              refetchSupporterAmountStaked={refetchSupporterAmountStaked}
+              supporterStake={supporterStake}
+              supporterStakeIsLoading={supporterStakeIsLoading}
+              refetchSupporterStake={refetchSupporterStake}
               refetchTotalAmountStaked={refetchTotalAmountStaked}
               claimableAmount={claimableAmount}
               claimableAmountsIsLoading={claimableAmountsIsLoading}

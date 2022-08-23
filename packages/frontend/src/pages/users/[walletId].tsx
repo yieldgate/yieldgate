@@ -5,7 +5,7 @@ import Layout from '@components/layout/Layout'
 import NewPostForm from '@components/NewPostForm'
 import SponsorsCard from '@components/SponsorsCard'
 import { Creator } from '@entities/Creator.entity'
-import { useSupporterAmountStaked } from '@lib/creatorReadHooks'
+import { useSupporterStake } from '@lib/creatorReadHooks'
 import { ethers } from 'ethers'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -20,18 +20,16 @@ export default function UsersPage() {
   const isOwner =
     walletId && address && ethers.utils.getAddress(address) === ethers.utils.getAddress(walletId)
   const [creator, setCreator] = useState<Creator | null>(null)
-  const { supporterAmountStaked, refetch: refetchSupporterAmountStaked } = useSupporterAmountStaked(
-    {
-      supporter: address,
-      beneficiary: creator?.address,
-    }
-  )
+  const { supporterStake, refetch: refetchSupporterStake } = useSupporterStake({
+    supporter: address,
+    beneficiary: creator?.address,
+  })
   const [contentIsLocked, setContentIsLocked] = useState(true)
 
   // Content Lock
   useEffect(() => {
-    setContentIsLocked(!isOwner && (supporterAmountStaked || 0) <= 0)
-  }, [supporterAmountStaked])
+    setContentIsLocked(!isOwner && (supporterStake?.amount || 0) <= 0)
+  }, [supporterStake])
 
   // Fetch Creator
   const fetchCreator = async (): Promise<Creator> => {
@@ -90,7 +88,7 @@ export default function UsersPage() {
             <CreatorCard
               creator={creator}
               isOwner={!!isOwner}
-              updateContentIsLocked={refetchSupporterAmountStaked}
+              updateContentIsLocked={refetchSupporterStake}
             />
             <SponsorsCard sponsors={creator?.supporters} />
           </VStack>

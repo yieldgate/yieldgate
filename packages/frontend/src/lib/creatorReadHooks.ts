@@ -50,9 +50,13 @@ export const useTotalAmountStaked = ({ beneficiary }: { beneficiary: string }) =
 }
 
 /**
- * Returns total staked amount for given creator address
+ * Returns stake (amount & lockTimeout) for given supporter and creator
  */
-export const useSupporterAmountStaked = ({
+export type SupporterStake = {
+  amount: number
+  lockTimeout: number
+}
+export const useSupporterStake = ({
   supporter,
   beneficiary,
 }: {
@@ -61,8 +65,8 @@ export const useSupporterAmountStaked = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false)
   const { contractsChain, contractsChainId, contracts } = useDeployments()
-  const [supporterAmountsStaked, setSupporterAmountsStaked] = useState<{
-    [key: string]: number
+  const [supporterStakes, setSupporterStakes] = useState<{
+    [key: string]: SupporterStake
   }>({})
 
   const refetch = async (chainId: number | undefined) => {
@@ -70,15 +74,19 @@ export const useSupporterAmountStaked = ({
     setIsLoading(true)
     const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
     const contract = YieldGate__factory.connect(contracts.YieldGate.address, provider)
-    let value = BigNumber.from(0)
+    let amount = BigNumber.from(0)
+    let lockTimeout = BigNumber.from(0)
     try {
-      value = await contract.supporterStaked(supporter, beneficiary)
+      ;[amount, lockTimeout] = await contract.supporterStaked(supporter, beneficiary)
     } catch (e) {
       // do nothing
     }
-    setSupporterAmountsStaked((prev) => ({
+    setSupporterStakes((prev) => ({
       ...prev,
-      [chainId]: parseFloat(formatEther(value) || '0.0'),
+      [chainId]: {
+        amount: parseFloat(formatEther(amount) || '0.0'),
+        lockTimeout: parseFloat(formatEther(lockTimeout) || '0.0'),
+      },
     }))
     setIsLoading(false)
   }
@@ -88,10 +96,8 @@ export const useSupporterAmountStaked = ({
 
   return {
     isLoading,
-    supporterAmountsStaked,
-    ...(contractsChainId
-      ? { supporterAmountStaked: supporterAmountsStaked[contractsChainId] }
-      : {}),
+    supporterStakes,
+    ...(contractsChainId ? { supporterStake: supporterStakes[contractsChainId] } : {}),
     contractChain: contractsChain,
     contractChainId: contractsChainId,
     refetch: async () => {

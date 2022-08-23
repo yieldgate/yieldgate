@@ -1,5 +1,6 @@
 import { Button, Spinner, Text, useDisclosure, useToast, VStack } from '@chakra-ui/react'
 import { Creator } from '@entities/Creator.entity'
+import { SupporterStake } from '@lib/creatorReadHooks'
 import { useDeployments } from '@lib/useDeployments'
 import { BeneficiaryPool__factory, YieldGate__factory } from '@yieldgate/contracts/typechain-types'
 import { ClaimedEvent } from '@yieldgate/contracts/typechain-types/contracts/YieldGate.sol/BeneficiaryPool'
@@ -17,9 +18,9 @@ export interface CreatorCardActionsProps {
   refetchClaimableAmounts: () => void
   updateContentIsLocked: () => void
   setShowConfetti: (_: boolean) => void
-  supporterAmountStaked: number | undefined
-  supporterAmountsIsLoading: boolean
-  refetchSupporterAmountStaked: () => void
+  supporterStake: SupporterStake | undefined
+  supporterStakeIsLoading: boolean
+  refetchSupporterStake: () => void
   refetchTotalAmountStaked: () => void
   poolAddress?: string | false
   refetchPoolAddress: () => void
@@ -36,9 +37,9 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
   refetchClaimableAmounts,
   updateContentIsLocked,
   setShowConfetti,
-  supporterAmountStaked,
-  supporterAmountsIsLoading,
-  refetchSupporterAmountStaked,
+  supporterStake,
+  supporterStakeIsLoading,
+  refetchSupporterStake,
   refetchTotalAmountStaked,
   poolAddress,
   refetchPoolAddress,
@@ -89,7 +90,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
     // Update UI
     refetchTotalAmountStaked()
-    refetchSupporterAmountStaked()
+    refetchSupporterStake()
     updateContentIsLocked()
     refetchPoolAddress()
 
@@ -136,7 +137,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
     // Update UI
     refetchTotalAmountStaked()
-    refetchSupporterAmountStaked()
+    refetchSupporterStake()
     updateContentIsLocked()
 
     toast({
@@ -183,12 +184,12 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
     // Update UI
     refetchTotalAmountStaked()
-    refetchSupporterAmountStaked()
+    refetchSupporterStake()
     updateContentIsLocked()
 
     toast({
       title: 'Amount Unstaked',
-      description: `You've successfully unstaked ${supporterAmountStaked?.toFixed(2)} ${
+      description: `You've successfully unstaked ${supporterStake?.amount?.toFixed(2)} ${
         contractsChain?.nativeCurrency?.symbol
       }`,
       status: 'success',
@@ -321,18 +322,18 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       <Button
         w="full"
         py={'7'}
-        disabled={stakeIsLoading || unstakeIsLoading || !supporterAmountStaked}
+        disabled={stakeIsLoading || unstakeIsLoading || !supporterStake?.amount}
         onClick={unstake}
         isLoading={unstakeIsLoading}
       >
         <VStack spacing={'1'}>
           <Text>Unstake</Text>
-          {supporterAmountsIsLoading ? (
+          {supporterStakeIsLoading ? (
             <Spinner size={'xs'} />
           ) : (
             <Text fontSize={'xs'} opacity=".75">
-              {supporterAmountStaked
-                ? `${supporterAmountStaked.toFixed(2)} ${contractsChain?.nativeCurrency?.symbol}`
+              {supporterStake?.amount
+                ? `${supporterStake.amount.toFixed(2)} ${contractsChain?.nativeCurrency?.symbol}`
                 : 'Nothing to unstake yet'}
             </Text>
           )}
