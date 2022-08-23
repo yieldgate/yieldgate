@@ -98,7 +98,7 @@ describe('YieldGate', function () {
     const stakeTx = await poolAsSup.stake(supporter.address, { value: stake })
     await expect(stakeTx)
       .to.emit(pool, 'Staked')
-      .withArgs(beneficiary.address, supporter.address, stake)
+      .withArgs(beneficiary.address, supporter.address, stake, 0)
     await expect(stakeTx).to.changeEtherBalances(
       [supporter.address, wETHGateway.address],
       [stake.mul(-1), stake]
