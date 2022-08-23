@@ -68,19 +68,19 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     onClose: paramsDialogOnClose,
   } = useDisclosure()
   const [stakeIsLocked, setStakeIsLocked] = useState<boolean>()
-  const [stakeIsLockedUntilFormatted, setStakeIsLockedUntilFormatted] = useState<string>()
+  const [stakeLockedUntilFormatted, setStakeLockedUntilFormatted] = useState<string>()
 
   // Determine whether stake is locked and until when
   useEffect(() => {
     if (!supporterStake?.lockTimeout) {
       setStakeIsLocked(false)
-      setStakeIsLockedUntilFormatted('')
+      setStakeLockedUntilFormatted('')
       return
     }
     const lockedUntil = dayjs.unix(supporterStake?.lockTimeout)
-    // const lockedUntil = new Date(supporterStake?.lockTimeout * 1000)
-    // TODO setStakeIsLocked
-    setStakeIsLockedUntilFormatted(lockedUntil.format('YYYY/MM/DD h:mm A'))
+    const isLocked = dayjs().isBefore(lockedUntil)
+    setStakeIsLocked(isLocked)
+    setStakeLockedUntilFormatted(isLocked ? lockedUntil.format('YYYY/MM/DD h:mm A') : '')
   }, [supporterStake?.lockTimeout])
 
   // Deploy Pool
@@ -338,22 +338,24 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       <Button
         w="full"
         py={'7'}
-        disabled={stakeIsLoading || unstakeIsLoading || !supporterStake?.amount}
+        disabled={stakeIsLoading || unstakeIsLoading || !supporterStake?.amount || stakeIsLocked}
         onClick={unstake}
         isLoading={unstakeIsLoading}
       >
         <VStack spacing={'1'}>
           <Text>
-            {supporterStake?.lockTimeout ? `Unstake at ${stakeIsLockedUntilFormatted}` : 'Unstake'}
+            {supporterStake?.amount
+              ? `Unstake ${supporterStake?.amount} ${contractsChain?.nativeCurrency?.symbol}`
+              : 'Unstake'}
           </Text>
           {supporterStakeIsLoading ? (
             <Spinner size={'xs'} />
           ) : (
-            <Text fontSize={'xs'} opacity=".75">
-              {supporterStake?.amount
-                ? `${supporterStake.amount.toFixed(2)} ${contractsChain?.nativeCurrency?.symbol}`
-                : 'Nothing to unstake yet'}
-            </Text>
+            stakeIsLocked && (
+              <Text fontSize={'xs'} opacity=".75">
+                Locked until {stakeLockedUntilFormatted}
+              </Text>
+            )
           )}
         </VStack>
       </Button>

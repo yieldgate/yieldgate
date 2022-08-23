@@ -85,7 +85,7 @@ export const useSupporterStake = ({
       ...prev,
       [chainId]: {
         amount: parseFloat(formatEther(amount) || '0.0'),
-        lockTimeout: parseFloat(formatEther(lockTimeout) || '0.0'),
+        lockTimeout: parseInt(lockTimeout.toString() || '0'),
       },
     }))
     setIsLoading(false)
@@ -243,7 +243,7 @@ export const usePoolParams = ({ poolAddress }: { poolAddress?: string | false })
     }))
     setMinDurationsDays((prev) => ({
       ...prev,
-      [chainId]: parseInt(formatEther(minDurationSeconds) || '0.0') / 24 / 60 / 60,
+      [chainId]: parseInt(minDurationSeconds.div(24 * 60 * 60).toString() || `0`),
     }))
     setIsLoading(false)
   }

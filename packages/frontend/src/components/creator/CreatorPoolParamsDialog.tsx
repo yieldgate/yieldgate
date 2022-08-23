@@ -55,7 +55,7 @@ export const CreatorPoolParamsDialog: FC<CreatorPoolParamsDialogProps> = ({
         (minDurationDays || Math.floor(fetchedMinDurationDays || 0)) * 24 * 60 * 60
       const transaction = await poolContract.setParameters(
         ethers.utils.parseEther(`${minAmount || fetchedMinAmount || '0.0'}`),
-        ethers.utils.parseEther(`${minDurationSeconds}`),
+        minDurationSeconds,
         {
           gasLimit: 500000,
         }
