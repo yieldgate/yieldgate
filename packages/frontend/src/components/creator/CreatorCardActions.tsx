@@ -378,7 +378,9 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
         isOpen={stakeDialogIsOpen}
         onClose={stakeDialogOnClose}
         stake={stake}
+        minAmount={minAmount}
         minDurationDays={minDurationDays}
+        supporterStake={supporterStake}
       />
     </>
   )
