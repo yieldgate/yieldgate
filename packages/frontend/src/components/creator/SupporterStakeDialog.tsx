@@ -86,8 +86,8 @@ export const SupporterStakeDialog: FC<SupporterStakeDialogProps> = ({
                 <Text>Stake now</Text>
                 <Text fontSize={'xs'} opacity=".8">
                   {minDurationDays
-                    ? `You are able to unstake at ${stakeLockedUntil}`
-                    : 'You are able to unstake at any time'}
+                    ? `You will be able to unstake from ${stakeLockedUntil}`
+                    : 'You will be able to unstake at any time'}
                 </Text>
               </VStack>
             </Button>
