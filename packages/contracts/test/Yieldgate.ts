@@ -155,7 +155,7 @@ describe('YieldGate', function () {
     expect(await yieldgate.staked(beneficiary.address)).to.equal(stake)
     expect(await yieldgate.supporterStaked(supporter.address, beneficiary.address)) //
       .to.deep.equal([stake, 0])
-    expect(await pool.supporters(supporter.address)).to.equal(stake)
+    expect(await pool.stakes(supporter.address)).to.equal(stake)
     expect(await pool.staked()).to.equal(stake)
 
     // 2. Unstake
@@ -168,7 +168,7 @@ describe('YieldGate', function () {
       .to.emit(pool, 'Unstaked')
       .withArgs(beneficiary.address, supporter.address, stake)
     expect(wETHGateway.withdrawETH).to.be.calledWith(aavePool, stake, supporter.address)
-    expect(await pool.supporters(supporter.address)).to.equal(0)
+    expect(await pool.stakes(supporter.address)).to.equal(0)
     // TODO: assert changed ether balances when fake is able to.
 
     await expect(poolAsSup.unstake()).to.be.revertedWith(RevertReasons.NoSupporter)

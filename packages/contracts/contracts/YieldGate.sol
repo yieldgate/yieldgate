@@ -71,7 +71,7 @@ contract YieldGate {
         if (address(bpool) == address(0)) {
             return (0, 0);
         }
-        return (bpool.supporters(supporter), bpool.lockTimeouts(supporter));
+        return (bpool.stakes(supporter), bpool.lockTimeouts(supporter));
     }
 }
 
@@ -98,7 +98,7 @@ contract BeneficiaryPool {
     mapping(address => uint256) public lockTimeouts;
 
     // supporter => amount
-    mapping(address => uint256) public supporters;
+    mapping(address => uint256) public stakes;
     // total staked amount
     uint256 internal totalStake;
 
@@ -146,9 +146,9 @@ contract BeneficiaryPool {
     // The staking timeout is reset on each call, so prior stake is re-locked.
     function stake(address supporter) public payable {
         uint256 amount = msg.value;
-        require(amount > 0 && supporters[supporter] + amount >= minAmount, "amount too low");
+        require(amount > 0 && stakes[supporter] + amount >= minAmount, "amount too low");
 
-        supporters[supporter] += amount;
+        stakes[supporter] += amount;
         totalStake += amount;
         uint256 timeout = 0;
         if (minDuration > 0) {
@@ -171,10 +171,10 @@ contract BeneficiaryPool {
         uint256 timeout = lockTimeouts[supporter]; // 0 ok
         require(block.timestamp > timeout, "stake still locked");
 
-        uint256 amount = supporters[supporter];
+        uint256 amount = stakes[supporter];
         require(amount > 0, "no supporter");
 
-        supporters[supporter] = 0;
+        stakes[supporter] = 0;
         totalStake -= amount;
 
         withdraw(amount, supporter);
