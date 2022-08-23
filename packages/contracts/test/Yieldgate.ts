@@ -1,9 +1,12 @@
 //SPDX-License-Identifier: MIT
 
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 import chai, { expect } from 'chai'
 import hre from 'hardhat'
-import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
+import { loadFixture, time as chaintime } from '@nomicfoundation/hardhat-network-helpers'
 import { smock } from '@defi-wonderland/smock'
+import { TransactionResponse } from '@ethersproject/providers'
 
 import { RevertReasons } from '../shared/revertReasons'
 import {
@@ -13,6 +16,7 @@ import {
   BeneficiaryPool__factory,
 } from '../typechain-types'
 
+dayjs.extend(duration)
 chai.use(smock.matchers)
 
 const ethers = hre.ethers
@@ -53,6 +57,10 @@ describe('YieldGate', function () {
     expect(pool1).to.be.equal(poolAddr)
 
     const pool = BeneficiaryPool__factory.connect(poolAddr, beneficiary)
+
+    await expect(deployPoolTx)
+      .to.emit(pool, 'ParametersChanged')
+      .withArgs(beneficiary.address, 0, 0)
 
     return { wETHGateway, aWETH, yieldgate, beneficiary, pool, supporter }
   }
@@ -98,7 +106,7 @@ describe('YieldGate', function () {
     expect(await pool.minDuration()).to.equal(0)
 
     // setMinDuration
-    let minDuration = 14_400 // 10 days
+    let minDuration = dayjs.duration(10, 'days').asSeconds()
     await expect(pool.setMinDuration(minDuration))
       .to.emit(pool, 'ParametersChanged')
       .withArgs(beneficiary.address, minAmount, minDuration)
@@ -118,7 +126,7 @@ describe('YieldGate', function () {
   it('Trying to set pool parameters as non-beneficiary should revert', async function () {
     const { pool, supporter } = await loadFixture(deployYieldGateAndOnePool)
     const minAmount = 1_000_000_000_000
-    const minDuration = 14_400 // 10 days
+    const minDuration = dayjs.duration(10, 'days').asSeconds()
     const poolAsOther = pool.connect(supporter) // anyone else
 
     await expect(poolAsOther.setMinAmount(minAmount)).to.be.revertedWith(
@@ -174,6 +182,94 @@ describe('YieldGate', function () {
     await expect(poolAsSup.unstake()).to.be.revertedWith(RevertReasons.NoSupporter)
   })
 
+  it('Staking with amount of 0 should revert', async function () {
+    const { pool, supporter } = await loadFixture(deployYieldGateAndOnePool)
+
+    await expect(pool.connect(supporter).stake(supporter.address, { value: 0 })) //
+      .to.be.revertedWith(RevertReasons.AmountTooLow)
+  })
+
+  it('Staking below minimum should revert, above work', async function () {
+    const { pool, supporter } = await loadFixture(deployYieldGateAndOnePool)
+
+    const minStake = ethers.utils.parseEther('10')
+    await pool.setMinAmount(minStake)
+
+    let stake = ethers.utils.parseEther('5')
+    const poolAsSup = pool.connect(supporter)
+    await expect(poolAsSup.stake(supporter.address, { value: stake })) //
+      .to.be.revertedWith(RevertReasons.AmountTooLow)
+    stake = stake.mul(3) // 15 ether
+    await expect(poolAsSup.stake(supporter.address, { value: stake })) //
+      .to.emit(pool, 'Staked')
+  })
+
+  it('Unstaking before lock timeout should revert, after work', async function () {
+    const { aWETH, wETHGateway, beneficiary, pool, supporter } = await loadFixture(
+      deployYieldGateAndOnePool
+    )
+
+    const minDuration = dayjs.duration(30, 'days')
+    await pool.setMinDuration(minDuration.asSeconds())
+
+    // Staking
+
+    const stake = ethers.utils.parseEther('1')
+    const poolAsSup = pool.connect(supporter)
+    const stakeTx = await poolAsSup.stake(supporter.address, { value: stake })
+    const stakeTs = await getTxTimestamp(stakeTx)
+    const lockTimeout = stakeTs + minDuration.asSeconds()
+    await expect(stakeTx)
+      .to.emit(pool, 'Staked')
+      .withArgs(beneficiary.address, supporter.address, stake, lockTimeout)
+
+    // Unstaking
+
+    // approve already to make sure this is not the revert reason
+    aWETH.approve.whenCalledWith(wETHGateway.address, stake).returns(true)
+
+    // advance just close to the lock timeout
+    await chaintime.increase(minDuration.subtract(1, 'minute').asSeconds())
+    await expect(poolAsSup.unstake()).to.be.revertedWith(RevertReasons.StakeStillLocked)
+
+    // advance just past timeout
+    await chaintime.increase(60)
+    await expect(poolAsSup.unstake()).to.emit(pool, 'Unstaked')
+  })
+
+  it('After setting params, topping up stake below minimum should revert, above work and reset timeout', async function () {
+    const { beneficiary, pool, supporter } = await loadFixture(deployYieldGateAndOnePool)
+
+    // Stake on pool with 0 parameters
+
+    const stake0 = ethers.utils.parseEther('5')
+    const poolAsSup = pool.connect(supporter)
+    await expect(poolAsSup.stake(supporter.address, { value: stake0 })) //
+      .to.emit(pool, 'Staked')
+      .withArgs(beneficiary.address, supporter.address, stake0, 0)
+
+    // Set parameters after first staking
+
+    const minStake = ethers.utils.parseEther('10')
+    const minDuration = dayjs.duration(420, 'days').asSeconds()
+    await pool.setParameters(minStake, minDuration)
+
+    // Topup
+
+    const reqStake = minStake.sub(stake0)
+    // just too low
+    await expect(poolAsSup.stake(supporter.address, { value: reqStake.sub(1) })) //
+      .to.be.revertedWith(RevertReasons.AmountTooLow)
+    // just enough
+    const topupTx = await poolAsSup.stake(supporter.address, { value: reqStake })
+    const topupTs = await getTxTimestamp(topupTx)
+    const lockTimeout = topupTs + minDuration
+    await expect(topupTx)
+      .to.emit(pool, 'Staked')
+      .withArgs(beneficiary.address, supporter.address, reqStake, lockTimeout)
+    expect(await pool.stakes(supporter.address)).to.equal(minStake)
+  })
+
   it('Generated yield should be claimable by beneficiary', async function () {
     const { wETHGateway, aWETH, yieldgate, beneficiary, pool, supporter } = await loadFixture(
       deployYieldGateAndOnePool
@@ -205,3 +301,8 @@ describe('YieldGate', function () {
     expect(await pool.claimable()).to.equal(0)
   })
 })
+
+async function getTxTimestamp(tx: TransactionResponse): Promise<number> {
+  const rec = await tx.wait()
+  return (await ethers.provider.getBlock(rec.blockHash)).timestamp
+}
