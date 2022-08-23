@@ -60,12 +60,18 @@ contract YieldGate {
         return bpool.staked();
     }
 
-    function supporterStaked(address supporter, address beneficiary) public view returns (uint256) {
+    // returns the total staked ether by the supporter and the timeout until
+    // which the stake is locked.
+    function supporterStaked(address supporter, address beneficiary)
+        public
+        view
+        returns (uint256, uint256)
+    {
         BeneficiaryPool bpool = beneficiaryPools[beneficiary];
         if (address(bpool) == address(0)) {
-            return 0;
+            return (0, 0);
         }
-        return bpool.supporters(supporter);
+        return (bpool.supporters(supporter), bpool.lockTimeouts(supporter));
     }
 }
 

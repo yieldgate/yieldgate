@@ -75,7 +75,7 @@ describe('YieldGate', function () {
 
     expect(await yieldgate.claimable(a)).to.equal(0)
     expect(await yieldgate.staked(a)).to.equal(0)
-    expect(await yieldgate.supporterStaked(a, a)).to.equal(0)
+    expect(await yieldgate.supporterStaked(a, a)).to.deep.equal([0, 0])
   })
 
   it('Second initialization of pool should revert', async function () {
@@ -153,7 +153,8 @@ describe('YieldGate', function () {
     expect(wETHGateway.depositETH).to.be.calledWith(aavePool, pool.address, 0)
 
     expect(await yieldgate.staked(beneficiary.address)).to.equal(stake)
-    expect(await yieldgate.supporterStaked(supporter.address, beneficiary.address)).to.equal(stake)
+    expect(await yieldgate.supporterStaked(supporter.address, beneficiary.address)) //
+      .to.deep.equal([stake, 0])
     expect(await pool.supporters(supporter.address)).to.equal(stake)
     expect(await pool.staked()).to.equal(stake)
 
