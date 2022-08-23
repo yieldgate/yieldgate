@@ -86,6 +86,52 @@ describe('YieldGate', function () {
     )
   })
 
+  it('Setting pool parameters should set them and emit ParametersChanged events', async function () {
+    const { beneficiary, pool } = await loadFixture(deployYieldGateAndOnePool)
+
+    // setMinAmount
+    let minAmount = 1_000_000_000_000
+    await expect(pool.setMinAmount(minAmount))
+      .to.emit(pool, 'ParametersChanged')
+      .withArgs(beneficiary.address, minAmount, 0)
+    expect(await pool.minAmount()).to.equal(minAmount)
+    expect(await pool.minDuration()).to.equal(0)
+
+    // setMinDuration
+    let minDuration = 14_400 // 10 days
+    await expect(pool.setMinDuration(minDuration))
+      .to.emit(pool, 'ParametersChanged')
+      .withArgs(beneficiary.address, minAmount, minDuration)
+    expect(await pool.minAmount()).to.equal(minAmount)
+    expect(await pool.minDuration()).to.equal(minDuration)
+
+    // setParameters
+    minAmount *= 2
+    minDuration *= 5
+    await expect(pool.setParameters(minAmount, minDuration))
+      .to.emit(pool, 'ParametersChanged')
+      .withArgs(beneficiary.address, minAmount, minDuration)
+    expect(await pool.minAmount()).to.equal(minAmount)
+    expect(await pool.minDuration()).to.equal(minDuration)
+  })
+
+  it('Trying to set pool parameters as non-beneficiary should revert', async function () {
+    const { pool, supporter } = await loadFixture(deployYieldGateAndOnePool)
+    const minAmount = 1_000_000_000_000
+    const minDuration = 14_400 // 10 days
+    const poolAsOther = pool.connect(supporter) // anyone else
+
+    await expect(poolAsOther.setMinAmount(minAmount)).to.be.revertedWith(
+      RevertReasons.OnlyBeneficiary
+    )
+    await expect(poolAsOther.setMinDuration(minDuration)).to.be.revertedWith(
+      RevertReasons.OnlyBeneficiary
+    )
+    await expect(poolAsOther.setParameters(minAmount, minDuration)).to.be.revertedWith(
+      RevertReasons.OnlyBeneficiary
+    )
+  })
+
   it('Staking and unstaking by supporter should restore their balance', async function () {
     const { wETHGateway, aWETH, yieldgate, beneficiary, pool, supporter } = await loadFixture(
       deployYieldGateAndOnePool
