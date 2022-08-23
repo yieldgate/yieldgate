@@ -52,9 +52,9 @@ export const CreatorPoolParamsDialog: FC<CreatorPoolParamsDialogProps> = ({
     try {
       const poolContract = BeneficiaryPool__factory.connect(poolAddress, signer)
       const minDurationSeconds =
-        (minDurationDays || Math.floor(fetchedMinDurationDays || 0)) * 24 * 60 * 60
+        (minDurationDays ?? Math.floor(fetchedMinDurationDays || 0)) * 24 * 60 * 60
       const transaction = await poolContract.setParameters(
-        ethers.utils.parseEther(`${minAmount || fetchedMinAmount || '0.0'}`),
+        ethers.utils.parseEther(`${minAmount ?? fetchedMinAmount ?? '0.0'}`),
         minDurationSeconds,
         {
           gasLimit: 500000,
@@ -98,7 +98,7 @@ export const CreatorPoolParamsDialog: FC<CreatorPoolParamsDialogProps> = ({
               <FormLabel htmlFor="amount">Minimum Amount</FormLabel>
               <InputGroup size="sm">
                 <Input
-                  value={minAmount || fetchedMinAmount || '0.0'}
+                  value={minAmount ?? fetchedMinAmount ?? '0.0'}
                   onChange={({ target: { value } }) => setMinAmount(value)}
                   ref={initialRef}
                 />
@@ -109,7 +109,7 @@ export const CreatorPoolParamsDialog: FC<CreatorPoolParamsDialogProps> = ({
               <FormLabel htmlFor="amount">Minimum Duration</FormLabel>
               <InputGroup size="sm">
                 <Input
-                  value={minDurationDays || Math.floor(fetchedMinDurationDays || 0)}
+                  value={minDurationDays ?? Math.floor(fetchedMinDurationDays || 0)}
                   onChange={({ target: { value } }) => setMinDurationDays(parseInt(value))}
                   type="number"
                   min="0"
