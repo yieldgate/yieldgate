@@ -24,7 +24,7 @@ export interface SupporterStakeDialogProps {
 export const SupporterStakeDialog: FC<SupporterStakeDialogProps> = ({ isOpen, onClose, stake }) => {
   const initialRef = useRef(null)
   const { contractsChain } = useDeployments()
-  const [amount, setAmount] = useState('0.1')
+  const [amount, setAmount] = useState('0.01')
 
   return (
     <>
