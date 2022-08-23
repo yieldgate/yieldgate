@@ -1,6 +1,6 @@
 import { env } from '@lib/environment'
-import { YieldGate__factory } from '@yieldgate/contracts/typechain-types'
-import { BigNumber, getDefaultProvider } from 'ethers'
+import { BeneficiaryPool__factory, YieldGate__factory } from '@yieldgate/contracts/typechain-types'
+import { BigNumber, ethers, getDefaultProvider } from 'ethers'
 import { formatEther, formatUnits } from 'ethers/lib/utils'
 import { useEffect, useState } from 'react'
 import { useDeployments } from './useDeployments'
@@ -40,7 +40,7 @@ export const useTotalAmountStaked = ({ beneficiary }: { beneficiary: string }) =
   return {
     isLoading,
     totalAmountsStaked,
-    totalAmountStaked: contractsChainId && totalAmountsStaked[contractsChainId],
+    ...(contractsChainId ? { totalAmountStaked: totalAmountsStaked[contractsChainId] } : {}),
     contractChain: contractsChain,
     contractChainId: contractsChainId,
     refetch: async () => {
@@ -89,7 +89,9 @@ export const useSupporterAmountStaked = ({
   return {
     isLoading,
     supporterAmountsStaked,
-    supporterAmountStaked: contractsChainId && supporterAmountsStaked[contractsChainId],
+    ...(contractsChainId
+      ? { supporterAmountStaked: supporterAmountsStaked[contractsChainId] }
+      : {}),
     contractChain: contractsChain,
     contractChainId: contractsChainId,
     refetch: async () => {
@@ -132,7 +134,123 @@ export const useClaimableAmount = ({ beneficiary }: { beneficiary?: string }) =>
   return {
     isLoading,
     claimableAmounts,
-    claimableAmount: contractsChainId && claimableAmounts[contractsChainId],
+    ...(contractsChainId ? { claimableAmount: claimableAmounts[contractsChainId] } : {}),
+    contractChain: contractsChain,
+    contractChainId: contractsChainId,
+    refetch: async () => {
+      refetch(contractsChainId)
+    },
+  }
+}
+
+/**
+ * Returns the pool address for a given creator
+ */
+export const usePoolAddress = ({ beneficiary }: { beneficiary?: string }) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const { contractsChain, contractsChainId, contracts } = useDeployments()
+  const [poolAddresses, setPoolAddresses] = useState<{
+    [_: string]: string | false
+  }>({})
+
+  const refetch = async (chainId: number | undefined) => {
+    if (!beneficiary || !contracts || !chainId) return
+    setIsLoading(true)
+    setPoolAddresses((prev) => ({
+      ...prev,
+      [chainId]: undefined,
+    }))
+    let poolAddress: string | false
+    try {
+      const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
+      const factoryContract = YieldGate__factory.connect(contracts.YieldGate.address, provider)
+      poolAddress = await factoryContract.beneficiaryPools(beneficiary)
+      if (!poolAddress || poolAddress === ethers.constants.AddressZero) {
+        poolAddress = false
+      }
+    } catch (e) {
+      // do nothing
+    }
+    setPoolAddresses((prev) => ({
+      ...prev,
+      [chainId]: poolAddress,
+    }))
+    setIsLoading(false)
+  }
+  useEffect(() => {
+    refetch(contractsChainId)
+  }, [beneficiary, contractsChainId])
+
+  return {
+    isLoading,
+    poolAddresses,
+    ...(contractsChainId ? { poolAddress: poolAddresses[contractsChainId] } : {}),
+    contractChain: contractsChain,
+    contractChainId: contractsChainId,
+    refetch: async () => {
+      refetch(contractsChainId)
+    },
+  }
+}
+
+/**
+ * Returns the pool parameters (minAmount, minDurationDays) for a given `poolAddress`
+ */
+export const usePoolParams = ({ poolAddress }: { poolAddress?: string | false }) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const { contractsChain, contractsChainId, contracts } = useDeployments()
+  const [minAmounts, setMinAmounts] = useState<{
+    [_: string]: string
+  }>({})
+  const [minDurationsDays, setMinDurationsDays] = useState<{
+    [_: string]: number
+  }>({})
+
+  const refetch = async (chainId: number | undefined) => {
+    if (!contracts || !chainId) return
+    if (!poolAddress) {
+      setMinAmounts((prev) => ({
+        ...prev,
+        [chainId]: undefined,
+      }))
+      setMinDurationsDays((prev) => ({
+        ...prev,
+        [chainId]: undefined,
+      }))
+      return
+    }
+
+    setIsLoading(true)
+    let minAmount = BigNumber.from(0)
+    let minDurationSeconds = BigNumber.from(0)
+    try {
+      const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
+      const poolContract = BeneficiaryPool__factory.connect(poolAddress, provider)
+      minAmount = await poolContract.minAmount()
+      minDurationSeconds = await poolContract.minDuration()
+    } catch (e) {
+      // do nothing
+    }
+    setMinAmounts((prev) => ({
+      ...prev,
+      [chainId]: parseFloat(formatEther(minAmount) || '0.0'),
+    }))
+    setMinDurationsDays((prev) => ({
+      ...prev,
+      [chainId]: parseInt(formatEther(minDurationSeconds) || '0.0') / 24 / 60 / 60,
+    }))
+    setIsLoading(false)
+  }
+  useEffect(() => {
+    refetch(contractsChainId)
+  }, [poolAddress, contractsChainId])
+
+  return {
+    isLoading,
+    minAmounts,
+    ...(contractsChainId ? { minAmount: minAmounts[contractsChainId] } : {}),
+    minDurationsDays,
+    ...(contractsChainId ? { minDurationDays: minDurationsDays[contractsChainId] } : {}),
     contractChain: contractsChain,
     contractChainId: contractsChainId,
     refetch: async () => {
