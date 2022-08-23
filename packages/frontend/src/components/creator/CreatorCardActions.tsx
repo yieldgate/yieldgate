@@ -330,6 +330,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
         disabled={stakeIsLoading || unstakeIsLoading}
         onClick={stakeDialogOnOpen}
         isLoading={stakeIsLoading}
+        colorScheme="whatsapp"
       >
         Stake
       </Button>
