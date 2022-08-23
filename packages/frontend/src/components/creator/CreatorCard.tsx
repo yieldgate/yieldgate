@@ -1,4 +1,4 @@
-import { VStack } from '@chakra-ui/react'
+import { Heading, Spinner, VStack } from '@chakra-ui/react'
 import { Confetti } from '@components/Confetti'
 import { Creator } from '@entities/Creator.entity'
 import {
@@ -43,7 +43,11 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
     isLoading: claimableAmountsIsLoading,
     refetch: refetchClaimableAmounts,
   } = useClaimableAmount({ beneficiary: creator.address })
-  const { poolAddress, refetch: refetchPoolAddress } = usePoolAddress({
+  const {
+    poolAddress,
+    refetch: refetchPoolAddress,
+    isLoading: poolAddressIsLoading,
+  } = usePoolAddress({
     beneficiary: creator.address,
   })
   const {
@@ -54,7 +58,22 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
   } = usePoolParams({ poolAddress })
   const [showConfetti, setShowConfetti] = useState(false)
 
+  // No Creator
   if (!creator) return null
+
+  // No Pool Address yet
+  if (poolAddressIsLoading)
+    return (
+      <>
+        <VStack spacing={8} borderRadius="md" border="1px" p={5}>
+          <CreatorCardDetails creator={creator} />
+          <Heading>
+            <Spinner />
+          </Heading>
+        </VStack>
+      </>
+    )
+
   return (
     <>
       <VStack spacing={8} borderRadius="md" border="1px" p={5}>
@@ -86,7 +105,7 @@ export const CreatorCard: FC<CreatorCardProps> = ({ creator, isOwner, updateCont
           )}
         </VStack>
 
-        {contractsChain && (
+        {contractsChain && poolAddress && (
           <CreatorCardNumbers
             creator={creator}
             totalAmountStaked={totalAmountStaked}
