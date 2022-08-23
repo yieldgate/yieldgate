@@ -135,6 +135,10 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       console.log({ receipt })
     } catch (e) {
       console.error('Error while staking:', e)
+      toast({
+        title: 'Error while trying to stake. Try again.',
+        status: 'error',
+      })
       setStakeIsLoading(false)
       return
     }
@@ -182,6 +186,10 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       console.log({ receipt })
     } catch (e) {
       console.error('Error while unstaking:', e)
+      toast({
+        title: 'Error while trying to unstake. Try again.',
+        status: 'error',
+      })
       setUnstakeIsLoading(false)
       return
     }
@@ -236,6 +244,10 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       console.log({ claimedEvent, claimedAmount })
     } catch (e) {
       console.error('Error while claiming:', e)
+      toast({
+        title: 'Error while trying to claim. Try again.',
+        status: 'error',
+      })
       setClaimIsLoading(false)
       return
     }
