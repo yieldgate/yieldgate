@@ -5,6 +5,7 @@ import hre from 'hardhat'
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
 import { smock } from '@defi-wonderland/smock'
 
+import { RevertReasons } from '../shared/revertReasons'
 import {
   IERC20,
   IWETHGateway,
@@ -81,7 +82,7 @@ describe('YieldGate', function () {
     const { yieldgate, beneficiary, pool } = await loadFixture(deployYieldGateAndOnePool)
 
     await expect(pool.init(yieldgate.address, beneficiary.address)).to.be.revertedWith(
-      'already initialized'
+      RevertReasons.AlreadyInitialized
     )
   })
 
@@ -123,7 +124,7 @@ describe('YieldGate', function () {
     expect(await pool.supporters(supporter.address)).to.equal(0)
     // TODO: assert changed ether balances when fake is able to.
 
-    await expect(poolAsSup.unstake()).to.be.revertedWith('no supporter')
+    await expect(poolAsSup.unstake()).to.be.revertedWith(RevertReasons.NoSupporter)
   })
 
   it('Generated yield should be claimable by beneficiary', async function () {
@@ -144,7 +145,7 @@ describe('YieldGate', function () {
     expect(await yieldgate.claimable(beneficiary.address)).to.equal(yld)
 
     // try clamining as supporter
-    await expect(pool.connect(supporter).claim()).to.be.revertedWith('only beneficiary')
+    await expect(pool.connect(supporter).claim()).to.be.revertedWith(RevertReasons.OnlyBeneficiary)
 
     // claim yield
     aWETH.approve.whenCalledWith(wETHGateway.address, yld).returns(true)
