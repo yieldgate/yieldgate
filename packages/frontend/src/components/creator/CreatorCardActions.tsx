@@ -83,6 +83,11 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     setStakeLockedUntilFormatted(isLocked ? lockedUntil.format('YYYY/MM/DD h:mm A') : '')
   }, [supporterStake?.lockTimeout])
 
+  // Reset confetti when account changes
+  useEffect(() => {
+    setShowConfetti(false)
+  }, [address, creator?.address])
+
   // Deploy Pool
   const deploy = async () => {
     await refetchSigner()
