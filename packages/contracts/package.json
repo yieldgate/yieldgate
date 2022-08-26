@@ -18,8 +18,8 @@
     "deploy": "pnpm hardhat node --export '../frontend/src/deployments/1337.json' --write true",
     "deploy:mumbai": "pnpm hardhat deploy --network mumbai --export '../frontend/src/deployments/80001.json' --write true",
     "deploy:goerli": "pnpm hardhat deploy --network goerli --export '../frontend/src/deployments/5.json' --write true",
-    "verify:mumbai": "pnpm hardhat --network mumbai etherscan-verify",
-    "verify:goerli": "pnpm hardhat --network goerli etherscan-verify"
+    "verify:mumbai": "pnpm hardhat etherscan-verify --network mumbai",
+    "verify:goerli": "pnpm hardhat etherscan-verify --network goerli"
   },
   "devDependencies": {
     "@defi-wonderland/smock": "^2.2.0",

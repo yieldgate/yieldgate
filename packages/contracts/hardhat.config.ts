@@ -34,6 +34,11 @@ const config: HardhatUserConfig = {
       chainId: 80001,
       url: process.env.RPC_80001 || 'https://rpc.ankr.com/polygon_mumbai',
       accounts,
+      verify: {
+        etherscan: {
+          apiKey: `${process.env.POLYGONSCAN_API_KEY}`,
+        },
+      },
     },
   },
   namedAccounts: {
@@ -41,8 +46,10 @@ const config: HardhatUserConfig = {
       default: 0,
     },
   },
-  etherscan: {
-    apiKey: `${process.env.ETHERSCAN_API_KEY}`,
+  verify: {
+    etherscan: {
+      apiKey: `${process.env.ETHERSCAN_API_KEY}`,
+    },
   },
 }
 
