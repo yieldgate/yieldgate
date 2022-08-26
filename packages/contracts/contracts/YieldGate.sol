@@ -153,10 +153,8 @@ contract BeneficiaryPool {
         uint256 timeout = 0;
         if (minDuration > 0) {
             timeout = block.timestamp + minDuration;
-            lockTimeouts[supporter] = timeout;
         }
-        // On purpose, don't reset timeout in the edge-case where supporter
-        // removed minimum duration after prior stake by this supporter.
+        lockTimeouts[supporter] = timeout;
 
         gate.wethgw().depositETH{value: amount}(gate.aavePool(), address(this), 0);
         emit Staked(beneficiary, supporter, amount, timeout);
@@ -168,8 +166,14 @@ contract BeneficiaryPool {
     // staking, it is checked that the timeout has elapsed.
     function unstake() public returns (uint256) {
         address supporter = msg.sender;
-        uint256 timeout = lockTimeouts[supporter]; // 0 ok
-        require(block.timestamp > timeout, "stake still locked");
+
+        // Skip timeout check if minDuration == 0 because a supporter can then
+        // trivially reset their lock timeout by staking and then immediately
+        // unstaking anyways.
+        if (minDuration > 0) {
+            uint256 timeout = lockTimeouts[supporter]; // 0 ok
+            require(block.timestamp >= timeout, "stake still locked");
+        }
 
         uint256 amount = stakes[supporter];
         require(amount > 0, "no supporter");

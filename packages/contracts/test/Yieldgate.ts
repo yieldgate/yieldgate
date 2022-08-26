@@ -270,6 +270,22 @@ describe('YieldGate', function () {
     expect(await pool.stakes(supporter.address)).to.equal(minStake)
   })
 
+  it('Resetting min. duration to zero should effectively lift existing locks', async function () {
+    const { aWETH, wETHGateway, pool, supporter } = await loadFixture(deployYieldGateAndOnePool)
+
+    // Stake on pool with some min. duration
+    const minDuration = dayjs.duration(420, 'days').asSeconds()
+    await pool.setMinDuration(minDuration)
+    const stake = ethers.utils.parseEther('1')
+    const poolAsSup = pool.connect(supporter)
+    await expect(poolAsSup.stake(supporter.address, { value: stake })).to.emit(pool, 'Staked')
+
+    // Reset min. duration to 0 and unstake
+    await pool.setMinDuration(0)
+    aWETH.approve.whenCalledWith(wETHGateway.address, stake).returns(true)
+    await expect(poolAsSup.unstake()).to.emit(pool, 'Unstaked')
+  })
+
   it('Generated yield should be claimable by beneficiary', async function () {
     const { wETHGateway, aWETH, yieldgate, beneficiary, pool, supporter } = await loadFixture(
       deployYieldGateAndOnePool
@@ -299,6 +315,17 @@ describe('YieldGate', function () {
     aWETH.balanceOf.whenCalledWith(pool.address).returns(stake)
     expect(await pool.staked()).to.equal(stake)
     expect(await pool.claimable()).to.equal(0)
+  })
+
+  it('Valid unstaking with misbehaving aWETH should revert', async function () {
+    const { aWETH, wETHGateway, pool, supporter } = await loadFixture(deployYieldGateAndOnePool)
+
+    const stake = ethers.utils.parseEther('1')
+    const poolAsSup = pool.connect(supporter)
+    await expect(poolAsSup.stake(supporter.address, { value: stake })).to.emit(pool, 'Staked')
+
+    aWETH.approve.whenCalledWith(wETHGateway.address, stake).returns(false)
+    await expect(poolAsSup.unstake()).to.be.revertedWith(RevertReasons.wethgwApprovalFailed)
   })
 })
 
