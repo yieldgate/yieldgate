@@ -31,7 +31,9 @@ export const CreatorCardNumbers: FC<CreatorCardNumbersProps> = ({
         <HStack spacing={8} mx={8} wrap="wrap" placeContent="center">
           <Flex direction="column" align="center">
             <Heading>{creator.supportersCount}</Heading>
-            <Text textAlign="center">Supporters</Text>
+            <Text textAlign="center" fontSize="sm">
+              Supporters
+            </Text>
           </Flex>
           <Flex direction="column" align="center">
             {isLoading ? (
@@ -41,13 +43,15 @@ export const CreatorCardNumbers: FC<CreatorCardNumbersProps> = ({
             ) : (
               <Heading>{totalAmountStaked || '0.0'}</Heading>
             )}
-            <Text textAlign="center">
+            <Text textAlign="center" fontSize="sm">
               {!isMobile && 'Staked '} {currencySymbol}
             </Text>
           </Flex>
-          <Flex direction="column" align="center">
+          <Flex direction="column" align="center" fontSize="sm">
             <Heading>{creator.postsCount}</Heading>
-            <Text textAlign="center">Posts</Text>
+            <Text textAlign="center" fontSize="sm">
+              Posts
+            </Text>
           </Flex>
         </HStack>
 
