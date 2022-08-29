@@ -40,6 +40,7 @@ importers:
       '@typescript-eslint/parser': ^5.33.0
       chai: ^4.3.6
       child-process-promise: ^2.2.1
+      dayjs: ^1.11.4
       dotenv: ^16.0.1
       eslint: ^8.22.0
       eslint-config-prettier: ^8.5.0
@@ -71,6 +72,7 @@ importers:
       '@typescript-eslint/parser': 5.33.1_4rv7y5c6xz3vfxwhbrcxxi73bq
       chai: 4.3.6
       child-process-promise: 2.2.1
+      dayjs: 1.11.5
       dotenv: 16.0.1
       eslint: 8.22.0
       eslint-config-prettier: 8.5.0_eslint@8.22.0
@@ -6641,7 +6643,6 @@ packages:
 
   /dayjs/1.11.5:
     resolution: {integrity: sha512-CAdX5Q3YW3Gclyo5Vpqkgpj8fSdLQcRuzfX6mC6Phy0nfJ0eGYOeS7m4mt2plDWLAtA4TqTakvbboHvUxfe4iA==}
-    dev: false
 
   /death/1.1.0:
     resolution: {integrity: sha512-vsV6S4KVHvTGxbEcij7hkWRv0It+sGGWVOM67dQde/o5Xjnr+KmLjxWJii2uEObIrt1CcM9w0Yaovx+iOlIL+w==}

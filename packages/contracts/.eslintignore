@@ -1,4 +1,6 @@
 **/cache
+/coverage
+/coverage.json
 **/contracts
 **/artifacts
 **/deployments
