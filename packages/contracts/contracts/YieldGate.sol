@@ -71,7 +71,7 @@ contract YieldGate {
         if (address(bpool) == address(0)) {
             return (0, 0);
         }
-        return (bpool.stakes(supporter), bpool.lockTimeouts(supporter));
+        return (bpool.stakes(supporter), bpool.lockTimeout(supporter));
     }
 }
 
@@ -95,7 +95,7 @@ contract BeneficiaryPool {
     uint256 public minDuration;
     // Records when a supporter is allowed to unstake again. This has the added
     // benefit that future changes to the duration do not affect current stakes.
-    mapping(address => uint256) public lockTimeouts;
+    mapping(address => uint256) internal lockTimeouts;
 
     // supporter => amount
     mapping(address => uint256) public stakes;
@@ -166,14 +166,7 @@ contract BeneficiaryPool {
     // staking, it is checked that the timeout has elapsed.
     function unstake() public returns (uint256) {
         address supporter = msg.sender;
-
-        // Skip timeout check if minDuration == 0 because a supporter can then
-        // trivially reset their lock timeout by staking and then immediately
-        // unstaking anyways.
-        if (minDuration > 0) {
-            uint256 timeout = lockTimeouts[supporter]; // 0 ok
-            require(block.timestamp >= timeout, "stake still locked");
-        }
+        require(block.timestamp >= lockTimeout(supporter), "stake still locked");
 
         uint256 amount = stakes[supporter];
         require(amount > 0, "no supporter");
@@ -210,5 +203,18 @@ contract BeneficiaryPool {
     // staked returns the total staked ether by this beneficiary pool.
     function staked() public view returns (uint256) {
         return totalStake;
+    }
+
+    // lockTimeout returns the effective timeout until when a supporter's stake
+    // is locked. If the minDuration is 0 it is always 0, possibly disregarding
+    // an old lock from prior staking when minDuration was > 0.
+    function lockTimeout(address supporter) public view returns (uint256) {
+        // Set timeout to 0 if minDuration == 0 because a supporter could then
+        // trivially reset their lock timeout by staking and then immediately
+        // unstaking anyways.
+        if (minDuration == 0) {
+            return 0;
+        }
+        return lockTimeouts[supporter];
     }
 }
