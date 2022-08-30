@@ -55,7 +55,7 @@ export const SupporterStakeDialog: FC<SupporterStakeDialogProps> = ({
   }, [minAmount, amount, supporterStake?.amount])
 
   useEffect(() => {
-    setAmount(`${minAmount}` || '0.01')
+    setAmount((!!minAmount && `${minAmount}`) || '0.01')
   }, [minAmount])
 
   return (
@@ -75,7 +75,7 @@ export const SupporterStakeDialog: FC<SupporterStakeDialogProps> = ({
               <InputGroup size="sm">
                 <Input
                   type="number"
-                  value={amount ?? minAmount}
+                  value={amount}
                   onChange={({ target: { value } }) => setAmount(value)}
                   ref={initialRef}
                 />
