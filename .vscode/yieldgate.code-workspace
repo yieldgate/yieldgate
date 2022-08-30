@@ -22,9 +22,11 @@
       "**/yarn-error.log": true,
       "**/.yarn": true,
       "**/.turbo": true,
-      "packages/contracts/cache": true,
-      "packages/contracts/artifacts": true
+      "**/packages/contracts/deployments": true
     },
+    "search.useIgnoreFiles": true,
+    "search.useGlobalIgnoreFiles": true,
+    "search.useParentIgnoreFiles": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
