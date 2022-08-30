@@ -3,7 +3,7 @@
   "chainId": "80001",
   "contracts": {
     "YieldGate": {
-      "address": "0x3B76Db1bD4D70b87bb2De0cB419103BA1947C4Cb",
+      "address": "0xb31d029C7719B07570961AAA9f723C0428ED639C",
       "abi": [
         {
           "inputs": [
