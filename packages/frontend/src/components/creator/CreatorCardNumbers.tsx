@@ -56,21 +56,22 @@ export const CreatorCardNumbers: FC<CreatorCardNumbersProps> = ({
         </HStack>
 
         {/* Pool Parameters */}
-        <Box>
-          <Text fontSize="xs" textAlign={'center'} color={'gray.500'}>
-            {minAmount === undefined || minDurationDays === undefined || poolParamsAreLoading ? (
-              'Pool Parameters are fetched…'
-            ) : (
-              <>
-                Minimum amount to stake:{' '}
-                <strong>
-                  {minAmount} {currencySymbol}
-                </strong>
-                <br />
-                Minimum duration to stake: <strong>{minDurationDays} Days</strong>
-              </>
-            )}
-          </Text>
+        <Box fontSize="xs" textAlign={'center'} color={'gray.500'}>
+          {minAmount === undefined || minDurationDays === undefined || poolParamsAreLoading ? (
+            <HStack align={'center'}>
+              <Text>Pool Parameters are fetched</Text>
+              <Spinner size="xs" thickness="1px" />
+            </HStack>
+          ) : (
+            <Text>
+              Minimum amount to stake:{' '}
+              <strong>
+                {minAmount} {currencySymbol}
+              </strong>
+              <br />
+              Minimum duration to stake: <strong>{minDurationDays} Days</strong>
+            </Text>
+          )}
         </Box>
       </VStack>
     </>

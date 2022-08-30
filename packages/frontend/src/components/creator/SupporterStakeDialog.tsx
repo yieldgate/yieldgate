@@ -56,7 +56,7 @@ export const SupporterStakeDialog: FC<SupporterStakeDialogProps> = ({
 
   useEffect(() => {
     setAmount(minAmount || '0.01')
-  }, [])
+  }, [minAmount])
 
   return (
     <>
