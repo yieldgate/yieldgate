@@ -59,7 +59,7 @@ export const CreatorCardNumbers: FC<CreatorCardNumbersProps> = ({
         <Box fontSize="xs" textAlign={'center'} color={'gray.500'}>
           {minAmount === undefined || minDurationDays === undefined || poolParamsAreLoading ? (
             <HStack align={'center'}>
-              <Text>Pool Parameters are fetched</Text>
+              <Text>Pool Parameters are being fetched</Text>
               <Spinner size="xs" thickness="1px" />
             </HStack>
           ) : (
