@@ -1,8 +1,8 @@
-import { env } from '@lib/environment'
 import { BeneficiaryPool__factory, YieldGate__factory } from '@yieldgate/contracts/typechain-types'
-import { BigNumber, ethers, getDefaultProvider } from 'ethers'
+import { BigNumber, ethers } from 'ethers'
 import { formatEther, formatUnits } from 'ethers/lib/utils'
 import { useEffect, useState } from 'react'
+import { getProvider } from './getProvider'
 import { useDeployments } from './useDeployments'
 
 /**
@@ -19,8 +19,7 @@ export const useTotalAmountStaked = ({ beneficiary }: { beneficiary: string }) =
   const refetch = async (chainId: number | undefined) => {
     if (!beneficiary || !contracts || !chainId) return
     setIsLoading(true)
-    const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
-    const contract = YieldGate__factory.connect(contracts.YieldGate.address, provider)
+    const contract = YieldGate__factory.connect(contracts.YieldGate.address, getProvider(chainId))
     let value = BigNumber.from(0)
     try {
       value = await contract.staked(beneficiary)
@@ -72,8 +71,7 @@ export const useSupporterStake = ({
   const refetch = async (chainId: number | undefined) => {
     if (!supporter || !beneficiary || !contracts || !chainId) return
     setIsLoading(true)
-    const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
-    const contract = YieldGate__factory.connect(contracts.YieldGate.address, provider)
+    const contract = YieldGate__factory.connect(contracts.YieldGate.address, getProvider(chainId))
     let amount = BigNumber.from(0)
     let lockTimeout = BigNumber.from(0)
     try {
@@ -119,8 +117,7 @@ export const useClaimableAmount = ({ beneficiary }: { beneficiary?: string }) =>
   const refetch = async (chainId: number | undefined) => {
     if (!beneficiary || !contracts || !chainId) return
     setIsLoading(true)
-    const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
-    const contract = YieldGate__factory.connect(contracts.YieldGate.address, provider)
+    const contract = YieldGate__factory.connect(contracts.YieldGate.address, getProvider(chainId))
     let value = BigNumber.from(0)
     try {
       value = await contract.claimable(beneficiary)
@@ -168,8 +165,10 @@ export const usePoolAddress = ({ beneficiary }: { beneficiary?: string }) => {
     }))
     let poolAddress: string | false
     try {
-      const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
-      const factoryContract = YieldGate__factory.connect(contracts.YieldGate.address, provider)
+      const factoryContract = YieldGate__factory.connect(
+        contracts.YieldGate.address,
+        getProvider(chainId)
+      )
       poolAddress = await factoryContract.beneficiaryPools(beneficiary)
       if (!poolAddress || poolAddress === ethers.constants.AddressZero) {
         poolAddress = false
@@ -230,8 +229,7 @@ export const usePoolParams = ({ poolAddress }: { poolAddress?: string | false })
     let minAmount = BigNumber.from(0)
     let minDurationSeconds = BigNumber.from(0)
     try {
-      const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
-      const poolContract = BeneficiaryPool__factory.connect(poolAddress, provider)
+      const poolContract = BeneficiaryPool__factory.connect(poolAddress, getProvider(chainId))
       minAmount = await poolContract.minAmount()
       minDurationSeconds = await poolContract.minDuration()
     } catch (e) {
