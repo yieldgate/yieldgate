@@ -19,7 +19,7 @@
     "deploy": "pnpm hardhat node --export '../frontend/src/deployments/1337.json' --write true",
     "deploy:mumbai": "pnpm hardhat deploy --network mumbai --export '../frontend/src/deployments/80001.json' --write true",
     "deploy:goerli": "pnpm hardhat deploy --network goerli --export '../frontend/src/deployments/5.json' --write true",
-    "verify:mumbai": "pnpm hardhat etherscan-verify --network mumbai",
+    "verify:mumbai": "source .env && pnpm hardhat etherscan-verify --network mumbai --api-key $POLYGONSCAN_API_KEY",
     "verify:goerli": "pnpm hardhat etherscan-verify --network goerli"
   },
   "devDependencies": {
