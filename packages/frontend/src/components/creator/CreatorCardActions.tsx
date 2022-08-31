@@ -98,7 +98,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     try {
       const contract = YieldGate__factory.connect(contracts.YieldGate.address, signer)
       const transaction = await contract.deployPool(creator.address, {
-        gasLimit: 500000,
+        gasLimit: 150000,
       })
       console.log({ transaction })
       const receipt = await transaction.wait()
@@ -133,7 +133,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       const poolContract = BeneficiaryPool__factory.connect(poolAddress, signer)
       const transaction = await poolContract.stake(address, {
         value: ethers.utils.parseEther(value),
-        gasLimit: 500000,
+        gasLimit: 350000,
       })
       console.log({ transaction })
       const receipt = await transaction.wait()
@@ -184,7 +184,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     try {
       const poolContract = BeneficiaryPool__factory.connect(poolAddress, signer)
       const transaction = await poolContract.unstake({
-        gasLimit: 500000,
+        gasLimit: 350000,
       })
       console.log({ transaction })
       const receipt = await transaction.wait()
@@ -237,7 +237,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     try {
       const poolContract = BeneficiaryPool__factory.connect(poolAddress, signer)
       const transaction = await poolContract.claim({
-        gasLimit: 500000,
+        gasLimit: 350000,
       })
       console.log({ transaction })
       const receipt = await transaction.wait()

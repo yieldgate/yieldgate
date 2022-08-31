@@ -57,7 +57,7 @@ export const CreatorPoolParamsDialog: FC<CreatorPoolParamsDialogProps> = ({
         ethers.utils.parseEther(`${minAmount ?? fetchedMinAmount ?? '0.0'}`),
         minDurationSeconds,
         {
-          gasLimit: 500000,
+          gasLimit: 100000,
         }
       )
       console.log({ transaction })
