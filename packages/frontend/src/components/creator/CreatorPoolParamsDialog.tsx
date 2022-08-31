@@ -16,9 +16,12 @@ import {
 } from '@chakra-ui/react'
 import { useDeployments } from '@lib/useDeployments'
 import { BeneficiaryPool__factory } from '@yieldgate/contracts/typechain-types'
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 import { ethers } from 'ethers'
 import { FC, useRef, useState } from 'react'
 import { useSigner } from 'wagmi'
+dayjs.extend(duration)
 
 export interface CreatorPoolParamsDialogProps {
   isOpen: boolean
@@ -51,8 +54,11 @@ export const CreatorPoolParamsDialog: FC<CreatorPoolParamsDialogProps> = ({
 
     try {
       const poolContract = BeneficiaryPool__factory.connect(poolAddress, signer)
-      const minDurationSeconds =
-        (minDurationDays ?? Math.floor(fetchedMinDurationDays || 0)) * 24 * 60 * 60
+      const minDurationDaysDayjs = dayjs.duration(
+        minDurationDays ?? Math.floor(fetchedMinDurationDays || 0),
+        'days'
+      )
+      const minDurationSeconds = minDurationDaysDayjs.asSeconds()
       const transaction = await poolContract.setParameters(
         ethers.utils.parseEther(`${minAmount ?? fetchedMinAmount ?? '0.0'}`),
         minDurationSeconds,

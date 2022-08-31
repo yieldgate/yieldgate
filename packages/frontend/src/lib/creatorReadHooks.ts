@@ -1,9 +1,12 @@
 import { BeneficiaryPool__factory, YieldGate__factory } from '@yieldgate/contracts/typechain-types'
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 import { BigNumber, ethers } from 'ethers'
 import { formatEther, formatUnits } from 'ethers/lib/utils'
 import { useEffect, useState } from 'react'
 import { getProvider } from './getProvider'
 import { useDeployments } from './useDeployments'
+dayjs.extend(duration)
 
 /**
  * Returns total staked amount for given beneficiary address
@@ -241,7 +244,7 @@ export const usePoolParams = ({ poolAddress }: { poolAddress?: string | false })
     }))
     setMinDurationsDays((prev) => ({
       ...prev,
-      [chainId]: parseInt(minDurationSeconds.div(24 * 60 * 60).toString() || `0`),
+      [chainId]: dayjs.duration(minDurationSeconds.toNumber(), 'seconds').asDays(),
     }))
     setIsLoading(false)
   }
