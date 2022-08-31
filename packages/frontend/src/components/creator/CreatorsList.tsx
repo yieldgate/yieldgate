@@ -104,12 +104,12 @@ export const CreatorsListItem = ({ creator }: CreatorsListItemProps): JSX.Elemen
             gridArea="stats"
             justifySelf={{ base: 'center', md: 'end' }}
           >
-            {creator.supportersCount && <Stat label="Supporters" value={creator.supportersCount} />}
-            {creator.postsCount && <Stat label="Posts" value={creator.postsCount} />}
+            <Stat label="Supporters" value={creator.supportersCount || 0} />
+            <Stat label="Posts" value={creator.postsCount || 0} />
             {!isSSR && (
               <Stat
                 isLoading={isLoading}
-                label={`Stakes ${contractChain?.nativeCurrency?.symbol}`}
+                label={`Staked ${contractChain?.nativeCurrency?.symbol}`}
                 value={totalAmountStaked || '0.0'}
               />
             )}

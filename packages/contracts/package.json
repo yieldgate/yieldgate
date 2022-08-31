@@ -7,6 +7,7 @@
     "compile": "pnpm hardhat compile",
     "build": "pnpm clean && pnpm compile",
     "test": "pnpm hardhat compile && pnpm hardhat test",
+    "report-gas": "REPORT_GAS=true pnpm hardhat test",
     "coverage": "pnpm hardhat coverage",
     "chain": "pnpm hardhat node",
     "typechain": "pnpm hardhat typechain",
@@ -17,7 +18,9 @@
     "solhint": "solhint 'contracts/**/*.sol'",
     "deploy": "pnpm hardhat node --export '../frontend/src/deployments/1337.json' --write true",
     "deploy:mumbai": "pnpm hardhat deploy --network mumbai --export '../frontend/src/deployments/80001.json' --write true",
-    "deploy:goerli": "pnpm hardhat deploy --network goerli --export '../frontend/src/deployments/5.json' --write true"
+    "deploy:goerli": "pnpm hardhat deploy --network goerli --export '../frontend/src/deployments/5.json' --write true",
+    "verify:mumbai": "source .env && pnpm hardhat etherscan-verify --network mumbai --api-key $POLYGONSCAN_API_KEY",
+    "verify:goerli": "pnpm hardhat etherscan-verify --network goerli"
   },
   "devDependencies": {
     "@defi-wonderland/smock": "^2.2.0",

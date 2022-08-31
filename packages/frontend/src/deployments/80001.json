@@ -1,9 +1,9 @@
 {
-  "name": "goerli",
-  "chainId": "5",
+  "name": "mumbai",
+  "chainId": "80001",
   "contracts": {
     "YieldGate": {
-      "address": "0x3C622b1d86C10214F9c173aaB02c648aF8D23Ee9",
+      "address": "0xb31d029C7719B07570961AAA9f723C0428ED639C",
       "abi": [
         {
           "inputs": [

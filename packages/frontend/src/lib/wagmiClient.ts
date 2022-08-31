@@ -17,6 +17,10 @@ export const isChainSupported = (chainId?: number): boolean => {
 }
 export const supportedChains: Chain[] = allChains.filter((chain) => isChainSupported(chain.id))
 
+export const getRpcUrl = (chainId: number): string => {
+  return env.rpcUrls[chainId as keyof typeof env.rpcUrls]
+}
+
 export const {
   chains: [, ...chains],
   provider,
@@ -25,7 +29,7 @@ export const {
   [
     jsonRpcProvider({
       rpc: (chain) => {
-        const rpcUrl = env.rpcUrls[chain.id as keyof typeof env.rpcUrls]
+        const rpcUrl = getRpcUrl(chain.id)
         if (!rpcUrl) {
           throw new Error(`No RPC provided for chain ${chain.id}`)
         }

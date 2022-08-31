@@ -152,6 +152,14 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   const { creators }: { creators: Creator[] } = await res.json()
 
+  // Sort creators with `displayName` set first
+  creators.sort((c1, c2) => {
+    if (!!c1.displayName && !!c2.displayName) return c1.displayName.localeCompare(c2.displayName)
+    else if (!!c1.displayName) return -1
+    else if (!!c2.displayName) return 1
+    return 0
+  })
+
   return {
     props: {
       creators,

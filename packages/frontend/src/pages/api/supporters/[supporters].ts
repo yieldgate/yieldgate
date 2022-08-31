@@ -71,13 +71,13 @@ export const handleRemoveSupporter = async (req: NextApiRequest, res: NextApiRes
 
   if (!supporterExists) return res.status(200).json({ isRemoved: false })
 
-  const newSupporters = supporters.splice(supporters.indexOf(supporter), 1)
+  supporters.splice(supporters.indexOf(supporter), 1)
 
   const result = await db.collection('creators').updateOne(
     { address: beneficary },
     {
       $set: {
-        supporters: newSupporters,
+        supporters,
       },
     }
   )

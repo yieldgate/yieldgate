@@ -1,9 +1,12 @@
-import { env } from '@lib/environment'
-import { YieldGate__factory } from '@yieldgate/contracts/typechain-types'
-import { BigNumber, getDefaultProvider } from 'ethers'
+import { BeneficiaryPool__factory, YieldGate__factory } from '@yieldgate/contracts/typechain-types'
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
+import { BigNumber, ethers } from 'ethers'
 import { formatEther, formatUnits } from 'ethers/lib/utils'
 import { useEffect, useState } from 'react'
+import { getProvider } from './getProvider'
 import { useDeployments } from './useDeployments'
+dayjs.extend(duration)
 
 /**
  * Returns total staked amount for given beneficiary address
@@ -19,13 +22,12 @@ export const useTotalAmountStaked = ({ beneficiary }: { beneficiary: string }) =
   const refetch = async (chainId: number | undefined) => {
     if (!beneficiary || !contracts || !chainId) return
     setIsLoading(true)
-    const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
-    const contract = YieldGate__factory.connect(contracts.YieldGate.address, provider)
+    const contract = YieldGate__factory.connect(contracts.YieldGate.address, getProvider(chainId))
     let value = BigNumber.from(0)
     try {
       value = await contract.staked(beneficiary)
     } catch (e) {
-      // do nothing
+      console.error(e)
     }
     setTotalAmountsStaked((prev) => ({
       ...prev,
@@ -40,7 +42,7 @@ export const useTotalAmountStaked = ({ beneficiary }: { beneficiary: string }) =
   return {
     isLoading,
     totalAmountsStaked,
-    totalAmountStaked: contractsChainId && totalAmountsStaked[contractsChainId],
+    ...(contractsChainId ? { totalAmountStaked: totalAmountsStaked[contractsChainId] } : {}),
     contractChain: contractsChain,
     contractChainId: contractsChainId,
     refetch: async () => {
@@ -50,9 +52,13 @@ export const useTotalAmountStaked = ({ beneficiary }: { beneficiary: string }) =
 }
 
 /**
- * Returns total staked amount for given creator address
+ * Returns stake (amount & lockTimeout) for given supporter and creator
  */
-export const useSupporterAmountStaked = ({
+export type SupporterStake = {
+  amount: number
+  lockTimeout: number
+}
+export const useSupporterStake = ({
   supporter,
   beneficiary,
 }: {
@@ -61,24 +67,27 @@ export const useSupporterAmountStaked = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false)
   const { contractsChain, contractsChainId, contracts } = useDeployments()
-  const [supporterAmountsStaked, setSupporterAmountsStaked] = useState<{
-    [key: string]: number
+  const [supporterStakes, setSupporterStakes] = useState<{
+    [key: string]: SupporterStake
   }>({})
 
   const refetch = async (chainId: number | undefined) => {
     if (!supporter || !beneficiary || !contracts || !chainId) return
     setIsLoading(true)
-    const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
-    const contract = YieldGate__factory.connect(contracts.YieldGate.address, provider)
-    let value = BigNumber.from(0)
+    const contract = YieldGate__factory.connect(contracts.YieldGate.address, getProvider(chainId))
+    let amount = BigNumber.from(0)
+    let lockTimeout = BigNumber.from(0)
     try {
-      value = await contract.supporterStaked(supporter, beneficiary)
+      ;[amount, lockTimeout] = await contract.supporterStaked(supporter, beneficiary)
     } catch (e) {
-      // do nothing
+      console.error(e)
     }
-    setSupporterAmountsStaked((prev) => ({
+    setSupporterStakes((prev) => ({
       ...prev,
-      [chainId]: parseFloat(formatEther(value) || '0.0'),
+      [chainId]: {
+        amount: parseFloat(formatEther(amount) || '0.0'),
+        lockTimeout: parseInt(lockTimeout.toString() || '0'),
+      },
     }))
     setIsLoading(false)
   }
@@ -88,8 +97,8 @@ export const useSupporterAmountStaked = ({
 
   return {
     isLoading,
-    supporterAmountsStaked,
-    supporterAmountStaked: contractsChainId && supporterAmountsStaked[contractsChainId],
+    supporterStakes,
+    ...(contractsChainId ? { supporterStake: supporterStakes[contractsChainId] } : {}),
     contractChain: contractsChain,
     contractChainId: contractsChainId,
     refetch: async () => {
@@ -111,13 +120,12 @@ export const useClaimableAmount = ({ beneficiary }: { beneficiary?: string }) =>
   const refetch = async (chainId: number | undefined) => {
     if (!beneficiary || !contracts || !chainId) return
     setIsLoading(true)
-    const provider = getDefaultProvider(env.rpcUrls[chainId as keyof typeof env.rpcUrls])
-    const contract = YieldGate__factory.connect(contracts.YieldGate.address, provider)
+    const contract = YieldGate__factory.connect(contracts.YieldGate.address, getProvider(chainId))
     let value = BigNumber.from(0)
     try {
       value = await contract.claimable(beneficiary)
     } catch (e) {
-      // do nothing
+      console.error(e)
     }
     setClaimableAmounts((prev) => ({
       ...prev,
@@ -132,7 +140,124 @@ export const useClaimableAmount = ({ beneficiary }: { beneficiary?: string }) =>
   return {
     isLoading,
     claimableAmounts,
-    claimableAmount: contractsChainId && claimableAmounts[contractsChainId],
+    ...(contractsChainId ? { claimableAmount: claimableAmounts[contractsChainId] } : {}),
+    contractChain: contractsChain,
+    contractChainId: contractsChainId,
+    refetch: async () => {
+      refetch(contractsChainId)
+    },
+  }
+}
+
+/**
+ * Returns the pool address for a given creator
+ */
+export const usePoolAddress = ({ beneficiary }: { beneficiary?: string }) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const { contractsChain, contractsChainId, contracts } = useDeployments()
+  const [poolAddresses, setPoolAddresses] = useState<{
+    [_: string]: string | false
+  }>({})
+
+  const refetch = async (chainId: number | undefined) => {
+    if (!beneficiary || !contracts || !chainId) return
+    setIsLoading(true)
+    setPoolAddresses((prev) => ({
+      ...prev,
+      [chainId]: undefined,
+    }))
+    let poolAddress: string | false
+    try {
+      const factoryContract = YieldGate__factory.connect(
+        contracts.YieldGate.address,
+        getProvider(chainId)
+      )
+      poolAddress = await factoryContract.beneficiaryPools(beneficiary)
+      if (!poolAddress || poolAddress === ethers.constants.AddressZero) {
+        poolAddress = false
+      }
+    } catch (e) {
+      console.error(e)
+    }
+    setPoolAddresses((prev) => ({
+      ...prev,
+      [chainId]: poolAddress,
+    }))
+    setIsLoading(false)
+  }
+  useEffect(() => {
+    refetch(contractsChainId)
+  }, [beneficiary, contractsChainId])
+
+  return {
+    isLoading,
+    poolAddresses,
+    ...(contractsChainId ? { poolAddress: poolAddresses[contractsChainId] } : {}),
+    contractChain: contractsChain,
+    contractChainId: contractsChainId,
+    refetch: async () => {
+      refetch(contractsChainId)
+    },
+  }
+}
+
+/**
+ * Returns the pool parameters (minAmount, minDurationDays) for a given `poolAddress`
+ */
+export const usePoolParams = ({ poolAddress }: { poolAddress?: string | false }) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const { contractsChain, contractsChainId, contracts } = useDeployments()
+  const [minAmounts, setMinAmounts] = useState<{
+    [_: string]: string
+  }>({})
+  const [minDurationsDays, setMinDurationsDays] = useState<{
+    [_: string]: number
+  }>({})
+
+  const refetch = async (chainId: number | undefined) => {
+    if (!contracts || !chainId) return
+    if (!poolAddress) {
+      setMinAmounts((prev) => ({
+        ...prev,
+        [chainId]: undefined,
+      }))
+      setMinDurationsDays((prev) => ({
+        ...prev,
+        [chainId]: undefined,
+      }))
+      return
+    }
+
+    setIsLoading(true)
+    let minAmount = BigNumber.from(0)
+    let minDurationSeconds = BigNumber.from(0)
+    try {
+      const poolContract = BeneficiaryPool__factory.connect(poolAddress, getProvider(chainId))
+      minAmount = await poolContract.minAmount()
+      minDurationSeconds = await poolContract.minDuration()
+    } catch (e) {
+      console.error(e)
+    }
+    setMinAmounts((prev) => ({
+      ...prev,
+      [chainId]: parseFloat(formatEther(minAmount) || '0.0'),
+    }))
+    setMinDurationsDays((prev) => ({
+      ...prev,
+      [chainId]: dayjs.duration(minDurationSeconds.toNumber(), 'seconds').asDays(),
+    }))
+    setIsLoading(false)
+  }
+  useEffect(() => {
+    refetch(contractsChainId)
+  }, [poolAddress, contractsChainId])
+
+  return {
+    isLoading,
+    minAmounts,
+    ...(contractsChainId ? { minAmount: minAmounts[contractsChainId] } : {}),
+    minDurationsDays,
+    ...(contractsChainId ? { minDurationDays: minDurationsDays[contractsChainId] } : {}),
     contractChain: contractsChain,
     contractChainId: contractsChainId,
     refetch: async () => {

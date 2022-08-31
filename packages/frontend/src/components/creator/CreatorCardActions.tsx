@@ -1,26 +1,15 @@
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  Spinner,
-  Text,
-  useDisclosure,
-  useToast,
-  VStack,
-} from '@chakra-ui/react'
-import StakeAmountForm from '@components/StakeAmountForm'
+import { Button, Spinner, Text, useDisclosure, useToast, VStack } from '@chakra-ui/react'
 import { Creator } from '@entities/Creator.entity'
+import { SupporterStake } from '@lib/creatorReadHooks'
 import { useDeployments } from '@lib/useDeployments'
-import { ClaimedEvent } from '@yieldgate/contracts/typechain-types/contracts/YieldGate.sol/BeneficiaryPool'
 import { BeneficiaryPool__factory, YieldGate__factory } from '@yieldgate/contracts/typechain-types'
+import { ClaimedEvent } from '@yieldgate/contracts/typechain-types/contracts/YieldGate.sol/BeneficiaryPool'
+import dayjs from 'dayjs'
 import { ethers, Event } from 'ethers'
-import { FC, useState } from 'react'
-import useAsyncEffect from 'use-async-effect'
-import { useAccount, useProvider, useSigner } from 'wagmi'
+import { FC, useEffect, useState } from 'react'
+import { useAccount, useSigner } from 'wagmi'
+import { CreatorPoolParamsDialog } from './CreatorPoolParamsDialog'
+import { SupporterStakeDialog } from './SupporterStakeDialog'
 
 export interface CreatorCardActionsProps {
   creator: Creator
@@ -30,10 +19,16 @@ export interface CreatorCardActionsProps {
   refetchClaimableAmounts: () => void
   updateContentIsLocked: () => void
   setShowConfetti: (_: boolean) => void
-  supporterAmountStaked: number | undefined
-  supporterAmountsIsLoading: boolean
-  refetchSupporterAmountStaked: () => void
+  supporterStake: SupporterStake | undefined
+  supporterStakeIsLoading: boolean
+  refetchSupporterStake: () => void
   refetchTotalAmountStaked: () => void
+  poolAddress?: string | false
+  refetchPoolAddress: () => void
+  minAmount?: string
+  minDurationDays?: number
+  refetchPoolParams: () => void
+  poolParamsAreLoading: boolean
 }
 export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
   creator,
@@ -43,13 +38,18 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
   refetchClaimableAmounts,
   updateContentIsLocked,
   setShowConfetti,
-  supporterAmountStaked,
-  supporterAmountsIsLoading,
-  refetchSupporterAmountStaked,
+  supporterStake,
+  supporterStakeIsLoading,
+  refetchSupporterStake,
   refetchTotalAmountStaked,
+  poolAddress,
+  refetchPoolAddress,
+  minAmount,
+  minDurationDays,
+  refetchPoolParams,
+  poolParamsAreLoading,
 }) => {
   const { data: signer, refetch: refetchSigner } = useSigner()
-  const provider = useProvider()
   const { contractsChain, contracts } = useDeployments()
   const { address } = useAccount()
   const [stakeIsLoading, setStakeIsLoading] = useState(false)
@@ -57,24 +57,36 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
   const [unstakeIsLoading, setUnstakeIsLoading] = useState(false)
   const [claimIsLoading, setClaimIsLoading] = useState(false)
   const toast = useToast()
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const [poolAddress, setPoolAddress] = useState<string | false>()
+  const {
+    isOpen: stakeDialogIsOpen,
+    onOpen: stakeDialogOnOpen,
+    onClose: stakeDialogOnClose,
+  } = useDisclosure()
+  const {
+    isOpen: paramsDialogIsOpen,
+    onOpen: paramsDialogOnOpen,
+    onClose: paramsDialogOnClose,
+  } = useDisclosure()
+  const [stakeIsLocked, setStakeIsLocked] = useState<boolean>()
+  const [stakeLockedUntilFormatted, setStakeLockedUntilFormatted] = useState<string>()
 
-  // Fetch address of creator-pool and build contract object
-  useAsyncEffect(async () => {
-    if (deployIsLoading) return
-    if (!creator?.address || !provider || !contracts) {
-      setPoolAddress(undefined)
+  // Determine whether stake is locked and until when
+  useEffect(() => {
+    if (!supporterStake?.lockTimeout) {
+      setStakeIsLocked(false)
+      setStakeLockedUntilFormatted('')
       return
     }
-    const factoryContract = YieldGate__factory.connect(contracts.YieldGate.address, provider)
-    const poolAddress = await factoryContract.beneficiaryPools(creator.address)
-    if (!poolAddress || poolAddress === ethers.constants.AddressZero) {
-      setPoolAddress(false) // No pool deployed yet
-      return
-    }
-    setPoolAddress(poolAddress)
-  }, [contracts, provider, creator?.address, deployIsLoading])
+    const lockedUntil = dayjs.unix(supporterStake?.lockTimeout)
+    const isLocked = dayjs().isBefore(lockedUntil)
+    setStakeIsLocked(isLocked)
+    setStakeLockedUntilFormatted(isLocked ? lockedUntil.format('YYYY/MM/DD h:mm A') : '')
+  }, [supporterStake?.lockTimeout])
+
+  // Reset confetti when account changes
+  useEffect(() => {
+    setShowConfetti(false)
+  }, [address, creator?.address])
 
   // Deploy Pool
   const deploy = async () => {
@@ -86,7 +98,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     try {
       const contract = YieldGate__factory.connect(contracts.YieldGate.address, signer)
       const transaction = await contract.deployPool(creator.address, {
-        gasLimit: 500000,
+        gasLimit: 150000,
       })
       console.log({ transaction })
       const receipt = await transaction.wait()
@@ -99,8 +111,9 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
     // Update UI
     refetchTotalAmountStaked()
-    refetchSupporterAmountStaked()
+    refetchSupporterStake()
     updateContentIsLocked()
+    refetchPoolAddress()
 
     toast({
       title: 'Pool Deployed',
@@ -120,13 +133,17 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       const poolContract = BeneficiaryPool__factory.connect(poolAddress, signer)
       const transaction = await poolContract.stake(address, {
         value: ethers.utils.parseEther(value),
-        gasLimit: 500000,
+        gasLimit: 350000,
       })
       console.log({ transaction })
       const receipt = await transaction.wait()
       console.log({ receipt })
     } catch (e) {
       console.error('Error while staking:', e)
+      toast({
+        title: 'Error while trying to stake. Try again.',
+        status: 'error',
+      })
       setStakeIsLoading(false)
       return
     }
@@ -145,7 +162,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
     // Update UI
     refetchTotalAmountStaked()
-    refetchSupporterAmountStaked()
+    refetchSupporterStake()
     updateContentIsLocked()
 
     toast({
@@ -167,13 +184,17 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     try {
       const poolContract = BeneficiaryPool__factory.connect(poolAddress, signer)
       const transaction = await poolContract.unstake({
-        gasLimit: 500000,
+        gasLimit: 350000,
       })
       console.log({ transaction })
       const receipt = await transaction.wait()
       console.log({ receipt })
     } catch (e) {
       console.error('Error while unstaking:', e)
+      toast({
+        title: 'Error while trying to unstake. Try again.',
+        status: 'error',
+      })
       setUnstakeIsLoading(false)
       return
     }
@@ -192,12 +213,12 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
 
     // Update UI
     refetchTotalAmountStaked()
-    refetchSupporterAmountStaked()
+    refetchSupporterStake()
     updateContentIsLocked()
 
     toast({
       title: 'Amount Unstaked',
-      description: `You've successfully unstaked ${supporterAmountStaked?.toFixed(2)} ${
+      description: `You've successfully unstaked ${supporterStake?.amount?.toFixed(2)} ${
         contractsChain?.nativeCurrency?.symbol
       }`,
       status: 'success',
@@ -216,7 +237,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     try {
       const poolContract = BeneficiaryPool__factory.connect(poolAddress, signer)
       const transaction = await poolContract.claim({
-        gasLimit: 500000,
+        gasLimit: 350000,
       })
       console.log({ transaction })
       const receipt = await transaction.wait()
@@ -228,6 +249,10 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       console.log({ claimedEvent, claimedAmount })
     } catch (e) {
       console.error('Error while claiming:', e)
+      toast({
+        title: 'Error while trying to claim. Try again.',
+        status: 'error',
+      })
       setClaimIsLoading(false)
       return
     }
@@ -285,29 +310,44 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
             )}
           </VStack>
         </Button>
+
+        {poolAddress && (
+          <>
+            {/* Open Pool Params */}
+            <Button
+              w="full"
+              py={'7'}
+              onClick={paramsDialogOnOpen}
+              disabled={
+                minAmount === undefined || minDurationDays === undefined || poolParamsAreLoading
+              }
+            >
+              Pool Settings
+            </Button>
+
+            {/* Pool Params Dialog */}
+            <CreatorPoolParamsDialog
+              isOpen={paramsDialogIsOpen}
+              onClose={paramsDialogOnClose}
+              poolAddress={poolAddress}
+              minAmount={minAmount}
+              minDurationDays={minDurationDays}
+              refetchPoolParams={refetchPoolParams}
+            />
+          </>
+        )}
       </>
     )
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>How much do you want to stake?</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text>You can unstake and get the full amount minus gas fees back anytime.</Text>
-            <StakeAmountForm stake={stake} onClose={onClose} />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-
       {/* Stake */}
       <Button
         w="full"
-        disabled={stakeIsLoading || unstakeIsLoading}
-        onClick={onOpen}
+        disabled={stakeIsLoading || unstakeIsLoading || poolParamsAreLoading}
+        onClick={stakeDialogOnOpen}
         isLoading={stakeIsLoading}
+        colorScheme="whatsapp"
       >
         Stake
       </Button>
@@ -316,23 +356,37 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       <Button
         w="full"
         py={'7'}
-        disabled={stakeIsLoading || unstakeIsLoading || !supporterAmountStaked}
+        disabled={stakeIsLoading || unstakeIsLoading || !supporterStake?.amount || stakeIsLocked}
         onClick={unstake}
         isLoading={unstakeIsLoading}
       >
         <VStack spacing={'1'}>
-          <Text>Unstake</Text>
-          {supporterAmountsIsLoading ? (
+          <Text>
+            {supporterStake?.amount
+              ? `Unstake ${supporterStake?.amount} ${contractsChain?.nativeCurrency?.symbol}`
+              : 'Unstake'}
+          </Text>
+          {supporterStakeIsLoading ? (
             <Spinner size={'xs'} />
           ) : (
-            <Text fontSize={'xs'} opacity=".75">
-              {supporterAmountStaked
-                ? `${supporterAmountStaked.toFixed(2)} ${contractsChain?.nativeCurrency?.symbol}`
-                : 'Nothing to unstake yet'}
-            </Text>
+            stakeIsLocked && (
+              <Text fontSize={'xs'} opacity=".75">
+                Locked until {stakeLockedUntilFormatted}
+              </Text>
+            )
           )}
         </VStack>
       </Button>
+
+      {/* Stake Dialog */}
+      <SupporterStakeDialog
+        isOpen={stakeDialogIsOpen}
+        onClose={stakeDialogOnClose}
+        stake={stake}
+        minAmount={minAmount}
+        minDurationDays={minDurationDays}
+        supporterStake={supporterStake}
+      />
     </>
   )
 }

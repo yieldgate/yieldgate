@@ -3,6 +3,7 @@ package-lock.json
 cache
 /coverage
 /coverage.json
+/dist
 artifacts
 deployments
 typechain-types

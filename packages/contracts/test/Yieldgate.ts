@@ -282,6 +282,7 @@ describe('YieldGate', function () {
 
     // Reset min. duration to 0 and unstake
     await pool.setMinDuration(0)
+    expect(await pool.lockTimeout(supporter.address)).to.equal(0)
     aWETH.approve.whenCalledWith(wETHGateway.address, stake).returns(true)
     await expect(poolAsSup.unstake()).to.emit(pool, 'Unstaked')
   })
