@@ -25,7 +25,7 @@ export const useTotalAmountStaked = ({ beneficiary }: { beneficiary: string }) =
     try {
       value = await contract.staked(beneficiary)
     } catch (e) {
-      // do nothing
+      console.error(e)
     }
     setTotalAmountsStaked((prev) => ({
       ...prev,
@@ -79,7 +79,7 @@ export const useSupporterStake = ({
     try {
       ;[amount, lockTimeout] = await contract.supporterStaked(supporter, beneficiary)
     } catch (e) {
-      // do nothing
+      console.error(e)
     }
     setSupporterStakes((prev) => ({
       ...prev,
@@ -125,7 +125,7 @@ export const useClaimableAmount = ({ beneficiary }: { beneficiary?: string }) =>
     try {
       value = await contract.claimable(beneficiary)
     } catch (e) {
-      // do nothing
+      console.error(e)
     }
     setClaimableAmounts((prev) => ({
       ...prev,
@@ -175,7 +175,7 @@ export const usePoolAddress = ({ beneficiary }: { beneficiary?: string }) => {
         poolAddress = false
       }
     } catch (e) {
-      // do nothing
+      console.error(e)
     }
     setPoolAddresses((prev) => ({
       ...prev,
@@ -235,7 +235,7 @@ export const usePoolParams = ({ poolAddress }: { poolAddress?: string | false })
       minAmount = await poolContract.minAmount()
       minDurationSeconds = await poolContract.minDuration()
     } catch (e) {
-      // do nothing
+      console.error(e)
     }
     setMinAmounts((prev) => ({
       ...prev,
