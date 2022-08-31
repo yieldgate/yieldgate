@@ -133,7 +133,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
       const poolContract = BeneficiaryPool__factory.connect(poolAddress, signer)
       const transaction = await poolContract.stake(address, {
         value: ethers.utils.parseEther(value),
-        gasLimit: 350000,
+        gasLimit: 500000,
       })
       console.log({ transaction })
       const receipt = await transaction.wait()
@@ -184,7 +184,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     try {
       const poolContract = BeneficiaryPool__factory.connect(poolAddress, signer)
       const transaction = await poolContract.unstake({
-        gasLimit: 350000,
+        gasLimit: 500000,
       })
       console.log({ transaction })
       const receipt = await transaction.wait()
@@ -237,7 +237,7 @@ export const CreatorCardActions: FC<CreatorCardActionsProps> = ({
     try {
       const poolContract = BeneficiaryPool__factory.connect(poolAddress, signer)
       const transaction = await poolContract.claim({
-        gasLimit: 350000,
+        gasLimit: 500000,
       })
       console.log({ transaction })
       const receipt = await transaction.wait()
