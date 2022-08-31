@@ -7,6 +7,7 @@
     "compile": "pnpm hardhat compile",
     "build": "pnpm clean && pnpm compile",
     "test": "pnpm hardhat compile && pnpm hardhat test",
+    "report-gas": "REPORT_GAS=true pnpm hardhat test",
     "coverage": "pnpm hardhat coverage",
     "chain": "pnpm hardhat node",
     "typechain": "pnpm hardhat typechain",
