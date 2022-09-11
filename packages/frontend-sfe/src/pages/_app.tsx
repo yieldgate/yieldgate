@@ -1,5 +1,4 @@
 import { ChakraProvider } from '@chakra-ui/react'
-import { env } from '@lib/environment'
 import { chains, wagmiClient } from '@lib/wagmiClient'
 import { lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
@@ -20,20 +19,21 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
     <>
       <DefaultSeo
-        defaultTitle="Yieldgate.xyz"
-        description="Receive donations, or support creators and access gated content. – All with yield."
+        defaultTitle="StakeForEarth"
+        description="Do something good for our climate at zero cost. – All with yield."
         openGraph={{
           type: 'website',
           locale: 'en',
-          url: 'https://yieldgate.xyz',
-          site_name: 'Yieldgate.xyz',
-          images: [
-            {
-              url: `${env.url}/images/site-preview.png`,
-              width: 1728,
-              height: 972,
-            },
-          ],
+          url: 'https://stakefor.earth',
+          site_name: 'StakeForEarth',
+          // TODO
+          // images: [
+          //   {
+          //     url: `${env.url}/og/og.jpg`,
+          //     width: 1728,
+          //     height: 972,
+          //   },
+          // ],
         }}
       />
 
