@@ -1,0 +1,4 @@
+**/out/*
+**/.next/*
+**/public/*
+**/deployments/*.json

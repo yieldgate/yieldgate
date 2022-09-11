@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icons/networks/4</title>
+    <g id="icons/networks/4" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="Oval" fill="#627EEA" cx="255.5" cy="255.5" r="254.5"></circle>
+        <g id="ethereum-eth-logo" transform="translate(131.000000, 53.000000)" fill-rule="nonzero">
+            <polygon id="Path" fill="#C0CBF6" points="124.975544 0 122.242647 9.27947444 122.242647 278.524493 124.975544 281.25 250 207.374418"></polygon>
+            <polygon id="Path" fill="#FFFFFF" points="125 0 0 207.374418 125 281.25 125 150.565928"></polygon>
+            <polygon id="Path" fill="#C0CBF6" points="124.704405 303.378911 123.161765 305.250434 123.161765 400.850664 124.704405 405.330882 250 229.779412"></polygon>
+            <polygon id="Path" fill="#FFFFFF" points="125 405.330882 125 303.378911 0 229.779412"></polygon>
+            <polygon id="Path" fill="#8197EE" points="125 280.330882 250 206.551043 125 149.816176"></polygon>
+            <polygon id="Path" fill="#C0CBF6" points="0 206.551043 125 280.330882 125 149.816176"></polygon>
+        </g>
+    </g>
+</svg>
