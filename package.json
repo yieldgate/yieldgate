@@ -20,11 +20,16 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
+    "dev-yg": "turbo run dev --filter=!frontend-sfe",
+    "dev-sfe": "turbo run dev --filter=!frontend-yg",
+    "build-yg": "turbo run build --filter=!frontend-sfe",
+    "build-sfe": "turbo run build --filter=!frontend-yg",
     "lint:all": "turbo run lint",
     "lint": "prettier . --check",
     "lint:fix:all": "turbo run lint:fix",
     "lint:fix": "prettier . --write",
-    "dev:frontend": "pnpm run --filter frontend dev",
+    "dev:frontend-yg": "pnpm run --filter frontend-yg dev",
+    "dev:frontend-sfe": "pnpm run --filter frontend-sfe dev",
     "deploy:contracts": "pnpm run --filter contracts deploy",
     "prepare": "husky install"
   },
