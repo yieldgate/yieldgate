@@ -1,9 +1,9 @@
 {
-  "name": "@yieldgate/frontend",
+  "name": "@yieldgate/frontend-yg",
   "license": "MIT",
   "version": "0.0.1",
   "scripts": {
-    "dev": "NODE_ENV=development next dev",
+    "dev": "NODE_ENV=development next dev -p 4000",
     "build": "NODE_ENV=production next build",
     "start": "NODE_ENV=production next start",
     "type-check": "tsc --pretty --noEmit",
@@ -16,7 +16,7 @@
     "@chakra-ui/react": "^2.2.6",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
-    "@rainbow-me/rainbowkit": "^0.4.8",
+    "@rainbow-me/rainbowkit": "^0.5.1",
     "@yieldgate/contracts": "workspace:*",
     "blockies-ts": "^1.0.0",
     "dayjs": "^1.11.4",
@@ -34,7 +34,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
     "use-async-effect": "^2.2.6",
-    "wagmi": "^0.6.1"
+    "wagmi": "^0.6.5"
   },
   "devDependencies": {
     "@ethersproject/abi": "^5.6.4",
