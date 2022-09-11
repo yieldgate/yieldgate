@@ -1,13 +1,15 @@
+import { cache } from '@emotion/css'
+import { CacheProvider } from '@emotion/react'
 import { chains, wagmiClient } from '@lib/wagmiClient'
 import { lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
+import GlobalStyles from '@styles/GlobalStyles'
 import { DefaultSeo } from 'next-seo'
 import type { AppProps } from 'next/app'
 import Router from 'next/router'
 import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { WagmiConfig } from 'wagmi'
-import '../styles/tailwind.css'
 
 // Router Loading Animation with @tanem/react-nprogress
 Router.events.on('routeChangeStart', () => nProgress.start())
@@ -36,20 +38,23 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
         }}
       />
 
-      <WagmiConfig client={wagmiClient}>
-        <RainbowKitProvider
-          chains={chains}
-          theme={lightTheme({
-            accentColor: '#edf2f7',
-            accentColorForeground: '#1a202c',
-            borderRadius: 'medium',
-            fontStack: 'system',
-            overlayBlur: 'small',
-          })}
-        >
-          <Component {...pageProps} />
-        </RainbowKitProvider>
-      </WagmiConfig>
+      <CacheProvider value={cache}>
+        <GlobalStyles />
+        <WagmiConfig client={wagmiClient}>
+          <RainbowKitProvider
+            chains={chains}
+            theme={lightTheme({
+              accentColor: '#edf2f7',
+              accentColorForeground: '#1a202c',
+              borderRadius: 'medium',
+              fontStack: 'system',
+              overlayBlur: 'small',
+            })}
+          >
+            <Component {...pageProps} />
+          </RainbowKitProvider>
+        </WagmiConfig>
+      </CacheProvider>
     </>
   )
 }
