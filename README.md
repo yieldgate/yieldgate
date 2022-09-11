@@ -43,7 +43,6 @@ Based on [nextjs-ethereum-starter](https://github.com/ChangoMan/nextjs-ethereum-
 - [TypeChain](https://github.com/ethereum-ts/TypeChain)
 - [Wagmi.sh](https://wagmi.sh/)
 - [Ethers.js](https://docs.ethers.io/v5/)
-- [Chakra UI](https://chakra-ui.com/)
 - Linting with [ESLint](https://eslint.org/)
 - Formatting with [Prettier](https://prettier.io/)
 - Testing with [Jest](https://jestjs.io/) and [`react-testing-library`](https://testing-library.com/docs/react-testing-library/intro)
