@@ -18,13 +18,13 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
     <>
       <DefaultSeo
-        defaultTitle="StakeForEarth"
+        defaultTitle="Stake for Earth"
         description="Do something good for our climate at zero cost. – All with yield."
         openGraph={{
           type: 'website',
           locale: 'en',
           url: 'https://stakefor.earth',
-          site_name: 'StakeForEarth',
+          site_name: 'Stake for Earth',
           // TODO
           // images: [
           //   {
