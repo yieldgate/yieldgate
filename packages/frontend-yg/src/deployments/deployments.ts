@@ -10,7 +10,7 @@ export type DeploymentsType = { [_: number]: Promise<HardhatExport> }
 export const deployments: DeploymentsType = env.supportedChains.reduce(
   (acc: DeploymentsType, chainId: number) => ({
     ...acc,
-    [chainId]: import(`./${chainId}.json`),
+    [chainId]: import(`@yieldgate/contracts/deployments/${chainId}.json`),
   }),
   {}
 )
