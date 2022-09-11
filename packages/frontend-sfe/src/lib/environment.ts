@@ -13,15 +13,8 @@ export const env = {
     1337: process.env.NEXT_PUBLIC_RPC_1337!, // Hardhat
 
     1: process.env.NEXT_PUBLIC_RPC_1!, // Ethereum Mainnet
-    4: process.env.NEXT_PUBLIC_RPC_4!, // Rinkeby
-    5: process.env.NEXT_PUBLIC_RPC_5!, // Goerli
 
     137: process.env.NEXT_PUBLIC_RPC_137!, // Polygon Mainnet
     80001: process.env.NEXT_PUBLIC_RPC_80001!, // Mumbai
-  },
-
-  mongo: {
-    uri: process.env.MONGODB_URI!,
-    db: process.env.MONGODB_DB!,
   },
 }
