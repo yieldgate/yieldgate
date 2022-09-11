@@ -5,8 +5,12 @@
       "path": "../"
     },
     {
-      "name": "Frontend",
-      "path": "../packages/frontend"
+      "name": "Frontend YieldGate",
+      "path": "../packages/frontend-yg"
+    },
+    {
+      "name": "Frontend StakeForEarth",
+      "path": "../packages/frontend-sfe"
     },
     {
       "name": "Contracts",
