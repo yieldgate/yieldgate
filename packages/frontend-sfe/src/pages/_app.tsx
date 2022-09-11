@@ -1,4 +1,3 @@
-import { ChakraProvider } from '@chakra-ui/react'
 import { chains, wagmiClient } from '@lib/wagmiClient'
 import { lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
@@ -48,9 +47,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
             overlayBlur: 'small',
           })}
         >
-          <ChakraProvider>
-            <Component {...pageProps} />
-          </ChakraProvider>
+          <Component {...pageProps} />
         </RainbowKitProvider>
       </WagmiConfig>
     </>
