@@ -41,7 +41,7 @@ export const {
 )
 
 const { connectors } = getDefaultWallets({
-  appName: 'YieldGate',
+  appName: 'Stake for Earth',
   chains,
 })
 
