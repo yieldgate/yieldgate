@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: Deploy to Vercel CI
+name: Deploy YG-Frontend to Vercel
 
 on:
   workflow_dispatch:
@@ -14,6 +14,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            contracts:
+              - 'packages/frontend-yg/**'
+
       - name: Deploy to Preview
         uses: BetaHuhn/deploy-to-vercel-action@v1.9.0
         if: github.event_name == 'workflow_dispatch'
@@ -21,7 +28,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_YG }}
           ALIAS_DOMAINS: |
             ygyg-{SHA}.vercel.app
           PRODUCTION: false
@@ -30,12 +37,12 @@ jobs:
 
       - name: Deploy to Staging
         uses: BetaHuhn/deploy-to-vercel-action@v1.9.0
-        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop' && steps.changes.outputs.contracts == 'true'
         with:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_YG }}
           ALIAS_DOMAINS: |
             ygyg-dev.vercel.app
           PRODUCTION: false
@@ -44,12 +51,12 @@ jobs:
 
       - name: Deploy to Production
         uses: BetaHuhn/deploy-to-vercel-action@v1.9.0
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.changes.outputs.contracts == 'true'
         with:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_YG }}
           PRODUCTION: true
           GITHUB_DEPLOYMENT_ENV: Production
           FORCE: true
