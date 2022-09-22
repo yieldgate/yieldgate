@@ -39,7 +39,7 @@ jobs:
               - 'packages/contracts/**'
 
       - name: Contract tests
-        if: steps.changes.outputs.contracts == 'true'
+        #if: steps.changes.outputs.contracts == 'true'
         run: pnpm run --filter contracts test
 
       - name: Contract coverage report
