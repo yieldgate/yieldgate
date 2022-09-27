@@ -6,21 +6,9 @@
       "dependsOn": ["^build"],
       "outputs": [".next/**", "deployments/**", "artifacts/**", "typechain-types/**"]
     },
-    "@yieldgate/frontend-yg#dev": {
-      "dependsOn": ["@yieldgate/contracts#build"],
-      "outputs": [".next/**", "deployments/**", "artifacts/**", "typechain-types/**"]
-    },
-    "@yieldgate/frontend-sfe#dev": {
-      "dependsOn": ["@yieldgate/contracts#build"],
-      "outputs": [".next/**", "deployments/**", "artifacts/**", "typechain-types/**"]
-    },
-    "@yieldgate/frontend-yg#build": {
-      "dependsOn": ["@yieldgate/contracts#build"],
-      "outputs": [".next/**", "deployments/**", "artifacts/**", "typechain-types/**"]
-    },
-    "@yieldgate/frontend-sfe#build": {
-      "dependsOn": ["@yieldgate/contracts#build"],
-      "outputs": [".next/**", "deployments/**", "artifacts/**", "typechain-types/**"]
+    "dev": {
+      "dependsOn": ["^build"],
+      "outputs": []
     },
     "lint": {
       "outputs": []
