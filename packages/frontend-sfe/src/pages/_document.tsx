@@ -22,13 +22,7 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head>
-          {/* Favicon */}
-          <link rel="icon" href="/favicons/favicon.ico" sizes="any" />
-          <link rel="icon" href="/favicons/icon.svg" type="image/svg+xml" />
-          <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" />
-          <link rel="manifest" href="/favicons/manifest.webmanifest" />
-        </Head>
+        <Head>{/* TODO Favicon */}</Head>
 
         <body>
           <Main />
