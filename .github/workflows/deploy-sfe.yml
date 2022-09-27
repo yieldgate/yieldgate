@@ -5,6 +5,8 @@ on:
   workflow_dispatch:
   push:
     branches: [main, develop]
+    paths:
+      - packages/frontend-sfe/**
 
 jobs:
   deploy:
@@ -13,13 +15,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - uses: dorny/paths-filter@v2
-        id: changes
-        with:
-          filters: |
-            contracts:
-              - 'packages/frontend-sfe/**'
 
       - name: Deploy to Preview
         uses: BetaHuhn/deploy-to-vercel-action@v1.9.0
@@ -37,7 +32,7 @@ jobs:
 
       - name: Deploy to Staging
         uses: BetaHuhn/deploy-to-vercel-action@v1.9.0
-        if: github.event_name == 'push' && github.ref == 'refs/heads/develop' && steps.changes.outputs.contracts == 'true'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
         with:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
@@ -51,7 +46,7 @@ jobs:
 
       - name: Deploy to Production
         uses: BetaHuhn/deploy-to-vercel-action@v1.9.0
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.changes.outputs.contracts == 'true'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         with:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
