@@ -4,10 +4,10 @@
       "name": "_ROOT",
       "path": "../"
     },
-    {
-      "name": "YieldGate Frontend",
-      "path": "../packages/frontend-yg"
-    },
+    // {
+    //   "name": "YieldGate Frontend",
+    //   "path": "../packages/frontend-yg"
+    // },
     {
       "name": "StakeForEarth Frontend",
       "path": "../packages/frontend-sfe"
@@ -25,8 +25,11 @@
       "**/yarn.lock": true,
       "**/yarn-error.log": true,
       "**/.yarn": true,
-      "**/.turbo": true,
-      "**/packages/contracts/deployments": true
+      "**/.turbo": true
+    },
+    "search.exclude": {
+      "**/packages/contracts/deployments": true,
+      "**/packages/frontend-yg": true
     },
     "search.useIgnoreFiles": true,
     "search.useGlobalIgnoreFiles": true,
