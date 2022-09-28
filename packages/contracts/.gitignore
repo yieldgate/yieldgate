@@ -1,5 +1,6 @@
 .env
 cache
 artifacts
-deployments/localhost
 typechain-types
+deployments/localhost
+deployments/1337.json
