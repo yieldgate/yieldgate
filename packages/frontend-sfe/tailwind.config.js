@@ -10,6 +10,9 @@ module.exports = {
         display: ['Anonymous Pro', ...defaultTheme.fontFamily.mono],
         body: ['Inter', ...defaultTheme.fontFamily.sans],
       },
+      screens: {
+        xs: '480px',
+      },
     },
   },
   plugins: [require('@tailwindcss/typography')],

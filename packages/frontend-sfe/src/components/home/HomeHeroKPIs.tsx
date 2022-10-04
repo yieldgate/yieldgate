@@ -47,9 +47,12 @@ export const HomeHeroKPIItem: FC<HomeHeroKPIItemProps> = ({
 }) => {
   return (
     <>
-      <div tw="flex items-center justify-between px-14 py-6 space-x-2" {...props}>
+      <div
+        tw="flex flex-col space-y-1 xs:(flex-row space-x-2 space-y-0) items-center justify-between px-14 py-6"
+        {...props}
+      >
         <div tw="text-sm">{label}</div>
-        <div tw="flex flex-col whitespace-nowrap text-right">
+        <div tw="flex flex-col whitespace-nowrap text-center xs:(text-right)">
           <NumericFormat
             value={value}
             displayType={'text'}
