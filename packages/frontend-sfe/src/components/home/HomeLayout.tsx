@@ -8,7 +8,7 @@ export const HomeLayout: FC<PropsWithChildren<HomeLayoutProps>> = ({ children })
   return (
     <>
       <HomeNavigationBar />
-      {children}
+      <main>{children}</main>
       <HomeFooter />
     </>
   )

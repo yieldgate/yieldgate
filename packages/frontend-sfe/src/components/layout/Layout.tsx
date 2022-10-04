@@ -4,7 +4,7 @@ import 'twin.macro'
 export const Layout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
-      <main tw="grow">{children}</main>
+      <div tw="grow">{children}</div>
     </>
   )
 }
