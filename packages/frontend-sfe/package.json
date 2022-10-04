@@ -49,6 +49,7 @@
     "@emotion/babel-plugin": "^11.10.2",
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/providers": "^5.7.1",
+    "@tailwindcss/typography": "^0.5.7",
     "@testing-library/react": "^13.4.0",
     "@types/jest": "^29.1.1",
     "@types/markdown-it": "^12.2.3",
