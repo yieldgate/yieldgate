@@ -10,7 +10,7 @@ export const HomeNavigationBar: FC<HomeNavigationBarProps> = () => {
     <>
       <div tw="bg-gray-100">
         <Wrapper noVerticalPadding tw="py-5">
-          <div tw="flex justify-between">
+          <div tw="flex justify-between items-center">
             <StakeForEarthLogo />
             <ConnectButton showBalance={false} accountStatus="address" chainStatus="icon" />
           </div>
