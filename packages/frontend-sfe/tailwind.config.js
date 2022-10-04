@@ -1,5 +1,6 @@
 /* eslint-disable */
 const defaultTheme = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -12,6 +13,9 @@ module.exports = {
       },
       screens: {
         xs: '480px',
+      },
+      colors: {
+        gray: colors.neutral,
       },
     },
   },

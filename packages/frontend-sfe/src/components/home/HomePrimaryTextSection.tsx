@@ -8,7 +8,7 @@ export const HomePrimaryTextSection: FC<HomePrimaryTextSectionProps> = () => {
     <>
       <Wrapper>
         <div tw="grid space-y-6 sm:(grid-cols-2 gap-6 space-y-0)">
-          <h2 tw="max-w-[25rem] font-display text-3xl font-bold">
+          <h2 tw="max-w-[25rem] font-display text-3xl font-bold tracking-tight">
             A cool headline about the company impact
           </h2>
           <div tw="prose first:prose-p:(mt-0) last:prose-p:(mb-0)">

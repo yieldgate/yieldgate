@@ -22,6 +22,7 @@
     "@emotion/react": "^11.10.4",
     "@emotion/server": "^11.10.0",
     "@emotion/styled": "^11.10.4",
+    "@headlessui/react": "^1.7.3",
     "@rainbow-me/rainbowkit": "^0.7.0",
     "@yieldgate/contracts": "workspace:*",
     "blockies-ts": "^1.0.0",

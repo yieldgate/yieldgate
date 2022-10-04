@@ -1,4 +1,5 @@
 import { Wrapper } from '@components/layout/Wrapper'
+import { Subheading } from '@components/shared/Subheading'
 import Image from 'next/image'
 import aaveSvg from 'public/images/logos/aave--black.svg'
 import coinbaseSvg from 'public/images/logos/coinbase--black.svg'
@@ -41,9 +42,7 @@ export const HomeBackedBySection: FC<HomeBackedBySectionProps> = () => {
   return (
     <>
       <Wrapper tw="max-w-[40rem] overflow-hidden">
-        <h2 tw="text-center uppercase font-bold text-xs tracking-wide mb-8 text-gray-800">
-          Backed by
-        </h2>
+        <Subheading tw="text-center">Backed by</Subheading>
         <div tw="flex flex-wrap justify-center -mx-8 -my-2">
           {logos.map((logo) => (
             <div
