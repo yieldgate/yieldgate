@@ -13,6 +13,8 @@ const customStyles = css`
   #__next > div {
     ${tw`h-full relative flex flex-col`}
   }
+
+  /* Progress Bar */
   #nprogress > .bar {
     ${tw`bg-black`}
   }
