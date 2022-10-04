@@ -40,7 +40,7 @@ export const HomeBackedBySection: FC<HomeBackedBySectionProps> = () => {
   ]
   return (
     <>
-      <Wrapper tw="max-w-[40rem]">
+      <Wrapper tw="max-w-[40rem] overflow-hidden">
         <h2 tw="text-center uppercase font-bold text-xs tracking-wide mb-8 text-gray-800">
           Backed by
         </h2>
