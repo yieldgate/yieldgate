@@ -6,7 +6,7 @@ export interface WrapperProps {
 }
 export const Wrapper = styled.div(({ noVerticalPadding, noHorizontalPadding }: WrapperProps) => [
   tw`relative mx-auto w-full max-w-[1200px]`,
-  noVerticalPadding ? tw`py-0` : tw`py-6 sm:(py-8) lg:py-12`,
+  noVerticalPadding ? tw`py-0` : tw`py-8 sm:(py-10) lg:py-14`,
   noHorizontalPadding ? tw`px-0` : tw`px-4 sm:(px-8)`,
 ])
 
