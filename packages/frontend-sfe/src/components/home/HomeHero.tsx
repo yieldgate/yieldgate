@@ -9,7 +9,7 @@ export interface HomeHeroProps {}
 export const HomeHero: FC<HomeHeroProps> = () => {
   return (
     <>
-      <div tw="h-[65vh] lg:(h-[75vh]) flex items-center pb-[10vh] relative overflow-hidden">
+      <div tw="h-[60vh] lg:(h-[70vh]) flex items-center pb-[10vh] relative overflow-hidden">
         {/* Text Content */}
         <Wrapper tw="z-10">
           <div tw="max-w-[30rem] sm:(px-4) space-y-8">

@@ -1,3 +1,4 @@
+import { HomeBackedBySection } from '@components/home/HomeBackedBySection'
 import { HomeHero } from '@components/home/HomeHero'
 import { HomeHeroKPIs } from '@components/home/HomeHeroKPIs'
 import { HomeLayout } from '@components/home/HomeLayout'
@@ -11,6 +12,7 @@ export default function IndexPage() {
       <HomeLayout>
         <HomeHero />
         <HomeHeroKPIs />
+        <HomeBackedBySection />
         <HomePrimaryTextSection />
       </HomeLayout>
     </>
