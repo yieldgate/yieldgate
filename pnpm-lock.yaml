@@ -136,6 +136,7 @@ importers:
       react-canvas-confetti: ^1.3.0
       react-dom: ^18.2.0
       react-icons: ^4.4.0
+      react-number-format: ^5.0.1
       tailwindcss: ^3.1.8
       twin.macro: 3.0.0-rc.5
       typescript: ^4.8.4
@@ -162,6 +163,7 @@ importers:
       react-canvas-confetti: 1.3.0_react@18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-icons: 4.4.0_react@18.2.0
+      react-number-format: 5.0.1_biqbaboplfbrettd7655fr4n2y
       use-async-effect: 2.2.7_react@18.2.0
       wagmi: 0.6.7_ddylbyfc5xeubgtcafrit5fuai
     devDependencies:
@@ -14786,6 +14788,17 @@ packages:
       - encoding
       - supports-color
       - utf-8-validate
+    dev: false
+
+  /react-number-format/5.0.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-Tyv5Ygb77ZbC5vUNNAfXwE+zQKaN0LsTo7GwjudU/MckXa7beVAlFddq7QQnGobEglyq+4zsBltKvM9HMQD0GA==}
+    peerDependencies:
+      react: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^18.0.0
+      react-dom: ^0.14 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^18.0.0
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react-refresh/0.4.3:
