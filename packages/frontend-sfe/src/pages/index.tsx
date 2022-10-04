@@ -1,4 +1,5 @@
 import { HomeHero } from '@components/home/HomeHero'
+import { HomeHeroKPIs } from '@components/home/HomeHeroKPIs'
 import { HomeLayout } from '@components/home/HomeLayout'
 import 'twin.macro'
 
@@ -8,6 +9,7 @@ export default function IndexPage() {
     <>
       <HomeLayout>
         <HomeHero />
+        <HomeHeroKPIs />
       </HomeLayout>
     </>
   )
