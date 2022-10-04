@@ -6,7 +6,7 @@ export default function IndexPage() {
   return (
     <>
       <div tw="flex flex-col justify-center items-center space-y-4 h-screen">
-        <div>Stake for Earth</div>
+        <h1 tw="font-display">Stake for Earth</h1>
         <ConnectButton />
       </div>
     </>
