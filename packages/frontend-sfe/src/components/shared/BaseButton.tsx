@@ -1,3 +1,4 @@
+import { CSSInterpolation } from '@emotion/css'
 import Link, { LinkProps } from 'next/link'
 import { FC, PropsWithChildren } from 'react'
 import 'twin.macro'
@@ -16,6 +17,7 @@ export interface BaseButtonProps {
   isLoading?: boolean
   asLink?: boolean
   linkProps?: LinkProps
+  css?: CSSInterpolation
 }
 export const BaseButton: FC<PropsWithChildren<BaseButtonProps>> = ({
   children,
@@ -28,9 +30,13 @@ export const BaseButton: FC<PropsWithChildren<BaseButtonProps>> = ({
   const wrapperProps = { variant, isLoading }
   return asLink && linkProps ? (
     <Link {...linkProps} passHref>
-      <BaseButtonAnchorWrapper {...wrapperProps}>{children}</BaseButtonAnchorWrapper>
+      <BaseButtonAnchorWrapper {...wrapperProps} {...props}>
+        {children}
+      </BaseButtonAnchorWrapper>
     </Link>
   ) : (
-    <BaseButtonWrapper {...wrapperProps}>{children}</BaseButtonWrapper>
+    <BaseButtonWrapper {...wrapperProps} {...props}>
+      {children}
+    </BaseButtonWrapper>
   )
 }

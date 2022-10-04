@@ -4,6 +4,7 @@ import illustrationImg from 'public/images/hero-illustration.png'
 import { FC } from 'react'
 import { NumericFormat } from 'react-number-format'
 import 'twin.macro'
+import { HomeCTAs } from './HomeCTAs'
 
 export interface HomeHeroProps {}
 export const HomeHero: FC<HomeHeroProps> = () => {
@@ -25,6 +26,9 @@ export const HomeHero: FC<HomeHeroProps> = () => {
               </div>
               <div tw="mt-2">carbon credits burned</div>
             </div>
+
+            {/* CTAs */}
+            <HomeCTAs primaryFirst={true} />
           </div>
         </Wrapper>
 

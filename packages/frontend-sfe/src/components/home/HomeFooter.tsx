@@ -1,10 +1,10 @@
 import { StakeForEarthLogo } from '@components/brand/StakeForEarthLogo'
 import { Wrapper } from '@components/layout/Wrapper'
-import { BaseButton } from '@components/shared/BaseButton'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 import { FC } from 'react'
 import 'twin.macro'
+import { HomeCTAs } from './HomeCTAs'
 
 export interface HomeFooterProps {}
 export const HomeFooter: FC<HomeFooterProps> = () => {
@@ -15,14 +15,7 @@ export const HomeFooter: FC<HomeFooterProps> = () => {
           {/* Logo & Nav */}
           <div tw="flex flex-col space-y-6 md:(flex-row space-y-0) justify-between items-center">
             <StakeForEarthLogo />
-            <div tw="text-sm space-x-2">
-              <BaseButton asLink={true} linkProps={{ href: '/staking' }} variant="outline">
-                Donate
-              </BaseButton>
-              <BaseButton asLink={true} linkProps={{ href: '/staking' }}>
-                Stake
-              </BaseButton>
-            </div>
+            <HomeCTAs />
           </div>
 
           {/* Legal Links */}
