@@ -45,11 +45,10 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
           <RainbowKitProvider
             chains={chains}
             theme={lightTheme({
-              accentColor: '#edf2f7',
-              accentColorForeground: '#1a202c',
+              accentColor: '#000',
+              accentColorForeground: '#FFF',
               borderRadius: 'medium',
               fontStack: 'system',
-              overlayBlur: 'small',
             })}
           >
             <Layout>
