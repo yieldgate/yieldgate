@@ -59,7 +59,9 @@ export const HomeHowItWorksSection: FC<HomeHowItWorksSectionProps> = () => {
               How it works
             </SubheadingSmall>
             <Subheading>How it works headline otam rem aperiam.</Subheading>
-            <p tw="text-sm opacity-60">Aenean eu leo quam. Pellentesque ornare sem lacinia quam.</p>
+            <p tw="text-sm opacity-70 -mt-2">
+              Aenean eu leo quam. Pellentesque ornare sem lacinia quam.
+            </p>
           </div>
 
           {/* Tabs  */}
@@ -135,7 +137,7 @@ export const HomeHowItWorksTabs: FC<HomeHowItWorksTabsProps> = () => {
           <AnimatePresence exitBeforeEnter>
             <Tab.Panel key={`tab-panel-${selectedIndex}`} as={m.div} {...animationProps}>
               <div tw="flex justify-between items-start py-2">
-                <div tw="max-w-prose px-6 sm:px-12">
+                <div tw="max-w-prose px-6  lg:px-12">
                   <h3 tw="font-display text-2xl font-bold tracking-tight mb-4">
                     {selectedItem.title}
                   </h3>
@@ -143,8 +145,8 @@ export const HomeHowItWorksTabs: FC<HomeHowItWorksTabsProps> = () => {
                     dangerouslySetInnerHTML={{ __html: md().render(selectedItem.content) }}
                   ></div>
                 </div>
-                <div tw="h-[10rem] w-[10rem] shrink-0 grow-0 ml-auto flex justify-center items-center bg-gray-800 rounded-full">
-                  <selectedItem.icon tw="h-[5rem] w-[5rem] text-gray-500" />
+                <div tw="hidden md:flex h-[9rem] w-[9rem] shrink-0 grow-0 ml-auto justify-center items-center bg-gray-800 rounded-full">
+                  <selectedItem.icon tw="h-[4rem] w-[4rem] text-gray-500" />
                 </div>
               </div>
             </Tab.Panel>
