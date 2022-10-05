@@ -29,7 +29,7 @@ export const SubheadingSmall: FC<PropsWithChildren<SubheadingProps>> = ({
   const HeadingWrapper = noHeadingMarkup ? 'div' : 'h2'
 
   return (
-    <HeadingWrapper tw="uppercase font-bold text-xs tracking-wide mb-5 text-gray-800" {...props}>
+    <HeadingWrapper tw="uppercase font-bold text-xs tracking-wide mb-4 text-gray-800" {...props}>
       {children}
     </HeadingWrapper>
   )

@@ -11,6 +11,7 @@ import type { AppProps } from 'next/app'
 import Router from 'next/router'
 import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import { Toaster } from 'react-hot-toast'
 import { WagmiConfig } from 'wagmi'
 
 // Router Loading Animation with @tanem/react-nprogress
@@ -42,6 +43,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
 
       <CacheProvider value={cache}>
         <GlobalStyles />
+
         <WagmiConfig client={wagmiClient}>
           <RainbowKitProvider
             chains={chains}
@@ -59,6 +61,21 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
             </LazyMotion>
           </RainbowKitProvider>
         </WagmiConfig>
+
+        <Toaster
+          toastOptions={{
+            position: 'top-center',
+            style: {
+              borderRadius: '0px',
+              border: '1px #e4e4e4 solid',
+              boxShadow: 'none',
+              background: 'white',
+            },
+            success: {
+              duration: 5000,
+            },
+          }}
+        />
       </CacheProvider>
     </>
   )

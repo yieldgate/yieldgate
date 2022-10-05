@@ -71,6 +71,7 @@ export const HomeHeroKPIItem: FC<HomeHeroKPIItemProps> = ({
           {isLoading ? (
             <SpinnerDiamond
               size={34}
+              thickness={120}
               color={theme('colors.gray.500')}
               secondaryColor={theme('colors.gray.300')}
             />

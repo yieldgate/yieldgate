@@ -4,6 +4,7 @@ import { HomeHero } from '@components/home/HomeHero'
 import { HomeHeroKPIs } from '@components/home/HomeHeroKPIs'
 import { HomeHowItWorksSection } from '@components/home/HomeHowItWorksSection'
 import { HomeLayout } from '@components/home/HomeLayout'
+import { HomeNewsletterSection } from '@components/home/HomeNewsletterSection'
 import { HomePrimaryTextSection } from '@components/home/HomePrimaryTextSection'
 import 'twin.macro'
 
@@ -18,6 +19,7 @@ export default function IndexPage() {
         <HomePrimaryTextSection />
         <HomeHowItWorksSection />
         <HomeFAQsSection />
+        <HomeNewsletterSection />
       </HomeLayout>
     </>
   )
