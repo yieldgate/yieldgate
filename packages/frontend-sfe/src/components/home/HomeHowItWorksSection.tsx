@@ -7,7 +7,7 @@ import {
   CursorArrowRaysIcon,
   GlobeEuropeAfricaIcon,
 } from '@heroicons/react/24/solid'
-import { AnimatePresence, m } from 'framer-motion'
+import { AnimatePresence, AnimationProps, m } from 'framer-motion'
 import md from 'markdown-it'
 import { FC, Fragment, useState } from 'react'
 import 'twin.macro'
@@ -49,10 +49,6 @@ const items: HomeHowItWorksItem[] = [
 
 export interface HomeHowItWorksSectionProps {}
 export const HomeHowItWorksSection: FC<HomeHowItWorksSectionProps> = () => {
-  const [previousIndex, setPreviousIndex] = useState(0)
-  const [selectedIndex, setSelectedIndex] = useState(0)
-  const [selectedItem, setSelectedItem] = useState(items[0])
-
   return (
     <>
       <div tw="bg-gray-700 text-white">
@@ -69,82 +65,94 @@ export const HomeHowItWorksSection: FC<HomeHowItWorksSectionProps> = () => {
           </div>
 
           {/* Tabs  */}
-          <Tab.Group
-            vertical
-            as="div"
-            tw="flex mt-14"
-            onChange={(index: any) => {
-              setPreviousIndex(selectedIndex)
-              setSelectedIndex(index)
-              setSelectedItem(items[index])
-            }}
-          >
-            {/* Tab Titles  */}
-            <Tab.List tw="shrink-0 grow-0 flex flex-col py-6 border-r-[2px] border-gray-600">
-              {items.map((item, idx) => (
-                <Tab as={Fragment} key={`tab-button-${idx}`}>
-                  {({ selected }) => (
-                    <button
-                      css={[
-                        tw`text-left tracking-wide whitespace-nowrap py-2 pr-6 sm:pr-12 -mr-[2px] border-r-[2px] border-transparent outline-none`,
-                        selected
-                          ? tw`text-white  border-white`
-                          : tw`text-gray-400 cursor-pointer hover:text-white`,
-                      ]}
-                    >
-                      <span tw="mr-4 hidden sm:inline">0{idx + 1}</span>
-                      {item.shortTitle}
-                    </button>
-                  )}
-                </Tab>
-              ))}
-            </Tab.List>
-
-            {/* Tab Content  */}
-            <Tab.Panels tw="flex flex-col justify-start w-full">
-              <AnimatePresence exitBeforeEnter>
-                <Tab.Panel
-                  key={selectedIndex}
-                  as={m.div}
-                  initial={{
-                    opacity: 0,
-                    y: 12 * (previousIndex < selectedIndex ? 1 : -1),
-                  }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      duration: 0.15,
-                    },
-                  }}
-                  exit={{
-                    opacity: 0,
-                    y: 12 * (previousIndex < selectedIndex ? 1 : -1),
-                    transition: {
-                      duration: 0.15,
-                    },
-                  }}
-                  static
-                >
-                  <div tw="flex justify-between items-start py-2">
-                    <div tw="max-w-prose px-6 sm:px-12">
-                      <h3 tw="font-display text-2xl font-bold tracking-tight mb-4">
-                        {selectedItem.title}
-                      </h3>
-                      <div
-                        dangerouslySetInnerHTML={{ __html: md().render(selectedItem.content) }}
-                      ></div>
-                    </div>
-                    <div tw="h-[10rem] w-[10rem] shrink-0 grow-0 ml-auto flex justify-center items-center bg-gray-800 rounded-full">
-                      <selectedItem.icon tw="h-[5rem] w-[5rem] text-gray-500" />
-                    </div>
-                  </div>
-                </Tab.Panel>
-              </AnimatePresence>
-            </Tab.Panels>
-          </Tab.Group>
+          <HomeHowItWorksTabs />
         </Wrapper>
       </div>
+    </>
+  )
+}
+
+export interface HomeHowItWorksTabsProps {}
+export const HomeHowItWorksTabs: FC<HomeHowItWorksTabsProps> = () => {
+  const [previousIndex, setPreviousIndex] = useState(0)
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [selectedItem, setSelectedItem] = useState(items[0])
+  const animationProps: AnimationProps & { static: boolean } = {
+    static: true,
+    initial: {
+      opacity: 0,
+      y: 12 * (previousIndex < selectedIndex ? 1 : -1),
+    },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.15,
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: 12 * (previousIndex < selectedIndex ? 1 : -1),
+      transition: {
+        duration: 0.15,
+      },
+    },
+  }
+
+  return (
+    <>
+      <Tab.Group
+        vertical
+        as="div"
+        tw="flex mt-14"
+        onChange={(index: any) => {
+          setPreviousIndex(selectedIndex)
+          setSelectedIndex(index)
+          setSelectedItem(items[index])
+        }}
+      >
+        {/* Tab Titles  */}
+        <Tab.List tw="shrink-0 grow-0 flex flex-col py-6 border-r-[2px] border-gray-600">
+          {items.map((item, idx) => (
+            <Tab as={Fragment} key={`tab-button-${idx}`}>
+              {({ selected }) => (
+                <button
+                  css={[
+                    tw`text-left tracking-wide whitespace-nowrap py-2 pr-6 sm:pr-12 -mr-[2px] border-r-[2px] border-transparent outline-none`,
+                    selected
+                      ? tw`text-white  border-white`
+                      : tw`text-gray-400 cursor-pointer hover:text-white`,
+                  ]}
+                >
+                  <span tw="mr-4 hidden sm:inline">0{idx + 1}</span>
+                  {item.shortTitle}
+                </button>
+              )}
+            </Tab>
+          ))}
+        </Tab.List>
+
+        {/* Tab Content  */}
+        <Tab.Panels tw="flex flex-col justify-start w-full">
+          <AnimatePresence exitBeforeEnter>
+            <Tab.Panel key={`tab-panel-${selectedIndex}`} as={m.div} {...animationProps}>
+              <div tw="flex justify-between items-start py-2">
+                <div tw="max-w-prose px-6 sm:px-12">
+                  <h3 tw="font-display text-2xl font-bold tracking-tight mb-4">
+                    {selectedItem.title}
+                  </h3>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: md().render(selectedItem.content) }}
+                  ></div>
+                </div>
+                <div tw="h-[10rem] w-[10rem] shrink-0 grow-0 ml-auto flex justify-center items-center bg-gray-800 rounded-full">
+                  <selectedItem.icon tw="h-[5rem] w-[5rem] text-gray-500" />
+                </div>
+              </div>
+            </Tab.Panel>
+          </AnimatePresence>
+        </Tab.Panels>
+      </Tab.Group>
     </>
   )
 }

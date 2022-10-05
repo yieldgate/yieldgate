@@ -1,6 +1,7 @@
 import { Wrapper } from '@components/layout/Wrapper'
 import { Disclosure } from '@headlessui/react'
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/solid'
+import { AnimatePresence, AnimationProps, m } from 'framer-motion'
 import { FC } from 'react'
 import 'twin.macro'
 import tw from 'twin.macro'
@@ -50,6 +51,27 @@ export interface HomeFAQsSectionElProps {
   index: number
 }
 export const HomeFAQsSectionEl: FC<HomeFAQsSectionElProps> = ({ item, index }) => {
+  const animationProps: AnimationProps = {
+    initial: {
+      opacity: 0,
+      y: -5,
+    },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.15,
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -5,
+      transition: {
+        duration: 0.15,
+      },
+    },
+  }
+
   return (
     <>
       <Disclosure defaultOpen={index === 0} as="div" tw="py-4 border-b border-gray-200">
@@ -66,7 +88,11 @@ export const HomeFAQsSectionEl: FC<HomeFAQsSectionElProps> = ({ item, index }) =
                 <h3 tw="grow text-left mr-2">{item.question}</h3>
                 <Icon tw="h-5 w-5 shrink-0 grow-0" />
               </Disclosure.Button>
-              <Disclosure.Panel tw="mt-2 text-sm">{item.answer}</Disclosure.Panel>
+              <AnimatePresence exitBeforeEnter>
+                <Disclosure.Panel key={`disclosure-panel-${index}`} as={m.div} {...animationProps}>
+                  <div tw="mt-2 text-sm">{item.answer}</div>
+                </Disclosure.Panel>
+              </AnimatePresence>
             </>
           )
         }}
