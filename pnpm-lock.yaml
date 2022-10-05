@@ -140,6 +140,7 @@ importers:
       react-countup: ^6.3.1
       react-dom: ^18.2.0
       react-number-format: ^5.0.1
+      spinners-react: ^1.0.7
       tailwindcss: ^3.1.8
       twin.macro: 3.0.0-rc.5
       typescript: ^4.8.4
@@ -169,6 +170,7 @@ importers:
       react-countup: 6.3.1_react@18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-number-format: 5.0.1_biqbaboplfbrettd7655fr4n2y
+      spinners-react: 1.0.7_5uumaiclxbdbzaqafclbf6maf4
       use-async-effect: 2.2.7_react@18.2.0
       wagmi: 0.6.7_ddylbyfc5xeubgtcafrit5fuai
     devDependencies:
@@ -5211,7 +5213,6 @@ packages:
     resolution: {integrity: sha512-/5OFZgfIPSwy+YuIBP/FgJnQnsxhZhjjrnxudMddeblOouIodEQ75X14Rr4wGSG/bknL+Omy9iWlLo1u/9GzAA==}
     dependencies:
       '@types/react': 18.0.21
-    dev: true
 
   /@types/react/18.0.21:
     resolution: {integrity: sha512-7QUCOxvFgnD5Jk8ZKlUAhVcRj7GuJRjnjjiY/IUBWKgOlnvDvTMLD4RTF7NPyVmbRhNrbomZiOepg7M/2Kj1mA==}
@@ -15877,6 +15878,20 @@ packages:
       memory-pager: 1.5.0
     dev: false
     optional: true
+
+  /spinners-react/1.0.7_5uumaiclxbdbzaqafclbf6maf4:
+    resolution: {integrity: sha512-Xcgpc7Ybm6HOrpCVJjbH1G/NV852HaV4Zc9T1sJ2+S2hn05lGiBZS1dBOKGLc1kp8wv2sd3wtt94I/NNqDjs3Q==}
+    peerDependencies:
+      '@types/react': ^16.x || ^17.x || ^18.x
+      '@types/react-dom': ^16.x || ^17.x || ^18.x
+      react: ^16.x || ^17.x || ^18.x || ^18.0.0
+      react-dom: ^16.x || ^17.x || ^18.x || ^18.0.0
+    dependencies:
+      '@types/react': 18.0.21
+      '@types/react-dom': 18.0.6
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /split-on-first/1.1.0:
     resolution: {integrity: sha512-43ZssAJaMusuKWL8sKUBQXHWOpq8d6CfN/u1p4gUzfJkM05C8rxTmYrkIPTXapZpORA6LkkzcUulJ8FqA7Uudw==}

@@ -41,6 +41,7 @@
     "react-countup": "^6.3.1",
     "react-dom": "^18.2.0",
     "react-number-format": "^5.0.1",
+    "spinners-react": "^1.0.7",
     "use-async-effect": "^2.2.7",
     "wagmi": "^0.6.7"
   },
