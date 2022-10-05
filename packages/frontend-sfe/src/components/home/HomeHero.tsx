@@ -2,7 +2,7 @@ import { Wrapper } from '@components/layout/Wrapper'
 import Image from 'next/image'
 import illustrationImg from 'public/images/hero-illustration.png'
 import { FC } from 'react'
-import { NumericFormat } from 'react-number-format'
+import CountUp from 'react-countup'
 import 'twin.macro'
 import { HomeCTAs } from './HomeCTAs'
 
@@ -21,8 +21,8 @@ export const HomeHero: FC<HomeHeroProps> = () => {
 
             {/* Burned KPI */}
             <div tw="flex flex-col">
-              <div tw="text-5xl font-display font-bold">
-                <NumericFormat value={10238477} displayType={'text'} thousandSeparator={true} />
+              <div tw="text-5xl font-display font-bold whitespace-nowrap">
+                <CountUp end={238477} duration={2.5} separator="," decimals={0} />
               </div>
               <div tw="mt-2">carbon credits burned</div>
             </div>
