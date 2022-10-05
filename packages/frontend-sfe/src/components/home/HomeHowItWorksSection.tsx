@@ -1,14 +1,22 @@
 import { Wrapper } from '@components/layout/Wrapper'
 import { Subheading } from '@components/shared/Subheading'
 import { Tab } from '@headlessui/react'
+import {
+  ArrowPathRoundedSquareIcon,
+  CheckBadgeIcon,
+  CursorArrowRaysIcon,
+  GlobeEuropeAfricaIcon,
+} from '@heroicons/react/24/solid'
+import { AnimatePresence, m } from 'framer-motion'
 import md from 'markdown-it'
-import { FC, Fragment } from 'react'
+import { FC, Fragment, useState } from 'react'
 import 'twin.macro'
 import tw from 'twin.macro'
 
 export interface HomeHowItWorksItem {
   title: string
   shortTitle: string
+  icon: FC
   content: string
 }
 
@@ -16,27 +24,35 @@ const items: HomeHowItWorksItem[] = [
   {
     title: 'Staking to generate yield',
     shortTitle: 'Staking',
+    icon: CursorArrowRaysIcon,
     content: `Etiam porta sem malesuada magna mollis euismod. Donec id elit non mi porta gravida at eget metus. Nullam quis risus eget urna mollis ornare vel eu leo. Etiam porta sem malesuada magna mollis euismod. Nullam quis risus eget urna mollis ornare vel eu leo. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.`,
   },
   {
     title: 'USDC Yield is swapped to BCT every x period',
     shortTitle: 'Swap',
+    icon: ArrowPathRoundedSquareIcon,
     content: `Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Nullam quis risus eget urna mollis ornare vel eu leo. Donec id elit non mi porta gravida at eget metus. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.`,
   },
   {
     title: 'Carbon Credits Burning',
     shortTitle: 'Carbon Credits',
+    icon: GlobeEuropeAfricaIcon,
     content: `Aenean lacinia bibendum nulla sed consectetur. Donec ullamcorper nulla non metus auctor fringilla. Maecenas sed diam eget risus varius blandit sit amet non magna. Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Cras mattis consectetur purus sit amet fermentum. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.`,
   },
   {
     title: 'NFT headline otam rem aperiam',
     shortTitle: 'NFT',
+    icon: CheckBadgeIcon,
     content: `Curabitur blandit tempus porttitor. Sed posuere consectetur est at lobortis. Curabitur blandit tempus porttitor. Vestibulum id ligula porta felis euismod semper. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.`,
   },
 ]
 
 export interface HomeHowItWorksSectionProps {}
 export const HomeHowItWorksSection: FC<HomeHowItWorksSectionProps> = () => {
+  const [previousIndex, setPreviousIndex] = useState(0)
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [selectedItem, setSelectedItem] = useState(items[0])
+
   return (
     <>
       <div tw="bg-gray-700 text-white">
@@ -53,9 +69,18 @@ export const HomeHowItWorksSection: FC<HomeHowItWorksSectionProps> = () => {
           </div>
 
           {/* Tabs  */}
-          <Tab.Group vertical as="div" tw="flex mt-14">
+          <Tab.Group
+            vertical
+            as="div"
+            tw="flex mt-14"
+            onChange={(index: any) => {
+              setPreviousIndex(selectedIndex)
+              setSelectedIndex(index)
+              setSelectedItem(items[index])
+            }}
+          >
             {/* Tab Titles  */}
-            <Tab.List tw="shrink-0 grow-0 flex flex-col py-4 border-r-[2px] border-gray-600">
+            <Tab.List tw="shrink-0 grow-0 flex flex-col py-6 border-r-[2px] border-gray-600">
               {items.map((item, idx) => (
                 <Tab as={Fragment} key={`tab-button-${idx}`}>
                   {({ selected }) => (
@@ -76,13 +101,46 @@ export const HomeHowItWorksSection: FC<HomeHowItWorksSectionProps> = () => {
             </Tab.List>
 
             {/* Tab Content  */}
-            <Tab.Panels tw="flex flex-col justify-center">
-              {items.map((item, idx) => (
-                <Tab.Panel key={`tab-panel-${idx}`} tw="py-2 pl-6 sm:pl-12 max-w-prose">
-                  <h3 tw="font-display text-2xl font-bold tracking-tight mb-4">{item.title}</h3>
-                  <div dangerouslySetInnerHTML={{ __html: md().render(item.content) }}></div>
+            <Tab.Panels tw="flex flex-col justify-start w-full">
+              <AnimatePresence exitBeforeEnter>
+                <Tab.Panel
+                  key={selectedIndex}
+                  as={m.div}
+                  initial={{
+                    opacity: 0,
+                    y: 12 * (previousIndex < selectedIndex ? 1 : -1),
+                  }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                      duration: 0.15,
+                    },
+                  }}
+                  exit={{
+                    opacity: 0,
+                    y: 12 * (previousIndex < selectedIndex ? 1 : -1),
+                    transition: {
+                      duration: 0.15,
+                    },
+                  }}
+                  static
+                >
+                  <div tw="flex justify-between items-start py-2">
+                    <div tw="max-w-prose px-6 sm:px-12">
+                      <h3 tw="font-display text-2xl font-bold tracking-tight mb-4">
+                        {selectedItem.title}
+                      </h3>
+                      <div
+                        dangerouslySetInnerHTML={{ __html: md().render(selectedItem.content) }}
+                      ></div>
+                    </div>
+                    <div tw="h-[10rem] w-[10rem] shrink-0 grow-0 ml-auto flex justify-center items-center bg-gray-800 rounded-full">
+                      <selectedItem.icon tw="h-[5rem] w-[5rem] text-gray-500" />
+                    </div>
+                  </div>
                 </Tab.Panel>
-              ))}
+              </AnimatePresence>
             </Tab.Panels>
           </Tab.Group>
         </Wrapper>

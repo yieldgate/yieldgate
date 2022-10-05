@@ -23,6 +23,7 @@
     "@emotion/server": "^11.10.0",
     "@emotion/styled": "^11.10.4",
     "@headlessui/react": "^1.7.3",
+    "@heroicons/react": "^2.0.11",
     "@rainbow-me/rainbowkit": "^0.7.0",
     "@yieldgate/contracts": "workspace:*",
     "blockies-ts": "^1.0.0",
@@ -38,7 +39,6 @@
     "react": "^18.2.0",
     "react-canvas-confetti": "^1.3.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.4.0",
     "react-number-format": "^5.0.1",
     "use-async-effect": "^2.2.7",
     "wagmi": "^0.6.7"

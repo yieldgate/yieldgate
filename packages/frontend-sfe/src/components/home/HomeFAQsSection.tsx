@@ -1,7 +1,7 @@
 import { Wrapper } from '@components/layout/Wrapper'
 import { Disclosure } from '@headlessui/react'
+import { MinusIcon, PlusIcon } from '@heroicons/react/24/solid'
 import { FC } from 'react'
-import { HiMinus, HiPlus } from 'react-icons/hi'
 import 'twin.macro'
 import tw from 'twin.macro'
 
@@ -53,24 +53,23 @@ export const HomeFAQsSectionEl: FC<HomeFAQsSectionElProps> = ({ item, index }) =
   return (
     <>
       <Disclosure defaultOpen={index === 0} as="div" tw="py-4 border-b border-gray-200">
-        {({ open }) => (
-          <>
-            <Disclosure.Button
-              css={[
-                tw`flex w-full font-semibold cursor-help`,
-                open ? tw`text-black` : tw`text-gray-700 hover:text-black`,
-              ]}
-            >
-              <h3 tw="grow text-left mr-2">{item.question}</h3>
-              {open ? (
-                <HiMinus tw="h-5 w-5 shrink-0 grow-0" />
-              ) : (
-                <HiPlus tw="h-5 w-5 shrink-0 grow-0" />
-              )}
-            </Disclosure.Button>
-            <Disclosure.Panel tw="mt-2 text-sm">{item.answer}</Disclosure.Panel>
-          </>
-        )}
+        {({ open }) => {
+          const Icon = open ? MinusIcon : PlusIcon
+          return (
+            <>
+              <Disclosure.Button
+                css={[
+                  tw`flex w-full font-semibold cursor-help`,
+                  open ? tw`text-black` : tw`text-gray-700 hover:text-black`,
+                ]}
+              >
+                <h3 tw="grow text-left mr-2">{item.question}</h3>
+                <Icon tw="h-5 w-5 shrink-0 grow-0" />
+              </Disclosure.Button>
+              <Disclosure.Panel tw="mt-2 text-sm">{item.answer}</Disclosure.Panel>
+            </>
+          )
+        }}
       </Disclosure>
     </>
   )

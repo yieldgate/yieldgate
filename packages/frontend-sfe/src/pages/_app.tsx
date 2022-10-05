@@ -5,6 +5,7 @@ import { chains, wagmiClient } from '@lib/wagmiClient'
 import { lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
 import GlobalStyles from '@styles/GlobalStyles'
+import { domAnimation, LazyMotion } from 'framer-motion'
 import { DefaultSeo } from 'next-seo'
 import type { AppProps } from 'next/app'
 import Router from 'next/router'
@@ -51,9 +52,11 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
               fontStack: 'system',
             })}
           >
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <LazyMotion features={domAnimation}>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </LazyMotion>
           </RainbowKitProvider>
         </WagmiConfig>
       </CacheProvider>
