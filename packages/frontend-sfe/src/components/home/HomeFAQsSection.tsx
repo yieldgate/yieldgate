@@ -1,4 +1,5 @@
 import { Wrapper } from '@components/layout/Wrapper'
+import { Subheading } from '@components/shared/Subheading'
 import { Disclosure } from '@headlessui/react'
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/solid'
 import { AnimatePresence, AnimationProps, m } from 'framer-motion'
@@ -36,7 +37,7 @@ export const HomeFAQsSection: FC<HomeFAQsSectionProps> = () => {
     <>
       <Wrapper tw="max-w-[50rem]">
         <div tw="flex flex-col mb-2">
-          <h2 tw="font-display text-3xl font-bold tracking-tight mb-4">Questions? We answer.</h2>
+          <Subheading>Questions? We answer.</Subheading>
           {items.map((item, index) => (
             <HomeFAQsSectionEl key={`faq-${index}`} item={item} index={index} />
           ))}

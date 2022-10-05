@@ -1,5 +1,5 @@
 import { Wrapper } from '@components/layout/Wrapper'
-import { Subheading } from '@components/shared/Subheading'
+import { Subheading, SubheadingSmall } from '@components/shared/Subheading'
 import { Tab } from '@headlessui/react'
 import {
   ArrowPathRoundedSquareIcon,
@@ -55,13 +55,11 @@ export const HomeHowItWorksSection: FC<HomeHowItWorksSectionProps> = () => {
         <Wrapper>
           {/* Title & Tagline */}
           <div tw="max-w-[25rem]">
-            <Subheading tw="text-gray-200">How it works</Subheading>
-            <div tw="font-display text-3xl font-bold tracking-tight">
-              How it works headline otam rem aperiam.
-            </div>
-            <p tw="text-sm mt-2 opacity-75">
-              Aenean eu leo quam. Pellentesque ornare sem lacinia quam.
-            </p>
+            <SubheadingSmall noHeadingMarkup={true} tw="text-gray-200">
+              How it works
+            </SubheadingSmall>
+            <Subheading>How it works headline otam rem aperiam.</Subheading>
+            <p tw="text-sm opacity-60">Aenean eu leo quam. Pellentesque ornare sem lacinia quam.</p>
           </div>
 
           {/* Tabs  */}

@@ -1,4 +1,5 @@
 import { Wrapper } from '@components/layout/Wrapper'
+import { Subheading } from '@components/shared/Subheading'
 import { FC } from 'react'
 import 'twin.macro'
 
@@ -7,10 +8,8 @@ export const HomePrimaryTextSection: FC<HomePrimaryTextSectionProps> = () => {
   return (
     <>
       <Wrapper>
-        <div tw="grid space-y-6 sm:(grid-cols-2 gap-6 space-y-0)">
-          <h2 tw="max-w-[25rem] font-display text-3xl font-bold tracking-tight">
-            A cool headline about the company impact
-          </h2>
+        <div tw="grid space-y-2 sm:(grid-cols-2 gap-6 space-y-0)">
+          <Subheading>A cool headline about the company impact</Subheading>
           <div tw="prose first:prose-p:(mt-0) last:prose-p:(mb-0)">
             <p>
               Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vestibulum id
