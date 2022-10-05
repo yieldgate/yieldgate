@@ -21,7 +21,7 @@ export const HomeHero: FC<HomeHeroProps> = () => {
 
             {/* Burned KPI */}
             <div tw="flex flex-col">
-              <div tw="text-5xl font-display font-bold whitespace-nowrap">
+              <div tw="min-h-[3rem] text-[3rem] leading-none font-display font-bold whitespace-nowrap">
                 <CountUp end={238477} duration={2.5} separator="," decimals={0} />
               </div>
               <div tw="mt-2">carbon credits burned</div>
@@ -36,6 +36,7 @@ export const HomeHero: FC<HomeHeroProps> = () => {
         <div tw="max-h-[90%] w-full flex flex-col absolute bottom-0 right-0 z-0 select-none overflow-hidden">
           <Image
             src={illustrationImg}
+            priority={true}
             height={1023}
             width={1888}
             objectFit="contain"
