@@ -142,6 +142,7 @@ importers:
       react-hook-form: ^7.36.1
       react-hot-toast: ^2.4.0
       react-number-format: ^5.0.1
+      react-twitter-widgets: ^1.11.0
       spinners-react: ^1.0.7
       tailwindcss: ^3.1.8
       twin.macro: 3.0.0-rc.5
@@ -174,6 +175,7 @@ importers:
       react-hook-form: 7.36.1_react@18.2.0
       react-hot-toast: 2.4.0_owo25xnefcwdq3zjgtohz6dbju
       react-number-format: 5.0.1_biqbaboplfbrettd7655fr4n2y
+      react-twitter-widgets: 1.11.0_react@18.2.0
       spinners-react: 1.0.7_5uumaiclxbdbzaqafclbf6maf4
       use-async-effect: 2.2.7_react@18.2.0
       wagmi: 0.6.7_ddylbyfc5xeubgtcafrit5fuai
@@ -12222,6 +12224,10 @@ packages:
       json5: 2.2.1
     dev: true
 
+  /loadjs/4.2.0:
+    resolution: {integrity: sha512-AgQGZisAlTPbTEzrHPb6q+NYBMD+DP9uvGSIjSUM5uG+0jG15cb8axWpxuOIqrmQjn6scaaH8JwloiP27b2KXA==}
+    dev: false
+
   /locate-path/2.0.0:
     resolution: {integrity: sha512-NCI2kiDkyR7VeEKm27Kda/iQHyKJe1Bu0FlTbYp3CqJu+9IFe9bLyAjMxf5ZDDbEg+iMPzB5zYyUTSm8wVTKmA==}
     engines: {node: '>=4'}
@@ -14979,6 +14985,15 @@ packages:
       invariant: 2.2.4
       react: 18.2.0
       tslib: 2.4.0
+    dev: false
+
+  /react-twitter-widgets/1.11.0_react@18.2.0:
+    resolution: {integrity: sha512-PMCLJQc30iqy01y1b2+HnMfCX+ZkOxWaPKJb4BhHgOgjSjoZb68K5T0nq3q+3YbX9K7OH0bhptgDihtBG/BqRQ==}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18 || ^18.0.0
+    dependencies:
+      loadjs: 4.2.0
+      react: 18.2.0
     dev: false
 
   /react/18.2.0:

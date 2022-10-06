@@ -38,6 +38,9 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&display=swap"
             rel="stylesheet"
           />
+
+          {/* Preconnect to Twitter Widget.js */}
+          <link rel="preconnect" href="https://platform.twitter.com/widgets.js" />
         </Head>
 
         <body>
