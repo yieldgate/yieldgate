@@ -1,5 +1,6 @@
 import { cache } from '@emotion/css'
 import { CacheProvider } from '@emotion/react'
+import { env } from '@lib/environment'
 import { chains, wagmiClient } from '@lib/wagmiClient'
 import { lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
@@ -22,7 +23,11 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
     <>
       <DefaultSeo
-        defaultTitle="Stake for Earth"
+        // TODO
+        dangerouslySetAllPagesToNoFollow={!env.isProduction}
+        dangerouslySetAllPagesToNoIndex={!env.isProduction}
+        defaultTitle="Stake for Earth – Carbon Offsetting with Yield"
+        titleTemplate="%s | Stake for Earth – Carbon Offsetting with Yield"
         description="Do something good for our climate at zero cost. – All with yield."
         openGraph={{
           type: 'website',

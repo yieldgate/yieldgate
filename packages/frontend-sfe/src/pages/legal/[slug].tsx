@@ -5,11 +5,13 @@ import {
   getArticleStaticPagePaths,
   getArticleStaticPageProps,
 } from '@lib/getArticlePageProps'
+import { NextSeo } from 'next-seo'
 import 'twin.macro'
 
 export default function ArticlePage(props: ArticleStaticPageProps) {
   return (
     <>
+      <NextSeo title={props.metadata.title} />
       <HomeLayout>
         <ArticlePageContent {...props} />
       </HomeLayout>
