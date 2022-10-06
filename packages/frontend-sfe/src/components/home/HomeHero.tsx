@@ -1,10 +1,9 @@
 import { Wrapper } from '@components/layout/Wrapper'
-import Image from 'next/image'
-import illustrationImg from 'public/images/hero-illustration.png'
 import { FC } from 'react'
 import CountUp from 'react-countup'
 import 'twin.macro'
 import { HomeCTAs } from './HomeCTAs'
+import { HomeHeroIllustration } from './HomeHeroIllustration'
 
 export interface HomeHeroProps {}
 export const HomeHero: FC<HomeHeroProps> = () => {
@@ -33,17 +32,7 @@ export const HomeHero: FC<HomeHeroProps> = () => {
         </Wrapper>
 
         {/* Illustration BG */}
-        <div tw="max-h-[90%] w-full flex flex-col absolute bottom-0 right-0 z-0 select-none overflow-hidden">
-          <Image
-            src={illustrationImg}
-            priority={true}
-            height={1023}
-            width={1888}
-            objectFit="contain"
-            objectPosition="right bottom"
-            alt="Decorative Earth Illustration by Liam Cobb"
-          />
-        </div>
+        <HomeHeroIllustration />
       </div>
     </>
   )
