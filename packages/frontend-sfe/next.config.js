@@ -4,9 +4,7 @@
 /**
  * @type {import('next').NextConfig}
  **/
-const nextConfig = {
-  dangerouslyAllowSVG: true,
-}
+const nextConfig = {}
 
 // eslint-disable-next-line
 const withTM = require('next-transpile-modules')(['@yieldgate/contracts'])

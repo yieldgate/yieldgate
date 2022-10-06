@@ -25,7 +25,7 @@ export const HomeFooter: FC<HomeFooterProps> = () => {
               <Link href="/legal/privacy" passHref>
                 <a tw="mx-2 cursor-pointer hover:underline">Privacy Policy</a>
               </Link>
-              <Link href="/legal/privacy" passHref>
+              <Link href="/legal/terms" passHref>
                 <a tw="mx-2 cursor-pointer hover:underline">Terms and Conditions</a>
               </Link>
             </div>

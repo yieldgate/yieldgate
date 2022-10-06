@@ -1,4 +1,3 @@
-import { Layout } from '@components/layout/Layout'
 import { cache } from '@emotion/css'
 import { CacheProvider } from '@emotion/react'
 import { chains, wagmiClient } from '@lib/wagmiClient'
@@ -55,9 +54,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
             })}
           >
             <LazyMotion features={domAnimation}>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
+              <Component {...pageProps} />
             </LazyMotion>
           </RainbowKitProvider>
         </WagmiConfig>

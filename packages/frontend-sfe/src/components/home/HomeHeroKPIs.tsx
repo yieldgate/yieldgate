@@ -16,7 +16,7 @@ export const HomeHeroKPIs: FC<HomeHeroKPIsProps> = () => {
 
   return (
     <>
-      <h2 tw="sr-only">Stake for Earth KPIs</h2>
+      <h2 tw="sr-only">Stake for Earth in Numbers (KPIs)</h2>
       <div tw="bg-gray-100">
         <Wrapper noVerticalPadding>
           <div tw="grid divide-y divide-gray-300 -mx-4 sm:(-mx-8) lg:(grid-cols-3 divide-y-0 divide-x mx-0)">

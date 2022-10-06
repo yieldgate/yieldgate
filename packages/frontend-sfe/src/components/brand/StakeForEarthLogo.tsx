@@ -9,7 +9,6 @@ export interface StakeForEarthLogoProps {
   href?: string
   hideTextOn?: 'sm' | 'xs'
   // hideText?: boolean
-  // noHeadingMarkup?: boolean
 }
 export const StakeForEarthLogo: FC<StakeForEarthLogoProps> = ({ href, hideTextOn }) => {
   const StakeForEarthLogoInner: FC = () => (
@@ -17,7 +16,7 @@ export const StakeForEarthLogo: FC<StakeForEarthLogoProps> = ({ href, hideTextOn
       <div tw="flex justify-center items-center shrink-0">
         <Image src={logoIcon} priority={true} width={32} height={32} alt="Stake For Earth Logo" />
       </div>
-      <h1
+      <div
         css={[
           tw`font-body text-2xl font-medium tracking-tighter whitespace-nowrap!`,
           hideTextOn === 'sm' && tw`sr-only sm:not-sr-only`,
@@ -25,7 +24,7 @@ export const StakeForEarthLogo: FC<StakeForEarthLogoProps> = ({ href, hideTextOn
         ]}
       >
         Stake for Earth
-      </h1>
+      </div>
     </div>
   )
 

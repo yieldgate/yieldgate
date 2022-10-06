@@ -14,6 +14,7 @@ export default function IndexPage() {
   return (
     <>
       <HomeLayout>
+        <h1 tw="sr-only">Stake for Earth</h1>
         <HomeHero />
         <HomeHeroKPIs />
         <HomeBackedBySection />
