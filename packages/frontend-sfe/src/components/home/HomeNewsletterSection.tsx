@@ -1,6 +1,7 @@
 import { Wrapper } from '@components/layout/Wrapper'
 import { BaseButton } from '@components/shared/BaseButton'
 import { Subheading, SubheadingSmall } from '@components/shared/Subheading'
+import axios from 'axios'
 import Image from 'next/image'
 import circleElementSvg from 'public/images/decorative-circle-element.svg'
 import { FC, SyntheticEvent, useState } from 'react'
@@ -55,16 +56,12 @@ export const HomeNewsletterSubscribeForm: FC<HomeNewsletterSubscribeFormProps> =
     if (!email) return
     setIsLoading(true)
     try {
-      await new Promise((r) => setTimeout(r, 1500))
-      toast.success(`Success! Please confirm your email…`)
-      // TODO
-      // const response = await axios.post('/api/newsletter/subscribe', { email })
-      // const isDoubleOptin = !!response?.data?.doDoubleOptIn
-      // toast.success(isDoubleOptin
-      //   ? 'Success! Please confirm your email…'
-      //   : 'Successfully added to the waitlist!')
-      // form.setValue('email', '')
-      // if (!isDoubleOptin) setDialogProps({ isOpen: true })
+      const response = await axios.post('/api/newsletter/subscribe', { email })
+      const isDoubleOptin = !!response?.data?.doDoubleOptIn
+      toast.success(
+        isDoubleOptin ? 'Success! Please confirm your email…' : 'Successfully subscribed!'
+      )
+      form.setValue('email', '')
     } catch (_) {
       toast.error('Something went wrong…')
     }
