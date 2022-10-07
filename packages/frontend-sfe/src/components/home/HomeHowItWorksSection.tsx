@@ -51,17 +51,16 @@ export interface HomeHowItWorksSectionProps {}
 export const HomeHowItWorksSection: FC<HomeHowItWorksSectionProps> = () => {
   return (
     <>
-      <div tw="bg-gray-700 text-white py-2">
+      <div tw="bg-gray-700 text-white py-3 lg:py-6">
         <Wrapper>
           {/* Title & Tagline */}
           <div tw="max-w-[25rem]">
             <SubheadingSmall noHeadingMarkup={true} tw="text-gray-200">
               How it works
             </SubheadingSmall>
-            <Subheading>How it works headline otam rem aperiam.</Subheading>
-            <p tw="text-sm opacity-75 -mt-2">
-              Aenean eu leo quam. Pellentesque ornare sem lacinia quam.
-            </p>
+            <Subheading tagline="Aenean eu leo quam. Pellentesque ornare sem lacinia quam.">
+              How it works headline otam rem aperiam.
+            </Subheading>
           </div>
 
           {/* Tabs  */}

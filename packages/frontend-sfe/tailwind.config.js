@@ -16,6 +16,8 @@ module.exports = {
       },
       colors: {
         gray: colors.neutral,
+        primary: colors.sky,
+        secondary: colors.amber,
       },
     },
   },

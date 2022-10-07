@@ -13,17 +13,14 @@ export interface HomeNewsletterSectionProps {}
 export const HomeNewsletterSection: FC<HomeNewsletterSectionProps> = () => {
   return (
     <>
-      <div tw="bg-sky-100">
+      <div tw="bg-primary-100">
         <Wrapper tw="overflow-hidden">
           <div tw="relative  z-10">
             {/* Heading & Text */}
             <SubheadingSmall>Newsletter</SubheadingSmall>
-            <Subheading noHeadingMarkup={true}>Stay in the loop</Subheading>
-            <p tw="text-sm opacity-75 -mt-2">
-              Maecenas faucibus mollis interdum.
-              <br />
-              Nullam quis risus eget urna mollis ornare vel eu leo.
-            </p>
+            <Subheading noHeadingMarkup={true} tagline="Maecenas faucibus mollis interdum.">
+              Stay in the loop
+            </Subheading>
 
             {/* Subscribe Form */}
             <HomeNewsletterSubscribeForm />

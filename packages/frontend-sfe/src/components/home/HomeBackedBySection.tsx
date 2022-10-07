@@ -2,10 +2,10 @@ import { Wrapper } from '@components/layout/Wrapper'
 import { SubheadingSmall } from '@components/shared/Subheading'
 import Image from 'next/image'
 import aaveSvg from 'public/images/logos/aave--black.svg'
-import coinbaseSvg from 'public/images/logos/coinbase--black.svg'
 import thegraphSvg from 'public/images/logos/thegraph--black.svg'
 import toucanSvg from 'public/images/logos/toucan--black.svg'
-import walletconnectSvg from 'public/images/logos/walletconnect--black.svg'
+// import coinbaseSvg from 'public/images/logos/coinbase--black.svg'
+// import walletconnectSvg from 'public/images/logos/walletconnect--black.svg'
 // import polygonSvg from 'public/images/logos/polygon--black.svg'
 import { FC } from 'react'
 import 'twin.macro'
@@ -25,15 +25,15 @@ export const HomeBackedBySection: FC<HomeBackedBySectionProps> = () => {
       name: 'The Graph',
       img: thegraphSvg,
     },
-    {
-      name: 'WalletConnect',
-      img: walletconnectSvg,
-    },
-    {
-      name: 'Coinbase',
-      img: coinbaseSvg,
-      breakBefore: true,
-    },
+    // {
+    //   name: 'WalletConnect',
+    //   img: walletconnectSvg,
+    // },
+    // {
+    //   name: 'Coinbase',
+    //   img: coinbaseSvg,
+    //   breakBefore: true,
+    // },
     // {
     //   name: 'Polygon',
     //   img: polygonSvg,
@@ -41,9 +41,9 @@ export const HomeBackedBySection: FC<HomeBackedBySectionProps> = () => {
   ]
   return (
     <>
-      <Wrapper tw="max-w-[40rem] overflow-hidden">
+      <Wrapper tw=" overflow-hidden">
         <SubheadingSmall tw="text-center">Backed by</SubheadingSmall>
-        <div tw="flex flex-wrap justify-center -mx-8 -my-2">
+        <div tw="flex flex-wrap justify-center -mx-8 -my-2 mt-0">
           {logos.map((logo) => (
             <div
               key={logo.name}

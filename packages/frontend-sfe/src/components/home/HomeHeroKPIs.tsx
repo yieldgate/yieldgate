@@ -17,9 +17,9 @@ export const HomeHeroKPIs: FC<HomeHeroKPIsProps> = () => {
   return (
     <>
       <h2 tw="sr-only">Stake for Earth in Numbers (KPIs)</h2>
-      <div tw="bg-gray-100">
+      <div tw="bg-primary-100">
         <Wrapper noVerticalPadding>
-          <div tw="grid divide-y divide-gray-300 -mx-4 sm:(-mx-8) lg:(grid-cols-3 divide-y-0 divide-x mx-0)">
+          <div tw="grid divide-y divide-black/10 -mx-4 sm:(-mx-8) lg:(grid-cols-3 divide-y-0 divide-x mx-0)">
             <HomeHeroKPIItem
               label="Total amount"
               value={11140456}
@@ -61,7 +61,7 @@ export const HomeHeroKPIItem: FC<HomeHeroKPIItemProps> = ({
   return (
     <>
       <div
-        tw="flex flex-col min-h-[6.25rem] space-y-1 xs:(flex-row space-x-2 space-y-0) items-center justify-between px-14 py-6"
+        tw="flex flex-col min-h-[6.25rem] space-y-2 xs:(flex-row space-x-4 space-y-0) items-center justify-between px-14 py-6"
         {...props}
       >
         <div css={[tw`text-sm`, isLoading ? tw`text-gray-800 animate-pulse` : tw`text-black`]}>
@@ -70,10 +70,11 @@ export const HomeHeroKPIItem: FC<HomeHeroKPIItemProps> = ({
         <div tw="flex flex-col whitespace-nowrap text-center xs:(text-right)">
           {isLoading ? (
             <SpinnerDiamond
-              size={34}
-              thickness={120}
-              color={theme('colors.gray.500')}
-              secondaryColor={theme('colors.gray.300')}
+              size={32}
+              thickness={125}
+              color={theme('colors.primary.500')}
+              secondaryColor={theme('colors.primary.300')}
+              tw="mt-1 xs:mt-0"
             />
           ) : (
             <>
@@ -81,10 +82,10 @@ export const HomeHeroKPIItem: FC<HomeHeroKPIItemProps> = ({
                 value={value}
                 displayType={'text'}
                 thousandSeparator={true}
-                tw="text-3xl font-display font-bold"
+                tw="text-[1.95rem] leading-none font-display font-bold"
                 {...numericFormatProps}
               />
-              {description && <div tw="text-xs opacity-75">{description}</div>}
+              {description && <div tw="text-xs opacity-75 mt-1">{description}</div>}
             </>
           )}
         </div>

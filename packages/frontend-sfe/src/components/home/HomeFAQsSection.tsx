@@ -82,7 +82,7 @@ export const HomeFAQsSectionEl: FC<HomeFAQsSectionElProps> = ({ item, index }) =
             <>
               <Disclosure.Button
                 css={[
-                  tw`flex w-full font-semibold cursor-help`,
+                  tw`flex items-center w-full font-semibold cursor-help`,
                   open ? tw`text-black` : tw`text-gray-700 hover:text-black`,
                 ]}
               >
@@ -91,7 +91,7 @@ export const HomeFAQsSectionEl: FC<HomeFAQsSectionElProps> = ({ item, index }) =
               </Disclosure.Button>
               <AnimatePresence exitBeforeEnter>
                 <Disclosure.Panel key={`disclosure-panel-${index}`} as={m.div} {...animationProps}>
-                  <div tw="text-sm mt-1">{item.answer}</div>
+                  <div tw="text-sm my-1">{item.answer}</div>
                 </Disclosure.Panel>
               </AnimatePresence>
             </>
