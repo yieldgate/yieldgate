@@ -8,15 +8,15 @@ import 'twin.macro'
 export const ArticlePageContent: FC<ArticleStaticPageProps> = ({ slug, content, metadata }) => {
   return (
     <>
-      <Wrapper>
+      <Wrapper tw="py-10">
         <article itemScope itemType="http://schema.org/Article">
           {/* Heading */}
-          <div tw="flex flex-col border-b border-gray-200 mb-10">
-            <h1 tw="font-display text-3xl font-bold tracking-tight mb-4" itemProp="headline">
+          <div tw="flex flex-col border-b border-gray-200 mb-8">
+            <h1 tw="font-display text-3xl font-bold tracking-tight mb-5" itemProp="headline">
               {metadata.title}
             </h1>
             {metadata.subtitle && (
-              <p tw="text-sm opacity-70 -mt-2 mb-4" itemProp="description">
+              <p tw="text-sm opacity-70 -mt-2.5 mb-5" itemProp="description">
                 {metadata.subtitle}
               </p>
             )}
@@ -26,7 +26,7 @@ export const ArticlePageContent: FC<ArticleStaticPageProps> = ({ slug, content, 
           <section tw="prose" itemProp="articleBody">
             <div dangerouslySetInnerHTML={{ __html: md().render(content) }} />
             {metadata.updatedAt && (
-              <div tw="text-sm text-gray-400">
+              <div tw="text-sm text-gray-400 my-2">
                 <span tw="whitespace-pre">Last updated at </span>
                 <time
                   dateTime={dayjs(metadata.updatedAt).format('YYYY-MM-DD')}

@@ -19,7 +19,7 @@ export const HomeNewsletterSection: FC<HomeNewsletterSectionProps> = () => {
             {/* Heading & Text */}
             <SubheadingSmall>Newsletter</SubheadingSmall>
             <Subheading noHeadingMarkup={true}>Stay in the loop</Subheading>
-            <p tw="text-sm opacity-70 -mt-2">
+            <p tw="text-sm opacity-75 -mt-2">
               Maecenas faucibus mollis interdum.
               <br />
               Nullam quis risus eget urna mollis ornare vel eu leo.
@@ -29,7 +29,7 @@ export const HomeNewsletterSection: FC<HomeNewsletterSectionProps> = () => {
             <HomeNewsletterSubscribeForm />
           </div>
 
-          <div tw="absolute right-0 top-1/2 -translate-y-1/2 select-none opacity-50 z-0">
+          <div tw="absolute max-w-[50%] right-0 top-1/2 -translate-y-1/2 select-none opacity-50 z-0">
             <Image
               src={circleElementSvg}
               width={450}

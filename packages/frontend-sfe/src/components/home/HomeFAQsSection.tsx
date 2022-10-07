@@ -75,7 +75,7 @@ export const HomeFAQsSectionEl: FC<HomeFAQsSectionElProps> = ({ item, index }) =
 
   return (
     <>
-      <Disclosure defaultOpen={index === 0} as="div" tw="py-4 border-b border-gray-200">
+      <Disclosure defaultOpen={index === 0} as="div" tw="pt-2 pb-3 border-b border-gray-200">
         {({ open }) => {
           const Icon = open ? MinusIcon : PlusIcon
           return (
@@ -86,12 +86,12 @@ export const HomeFAQsSectionEl: FC<HomeFAQsSectionElProps> = ({ item, index }) =
                   open ? tw`text-black` : tw`text-gray-700 hover:text-black`,
                 ]}
               >
-                <h3 tw="grow text-left mr-2">{item.question}</h3>
+                <h3 tw="grow text-left pt-2 pb-1 mr-2">{item.question}</h3>
                 <Icon tw="h-5 w-5 shrink-0 grow-0" />
               </Disclosure.Button>
               <AnimatePresence exitBeforeEnter>
                 <Disclosure.Panel key={`disclosure-panel-${index}`} as={m.div} {...animationProps}>
-                  <div tw="mt-2 text-sm">{item.answer}</div>
+                  <div tw="text-sm mt-1">{item.answer}</div>
                 </Disclosure.Panel>
               </AnimatePresence>
             </>

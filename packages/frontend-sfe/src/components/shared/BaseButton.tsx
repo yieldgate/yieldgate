@@ -8,7 +8,7 @@ import tw, { styled, theme } from 'twin.macro'
 const BaseButtonWrapper = styled.button(({ variant, disabled }: Partial<BaseButtonProps>) => [
   tw`inline-flex relative items-center justify-center leading-none rounded font-body py-2.5 px-5`,
   variant === 'outline'
-    ? tw`bg-transparent border border-black text-black`
+    ? tw`bg-transparent backdrop-blur-md border border-black text-black`
     : tw`bg-black border border-transparent text-white`,
   disabled && tw`opacity-80 cursor-not-allowed`,
   disabled && (variant === 'outline' ? tw`text-black/80` : tw`text-white/80`),

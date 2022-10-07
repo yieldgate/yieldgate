@@ -35,7 +35,7 @@ const items: HomeHowItWorksItem[] = [
   },
   {
     title: 'Carbon Credits Burning',
-    shortTitle: 'Carbon Credits',
+    shortTitle: 'Credits',
     icon: GlobeEuropeAfricaIcon,
     content: `Aenean lacinia bibendum nulla sed consectetur. Donec ullamcorper nulla non metus auctor fringilla. Maecenas sed diam eget risus varius blandit sit amet non magna. Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Cras mattis consectetur purus sit amet fermentum. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.`,
   },
@@ -51,7 +51,7 @@ export interface HomeHowItWorksSectionProps {}
 export const HomeHowItWorksSection: FC<HomeHowItWorksSectionProps> = () => {
   return (
     <>
-      <div tw="bg-gray-700 text-white">
+      <div tw="bg-gray-700 text-white py-2">
         <Wrapper>
           {/* Title & Tagline */}
           <div tw="max-w-[25rem]">
@@ -59,7 +59,7 @@ export const HomeHowItWorksSection: FC<HomeHowItWorksSectionProps> = () => {
               How it works
             </SubheadingSmall>
             <Subheading>How it works headline otam rem aperiam.</Subheading>
-            <p tw="text-sm opacity-70 -mt-2">
+            <p tw="text-sm opacity-75 -mt-2">
               Aenean eu leo quam. Pellentesque ornare sem lacinia quam.
             </p>
           </div>
@@ -137,7 +137,7 @@ export const HomeHowItWorksTabs: FC<HomeHowItWorksTabsProps> = () => {
           <AnimatePresence exitBeforeEnter>
             <Tab.Panel key={`tab-panel-${selectedIndex}`} as={m.div} {...animationProps}>
               <div tw="flex justify-between items-start py-2">
-                <div tw="max-w-prose px-6  lg:px-12">
+                <div tw="max-w-prose pl-6 md:px-6 lg:px-12">
                   <h3 tw="font-display text-2xl font-bold tracking-tight mb-4">
                     {selectedItem.title}
                   </h3>

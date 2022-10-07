@@ -11,10 +11,10 @@ export const HomeFooter: FC<HomeFooterProps> = () => {
   return (
     <>
       <div tw="bg-gray-100">
-        <Wrapper tw="py-5">
+        <Wrapper tw="py-6">
           {/* Logo & Nav */}
           <div tw="flex flex-col space-y-6 md:(flex-row space-y-0) justify-between items-center">
-            <StakeForEarthLogo />
+            <StakeForEarthLogo href="/" />
             <HomeCTAs />
           </div>
 
