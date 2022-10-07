@@ -1,4 +1,5 @@
 import { extractCritical } from '@emotion/server'
+import { env } from '@lib/environment'
 import Document, { Head, Html, Main, NextScript } from 'next/document'
 import { Fragment, ReactFragment } from 'react'
 
@@ -41,6 +42,15 @@ export default class MyDocument extends Document {
 
           {/* Preconnect to Twitter Widget.js */}
           <link rel="preconnect" href="https://platform.twitter.com/widgets.js" />
+
+          {/* Plausible Analytics */}
+          {env.isProduction && (
+            <script
+              defer
+              data-domain="stakefor.earth"
+              src="https://plausible.io/js/plausible.js"
+            ></script>
+          )}
         </Head>
 
         <body>
