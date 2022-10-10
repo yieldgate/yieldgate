@@ -135,6 +135,7 @@ importers:
       markdown-it: ^13.0.1
       next: ^12.3.1
       next-seo: ^5.5.0
+      next-sitemap: ^3.1.24
       next-transpile-modules: ^9.0.0
       nprogress: ^0.2.0
       postcss: ^8.4.17
@@ -172,6 +173,7 @@ importers:
       markdown-it: 13.0.1
       next: 12.3.1_episikqy5e2uvx3jqe6tontk4m
       next-seo: 5.5.0_azq6kxkn3od7qdylwkyksrwopy
+      next-sitemap: 3.1.24_mna6xsgplvxkrmeg4ftolwenke
       next-transpile-modules: 9.0.0
       nprogress: 0.2.0
       react: 18.2.0
@@ -2688,6 +2690,10 @@ packages:
       - react-native
       - supports-color
       - utf-8-validate
+    dev: false
+
+  /@corex/deepmerge/4.0.29:
+    resolution: {integrity: sha512-q/yVUnqckA8Do+EvAfpy7RLdumnBy9ZsducMUtZTvpdbJC7azEf1hGtnYYxm0QfphYxjwggv6XtH64prvS1W+A==}
     dev: false
 
   /@cspotcode/source-map-support/0.8.1:
@@ -6371,7 +6377,7 @@ packages:
   /axios/1.0.0:
     resolution: {integrity: sha512-SsHsGFN1qNPFT5QhSoSD37SHDfGyLSW5AESmyLk2JeCMHv5g0I9g0Hz/zQHx2KNe0jGXh2q2hAm7OdkXm360CA==}
     dependencies:
-      follow-redirects: 1.15.2_debug@4.3.4
+      follow-redirects: 1.15.2
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -9572,6 +9578,7 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.4
+    dev: true
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -13314,6 +13321,20 @@ packages:
       next: 12.3.1_episikqy5e2uvx3jqe6tontk4m
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+    dev: false
+
+  /next-sitemap/3.1.24_mna6xsgplvxkrmeg4ftolwenke:
+    resolution: {integrity: sha512-dEFOI6cnNffDcmxis/1IVNK2JI1wtxxGoj2ipP7L8xDVbxjyuuH2V8MEajHPPrIhybfGk6gyZ5HDpXgVcTv9QA==}
+    engines: {node: '>=14.18'}
+    hasBin: true
+    peerDependencies:
+      '@next/env': '*'
+      next: '*'
+    dependencies:
+      '@corex/deepmerge': 4.0.29
+      '@next/env': 12.3.1
+      minimist: 1.2.6
+      next: 12.3.1_episikqy5e2uvx3jqe6tontk4m
     dev: false
 
   /next-tick/1.1.0:

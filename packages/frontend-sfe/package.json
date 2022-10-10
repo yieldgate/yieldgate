@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "NODE_ENV=development next dev -p 3000",
-    "build": "NODE_ENV=production next build",
+    "build": "NODE_ENV=production next build && pnpm sitemap",
+    "sitemap": "next-sitemap",
     "start": "NODE_ENV=production next start",
     "type-check": "tsc --pretty --noEmit",
     "lint": "prettier . --check && pnpm eslint",
@@ -37,6 +38,7 @@
     "markdown-it": "^13.0.1",
     "next": "^12.3.1",
     "next-seo": "^5.5.0",
+    "next-sitemap": "^3.1.24",
     "next-transpile-modules": "^9.0.0",
     "nprogress": "^0.2.0",
     "react": "^18.2.0",
