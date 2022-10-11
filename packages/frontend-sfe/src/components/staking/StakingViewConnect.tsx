@@ -1,3 +1,4 @@
+import { CenterBody } from '@components/layout/CenterBody'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { FC, useEffect } from 'react'
 import 'twin.macro'
@@ -6,25 +7,33 @@ import { StakingStepperItemComponentProps } from './StakingHorizontalStepper'
 
 export interface StakingViewConnectProps extends StakingStepperItemComponentProps {}
 export const StakingViewConnect: FC<StakingViewConnectProps> = ({
-  onGoNext: onNext,
-  onGoPrev: onPrev,
+  onGoNext,
+  onGoPrev,
   firstRender,
 }) => {
+  // Navigate to next tab when wallet connected successfully
   const { isConnected } = useAccount({
     onConnect: ({ address }) => {
-      if (address) onNext()
+      if (address) onGoNext()
     },
   })
 
+  // Navigate to next tab when tab is opened for the first time
+  // and the wallet was already connected
   useEffect(() => {
-    if (firstRender && isConnected) onNext()
+    if (firstRender && isConnected) onGoNext()
   }, [])
 
   return (
     <>
-      <div tw="flex flex-col items-center">
+      <CenterBody>
         <ConnectButton showBalance={false} />
-      </div>
+        {isConnected && (
+          <button tw="mt-6 text-sm font-semibold text-primary-500" onClick={() => onGoNext()}>
+            Continue to Prepare Funds
+          </button>
+        )}
+      </CenterBody>
     </>
   )
 }
