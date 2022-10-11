@@ -7,7 +7,7 @@ import tw from 'twin.macro'
 
 export interface StakeForEarthLogoProps {
   href?: string
-  hideTextOn?: 'sm' | 'xs'
+  hideTextOn?: 'md' | 'sm' | 'xs'
   // hideText?: boolean
 }
 export const StakeForEarthLogo: FC<StakeForEarthLogoProps> = ({ href, hideTextOn }) => {
@@ -19,6 +19,7 @@ export const StakeForEarthLogo: FC<StakeForEarthLogoProps> = ({ href, hideTextOn
       <div
         css={[
           tw`font-body text-2xl font-medium tracking-tighter whitespace-nowrap!`,
+          hideTextOn === 'md' && tw`sr-only md:not-sr-only`,
           hideTextOn === 'sm' && tw`sr-only sm:not-sr-only`,
           hideTextOn === 'xs' && tw`sr-only xs:not-sr-only`,
         ]}

@@ -133,7 +133,7 @@ export const HomeHowItWorksTabs: FC<HomeHowItWorksTabsProps> = () => {
 
         {/* Tab Content  */}
         <Tab.Panels tw="flex flex-col justify-start w-full">
-          <AnimatePresence exitBeforeEnter>
+          <AnimatePresence mode="wait">
             <Tab.Panel key={`tab-panel-${selectedIndex}`} as={m.div} {...animationProps}>
               <div tw="flex justify-between items-start py-2">
                 <div tw="max-w-prose pl-6 md:px-6 lg:px-12">

@@ -17,7 +17,7 @@ export const StakingLayout: FC<PropsWithChildren<StakingLayoutProps>> = ({ child
         {/* Aside (Logo) */}
         <PaddingWrapperAside tw="h-full relative bg-gray-100 overflow-hidden">
           <div tw="flex flex-col pr-24">
-            <StakeForEarthLogo hideTextOn="sm" href="/" />
+            <StakeForEarthLogo hideTextOn="md" href="/" />
             <div tw="absolute left-1/2 bottom-[-3rem] -translate-x-1/2 select-none opacity-50 z-0">
               <Image
                 src={circleElementSvg}
@@ -31,7 +31,7 @@ export const StakingLayout: FC<PropsWithChildren<StakingLayoutProps>> = ({ child
         </PaddingWrapperAside>
 
         {/* Main Body (Form) */}
-        <PaddingWrapperMain tw="max-w-[1000px] py-6 px-4 sm:(py-8 px-8) lg:py-12">
+        <PaddingWrapperMain tw="grow max-w-[1000px] py-6 px-4 sm:(py-8 px-8) lg:py-12">
           {children}
         </PaddingWrapperMain>
       </div>
