@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "NODE_ENV=development next dev -p 3000",
     "build": "NODE_ENV=production next build && pnpm sitemap",
+    "analyze": "NODE_ENV=production ANALYZE=true next build",
     "sitemap": "next-sitemap",
     "start": "NODE_ENV=production next start",
     "type-check": "tsc --pretty --noEmit",
@@ -60,6 +61,7 @@
     "@emotion/babel-plugin": "^11.10.2",
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/providers": "^5.7.1",
+    "@next/bundle-analyzer": "^12.3.1",
     "@tailwindcss/typography": "^0.5.7",
     "@testing-library/react": "^13.4.0",
     "@types/jest": "^29.1.1",
