@@ -89,7 +89,7 @@ export const HomeFAQsSectionEl: FC<HomeFAQsSectionElProps> = ({ item, index }) =
                 <h3 tw="grow text-left pt-2 pb-1 mr-2">{item.question}</h3>
                 <Icon tw="h-5 w-5 shrink-0 grow-0" />
               </Disclosure.Button>
-              <AnimatePresence exitBeforeEnter>
+              <AnimatePresence mode="wait">
                 <Disclosure.Panel key={`disclosure-panel-${index}`} as={m.div} {...animationProps}>
                   <div tw="text-sm my-1">{item.answer}</div>
                 </Disclosure.Panel>

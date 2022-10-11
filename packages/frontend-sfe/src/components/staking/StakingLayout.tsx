@@ -25,6 +25,7 @@ export const StakingLayout: FC<PropsWithChildren<StakingLayoutProps>> = ({ child
                 height={500}
                 layout="fixed"
                 alt="Decorative Element"
+                priority={true}
               />
             </div>
           </div>

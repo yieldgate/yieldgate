@@ -12,7 +12,7 @@ export const HomeCTAs: FC<HomeCTAsProps> = ({ primaryFirst }) => {
       <div tw="flex text-sm -mx-1.5">
         <BaseButton
           asLink={true}
-          linkProps={{ href: '/stake' }}
+          linkProps={{ href: '/donate' }}
           variant="outline"
           css={[tw`mx-1.5`, primaryFirst && tw`order-1`]}
         >
