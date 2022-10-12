@@ -1,7 +1,7 @@
 import { Wrapper } from '@components/layout/Wrapper'
+import { RenderedMarkdownContent } from '@components/shared/RenderedMarkdownContent'
 import { ArticleStaticPageProps } from '@lib/getArticlePageProps'
 import dayjs from 'dayjs'
-import md from 'markdown-it'
 import { FC } from 'react'
 import 'twin.macro'
 
@@ -24,7 +24,7 @@ export const ArticlePageContent: FC<ArticleStaticPageProps> = ({ slug, content, 
 
           {/* Content */}
           <section tw="prose" itemProp="articleBody">
-            <div dangerouslySetInnerHTML={{ __html: md().render(content) }} />
+            <RenderedMarkdownContent content={content} />
             {metadata.updatedAt && (
               <div tw="text-sm text-gray-400 my-2">
                 <span tw="whitespace-pre">Last updated at </span>

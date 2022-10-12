@@ -6,21 +6,16 @@ import 'twin.macro'
 
 const faqItems: FAQItem[] = [
   {
-    question: 'Justo Inceptos Ornare?',
-    answer: `Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.`,
+    question: 'What is Stake for Earth?',
+    answer: `Stake for Earth is a platform where anyone can passively participate in climate action. Anyone can stake USDC in the carbon pool and the yield generated will be used to burn carbon credits, effectively **contributing** to removing carbon from our atmosphere. In return, one receives an NFT which acts as a proof/certificate for climate action.`,
   },
   {
-    question: 'Mattis Venenatis Egestas?',
-    answer: `Nullam quis risus eget urna mollis ornare vel eu leo.`,
+    question: 'Who is behind Stake for Earth?',
+    answer: `Stake for Earth was founded by a group of crypto vets (XXX, XXX, {Twitter Handles), that spun out the project after being one of the winners at EthGlobal in Amsterdam in 2022. They won at several other hackathons (i.e. EthBerlin, EthWarsaw, EthCC) and received grant funding from several large players in the crypto space (i.e. Aave, The Graph, Toucan, etc.).`,
   },
   {
-    question: 'Fusce Malesuada Ipsum?',
-    answer:
-      'Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Donec sed odio dui. Vestibulum id ligula porta felis euismod semper. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur blandit tempus porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  },
-  {
-    question: 'Sem Tristique Vehicula Vulputate?',
-    answer: `Nullam quis risus eget urna mollis ornare vel eu leo. Donec id elit non mi porta gravida at eget metus.`,
+    question: 'What assets can I stake in the carbon pool?',
+    answer: `For now, you can stake USDC in the carbon pool. Other crypto assets coming soon…`,
   },
 ]
 

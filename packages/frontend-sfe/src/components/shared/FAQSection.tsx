@@ -4,6 +4,7 @@ import { AnimatePresence, AnimationProps, m } from 'framer-motion'
 import { FC } from 'react'
 import 'twin.macro'
 import tw from 'twin.macro'
+import { RenderedMarkdownContent } from './RenderedMarkdownContent'
 
 export interface FAQItem {
   question: string
@@ -65,7 +66,10 @@ export const FAQSection: FC<FAQSectionProps> = ({ items, openFirst, ...props }) 
                       as={m.div}
                       {...animationProps}
                     >
-                      <div tw="text-sm my-1">{item.answer}</div>
+                      <RenderedMarkdownContent
+                        content={item.answer}
+                        tw="prose prose-sm first:prose-p:(mt-2) last:prose-p:(mb-2)"
+                      />
                     </Disclosure.Panel>
                   </AnimatePresence>
                 </>

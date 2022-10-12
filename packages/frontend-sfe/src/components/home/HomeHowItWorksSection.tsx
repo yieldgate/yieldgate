@@ -1,4 +1,5 @@
 import { Wrapper } from '@components/layout/Wrapper'
+import { RenderedMarkdownContent } from '@components/shared/RenderedMarkdownContent'
 import { Subheading, SubheadingSmall } from '@components/shared/Subheading'
 import { Tab } from '@headlessui/react'
 import {
@@ -8,7 +9,6 @@ import {
   GlobeEuropeAfricaIcon,
 } from '@heroicons/react/24/solid'
 import { AnimatePresence, AnimationProps, m } from 'framer-motion'
-import md from 'markdown-it'
 import { FC, Fragment, useState } from 'react'
 import 'twin.macro'
 import tw from 'twin.macro'
@@ -25,25 +25,25 @@ const items: HomeHowItWorksItem[] = [
     title: 'Staking to generate yield',
     shortTitle: 'Staking',
     icon: CursorArrowRaysIcon,
-    content: `Etiam porta sem malesuada magna mollis euismod. Donec id elit non mi porta gravida at eget metus. Nullam quis risus eget urna mollis ornare vel eu leo. Etiam porta sem malesuada magna mollis euismod. Nullam quis risus eget urna mollis ornare vel eu leo. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.`,
+    content: `Stake for Earth is built on top of Polygon and the Aave protocol, which it uses to securely and efficiently enable anyone staking into the carbon pool to generate yield. The staker can decide to either make a withdrawable pledge or a donation. The latter enables the staker to make a perpetual stake, generating yield and buying up carbon tokens in perpetuity from the donated amount. As of now, we only support the staking of USDC with more crypto assets coming in the near future.`,
   },
   {
-    title: 'USDC Yield is swapped to BCT every x period',
+    title: 'USDC yield is swapped to BCT or NCT ',
     shortTitle: 'Swap',
     icon: ArrowPathRoundedSquareIcon,
-    content: `Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Nullam quis risus eget urna mollis ornare vel eu leo. Donec id elit non mi porta gravida at eget metus. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.`,
+    content: `Stake for Earth’s carbon pool and smart contract automatically swaps the yield generated from the staked USDC to BCT or NCT. BCT and NCT are both ERC-20 carbon tokens built on top of the Toucan protocol running on Polygon. They represent real carbon credits which have been bridged to the Toucan blockchain through its meta registry. Each BCT or NCT represent one tonnes of carbon removed from our atmosphere by carbon offset projects. You can read more about Toucan’s NCT tokens <a href="https://blog.toucan.earth/announcing-nct-nature-carbon-tonne/" target="_blank">here</a>.`,
   },
   {
     title: 'Carbon Credits Burning',
     shortTitle: 'Credits',
     icon: GlobeEuropeAfricaIcon,
-    content: `Aenean lacinia bibendum nulla sed consectetur. Donec ullamcorper nulla non metus auctor fringilla. Maecenas sed diam eget risus varius blandit sit amet non magna. Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Cras mattis consectetur purus sit amet fermentum. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.`,
+    content: `After the carbon pool’s yield has been swapped to either BCT or NCT, our smart contract automatically retires the carbon tokens by either locking them irreversible in our treasury or by converting the BCT or NCT into TCO2 and burns them. You can read more about the retirement process <a href="https://docs.toucan.earth/toucan/pool/redeem" target="_blank">here</a>.`,
   },
   {
-    title: 'NFT headline otam rem aperiam',
-    shortTitle: 'NFT',
+    title: 'Climate Action Badge',
+    shortTitle: 'Badge',
     icon: CheckBadgeIcon,
-    content: `Curabitur blandit tempus porttitor. Sed posuere consectetur est at lobortis. Curabitur blandit tempus porttitor. Vestibulum id ligula porta felis euismod semper. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.`,
+    content: `As soon as users stake or donate crypto into the carbon pool, they receive a climate action badge NFT. This enables them to prove their participation in climate action through Stake for Earth. It further allows them to highlight their relative contribution to the emissions removed with Stake for Earth. We believe that anyone, including crypto native companies, will use the badge as a new way to promote climate action with crypto embedding it on the footer of their website or in a tweet.`,
   },
 ]
 
@@ -56,10 +56,10 @@ export const HomeHowItWorksSection: FC<HomeHowItWorksSectionProps> = () => {
           {/* Title & Tagline */}
           <div tw="max-w-[25rem]">
             <SubheadingSmall noHeadingMarkup={true} tw="text-gray-200">
-              How it works
+              The process
             </SubheadingSmall>
-            <Subheading tagline="Aenean eu leo quam. Pellentesque ornare sem lacinia quam.">
-              How it works headline otam rem aperiam.
+            <Subheading tagline="Everything from staking to credit burning explained.">
+              How it works
             </Subheading>
           </div>
 
@@ -140,9 +140,7 @@ export const HomeHowItWorksTabs: FC<HomeHowItWorksTabsProps> = () => {
                   <h3 tw="font-display text-2xl font-bold tracking-tight mb-4">
                     {selectedItem.title}
                   </h3>
-                  <div
-                    dangerouslySetInnerHTML={{ __html: md().render(selectedItem.content) }}
-                  ></div>
+                  <RenderedMarkdownContent content={selectedItem.content} tw="prose prose-invert" />
                 </div>
                 <div tw="hidden md:flex h-[9rem] w-[9rem] shrink-0 grow-0 ml-auto justify-center items-center bg-gray-800 rounded-full">
                   <selectedItem.icon tw="h-[4rem] w-[4rem] text-gray-500" />

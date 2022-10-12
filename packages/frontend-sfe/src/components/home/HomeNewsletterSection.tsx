@@ -18,8 +18,8 @@ export const HomeNewsletterSection: FC<HomeNewsletterSectionProps> = () => {
           <div tw="relative  z-10">
             {/* Heading & Text */}
             <SubheadingSmall>Newsletter</SubheadingSmall>
-            <Subheading noHeadingMarkup={true} tagline="Maecenas faucibus mollis interdum.">
-              Stay in the loop
+            <Subheading noHeadingMarkup={true} tagline="We notify you when the pool launches.">
+              Be ready…
             </Subheading>
 
             {/* Subscribe Form */}

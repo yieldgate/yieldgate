@@ -12,10 +12,10 @@ export const HomeHero: FC<HomeHeroProps> = () => {
       <div tw="h-[60vh] lg:(h-[70vh]) min-h-[33rem] flex items-center relative overflow-hidden">
         {/* Text Content */}
         <Wrapper tw="z-10">
-          <div tw="max-w-[24rem] pb-[2.5vh] lg:(max-w-[30rem] pb-[5vh])  sm:(px-4) space-y-8">
+          <div tw="max-w-[22rem] pb-[2.5vh] lg:(max-w-[30rem] pb-[5vh])  sm:(px-4) space-y-8">
             {/* Tagline */}
             <p tw="text-4xl lg:(text-5xl) font-display font-bold tracking-tight">
-              A bold vision statement that implies the value of climate action
+              Compounding yield to enable climate action at 0 cost
             </p>
 
             {/* Burned KPI */}
