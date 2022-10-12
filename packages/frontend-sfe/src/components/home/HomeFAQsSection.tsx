@@ -1,5 +1,5 @@
 import { Wrapper } from '@components/layout/Wrapper'
-import { FAQItem, FAQSection } from '@components/shared/FaqSection'
+import { FAQItem, FAQsSection } from '@components/shared/FAQsSection'
 import { Subheading } from '@components/shared/Subheading'
 import { FC } from 'react'
 import 'twin.macro'
@@ -26,7 +26,7 @@ export const HomeFAQsSection: FC<HomeFAQsSectionProps> = () => {
       <Wrapper tw="max-w-[50rem]">
         <div tw="flex flex-col mb-2">
           <Subheading>Questions? We answer.</Subheading>
-          <FAQSection items={faqItems} openFirst={true} />
+          <FAQsSection items={faqItems} openFirst={true} />
         </div>
       </Wrapper>
     </>

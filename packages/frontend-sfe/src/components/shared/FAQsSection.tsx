@@ -11,11 +11,11 @@ export interface FAQItem {
   answer: string
 }
 
-export interface FAQSectionProps {
+export interface FAQsSectionProps {
   items: FAQItem[]
   openFirst?: boolean
 }
-export const FAQSection: FC<FAQSectionProps> = ({ items, openFirst, ...props }) => {
+export const FAQsSection: FC<FAQsSectionProps> = ({ items, openFirst, ...props }) => {
   const animationProps: AnimationProps = {
     initial: {
       opacity: 0,

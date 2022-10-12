@@ -1,5 +1,5 @@
 import { CenterBody } from '@components/layout/CenterBody'
-import { FAQItem, FAQSection } from '@components/shared/FaqSection'
+import { FAQItem, FAQsSection } from '@components/shared/FAQsSection'
 import { FC } from 'react'
 import tw, { styled } from 'twin.macro'
 import { useAccount } from 'wagmi'
@@ -54,7 +54,7 @@ export const StakingViewPrepareFunds: FC<StakingViewPrepareFundsProps> = ({ onGo
             >
               Skip - I already have funds in Polygon
             </button>
-            <FAQSection items={faqItems} tw="mt-16!" />
+            <FAQsSection items={faqItems} tw="mt-16!" />
           </div>
         </div>
       </CenterBody>
