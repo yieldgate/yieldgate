@@ -83,7 +83,7 @@ export const StakingHorizontalStepper: FC<StakingHorizontalStepperProps> = ({ it
         }}
       >
         {/* Stepper Titles/Tabs  */}
-        <Tab.List tw="flex justify-center items-center space-x-6 -mt-0.5 mb-4">
+        <Tab.List tw="flex justify-center items-center space-x-6 mt-2 sm:mt-0 lg:-mt-0.5">
           {items.map((item, idx) => (
             <Fragment key={`stepper-button-${idx}`}>
               <Tab as={Fragment}>
@@ -111,7 +111,7 @@ export const StakingHorizontalStepper: FC<StakingHorizontalStepperProps> = ({ it
             <Tab.Panel
               key={`stepper-panel-${selectedIndex}`}
               as={m.div}
-              tw="grow flex flex-col"
+              tw="grow flex flex-col py-12"
               {...animationProps}
             >
               {!!selectedItem?.component && (
@@ -171,7 +171,9 @@ export const StakingHorizontalStepperTabButton = forwardRef<
           {!!item.shortTitle && <span tw="lg:hidden">{item.shortTitle}</span>}
           <span css={[item.shortTitle && tw`hidden lg:inline`]}>{item.title}</span>
         </div>
-        {!!item.subTitle && !isSSR && <div tw="text-xs text-gray-700 -mt-0.5">{item.subTitle}</div>}
+        {!!item.subTitle && !isSSR && (
+          <div tw="hidden lg:inline text-xs text-gray-700 -mt-0.5">{item.subTitle}</div>
+        )}
       </div>
     </button>
   )
