@@ -44,9 +44,8 @@ export const StakeDonateBalance: FC<StakeDonateBalanceProps> = ({ mode }) => {
           {truncateHash(address)}
         </StakingStepperItemContentBoxSubtitle>
         <StakingStepperItemContentBoxDivider />
-        <div tw="flex items-center mb-0.5 space-x-4">
+        <div tw="flex items-center space-x-4">
           <Image src={usdcSvg} width={40} height={40} alt="USDC Token Logo" />
-
           {!isLoading && data?.value && (
             <NumericFormat
               value={formatUnits(data.value, 6)}
@@ -63,7 +62,6 @@ export const StakeDonateBalance: FC<StakeDonateBalanceProps> = ({ mode }) => {
               thickness={125}
               color={theme('colors.gray.900')}
               secondaryColor={theme('colors.gray.400')}
-              // tw="ml-1 xs:mt-0"
             />
           )}
           {!isLoading && isError && (

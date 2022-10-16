@@ -8,7 +8,9 @@ export const StakingStepperItemOuterWrapper = styled.div(() => [
   tw`h-full w-[30rem] mx-auto flex flex-col justify-center items-start relative`,
 ])
 
-export const StakingStepperItemHeadline = styled.h2(() => [tw`text-2xl font-bold max-w-full mb-6`])
+export const StakingStepperItemHeadline = styled.h2(() => [
+  tw`text-2xl font-bold max-w-full mb-6 tracking-tight`,
+])
 
 export const StakingStepperItemBody = styled.div(() => [tw`w-full flex flex-col space-y-5`])
 
@@ -28,7 +30,7 @@ export const StakingStepperItemFullWidthAnchor =
  */
 
 export const StakingStepperItemContentBox = styled.div(() => [
-  tw`py-3 px-6 rounded-lg border border-gray-200`,
+  tw`pt-3 pb-3.5 px-6 rounded-lg border border-gray-200`,
 ])
 
 export const StakingStepperItemContentBoxHeadline = styled.h3(() => [

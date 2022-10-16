@@ -48,7 +48,7 @@ export const BaseButton: FC<PropsWithChildren<BaseButtonProps>> = ({
         <div tw="absolute inset-0 flex justify-center items-center">
           <SpinnerDiamond
             size={20}
-            thickness={120}
+            thickness={125}
             color={variant === 'outline' ? theme('colors.gray.900') : theme('colors.gray.200')}
             secondaryColor={
               variant === 'outline' ? theme('colors.gray.400') : theme('colors.gray.600')
@@ -59,3 +59,10 @@ export const BaseButton: FC<PropsWithChildren<BaseButtonProps>> = ({
     </BaseButtonWrapper>
   )
 }
+
+export const BaseButtonGroup = styled.div`
+  ${tw`flex flex-wrap -mx-1 -my-1`}
+  button {
+    ${tw`mx-1 my-1`}
+  }
+`
