@@ -3,7 +3,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { FC, useEffect } from 'react'
 import 'twin.macro'
 import { useAccount, useNetwork } from 'wagmi'
-import { StakingStepperItemComponentProps } from './StakingHorizontalStepper'
+import { StakingStepperItemComponentProps } from './StakingStepper'
 
 export interface StakingViewConnectProps extends StakingStepperItemComponentProps {}
 export const StakingViewConnect: FC<StakingViewConnectProps> = ({

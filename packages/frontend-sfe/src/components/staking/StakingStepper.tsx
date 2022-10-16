@@ -19,10 +19,10 @@ export interface StakingStepperItem {
   disabled?: boolean
 }
 
-export interface StakingHorizontalStepperProps {
+export interface StakingStepperProps {
   items: StakingStepperItem[]
 }
-export const StakingHorizontalStepper: FC<StakingHorizontalStepperProps> = ({ items }) => {
+export const StakingStepper: FC<StakingStepperProps> = ({ items }) => {
   const [previousIndex, setPreviousIndex] = useState<number | undefined>(undefined)
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [selectedItem, setSelectedItem] = useState(items[0])
@@ -86,7 +86,7 @@ export const StakingHorizontalStepper: FC<StakingHorizontalStepperProps> = ({ it
             <Fragment key={`stepper-button-${idx}`}>
               <Tab as={Fragment}>
                 {(props) => (
-                  <StakingHorizontalStepperTabButton
+                  <StakingStepperTabButton
                     item={item}
                     index={idx}
                     selectedIndex={selectedIndex}
@@ -109,7 +109,7 @@ export const StakingHorizontalStepper: FC<StakingHorizontalStepperProps> = ({ it
             <Tab.Panel
               key={`stepper-panel-${selectedIndex}`}
               as={m.div}
-              tw="grow flex flex-col py-12"
+              tw="grow flex flex-col py-12 outline-none"
               {...animationProps}
             >
               {!!selectedItem?.component && (
@@ -131,48 +131,49 @@ export const StakingHorizontalStepper: FC<StakingHorizontalStepperProps> = ({ it
   )
 }
 
-export interface StakingHorizontalStepperTabButtonProps {
+export interface StakingStepperTabButtonProps {
   item: StakingStepperItem
   selected: boolean
   index: number
   selectedIndex: number
 }
-export const StakingHorizontalStepperTabButton = forwardRef<
-  HTMLButtonElement,
-  StakingHorizontalStepperTabButtonProps
->(function StakingHorizontalStepperTabButton({ item, index, selectedIndex, ...props }, ref) {
-  const isSSR = useIsSSR()
+export const StakingStepperTabButton = forwardRef<HTMLButtonElement, StakingStepperTabButtonProps>(
+  function StakingStepperTabButton({ item, index, selectedIndex, ...props }, ref) {
+    const isSSR = useIsSSR()
 
-  return (
-    <button
-      type="button"
-      ref={ref}
-      className="group"
-      css={[
-        tw`flex items-center space-x-3 transition-opacity outline-none disabled:cursor-not-allowed`,
-        index <= selectedIndex ? tw`opacity-100` : tw`opacity-40 not-disabled:hocus:(opacity-100)`,
-      ]}
-      disabled={item.disabled}
-      {...props}
-    >
-      <div
+    return (
+      <button
+        type="button"
+        ref={ref}
+        className="group"
         css={[
-          tw`w-8 h-8 flex justify-center items-center bg-black text-white font-semibold rounded-full`,
-          tw`group-focus:(ring-2 ring-offset-2 ring-primary-500)`,
-          index === selectedIndex && tw`ring-2 ring-offset-2 ring-black`,
+          tw`flex items-center space-x-3 transition-opacity outline-none disabled:cursor-not-allowed`,
+          index <= selectedIndex
+            ? tw`opacity-100`
+            : tw`opacity-40 not-disabled:hocus:(opacity-100)`,
         ]}
+        disabled={item.disabled}
+        {...props}
       >
-        {index < selectedIndex ? <CheckIcon tw="h-4 w-4 grow-0 shrink-0" /> : <>{index + 1}</>}
-      </div>
-      <div tw="flex flex-col items-start">
-        <div tw="font-semibold">
-          {!!item.shortTitle && <span tw="lg:hidden">{item.shortTitle}</span>}
-          <span css={[item.shortTitle && tw`hidden lg:inline`]}>{item.title}</span>
+        <div
+          css={[
+            tw`w-8 h-8 flex justify-center items-center bg-black text-white font-semibold rounded-full`,
+            tw`group-focus:(ring-2 ring-offset-2 ring-primary-500)`,
+            index === selectedIndex && tw`ring-2 ring-offset-2 ring-black`,
+          ]}
+        >
+          {index < selectedIndex ? <CheckIcon tw="h-4 w-4 grow-0 shrink-0" /> : <>{index + 1}</>}
         </div>
-        {!!item.subTitle && !isSSR && (
-          <div tw="hidden lg:inline text-xs text-gray-700 -mt-0.5">{item.subTitle}</div>
-        )}
-      </div>
-    </button>
-  )
-})
+        <div tw="flex flex-col items-start">
+          <div tw="font-semibold">
+            {!!item.shortTitle && <span tw="lg:hidden">{item.shortTitle}</span>}
+            <span css={[item.shortTitle && tw`hidden lg:inline`]}>{item.title}</span>
+          </div>
+          {!!item.subTitle && !isSSR && (
+            <div tw="hidden lg:inline text-xs text-gray-700 -mt-0.5">{item.subTitle}</div>
+          )}
+        </div>
+      </button>
+    )
+  }
+)

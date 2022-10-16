@@ -1,8 +1,5 @@
-import {
-  StakingHorizontalStepper,
-  StakingStepperItem,
-} from '@components/staking/StakingHorizontalStepper'
 import { StakingLayout } from '@components/staking/StakingLayout'
+import { StakingStepper, StakingStepperItem } from '@components/staking/StakingStepper'
 import { StakingViewConnect } from '@components/staking/StakingViewConnect'
 import { StakingViewPrepareFunds } from '@components/staking/StakingViewPrepareFunds'
 import { StakingViewStakeDonate } from '@components/staking/StakingViewStakeDonate'
@@ -49,7 +46,7 @@ export default function StakingPage() {
     <>
       <NextSeo title="Stake & Dontation Form" />
       <StakingLayout>
-        <StakingHorizontalStepper items={stepperItems} />
+        <StakingStepper items={stepperItems} />
       </StakingLayout>
     </>
   )
