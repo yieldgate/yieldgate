@@ -11,35 +11,39 @@ import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import 'twin.macro'
-import { useAccount } from 'wagmi'
+import { useAccount, useNetwork } from 'wagmi'
 
 export interface StakingPageProps {}
 export default function StakingPage() {
+  const { chain } = useNetwork()
   const { address } = useAccount()
   const { pathname } = useRouter()
   const [stepperItems, setStepperItems] = useState<StakingStepperItem[]>([])
   useEffect(() => {
+    const isConnected = !!address && !chain?.unsupported
     const stepperItems: StakingStepperItem[] = [
       {
         title: 'Connect Wallet',
         shortTitle: 'Connect',
         component: StakingViewConnect,
-        ...(address && { subTitle: truncateHash(address) }),
+        ...(isConnected
+          ? { subTitle: truncateHash(address) }
+          : chain?.unsupported && { subTitle: 'Unsupported Chain' }),
       },
       {
         title: 'Prepare Funds',
         shortTitle: 'Prepare',
         component: StakingViewPrepareFunds,
-        disabled: !address,
+        disabled: !isConnected,
       },
       {
         title: pathname === '/donate' ? 'Donate' : 'Stake',
         component: StakingViewStakeDonate,
-        disabled: !address,
+        disabled: !isConnected,
       },
     ]
     setStepperItems(stepperItems)
-  }, [address, pathname])
+  }, [address, chain?.unsupported, pathname])
 
   return (
     <>

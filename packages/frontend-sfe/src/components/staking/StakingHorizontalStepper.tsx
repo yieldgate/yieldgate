@@ -5,7 +5,6 @@ import { AnimatePresence, AnimationProps, m } from 'framer-motion'
 import { FC, forwardRef, Fragment, useEffect, useState } from 'react'
 import 'twin.macro'
 import tw from 'twin.macro'
-import { useAccount } from 'wagmi'
 
 export interface StakingStepperItemComponentProps {
   onGoPrev: () => void
@@ -28,12 +27,11 @@ export const StakingHorizontalStepper: FC<StakingHorizontalStepperProps> = ({ it
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [selectedItem, setSelectedItem] = useState(items[0])
 
-  // Navigate back to first tab on wallet disconnect
-  useAccount({
-    onDisconnect: () => {
-      setIndex(0)
-    },
-  })
+  // Navigate back to first if currently selected one gets disabled
+  useEffect(() => {
+    const isDisabled = items?.[selectedIndex]?.disabled
+    if (isDisabled && selectedIndex !== 0) setIndex(0)
+  }, [items])
 
   // Tab-panel animation properties
   const x = previousIndex === undefined ? 0 : 10 * (previousIndex < selectedIndex ? 1 : -1)
