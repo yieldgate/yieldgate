@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="510" height="400" fill="none" viewBox="0 0 510 400"><circle cx="280.559" cy="247.439" r="201.668" stroke="#B7C1D2" stroke-width="1.786"/><circle cx="202.561" cy="195.052" r="201.668" stroke="#B7C1D2" stroke-width="1.786"/><circle cx="306.752" cy="152.561" r="201.668" stroke="#B7C1D2" stroke-width="1.786"/></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="510px" height="500px" viewBox="0 0 510 500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Artboard</title>
+    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="decorative-circle-element" transform="translate(0.893000, 0.893000)" stroke="#B7C1D2" stroke-width="1.786">
+            <circle id="Oval" cx="279.666" cy="296.546" r="201.668"></circle>
+            <circle id="Oval" cx="201.668" cy="244.159" r="201.668"></circle>
+            <circle id="Oval" cx="305.859" cy="201.668" r="201.668"></circle>
+        </g>
+    </g>
+</svg>
