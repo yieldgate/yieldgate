@@ -6,10 +6,12 @@ import { FC, forwardRef, Fragment, useEffect, useState } from 'react'
 import 'twin.macro'
 import tw from 'twin.macro'
 
+export type StakingViewStakeDonateMode = 'stake' | 'donate'
 export interface StakingStepperItemComponentProps {
   onGoPrev: () => void
   onGoNext: () => void
   firstRender?: boolean
+  mode: StakingViewStakeDonateMode
 }
 export interface StakingStepperItem {
   title: string
@@ -17,12 +19,14 @@ export interface StakingStepperItem {
   shortTitle?: string
   subTitle?: string
   disabled?: boolean
+  invisible?: boolean
 }
 
 export interface StakingStepperProps {
   items: StakingStepperItem[]
+  mode: StakingViewStakeDonateMode
 }
-export const StakingStepper: FC<StakingStepperProps> = ({ items }) => {
+export const StakingStepper: FC<StakingStepperProps> = ({ items, mode }) => {
   const [previousIndex, setPreviousIndex] = useState<number | undefined>(undefined)
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [selectedItem, setSelectedItem] = useState(items[0])
@@ -82,25 +86,27 @@ export const StakingStepper: FC<StakingStepperProps> = ({ items }) => {
       >
         {/* Stepper Titles/Tabs  */}
         <Tab.List tw="flex justify-center items-center space-x-6 mt-2 sm:mt-0 lg:-mt-0.5">
-          {items.map((item, idx) => (
-            <Fragment key={`stepper-button-${idx}`}>
-              <Tab as={Fragment}>
-                {(props) => (
-                  <StakingStepperTabButton
-                    item={item}
-                    index={idx}
-                    selectedIndex={selectedIndex}
-                    {...props}
-                  />
+          {items
+            .filter((i) => !i.invisible)
+            .map((item, idx) => (
+              <Fragment key={`stepper-button-${idx}`}>
+                {idx !== 0 && (
+                  <div>
+                    <ChevronRightIcon tw="text-gray-400 h-5 w-5 grow-0 shrink-0" />
+                  </div>
                 )}
-              </Tab>
-              {idx !== items.length - 1 && (
-                <div>
-                  <ChevronRightIcon tw="text-gray-400 h-5 w-5 grow-0 shrink-0" />
-                </div>
-              )}
-            </Fragment>
-          ))}
+                <Tab as={Fragment}>
+                  {(props) => (
+                    <StakingStepperTabButton
+                      item={item}
+                      index={idx}
+                      selectedIndex={selectedIndex}
+                      {...props}
+                    />
+                  )}
+                </Tab>
+              </Fragment>
+            ))}
         </Tab.List>
 
         {/* Stepper Content  */}
@@ -121,6 +127,7 @@ export const StakingStepper: FC<StakingStepperProps> = ({ items }) => {
                     setIndex(selectedIndex + 1)
                   }}
                   firstRender={previousIndex === undefined}
+                  mode={mode}
                 />
               )}
             </Tab.Panel>

@@ -9,22 +9,25 @@ import { NumericFormat } from 'react-number-format'
 import { SpinnerDiamond } from 'spinners-react'
 import 'twin.macro'
 import { theme } from 'twin.macro'
-import { useAccount, useBalance, useNetwork } from 'wagmi'
+import { useAccount, useBalance, useEnsName, useNetwork } from 'wagmi'
+import { StakingStepperItemComponentProps } from './StakingStepper'
 import {
   StakingStepperItemContentBox,
   StakingStepperItemContentBoxDivider,
   StakingStepperItemContentBoxHeadline,
   StakingStepperItemContentBoxSubtitle,
 } from './StakingStepperItemSharedComponents'
-import { StakingViewStakeDonateMode } from './StakingViewStakeDonate'
 
-export interface StakeDonateBalanceProps {
-  mode: StakingViewStakeDonateMode
-}
+export interface StakeDonateBalanceProps extends StakingStepperItemComponentProps {}
 export const StakeDonateBalance: FC<StakeDonateBalanceProps> = ({ mode }) => {
   const { address } = useAccount()
+  const { data: ensName } = useEnsName({ address, chainId: 1 })
   const { chain } = useNetwork()
-  const { data, isError, isLoading } = useBalance({
+  const {
+    data: balance,
+    isError,
+    isLoading,
+  } = useBalance({
     addressOrName: address,
     watch: true,
     // TODO
@@ -41,14 +44,14 @@ export const StakeDonateBalance: FC<StakeDonateBalanceProps> = ({ mode }) => {
       <StakingStepperItemContentBox>
         <StakingStepperItemContentBoxHeadline>Account Balance</StakingStepperItemContentBoxHeadline>
         <StakingStepperItemContentBoxSubtitle title={address}>
-          {truncateHash(address)}
+          {ensName || truncateHash(address)}
         </StakingStepperItemContentBoxSubtitle>
         <StakingStepperItemContentBoxDivider />
         <div tw="flex items-center space-x-4">
           <Image src={usdcSvg} width={40} height={40} alt="USDC Token Logo" />
-          {!isLoading && data?.value && (
+          {!isLoading && balance?.value && (
             <NumericFormat
-              value={formatUnits(data.value, 6)}
+              value={formatUnits(balance.value, 6)}
               displayType={'text'}
               decimalScale={2}
               thousandSeparator={true}

@@ -1,7 +1,6 @@
-import { useRouter } from 'next/router'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import 'twin.macro'
-import { StakeDonateBalance } from './StakeDonateBalance'
+import { StakeDonateForm } from './StakeDonateForm'
 import { StakeDonateKPIs } from './StakeDonateKPIs'
 import { StakingStepperItemComponentProps } from './StakingStepper'
 import {
@@ -10,12 +9,9 @@ import {
   StakingStepperItemOuterWrapper,
 } from './StakingStepperItemSharedComponents'
 
-export type StakingViewStakeDonateMode = 'stake' | 'donate'
-
 export interface StakingViewStakeDonateProps extends StakingStepperItemComponentProps {}
-export const StakingViewStakeDonate: FC<StakingViewStakeDonateProps> = () => {
-  const { pathname } = useRouter()
-  const [mode] = useState<StakingViewStakeDonateMode>(pathname === '/donate' ? 'donate' : 'stake')
+export const StakingViewStakeDonate: FC<StakingViewStakeDonateProps> = (props) => {
+  const { mode } = props
 
   return (
     <>
@@ -24,8 +20,8 @@ export const StakingViewStakeDonate: FC<StakingViewStakeDonateProps> = () => {
           {mode === 'donate' ? 'Donate' : 'Stake'}
         </StakingStepperItemHeadline>
         <StakingStepperItemBody>
-          <StakeDonateBalance mode={mode} />
-          <StakeDonateKPIs mode={mode} />
+          <StakeDonateForm {...props} />
+          <StakeDonateKPIs {...props} />
         </StakingStepperItemBody>
       </StakingStepperItemOuterWrapper>
     </>

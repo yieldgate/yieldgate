@@ -9,11 +9,9 @@ import {
   StakingStepperItemContentBoxDivider,
   StakingStepperItemContentBoxHeadline,
 } from './StakingStepperItemSharedComponents'
-import { StakingViewStakeDonateMode } from './StakingViewStakeDonate'
+import { StakingViewStakeDonateProps } from './StakingViewStakeDonate'
 
-export interface StakeDonateKPIsProps {
-  mode: StakingViewStakeDonateMode
-}
+export interface StakeDonateKPIsProps extends StakingViewStakeDonateProps {}
 export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
   const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
@@ -58,8 +56,8 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
         <StakingStepperItemContentBoxDivider />
 
         {/* Actions */}
-        <BaseButtonGroup>
-          <BaseButton>Topup</BaseButton>
+        <BaseButtonGroup tw="grid grid-cols-2">
+          <BaseButton>View Badge</BaseButton>
           <BaseButton variant="outline">Withdraw</BaseButton>
         </BaseButtonGroup>
       </StakingStepperItemContentBox>

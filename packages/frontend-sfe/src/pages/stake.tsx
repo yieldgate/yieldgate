@@ -1,8 +1,13 @@
 import { StakingLayout } from '@components/staking/StakingLayout'
-import { StakingStepper, StakingStepperItem } from '@components/staking/StakingStepper'
+import {
+  StakingStepper,
+  StakingStepperItem,
+  StakingViewStakeDonateMode,
+} from '@components/staking/StakingStepper'
 import { StakingViewConnect } from '@components/staking/StakingViewConnect'
 import { StakingViewPrepareFunds } from '@components/staking/StakingViewPrepareFunds'
 import { StakingViewStakeDonate } from '@components/staking/StakingViewStakeDonate'
+import { StakingViewSuccess } from '@components/staking/StakingViewSuccess'
 import { truncateHash } from '@lib/truncateHash'
 import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
@@ -12,10 +17,11 @@ import { useAccount, useEnsName, useNetwork } from 'wagmi'
 
 export interface StakingPageProps {}
 export default function StakingPage() {
+  const { pathname } = useRouter()
+  const [mode] = useState<StakingViewStakeDonateMode>(pathname === '/donate' ? 'donate' : 'stake')
   const { chain } = useNetwork()
   const { address } = useAccount()
   const { data: ensName } = useEnsName({ address, chainId: 1 })
-  const { pathname } = useRouter()
   const [stepperItems, setStepperItems] = useState<StakingStepperItem[]>([])
   useEffect(() => {
     const isConnected = !!address && !chain?.unsupported
@@ -39,6 +45,12 @@ export default function StakingPage() {
         component: StakingViewStakeDonate,
         disabled: !isConnected,
       },
+      {
+        title: 'Confirmation',
+        component: StakingViewSuccess,
+        disabled: !isConnected,
+        invisible: true,
+      },
     ]
     setStepperItems(stepperItems)
   }, [address, ensName, chain?.unsupported, pathname])
@@ -47,7 +59,7 @@ export default function StakingPage() {
     <>
       <NextSeo title="Stake & Dontation Form" />
       <StakingLayout>
-        <StakingStepper items={stepperItems} />
+        <StakingStepper items={stepperItems} mode={mode} />
       </StakingLayout>
     </>
   )

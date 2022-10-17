@@ -2,6 +2,7 @@ import { FAQItem, FAQsSection } from '@components/shared/FAQsSection'
 import { FC } from 'react'
 import 'twin.macro'
 import { useAccount } from 'wagmi'
+import { StakeDonateBalance } from './StakeDonateBalance'
 import { StakingStepperItemComponentProps } from './StakingStepper'
 import {
   StakingStepperItemBody,
@@ -25,7 +26,8 @@ const faqItems: FAQItem[] = [
 ]
 
 export interface StakingViewPrepareFundsProps extends StakingStepperItemComponentProps {}
-export const StakingViewPrepareFunds: FC<StakingViewPrepareFundsProps> = ({ onGoNext }) => {
+export const StakingViewPrepareFunds: FC<StakingViewPrepareFundsProps> = (props) => {
+  const { onGoNext } = props
   const { address: userAddress } = useAccount()
   const finalUrl = window?.location?.href
   const rampUrlParams = new URLSearchParams({
@@ -40,6 +42,7 @@ export const StakingViewPrepareFunds: FC<StakingViewPrepareFundsProps> = ({ onGo
       <StakingStepperItemOuterWrapper>
         <StakingStepperItemHeadline>Prepare Funds</StakingStepperItemHeadline>
         <StakingStepperItemBody>
+          <StakeDonateBalance {...props} />
           {/* TODO Consider deeper Integration for both */}
           <StakingStepperItemFullWidthAnchor
             href={`https://buy.ramp.network/?${rampUrlParams}`}
@@ -51,7 +54,7 @@ export const StakingViewPrepareFunds: FC<StakingViewPrepareFundsProps> = ({ onGo
             Bridge funds to Polygon ↗
           </StakingStepperItemFullWidthAnchor>
           <StakingStepperItemContinueButton onClick={() => onGoNext()}>
-            Skip - I already have funds in Polygon
+            Skip - I already have funds on Polygon
           </StakingStepperItemContinueButton>
           <FAQsSection items={faqItems} tw="mt-16!" />
         </StakingStepperItemBody>

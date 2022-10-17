@@ -76,7 +76,7 @@ export const HomeNewsletterSubscribeForm: FC<HomeNewsletterSubscribeFormProps> =
             type="text"
             id="email"
             placeholder="Email Address"
-            tw="w-[20rem] mr-2 bg-white text-black border border-gray-300 rounded font-body leading-none py-2.5 px-2.5 focus:(ring-2 ring-sky-500)"
+            tw="w-[20rem] mr-2 bg-white text-black border border-gray-300 rounded font-body leading-none py-2.5 px-2.5 outline-none focus:(ring-offset-2 ring-2 ring-sky-500)"
             {...form.register('email', { required: true })}
           />
           <BaseButton
