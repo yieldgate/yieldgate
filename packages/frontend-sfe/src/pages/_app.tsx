@@ -50,6 +50,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
 
         <WagmiConfig client={wagmiClient}>
           <RainbowKitProvider
+            appInfo={{ appName: 'Stake for Earth', disclaimer: () => <>lol</> }}
             chains={chains}
             theme={lightTheme({
               accentColor: '#000',

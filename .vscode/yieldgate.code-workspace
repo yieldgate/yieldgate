@@ -5,11 +5,11 @@
       "path": "../"
     },
     // {
-    //   "name": "YieldGate Frontend",
+    //   "name": "YG-Frontend",
     //   "path": "../packages/frontend-yg"
     // },
     {
-      "name": "StakeForEarth Frontend",
+      "name": "SFE-Frontend",
       "path": "../packages/frontend-sfe"
     },
     {

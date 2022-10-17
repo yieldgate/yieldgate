@@ -7,7 +7,7 @@ import 'twin.macro'
 const faqItems: FAQItem[] = [
   {
     question: 'What is Stake for Earth?',
-    answer: `Stake for Earth is a platform where anyone can passively participate in climate action. Anyone can stake USDC in the carbon pool and the yield generated will be used to burn carbon credits, effectively **contributing** to removing carbon from our atmosphere. In return, one receives an NFT which acts as a proof/certificate for climate action.`,
+    answer: `Stake for Earth is a platform where anyone can passively participate in climate action. Anyone can stake USDC in the carbon pool and the yield generated will be used to burn carbon credits, effectively contributing to removing carbon from our atmosphere. In return, one receives an NFT which acts as a proof/certificate for climate action.`,
   },
   {
     question: 'Who is behind Stake for Earth?',

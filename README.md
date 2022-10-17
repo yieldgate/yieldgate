@@ -1,4 +1,4 @@
-# Yieldgate 🤝 StakeForEarth
+# Yieldgate 🤝 Stake for Earth
 
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://yieldgate.mit-license.org/)
 [![codecov](https://codecov.io/gh/yieldgate/yieldgate/branch/develop/graph/badge.svg?token=Y1BVBCAJK5)](https://codecov.io/gh/yieldgate/yieldgate)
@@ -6,7 +6,7 @@
 This repository serves as a codebase for two overlapping projects:
 
 - **Yieldgate** ([yieldgate.xyz](https://yieldgate.xyz)) is a protocol that allows anyone to start earning and building products with programmable yield. It originated as a finalist hackathon project at ETHGlobal in Amsterdam.
-- **StakeForEarth** ([stakefor.earth](https://stakefor.earth)) is a pool which generates compounding yield to enable climate action at 0 cost.
+- **Stake for Earth** ([stakefor.earth](https://stakefor.earth)) is a pool which generates compounding yield to enable climate action at 0 cost.
 
 This project is backed by Aave, Toucan, The Graph, Polygon, Coinbase, and WalletConnect. ❤️
 
