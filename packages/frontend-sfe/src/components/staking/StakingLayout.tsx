@@ -15,8 +15,8 @@ export const StakingLayout: FC<PropsWithChildren<StakingLayoutProps>> = ({ child
       <div tw="min-h-full grid relative">
         <div tw="flex">
           {/* Aside (Logo) */}
-          <PaddingWrapperAside tw="hidden md:flex h-full max-w-[30vw] relative bg-primary-100 shrink-0 grow overflow-hidden">
-            <div tw="flex flex-col lg:pr-12 xl:pr-28">
+          <PaddingWrapperAside tw="hidden md:flex sticky top-0 h-[100vh] max-w-[30vw] bg-primary-100 shrink-0 grow overflow-hidden">
+            <div tw="relative flex flex-col lg:pr-12 xl:pr-28">
               <StakeForEarthLogo tw="hidden lg:flex" href="/" />
               <div tw="w-[120%] min-w-[500px] justify-end absolute bottom-[-10vw] left-1/2 -translate-x-1/2 select-none opacity-50 z-0">
                 <Image
