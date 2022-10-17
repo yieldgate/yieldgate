@@ -5,6 +5,7 @@ import { useAccount } from 'wagmi'
 import { StakingStepperItemComponentProps } from './StakingStepper'
 import {
   StakingStepperItemBody,
+  StakingStepperItemContinueButton,
   StakingStepperItemFullWidthAnchor,
   StakingStepperItemHeadline,
   StakingStepperItemOuterWrapper,
@@ -49,12 +50,9 @@ export const StakingViewPrepareFunds: FC<StakingViewPrepareFundsProps> = ({ onGo
           <StakingStepperItemFullWidthAnchor href="https://transferto.xyz/swap" target="_blank">
             Bridge funds to Polygon ↗
           </StakingStepperItemFullWidthAnchor>
-          <button
-            tw="self-center text-sm font-semibold text-primary-500"
-            onClick={() => onGoNext()}
-          >
+          <StakingStepperItemContinueButton onClick={() => onGoNext()}>
             Skip - I already have funds in Polygon
-          </button>
+          </StakingStepperItemContinueButton>
           <FAQsSection items={faqItems} tw="mt-16!" />
         </StakingStepperItemBody>
       </StakingStepperItemOuterWrapper>

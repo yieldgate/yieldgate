@@ -170,7 +170,7 @@ export const StakingStepperTabButton = forwardRef<HTMLButtonElement, StakingStep
             <span css={[item.shortTitle && tw`hidden lg:inline`]}>{item.title}</span>
           </div>
           {!!item.subTitle && !isSSR && (
-            <div tw="hidden lg:inline text-xs text-gray-700 -mt-0.5">{item.subTitle}</div>
+            <div tw="inline text-xs text-gray-700 -mt-0.5">{item.subTitle}</div>
           )}
         </div>
       </button>

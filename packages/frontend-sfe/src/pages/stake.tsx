@@ -8,12 +8,13 @@ import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import 'twin.macro'
-import { useAccount, useNetwork } from 'wagmi'
+import { useAccount, useEnsName, useNetwork } from 'wagmi'
 
 export interface StakingPageProps {}
 export default function StakingPage() {
   const { chain } = useNetwork()
   const { address } = useAccount()
+  const { data: ensName } = useEnsName({ address, chainId: 1 })
   const { pathname } = useRouter()
   const [stepperItems, setStepperItems] = useState<StakingStepperItem[]>([])
   useEffect(() => {
@@ -24,7 +25,7 @@ export default function StakingPage() {
         shortTitle: 'Connect',
         component: StakingViewConnect,
         ...(isConnected
-          ? { subTitle: truncateHash(address) }
+          ? { subTitle: ensName || truncateHash(address) }
           : chain?.unsupported && { subTitle: 'Unsupported Chain' }),
       },
       {
@@ -40,7 +41,7 @@ export default function StakingPage() {
       },
     ]
     setStepperItems(stepperItems)
-  }, [address, chain?.unsupported, pathname])
+  }, [address, ensName, chain?.unsupported, pathname])
 
   return (
     <>
