@@ -1,4 +1,4 @@
-import { ExclamationTriangleIcon } from '@heroicons/react/24/solid'
+import { ArrowTopRightOnSquareIcon, ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import { truncateHash } from '@lib/truncateHash'
 import { constants } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
@@ -23,6 +23,13 @@ export const StakeDonateBalance: FC<StakeDonateBalanceProps> = ({ mode }) => {
   const { address } = useAccount()
   const { data: ensName } = useEnsName({ address, chainId: 1 })
   const { chain } = useNetwork()
+  // TODO
+  const token =
+    chain?.id === 137
+      ? '0x2791bca1f2de4661ed88a30c99a7a9449aa84174'
+      : chain?.id === 80001
+      ? '0x9aa7fEc87CA69695Dd1f879567CcF49F3ba417E2'
+      : constants.AddressZero
   const {
     data: balance,
     isError,
@@ -30,48 +37,83 @@ export const StakeDonateBalance: FC<StakeDonateBalanceProps> = ({ mode }) => {
   } = useBalance({
     addressOrName: address,
     watch: true,
-    // TODO
-    token:
-      chain?.id === 137
-        ? '0x2791bca1f2de4661ed88a30c99a7a9449aa84174'
-        : chain?.id === 80001
-        ? '0x9aa7fEc87CA69695Dd1f879567CcF49F3ba417E2'
-        : constants.AddressZero,
+    token,
   })
 
   return (
     <>
       <StakingStepperItemContentBox>
-        <StakingStepperItemContentBoxHeadline>Account Balance</StakingStepperItemContentBoxHeadline>
+        <div tw="flex justify-between items-baseline">
+          <StakingStepperItemContentBoxHeadline>
+            Account Balance
+          </StakingStepperItemContentBoxHeadline>
+          {/* Chain Name */}
+          <div tw="flex items-center -translate-y-0.5 space-x-2 bg-gray-100 px-2.5 py-1.5 rounded-full">
+            <div tw="h-2 w-2 bg-green-500 rounded-full" />
+            <div tw="text-xs leading-none">{chain?.name}</div>
+          </div>
+        </div>
         <StakingStepperItemContentBoxSubtitle title={address}>
           {ensName || truncateHash(address)}
         </StakingStepperItemContentBoxSubtitle>
+
         <StakingStepperItemContentBoxDivider />
-        <div tw="flex items-center space-x-4">
-          <Image src={usdcSvg} width={40} height={40} alt="USDC Token Logo" />
-          {!isLoading && balance?.value && (
-            <NumericFormat
-              value={formatUnits(balance.value, 6)}
-              displayType={'text'}
-              decimalScale={2}
-              thousandSeparator={true}
-              suffix=" USDC"
-              tw="text-2xl leading-none font-display font-bold whitespace-nowrap"
-            />
-          )}
-          {isLoading && (
-            <SpinnerDiamond
-              size={24}
-              thickness={125}
-              color={theme('colors.gray.900')}
-              secondaryColor={theme('colors.gray.400')}
-            />
-          )}
+
+        <div tw="flex items-center justify-between">
+          <div tw="flex items-center space-x-4">
+            {/* Currency Logo */}
+            <Image src={usdcSvg} width={40} height={40} alt="USDC Token Logo" />
+
+            {/* Balance Value */}
+            {!isLoading && balance?.value && (
+              <div tw="flex flex-col">
+                <NumericFormat
+                  value={formatUnits(balance.value, 6)}
+                  displayType={'text'}
+                  decimalScale={2}
+                  thousandSeparator={true}
+                  suffix=" USDC"
+                  tw="text-2xl leading-none font-display font-bold whitespace-nowrap"
+                />
+
+                {/* Warning if balance too low */}
+                {balance.value.isZero() && (
+                  <div tw="mt-0.5 text-xs leading-none font-semibold text-amber-500">
+                    Balance too low
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Loading Indicator */}
+            {isLoading && (
+              <SpinnerDiamond
+                size={24}
+                thickness={125}
+                color={theme('colors.gray.900')}
+                secondaryColor={theme('colors.gray.400')}
+              />
+            )}
+          </div>
+
+          {/* Error */}
           {!isLoading && isError && (
             <div tw="flex items-center text-amber-600">
               <ExclamationTriangleIcon tw="w-6 shrink-0 grow-0 mr-2" />
               <div tw="text-sm font-semibold mb-px">Error while fetching balance</div>
             </div>
+          )}
+
+          {/* Explorer URL of token contract */}
+          {!!chain?.blockExplorers?.['etherscan'] && !!token && (
+            <a
+              href={`${chain.blockExplorers['etherscan'].url}/address/${token}`}
+              target="_blank"
+              title={chain.blockExplorers['etherscan'].name}
+              tw="shrink-0 grow-0 text-gray-400 hover:text-gray-800"
+            >
+              <ArrowTopRightOnSquareIcon tw="h-5 w-5" />
+            </a>
           )}
         </div>
       </StakingStepperItemContentBox>

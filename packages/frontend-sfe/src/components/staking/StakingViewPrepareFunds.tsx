@@ -1,4 +1,5 @@
 import { FAQItem, FAQsSection } from '@components/shared/FAQsSection'
+import { env } from '@lib/environment'
 import { FC } from 'react'
 import 'twin.macro'
 import { useAccount } from 'wagmi'
@@ -23,6 +24,14 @@ const faqItems: FAQItem[] = [
     answer:
       'Maecenas faucibus mollis interdum. Cras justo odio, dapibus ac facilisis in, egestas eget quam.',
   },
+  ...(!env.isProduction
+    ? [
+        {
+          question: 'How to get testnet funds?',
+          answer: `On Polygon Mumbai go to the [AAVE Faucet](https://app.aave.com/faucet/), switch to testnet-mode, and mint some USDC to your wallet.`,
+        },
+      ]
+    : []),
 ]
 
 export interface StakingViewPrepareFundsProps extends StakingStepperItemComponentProps {}
