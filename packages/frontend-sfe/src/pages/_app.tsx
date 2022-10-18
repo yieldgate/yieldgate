@@ -1,8 +1,7 @@
+import { Web3Wrapper } from '@components/layout/Web3Wrapper'
 import { cache } from '@emotion/css'
 import { CacheProvider } from '@emotion/react'
 import { env } from '@lib/environment'
-import { chains, wagmiClient } from '@lib/wagmiClient'
-import { lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 import '@rainbow-me/rainbowkit/styles.css'
 import GlobalStyles from '@styles/GlobalStyles'
 import { domAnimation, LazyMotion } from 'framer-motion'
@@ -12,7 +11,6 @@ import Router from 'next/router'
 import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { Toaster } from 'react-hot-toast'
-import { WagmiConfig } from 'wagmi'
 
 // Router Loading Animation with @tanem/react-nprogress
 Router.events.on('routeChangeStart', () => nProgress.start())
@@ -48,22 +46,11 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
       <CacheProvider value={cache}>
         <GlobalStyles />
 
-        <WagmiConfig client={wagmiClient}>
-          <RainbowKitProvider
-            appInfo={{ appName: 'Stake for Earth', disclaimer: () => <>lol</> }}
-            chains={chains}
-            theme={lightTheme({
-              accentColor: '#000',
-              accentColorForeground: '#FFF',
-              borderRadius: 'medium',
-              fontStack: 'system',
-            })}
-          >
-            <LazyMotion features={domAnimation}>
-              <Component {...pageProps} />
-            </LazyMotion>
-          </RainbowKitProvider>
-        </WagmiConfig>
+        <Web3Wrapper>
+          <LazyMotion features={domAnimation}>
+            <Component {...pageProps} />
+          </LazyMotion>
+        </Web3Wrapper>
 
         <Toaster
           toastOptions={{
