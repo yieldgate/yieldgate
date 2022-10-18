@@ -1,7 +1,7 @@
 import { Tab } from '@headlessui/react'
 import { CheckIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
 import { useIsSSR } from '@lib/useIsSSR'
-import { AnimatePresence, AnimationProps, m } from 'framer-motion'
+import { AnimatePresence, m } from 'framer-motion'
 import { FC, forwardRef, Fragment, useEffect, useState } from 'react'
 import 'twin.macro'
 import tw from 'twin.macro'
@@ -27,62 +27,35 @@ export interface StakingStepperProps {
   mode: StakingViewStakeDonateMode
 }
 export const StakingStepper: FC<StakingStepperProps> = ({ items, mode }) => {
-  const [previousIndex, setPreviousIndex] = useState<number | undefined>(undefined)
-  const [selectedIndex, setSelectedIndex] = useState(0)
+  type IndexState = { selected: number; previous: undefined | number }
+  const [index, setIndexState] = useState<IndexState>({ selected: 0, previous: undefined })
   const [selectedItem, setSelectedItem] = useState(items[0])
-
-  // Navigate back to first if currently selected one gets disabled
-  useEffect(() => {
-    const isDisabled = items?.[selectedIndex]?.disabled
-    if (isDisabled && selectedIndex !== 0) setIndex(0)
-  }, [items])
-
-  // Tab-panel animation properties
-  const x = previousIndex === undefined ? 0 : 10 * (previousIndex < selectedIndex ? 1 : -1)
-  const animationProps: AnimationProps & { static?: boolean } = {
-    static: true,
-    initial: {
-      opacity: 0,
-      x,
-    },
-    animate: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.15,
-      },
-    },
-    exit: {
-      opacity: 0,
-      x,
-      transition: {
-        duration: 0.15,
-      },
-    },
-  }
-
-  // Set new index with overflow-check
   const setIndex = (val: number) => {
-    setPreviousIndex(selectedIndex)
-    const newSelectedIndex = Math.max(0, Math.min(val, items.length - 1))
-    setSelectedIndex(newSelectedIndex)
+    setIndexState((index) => ({
+      selected: Math.max(0, Math.min(val, items.length - 1)),
+      previous: index.selected,
+    }))
   }
 
   // Update selected item
   useEffect(() => {
-    setSelectedItem(items[selectedIndex])
-  }, [selectedIndex, items])
+    setSelectedItem(items[index.selected])
+  }, [index.selected, items])
+
+  // Navigate back if item gets disabled dynamically
+  useEffect(() => {
+    const isDisabled = items?.[index.selected]?.disabled
+    if (isDisabled && index.selected !== 0) setIndex(0)
+  }, [items])
 
   return (
     <>
       <Tab.Group
         manual
-        selectedIndex={selectedIndex}
+        selectedIndex={index.selected}
         as="div"
         tw="flex flex-col h-full"
-        onChange={(val: any) => {
-          setIndex(val)
-        }}
+        onChange={setIndex as any}
       >
         {/* Stepper Titles/Tabs  */}
         <Tab.List tw="flex justify-center items-center space-x-6 mt-2 sm:mt-0 lg:-mt-0.5">
@@ -100,7 +73,7 @@ export const StakingStepper: FC<StakingStepperProps> = ({ items, mode }) => {
                     <StakingStepperTabButton
                       item={item}
                       index={idx}
-                      selectedIndex={selectedIndex}
+                      selectedIndex={index.selected}
                       {...props}
                     />
                   )}
@@ -113,20 +86,39 @@ export const StakingStepper: FC<StakingStepperProps> = ({ items, mode }) => {
         <Tab.Panels tw="grow flex flex-col">
           <AnimatePresence mode="wait">
             <Tab.Panel
-              key={`stepper-panel-${selectedIndex}`}
+              key={`stepper-panel-${selectedItem?.title}`}
               as={m.div}
               tw="grow flex flex-col py-12 outline-none"
-              {...animationProps}
+              static={true}
+              initial={{
+                opacity: 0,
+                x: 10 * ((index.previous || 0) < index.selected ? 1 : -1),
+              }}
+              animate={{
+                opacity: 1,
+                x: 0,
+                transition: {
+                  duration: index.previous === undefined ? 0 : 0.15,
+                },
+              }}
+              exit={{
+                opacity: 0,
+                x: 10 * ((index.previous || 0) > index.selected ? 1 : -1),
+                transition: {
+                  duration: 0.15,
+                },
+              }}
             >
               {!!selectedItem?.component && (
                 <selectedItem.component
+                  key={`selected-item-${selectedItem.title}`}
                   onGoPrev={() => {
-                    setIndex(selectedIndex - 1)
+                    setIndex(index.selected - 1)
                   }}
                   onGoNext={() => {
-                    setIndex(selectedIndex + 1)
+                    setIndex(index.selected + 1)
                   }}
-                  firstRender={previousIndex === undefined}
+                  firstRender={index.previous === undefined}
                   mode={mode}
                 />
               )}
