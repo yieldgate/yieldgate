@@ -1,7 +1,7 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
 import { CheckCircleIcon } from '@heroicons/react/24/solid'
 import Image from 'next/image'
-import twitterSvg from 'public/icons/social/twitter.svg'
+import twitterSvg from 'public/icons/social/twitter-circle.svg'
 import badgePlaceholderImg from 'public/images/badge-placeholder.png'
 import { FC } from 'react'
 import 'twin.macro'

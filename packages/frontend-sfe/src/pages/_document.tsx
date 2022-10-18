@@ -49,9 +49,6 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
 
-          {/* Preconnect to Twitter Widget.js */}
-          <link rel="preconnect" href="https://platform.twitter.com/widgets.js" />
-
           {/* Plausible Analytics */}
           {env.isProduction && (
             <script

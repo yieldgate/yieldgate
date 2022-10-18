@@ -6,7 +6,7 @@ import { HomeHowItWorksSection } from '@components/home/HomeHowItWorksSection'
 import { HomeLayout } from '@components/home/HomeLayout'
 import { HomeNewsletterSection } from '@components/home/HomeNewsletterSection'
 import { HomePrimaryTextSection } from '@components/home/HomePrimaryTextSection'
-import { HomeTweetWall } from '@components/home/HomeTweetWall'
+import { HomeStaticTweetWall } from '@components/home/HomeTweetWall'
 import 'twin.macro'
 
 export interface IndexPageProps {}
@@ -19,7 +19,7 @@ export default function IndexPage() {
         <HomeHeroKPIs />
         <HomeBackedBySection />
         <HomePrimaryTextSection />
-        <HomeTweetWall />
+        <HomeStaticTweetWall />
         <HomeHowItWorksSection />
         <HomeFAQsSection />
         <HomeNewsletterSection />

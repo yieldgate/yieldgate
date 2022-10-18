@@ -78,7 +78,7 @@ export const StakeDonateBalance: FC<StakeDonateBalanceProps> = ({ mode }) => {
 
                 {/* Warning if balance too low */}
                 {balance.value.isZero() && (
-                  <div tw="mt-0.5 text-xs leading-none font-semibold text-amber-500">
+                  <div tw="-ml-px mt-0.5 text-xs leading-none font-semibold text-amber-500">
                     Balance too low
                   </div>
                 )}
