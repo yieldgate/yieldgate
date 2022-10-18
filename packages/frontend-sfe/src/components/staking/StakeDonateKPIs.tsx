@@ -57,7 +57,9 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
 
         {/* Actions */}
         <BaseButtonGroup tw="grid grid-cols-2">
-          <BaseButton>View Badge</BaseButton>
+          <BaseButton asLink={true} linkProps={{ href: 'https://doingud.com/' }} target="_blank">
+            View Badge ↗
+          </BaseButton>
           <BaseButton variant="outline">Withdraw</BaseButton>
         </BaseButtonGroup>
       </StakingStepperItemContentBox>

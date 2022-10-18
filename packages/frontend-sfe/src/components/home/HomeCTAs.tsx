@@ -6,10 +6,10 @@ import tw from 'twin.macro'
 export interface HomeCTAsProps {
   primaryFirst?: boolean
 }
-export const HomeCTAs: FC<HomeCTAsProps> = ({ primaryFirst }) => {
+export const HomeCTAs: FC<HomeCTAsProps> = ({ primaryFirst, ...props }) => {
   return (
     <>
-      <div tw="flex text-sm -mx-1.5">
+      <div tw="flex text-sm -mx-1.5" {...props}>
         <BaseButton
           asLink={true}
           linkProps={{ href: '/donate' }}

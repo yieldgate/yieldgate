@@ -6,7 +6,7 @@ import 'twin.macro'
 import tw, { styled, theme } from 'twin.macro'
 
 const BaseButtonWrapper = styled.button(({ variant, disabled }: Partial<BaseButtonProps>) => [
-  tw`inline-flex relative items-center justify-center leading-none rounded font-body py-2.5 px-5`,
+  tw`flex relative items-center justify-center leading-none rounded font-body py-2.5 px-5`,
   variant === 'outline'
     ? tw`bg-transparent backdrop-blur-md border border-black text-black`
     : tw`bg-black border border-transparent text-white`,
@@ -62,7 +62,7 @@ export const BaseButton: FC<PropsWithChildren<BaseButtonProps>> = ({
 
 export const BaseButtonGroup = styled.div`
   ${tw`flex flex-wrap -mx-1 -my-1`}
-  button {
+  button, a {
     ${tw`mx-1 my-1`}
   }
 `

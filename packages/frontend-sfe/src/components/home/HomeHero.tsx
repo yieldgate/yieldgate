@@ -27,7 +27,7 @@ export const HomeHero: FC<HomeHeroProps> = () => {
             </div>
 
             {/* CTAs */}
-            <HomeCTAs primaryFirst={true} />
+            <HomeCTAs primaryFirst={true} tw="text-base" />
           </div>
         </Wrapper>
 
