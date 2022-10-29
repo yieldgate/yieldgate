@@ -35,17 +35,13 @@ export const StakingViewSuccess: FC<StakingViewSuccessProps> = ({ mode }) => {
 
             {/* Staking Badge (TODO) */}
             <div tw="w-[13rem] mx-auto mb-[-1rem]">
-              <Image width={742} height={1000} src={badgePlaceholderImg} alt="Staking Badge NFT" />
+              <Image src={badgePlaceholderImg} alt="Staking Badge NFT" />
             </div>
             <StakingStepperItemContentBoxDivider />
 
             {/* Actions */}
             <BaseButtonGroup tw="grid grid-cols-1">
-              <BaseButton
-                asLink={true}
-                linkProps={{ href: 'https://doingud.com/' }}
-                target="_blank"
-              >
+              <BaseButton asLink={true} href="https://doingud.com/" target="_blank">
                 View on DoinGud ↗
               </BaseButton>
             </BaseButtonGroup>

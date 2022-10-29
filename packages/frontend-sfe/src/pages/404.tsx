@@ -18,7 +18,7 @@ export default function IndexPage() {
             </div>
             <div tw="text-gray-500 mt-2">Page not found</div>
             <div tw="w-10 h-[2px] bg-gray-200 my-10" />
-            <BaseButton asLink={true} linkProps={{ href: '/' }}>
+            <BaseButton asLink={true} href="/">
               Back to Start
             </BaseButton>
           </div>

@@ -26,14 +26,8 @@ export const HomeNewsletterSection: FC<HomeNewsletterSectionProps> = () => {
             <HomeNewsletterSubscribeForm />
           </div>
 
-          <div tw="absolute max-w-[50%] right-0 top-1/2 -translate-y-1/2 select-none opacity-50 z-0">
-            <Image
-              src={circleElementSvg}
-              width={450}
-              height={450}
-              layout="fixed"
-              alt="Decorative Element"
-            />
+          <div tw="absolute max-w-[66%] right-0 top-1/2 -translate-y-1/2 select-none opacity-50 z-0">
+            <Image src={circleElementSvg} width={450} height={450} alt="Decorative Element" />
           </div>
         </Wrapper>
       </div>

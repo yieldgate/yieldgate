@@ -7,16 +7,16 @@ export interface HomeHeroIllustrationProps {}
 export const HomeHeroIllustration: FC<HomeHeroIllustrationProps> = ({ ...props }) => {
   return (
     <>
-      <div
-        tw="max-h-[100%] w-full flex flex-col absolute bottom-0 right-0 z-0 select-none overflow-hidden"
-        {...props}
-      >
+      <div tw="absolute inset-0 z-0 select-none overflow-hidden" {...props}>
         <Image
           src={illustrationImg}
-          priority={true}
-          objectFit="contain"
-          objectPosition="right bottom"
+          fill
+          style={{
+            objectFit: 'contain',
+            objectPosition: 'right bottom',
+          }}
           alt="Decorative Earth Illustration by Liam Cobb"
+          priority
         />
       </div>
     </>

@@ -47,12 +47,15 @@ export const HomeBackedBySection: FC<HomeBackedBySectionProps> = () => {
           {logos.map((logo) => (
             <div
               key={logo.name}
-              tw="h-[50px] max-w-[150px] mx-8 my-2 flex flex-col justify-center items-center"
+              tw="h-[50px] w-[150px] mx-8 my-2 relative justify-center items-center"
             >
               <Image
                 src={logo.img}
-                objectFit="contain"
-                objectPosition="center center"
+                fill
+                style={{
+                  objectFit: 'contain',
+                  objectPosition: 'center center',
+                }}
                 alt={`${logo.name} Logo`}
                 tw="opacity-30 transition-opacity hover:(opacity-80)"
               />

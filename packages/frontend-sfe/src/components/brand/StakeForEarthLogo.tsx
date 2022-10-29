@@ -14,7 +14,7 @@ export const StakeForEarthLogo: FC<StakeForEarthLogoProps> = ({ href, hideTextOn
   const StakeForEarthLogoInner: FC = () => (
     <div tw="flex items-center space-x-2" {...props}>
       <div tw="flex justify-center items-center shrink-0">
-        <Image src={logoIcon} priority={true} width={32} height={32} alt="Stake For Earth Logo" />
+        <Image src={logoIcon} width={32} height={32} alt="Stake For Earth Logo" priority />
       </div>
       <div
         css={[
@@ -31,10 +31,8 @@ export const StakeForEarthLogo: FC<StakeForEarthLogoProps> = ({ href, hideTextOn
   )
 
   return href ? (
-    <Link href={href} passHref>
-      <a tw="cursor-pointer">
-        <StakeForEarthLogoInner />
-      </a>
+    <Link href={href} tw="cursor-pointer">
+      <StakeForEarthLogoInner />
     </Link>
   ) : (
     <StakeForEarthLogoInner />

@@ -22,16 +22,18 @@ export const HomeFooter: FC<HomeFooterProps> = () => {
           <div tw="mt-10 flex flex-col items-center space-y-2 md:(flex-row space-y-0) justify-between text-xs text-gray-500">
             <div>©{dayjs().year()} Stake for Earth Foundation</div>
             <div tw="-mx-2">
-              <Link href="https://github.com/yieldgate/yieldgate" passHref>
-                <a tw="mx-2 cursor-pointer hover:underline" target="_blank">
-                  Github
-                </a>
+              <Link
+                href="https://github.com/yieldgate/yieldgate"
+                tw="mx-2 cursor-pointer hover:underline"
+                target="_blank"
+              >
+                Github
               </Link>
-              <Link href="/legal/privacy" passHref>
-                <a tw="mx-2 cursor-pointer hover:underline">Privacy Policy</a>
+              <Link href="/legal/privacy" tw="mx-2 cursor-pointer hover:underline">
+                Privacy Policy
               </Link>
-              <Link href="/legal/terms" passHref>
-                <a tw="mx-2 cursor-pointer hover:underline">Terms and Conditions</a>
+              <Link href="/legal/terms" tw="mx-2 cursor-pointer hover:underline">
+                Terms and Conditions
               </Link>
             </div>
           </div>

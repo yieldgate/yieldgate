@@ -1,6 +1,12 @@
 import { CSSInterpolation } from '@emotion/css'
 import Link, { LinkProps } from 'next/link'
-import { AnchorHTMLAttributes, ButtonHTMLAttributes, FC, PropsWithChildren } from 'react'
+import {
+  AnchorHTMLAttributes,
+  ButtonHTMLAttributes,
+  FC,
+  PropsWithChildren,
+  RefAttributes,
+} from 'react'
 import { SpinnerDiamond } from 'spinners-react'
 import 'twin.macro'
 import tw, { styled, theme } from 'twin.macro'
@@ -13,15 +19,16 @@ const BaseButtonWrapper = styled.button(({ variant, disabled }: Partial<BaseButt
   disabled && tw`opacity-80 cursor-not-allowed`,
   disabled && (variant === 'outline' ? tw`text-black/80` : tw`text-white/80`),
 ])
-const BaseButtonAnchorWrapper = BaseButtonWrapper.withComponent('a')
+const BaseButtonLinkWrapper = BaseButtonWrapper.withComponent(Link)
 
 type ButtonAndAnchorProps = ButtonHTMLAttributes<HTMLButtonElement> &
-  AnchorHTMLAttributes<HTMLAnchorElement>
-export interface BaseButtonProps extends ButtonAndAnchorProps {
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, keyof LinkProps> &
+  LinkProps &
+  RefAttributes<HTMLAnchorElement>
+export interface BaseButtonProps extends Partial<ButtonAndAnchorProps> {
   variant?: 'solid' | 'outline'
   isLoading?: boolean
   asLink?: boolean
-  linkProps?: LinkProps
   css?: CSSInterpolation
 }
 export const BaseButton: FC<PropsWithChildren<BaseButtonProps>> = ({
@@ -29,18 +36,13 @@ export const BaseButton: FC<PropsWithChildren<BaseButtonProps>> = ({
   variant,
   isLoading,
   asLink,
-  linkProps,
   ...props
 }) => {
   const wrapperProps = { variant, isLoading }
-  return asLink && linkProps ? (
-    <Link {...linkProps} passHref>
-      <BaseButtonAnchorWrapper {...wrapperProps} {...props}>
-        {children}
-      </BaseButtonAnchorWrapper>
-    </Link>
+  return asLink ? (
+    <BaseButtonLinkWrapper {...(props as any)}>{children}</BaseButtonLinkWrapper>
   ) : (
-    <BaseButtonWrapper {...wrapperProps} {...props}>
+    <BaseButtonWrapper {...wrapperProps} {...(props as any)}>
       <div css={[isLoading && tw`opacity-0`]}>{children}</div>
 
       {/* Loading Animation Overlay */}

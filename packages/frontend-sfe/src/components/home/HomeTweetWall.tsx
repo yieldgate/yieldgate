@@ -72,35 +72,34 @@ export interface StaticTweetDetails {
 export const StaticTweet: FC<StaticTweetDetails> = ({ id, tweet, time, author, ...props }) => {
   return (
     <>
-      <Link href={`https://twitter.com/twitter/status/${id}`} passHref>
-        <a
-          target="_blank"
-          tw="flex flex-col py-3 px-4 space-y-3 rounded-xl border border-gray-200 overflow-hidden cursor-pointer transition-all hover:bg-gray-50"
-          {...props}
-        >
-          <div tw="flex justify-between items-start">
-            <div tw="flex items-start mb-0.5">
-              <div tw="shrink-0 grow-0 flex flex-col w-[2.75rem] h-[2.75rem] mr-2 relative rounded-full bg-gray-100 overflow-hidden">
-                <Image
-                  src={`/images/avatars/${author.username}.jpg`}
-                  width={400}
-                  height={400}
-                  alt={`Avatar of @${author.username}`}
-                />
-              </div>
-              <div tw="flex flex-col whitespace-nowrap">
-                <div tw="font-semibold">{author.name}</div>
-                <div tw="text-sm text-gray-600 -mt-px">@{author.username}</div>
-              </div>
+      <Link
+        href={`https://twitter.com/twitter/status/${id}`}
+        target="_blank"
+        tw="flex flex-col py-3 px-4 space-y-3 rounded-xl border border-gray-200 overflow-hidden cursor-pointer transition-all hover:bg-gray-50"
+        {...props}
+      >
+        <div tw="flex justify-between items-start">
+          <div tw="flex items-start mb-0.5">
+            <div tw="shrink-0 grow-0 flex flex-col w-[2.75rem] h-[2.75rem] mr-2 relative rounded-full bg-gray-100 overflow-hidden">
+              <Image
+                src={`/images/avatars/${author.username}.jpg`}
+                width={400}
+                height={400}
+                alt={`Avatar of @${author.username}`}
+              />
             </div>
-            <div tw="shrink-0 grow-0 ml-2">
-              <Image src={twitterSvg} width={25} height={25} alt="Twitter Logo" />
+            <div tw="flex flex-col whitespace-nowrap">
+              <div tw="font-semibold">{author.name}</div>
+              <div tw="text-sm text-gray-600 -mt-px">@{author.username}</div>
             </div>
           </div>
-          <div>{tweet}</div>
-          <div tw="grow mt-0!"></div>
-          <div tw="text-sm text-gray-600">{time.format('LT · ll')}</div>
-        </a>
+          <div tw="shrink-0 grow-0 ml-2">
+            <Image src={twitterSvg} width={25} height={25} alt="Twitter Logo" />
+          </div>
+        </div>
+        <div>{tweet}</div>
+        <div tw="grow mt-0!"></div>
+        <div tw="text-sm text-gray-600">{time.format('LT · ll')}</div>
       </Link>
     </>
   )
