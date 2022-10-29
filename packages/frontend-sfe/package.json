@@ -49,7 +49,7 @@
     "react-number-format": "^5.1.0",
     "spinners-react": "^1.0.7",
     "use-async-effect": "^2.2.7",
-    "wagmi": "^0.6.8"
+    "wagmi": "^0.7.8"
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",
