@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import illustrationImg from 'public/images/hero-illustration-draft-7.png'
+import illustrationImg from 'public/images/hero-illustration-draft.png'
 import { FC } from 'react'
 import 'twin.macro'
 
