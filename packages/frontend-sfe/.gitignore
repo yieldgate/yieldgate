@@ -1,3 +1,7 @@
 .next/
 out/
 build
+
+# next-sitemap
+public/sitemap*.xml
+public/robots.txt

@@ -4,12 +4,12 @@
       "name": "_ROOT",
       "path": "../"
     },
+    // {
+    //   "name": "YG-Frontend",
+    //   "path": "../packages/frontend-yg"
+    // },
     {
-      "name": "YieldGate Frontend",
-      "path": "../packages/frontend-yg"
-    },
-    {
-      "name": "StakeForEarth Frontend",
+      "name": "SFE-Frontend",
       "path": "../packages/frontend-sfe"
     },
     {
@@ -20,13 +20,16 @@
   "settings": {
     "files.exclude": {
       "**/node_modules/": true,
-      "**/package-lock.json": true,
       "**/pnpm-lock.yaml": true,
-      "**/yarn.lock": true,
-      "**/yarn-error.log": true,
+      "**/tsconfig.tsbuildinfo": true,
       "**/.yarn": true,
+      "**/.next": true,
       "**/.turbo": true,
-      "**/packages/contracts/deployments": true
+      "**/.vercel": true
+    },
+    "search.exclude": {
+      "**/packages/contracts/deployments": true,
+      "**/packages/frontend-yg": true
     },
     "search.useIgnoreFiles": true,
     "search.useGlobalIgnoreFiles": true,

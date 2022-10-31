@@ -16,11 +16,7 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@components/*": ["./src/components/*"],
-      "@lib/*": ["./src/lib/*"],
-      "@entities/*": ["./src/entities/*"],
-      "@styles/*": ["./src/styles/*"],
-      "@deployments/*": ["./src/deployments/*"]
+      "@*": ["./src/*"]
     }
   },
   "references": [{ "path": "../contracts" }],

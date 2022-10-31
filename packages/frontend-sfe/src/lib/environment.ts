@@ -3,7 +3,7 @@ export const env = {
   url:
     process.env.NEXT_PUBLIC_VERCEL_URL && process.env.NEXT_PUBLIC_VERCEL_ENV! === 'preview'
       ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-      : process.env.NEXT_PUBLIC_URL,
+      : process.env.NEXT_PUBLIC_URL!,
   isProduction: process.env.NEXT_PUBLIC_PRODUCTION_MODE === 'true',
 
   defaultChain: parseInt(process.env.NEXT_PUBLIC_DEFAULT_CHAIN!),
@@ -17,4 +17,6 @@ export const env = {
     137: process.env.NEXT_PUBLIC_RPC_137!, // Polygon Mainnet
     80001: process.env.NEXT_PUBLIC_RPC_80001!, // Mumbai
   },
+
+  sendinblueApiKey: process.env.SENDINBLUE_API_KEY!,
 }

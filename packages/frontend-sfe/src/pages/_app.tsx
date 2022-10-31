@@ -1,15 +1,16 @@
+import { Web3Wrapper } from '@components/layout/Web3Wrapper'
 import { cache } from '@emotion/css'
 import { CacheProvider } from '@emotion/react'
-import { chains, wagmiClient } from '@lib/wagmiClient'
-import { lightTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit'
+import { env } from '@lib/environment'
 import '@rainbow-me/rainbowkit/styles.css'
 import GlobalStyles from '@styles/GlobalStyles'
+import { domAnimation, LazyMotion } from 'framer-motion'
 import { DefaultSeo } from 'next-seo'
 import type { AppProps } from 'next/app'
 import Router from 'next/router'
 import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import { WagmiConfig } from 'wagmi'
+import { Toaster } from 'react-hot-toast'
 
 // Router Loading Animation with @tanem/react-nprogress
 Router.events.on('routeChangeStart', () => nProgress.start())
@@ -20,7 +21,11 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   return (
     <>
       <DefaultSeo
-        defaultTitle="Stake for Earth"
+        // TODO
+        dangerouslySetAllPagesToNoFollow={!env.isProduction}
+        dangerouslySetAllPagesToNoIndex={!env.isProduction}
+        defaultTitle="Stake for Earth – Carbon Offsetting with Yield"
+        titleTemplate="%s | Stake for Earth – Carbon Offsetting with Yield"
         description="Do something good for our climate at zero cost. – All with yield."
         openGraph={{
           type: 'website',
@@ -40,20 +45,27 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
 
       <CacheProvider value={cache}>
         <GlobalStyles />
-        <WagmiConfig client={wagmiClient}>
-          <RainbowKitProvider
-            chains={chains}
-            theme={lightTheme({
-              accentColor: '#edf2f7',
-              accentColorForeground: '#1a202c',
-              borderRadius: 'medium',
-              fontStack: 'system',
-              overlayBlur: 'small',
-            })}
-          >
+
+        <Web3Wrapper>
+          <LazyMotion features={domAnimation}>
             <Component {...pageProps} />
-          </RainbowKitProvider>
-        </WagmiConfig>
+          </LazyMotion>
+        </Web3Wrapper>
+
+        <Toaster
+          toastOptions={{
+            position: 'top-center',
+            style: {
+              borderRadius: '0px',
+              border: '1px #e4e4e4 solid',
+              boxShadow: 'none',
+              background: 'white',
+            },
+            success: {
+              duration: 5000,
+            },
+          }}
+        />
       </CacheProvider>
     </>
   )
