@@ -38,6 +38,21 @@ interface ITokenPool {
      * @dev The implementation should enforce some access control to this
      *   function, e.g., only let it be callable by the beneficiary. It must
      *   emit a Claimed event on success.
+     * @return Returns the claimed amount of yield.
      */
     function claim(address token) external returns (uint256);
+
+    /**
+     * @notice Queries the claimable yield for the given ERC20 token.
+     * @param token The ERC20 token to query.
+     * @return Returns the claimable yield.
+     */
+    function claimable(address token) external view returns (uint256);
+
+    /**
+     * @notice Queries the total staked amount for the given ERC20 token.
+     * @param token The ERC20 token to query.
+     * @return Returns the total staked amount.
+     */
+    function staked(address token) external view returns (uint256);
 }
