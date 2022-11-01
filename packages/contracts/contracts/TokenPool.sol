@@ -38,7 +38,25 @@ contract TokenPool is ITokenPool {
         beneficiary = _beneficiary;
     }
 
-    /// @inheritdoc ITokenPool
+    /*
+     * @notice Approves the Aave Pool to spend the given token on behalf of this
+     * token pool. Trusting the Aave pool implementation, the maximum allowance
+     * is set to save on repeated approve calls.
+     * @dev Has to be called once before staking a new token, by any user.
+     * A new call would be necessary in the unlikely event that the Aave pool
+     * proxy address, returned by the PoolAddressesProvider, changes.
+     */
+    function approvePool(address token) public {
+        IERC20(token).approve(address(aavePool()), type(uint256).max);
+    }
+
+    /**
+     * @inheritdoc ITokenPool
+     * @dev When staking a token for the first time, the (infinite) ERC20
+     * allowance for the Aave Pool has to be approved first by calling
+     * function approvePool (with any user).
+     * stake emits a Staked event on success.
+     */
     function stake(
         address token,
         address supporter,
