@@ -47,7 +47,10 @@ contract TokenPool is ITokenPool {
      * proxy address, returned by the PoolAddressesProvider, changes.
      */
     function approvePool(address token) public {
-        IERC20(token).approve(address(aavePool()), type(uint256).max);
+        require(
+            IERC20(token).approve(address(aavePool()), type(uint256).max),
+            "AavePool approval failed"
+        );
     }
 
     /**
@@ -67,6 +70,11 @@ contract TokenPool is ITokenPool {
         stakes[token][supporter] += amount;
         totalStake[token] += amount;
 
+        require(
+            IERC20(token).transferFrom(msg.sender, address(this), amount),
+            "token transfer failed"
+        );
+        // For the next step to succeed, approvePool must have been called once before.
         aavePool().supply(token, amount, address(this), 0);
 
         emit Staked(token, supporter, amount);
