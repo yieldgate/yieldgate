@@ -41,13 +41,13 @@ export const HomeBackedBySection: FC<HomeBackedBySectionProps> = () => {
   ]
   return (
     <>
-      <Wrapper tw=" overflow-hidden">
+      <Wrapper tw="overflow-hidden">
         <SubheadingSmall tw="text-center">Backed by</SubheadingSmall>
-        <div tw="flex flex-wrap justify-center -mx-8 -my-2 mt-0">
+        <div tw="-mx-8 -my-2 mt-0 flex flex-wrap justify-center">
           {logos.map((logo) => (
             <div
               key={logo.name}
-              tw="h-[50px] w-[150px] mx-8 my-2 relative justify-center items-center"
+              tw="relative mx-8 my-2 items-center justify-center h-[50px] w-[150px]"
             >
               <Image
                 src={logo.img}
@@ -57,7 +57,7 @@ export const HomeBackedBySection: FC<HomeBackedBySectionProps> = () => {
                   objectPosition: 'center center',
                 }}
                 alt={`${logo.name} Logo`}
-                tw="opacity-30 transition-opacity hover:(opacity-80)"
+                tw="opacity-30 transition-opacity hover:opacity-80"
               />
             </div>
           ))}

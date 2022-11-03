@@ -11,12 +11,12 @@ export const ArticlePageContent: FC<ArticleStaticPageProps> = ({ slug, content, 
       <Wrapper tw="py-10">
         <article itemScope itemType="http://schema.org/Article">
           {/* Heading */}
-          <div tw="flex flex-col border-b border-gray-200 mb-8">
-            <h1 tw="font-display text-3xl font-bold tracking-tight mb-5" itemProp="headline">
+          <div tw="mb-8 flex flex-col border-gray-200 border-b">
+            <h1 tw="mb-5 font-display font-bold text-3xl tracking-tight" itemProp="headline">
               {metadata.title}
             </h1>
             {metadata.subtitle && (
-              <p tw="text-sm opacity-70 -mt-2.5 mb-5" itemProp="description">
+              <p tw="-mt-2.5 mb-5 text-sm opacity-70" itemProp="description">
                 {metadata.subtitle}
               </p>
             )}
@@ -26,7 +26,7 @@ export const ArticlePageContent: FC<ArticleStaticPageProps> = ({ slug, content, 
           <section tw="prose" itemProp="articleBody">
             <RenderedMarkdownContent content={content} />
             {metadata.updatedAt && (
-              <div tw="text-sm text-gray-400 my-2">
+              <div tw="my-2 text-sm text-gray-400">
                 <span tw="whitespace-pre">Last updated at </span>
                 <time
                   dateTime={dayjs(metadata.updatedAt).format('YYYY-MM-DD')}

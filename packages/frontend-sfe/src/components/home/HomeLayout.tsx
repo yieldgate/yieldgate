@@ -7,9 +7,9 @@ export interface HomeLayoutProps {}
 export const HomeLayout: FC<PropsWithChildren<HomeLayoutProps>> = ({ children }) => {
   return (
     <>
-      <div tw="min-h-full flex flex-col relative">
+      <div tw="relative flex min-h-full flex-col">
         <HomeNavigationBar />
-        <main tw="grow flex flex-col relative">{children}</main>
+        <main tw="relative flex grow flex-col">{children}</main>
         <HomeFooter />
       </div>
     </>

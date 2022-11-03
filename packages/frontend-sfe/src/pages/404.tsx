@@ -12,12 +12,12 @@ export default function IndexPage() {
       <HomeLayout>
         <CenterBody>
           {/* Custom 404 Notice */}
-          <div tw="flex flex-col items-center z-10">
-            <div tw="min-h-[3rem] text-[3rem] leading-none font-display font-bold whitespace-nowrap">
+          <div tw="z-10 flex flex-col items-center">
+            <div tw="whitespace-nowrap font-display font-bold leading-none min-h-[3rem] text-[3rem]">
               <CountUp end={404} duration={1} decimals={0} />
             </div>
-            <div tw="text-gray-500 mt-2">Page not found</div>
-            <div tw="w-10 h-[2px] bg-gray-200 my-10" />
+            <div tw="mt-2 text-gray-500">Page not found</div>
+            <div tw="my-10 w-10 bg-gray-200 h-[2px]" />
             <BaseButton asLink={true} href="/">
               Back to Start
             </BaseButton>

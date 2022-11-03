@@ -19,7 +19,7 @@ export const HomeHeroKPIs: FC<HomeHeroKPIsProps> = () => {
       <h2 tw="sr-only">Stake for Earth in Numbers (KPIs)</h2>
       <div tw="bg-primary-100">
         <Wrapper noVerticalPadding>
-          <div tw="grid divide-y divide-black/10 -mx-4 sm:(-mx-8) lg:(grid-cols-3 divide-y-0 divide-x mx-0)">
+          <div tw="-mx-4 grid divide-y divide-black/10 sm:-mx-8 lg:(mx-0 grid-cols-3 divide-y-0 divide-x)">
             <HomeHeroKPIItem
               label="Total amount"
               value={11140456}
@@ -61,13 +61,13 @@ export const HomeHeroKPIItem: FC<HomeHeroKPIItemProps> = ({
   return (
     <>
       <div
-        tw="flex flex-col min-h-[6.25rem] space-y-2 xs:(flex-row space-x-4 space-y-0) items-center justify-between px-14 py-6"
+        tw="flex flex-col items-center justify-between space-y-2 px-14 py-6 min-h-[6.25rem] xs:(flex-row space-x-4 space-y-0)"
         {...props}
       >
-        <div css={[tw`text-sm`, isLoading ? tw`text-gray-800 animate-pulse` : tw`text-black`]}>
+        <div css={[tw`text-sm`, isLoading ? tw`animate-pulse text-gray-800` : tw`text-black`]}>
           {label}
         </div>
-        <div tw="flex flex-col whitespace-nowrap text-center xs:(text-right)">
+        <div tw="flex flex-col whitespace-nowrap text-center xs:text-right">
           {isLoading ? (
             <SpinnerDiamond
               size={32}
@@ -82,10 +82,10 @@ export const HomeHeroKPIItem: FC<HomeHeroKPIItemProps> = ({
                 value={value}
                 displayType={'text'}
                 thousandSeparator={true}
-                tw="text-[1.95rem] leading-none font-display font-bold"
+                tw="font-display font-bold leading-none text-[1.95rem]"
                 {...numericFormatProps}
               />
-              {description && <div tw="text-xs opacity-75 mt-1">{description}</div>}
+              {description && <div tw="mt-1 text-xs opacity-75">{description}</div>}
             </>
           )}
         </div>

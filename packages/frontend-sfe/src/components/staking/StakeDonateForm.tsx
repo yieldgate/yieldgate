@@ -98,7 +98,7 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
           type="text"
           id="stakingAmount"
           placeholder="100.00"
-          tw="w-full bg-white text-2xl font-medium text-black border border-gray-300 rounded leading-none py-5 pl-4 pr-[5rem] outline-none focus:(ring-offset-2 ring-2 ring-sky-500)"
+          tw="w-full rounded border border-gray-300 bg-white py-5 pl-4 font-medium text-2xl text-black leading-none outline-none pr-[5rem] focus:(ring-2 ring-sky-500 ring-offset-2)"
           {...form.register('stakingAmount', {
             required: true,
             min: {
@@ -112,16 +112,16 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
           })}
         />
 
-        <div tw="flex flex-col items-end space-y-2 absolute right-4 top-1/2 -translate-y-1/2 z-10">
+        <div tw="absolute right-4 top-1/2 z-10 flex -translate-y-1/2 flex-col items-end space-y-2">
           {/* Unit (USDC) */}
-          <div tw="flex items-center space-x-1 text-lg font-medium text-black tracking-tight leading-none">
+          <div tw="flex items-center space-x-1 font-medium text-lg text-black leading-none tracking-tight">
             <Image src={usdcSvg} width={18} height={18} alt="USDC Token Logo" />
             <div>USDC</div>
           </div>
 
           {/* Balance and "Max"-Button */}
           {balance !== undefined && (
-            <div tw="flex justify-end items-baseline text-sm leading-none h-4 space-x-1.5">
+            <div tw="flex h-4 items-baseline justify-end space-x-1.5 text-sm leading-none">
               <div tw="text-gray-600">
                 Balance:{' '}
                 <NumericFormat
@@ -133,7 +133,7 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
               </div>
               <button
                 type="button"
-                tw="text-green-500 font-semibold border border-green-200 hover:(border-green-300) rounded-md py-0.5 px-1"
+                tw="rounded-md border border-green-200 py-0.5 px-1 font-semibold text-green-500 hover:border-green-300"
                 onClick={() => {
                   form.setValue('stakingAmount', balance.formatted)
                 }}
@@ -146,7 +146,7 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
       </div>
 
       {/* Error Message */}
-      <div tw="mt-2 text-xs font-semibold text-amber-500">{errors.stakingAmount?.message}</div>
+      <div tw="mt-2 font-semibold text-xs text-amber-500">{errors.stakingAmount?.message}</div>
     </>
   )
 }

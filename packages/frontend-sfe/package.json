@@ -82,6 +82,7 @@
     "jest": "^29.2.2",
     "jest-watch-typeahead": "^2.2.0",
     "postcss": "^8.4.18",
+    "prettier-plugin-twin.macro": "^1.0.10",
     "tailwindcss": "^3.2.1",
     "twin.macro": "rc",
     "typescript": "^4.8.4"

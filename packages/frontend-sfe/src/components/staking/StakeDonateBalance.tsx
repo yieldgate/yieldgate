@@ -43,13 +43,13 @@ export const StakeDonateBalance: FC<StakeDonateBalanceProps> = ({ mode }) => {
   return (
     <>
       <StakingStepperItemContentBox>
-        <div tw="flex justify-between items-baseline">
+        <div tw="flex items-baseline justify-between">
           <StakingStepperItemContentBoxHeadline>
             Account Balance
           </StakingStepperItemContentBoxHeadline>
           {/* Chain Name */}
-          <div tw="flex items-center -translate-y-0.5 space-x-2 bg-gray-100 px-2.5 py-1.5 rounded-full">
-            <div tw="h-2 w-2 bg-green-500 rounded-full" />
+          <div tw="flex -translate-y-0.5 items-center space-x-2 rounded-full bg-gray-100 px-2.5 py-1.5">
+            <div tw="h-2 w-2 rounded-full bg-green-500" />
             <div tw="text-xs leading-none">{chain?.name}</div>
           </div>
         </div>
@@ -73,12 +73,12 @@ export const StakeDonateBalance: FC<StakeDonateBalanceProps> = ({ mode }) => {
                   decimalScale={2}
                   thousandSeparator={true}
                   suffix=" USDC"
-                  tw="text-2xl leading-none font-display font-bold whitespace-nowrap"
+                  tw="whitespace-nowrap font-display font-bold text-2xl leading-none"
                 />
 
                 {/* Warning if balance too low */}
                 {balance.value.isZero() && (
-                  <div tw="-ml-px mt-0.5 text-xs leading-none font-semibold text-amber-500">
+                  <div tw="-ml-px mt-0.5 font-semibold text-xs text-amber-500 leading-none">
                     Balance too low
                   </div>
                 )}
@@ -99,8 +99,8 @@ export const StakeDonateBalance: FC<StakeDonateBalanceProps> = ({ mode }) => {
           {/* Error */}
           {!isLoading && isError && (
             <div tw="flex items-center text-amber-600">
-              <ExclamationTriangleIcon tw="w-6 shrink-0 grow-0 mr-2" />
-              <div tw="text-sm font-semibold mb-px">Error while fetching balance</div>
+              <ExclamationTriangleIcon tw="mr-2 w-6 shrink-0 grow-0" />
+              <div tw="mb-px font-semibold text-sm">Error while fetching balance</div>
             </div>
           )}
 

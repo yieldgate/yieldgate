@@ -24,7 +24,7 @@ export const HomeFAQsSection: FC<HomeFAQsSectionProps> = () => {
   return (
     <>
       <Wrapper tw="max-w-[50rem]">
-        <div tw="flex flex-col mb-2">
+        <div tw="mb-2 flex flex-col">
           <Subheading>Questions? We answer.</Subheading>
           <FAQsSection items={faqItems} openFirst={true} />
         </div>

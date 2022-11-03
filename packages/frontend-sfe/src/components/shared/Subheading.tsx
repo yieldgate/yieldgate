@@ -16,12 +16,12 @@ export const Subheading: FC<PropsWithChildren<SubheadingProps>> = ({
   return (
     <>
       <HeadingWrapper
-        tw="max-w-[30rem] text-3xl lg:text-4xl font-display font-bold tracking-tight mb-4"
+        tw="mb-4 font-display font-bold text-3xl tracking-tight max-w-[30rem] lg:text-4xl"
         {...props}
       >
         {children}
       </HeadingWrapper>
-      {tagline && <p tw="text-sm opacity-75 -mt-1.5 mb-4">{tagline}</p>}
+      {tagline && <p tw="-mt-1.5 mb-4 text-sm opacity-75">{tagline}</p>}
     </>
   )
 }
@@ -34,7 +34,7 @@ export const SubheadingSmall: FC<PropsWithChildren<SubheadingProps>> = ({
   const HeadingWrapper = noHeadingMarkup ? 'div' : 'h2'
 
   return (
-    <HeadingWrapper tw="uppercase font-bold text-xs tracking-wide mb-4 text-gray-800" {...props}>
+    <HeadingWrapper tw="mb-4 font-bold text-xs text-gray-800 uppercase tracking-wide" {...props}>
       {children}
     </HeadingWrapper>
   )

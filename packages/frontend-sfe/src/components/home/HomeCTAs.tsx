@@ -9,7 +9,7 @@ export interface HomeCTAsProps {
 export const HomeCTAs: FC<HomeCTAsProps> = ({ primaryFirst, ...props }) => {
   return (
     <>
-      <div tw="flex text-sm -mx-1.5" {...props}>
+      <div tw="-mx-1.5 flex text-sm" {...props}>
         <BaseButton
           asLink={true}
           href="/donate"

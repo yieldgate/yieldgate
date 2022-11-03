@@ -5,37 +5,37 @@ import tw, { styled } from 'twin.macro'
  */
 
 export const StakingStepperItemOuterWrapper = styled.div(() => [
-  tw`h-full w-[30rem] mx-auto flex flex-col justify-center items-start relative`,
+  tw`relative mx-auto flex h-full flex-col items-start justify-center w-[30rem]`,
 ])
 
 export const StakingStepperItemHeadline = styled.h2(() => [
-  tw`text-2xl font-bold max-w-full mb-6 tracking-tight`,
+  tw`mb-6 max-w-full font-bold text-2xl tracking-tight`,
 ])
 
-export const StakingStepperItemBody = styled.div(() => [tw`w-full flex flex-col space-y-5`])
+export const StakingStepperItemBody = styled.div(() => [tw`flex w-full flex-col space-y-5`])
 
 /**
  * FullWidth & Continue-Buttons
  */
 
 export const StakingStepperItemFullWidthButton = styled.button(({ primary, warning }: any) => [
-  tw`flex flex-col items-center justify-center space-y-px w-full py-4 px-3 border border-current rounded-md text-lg text-center overflow-hidden`,
+  tw`flex w-full flex-col items-center justify-center space-y-px overflow-hidden rounded-md border border-current py-4 px-3 text-center text-lg`,
   primary
-    ? tw`bg-gray-900 text-white font-bold not-disabled:hover:(bg-gray-800)`
+    ? tw`bg-gray-900 font-bold text-white not-disabled:hover:bg-gray-800`
     : warning
-    ? tw`bg-red-500 text-white font-bold not-disabled:hover:(bg-red-400)`
-    : tw`border-gray-300 text-black font-medium not-disabled:hover:(bg-gray-50)`,
+    ? tw`bg-red-500 font-bold text-white not-disabled:hover:bg-red-400`
+    : tw`border-gray-300 font-medium text-black not-disabled:hover:bg-gray-50`,
 ])
 export const StakingStepperItemFullWidthAnchor =
   StakingStepperItemFullWidthButton.withComponent('a')
 export const StakingStepperItemFullWidthButtonSubtitle = styled.div(({ primary }: any) => [
   primary
-    ? tw`text-xs font-semibold tracking-wide opacity-75`
-    : tw`text-xs font-medium tracking-wide opacity-50 truncate max-w-full`,
+    ? tw`font-semibold text-xs tracking-wide opacity-75`
+    : tw`max-w-full truncate font-medium text-xs tracking-wide opacity-50`,
 ])
 
 export const StakingStepperItemContinueButton = styled.button(() => [
-  tw`self-center text-sm font-semibold text-primary-500`,
+  tw`self-center font-semibold text-sm text-primary-500`,
 ])
 
 /**
@@ -43,14 +43,14 @@ export const StakingStepperItemContinueButton = styled.button(() => [
  */
 
 export const StakingStepperItemContentBox = styled.div(() => [
-  tw`pt-3 pb-3.5 px-6 rounded-lg border border-gray-200`,
+  tw`rounded-lg border border-gray-200 px-6 pt-3 pb-3.5`,
 ])
 
 export const StakingStepperItemContentBoxHeadline = styled.h3(() => [
-  tw`text-lg font-semibold max-w-full mb-4`,
+  tw`mb-4 max-w-full font-semibold text-lg`,
 ])
 export const StakingStepperItemContentBoxSubtitle = styled.p(() => [
-  tw`text-sm text-gray-600 -mt-3 mb-4`,
+  tw`-mt-3 mb-4 text-sm text-gray-600`,
 ])
 
 export const StakingStepperItemContentBoxDivider = styled.hr(() => [tw`-mx-6 my-4 border-gray-200`])

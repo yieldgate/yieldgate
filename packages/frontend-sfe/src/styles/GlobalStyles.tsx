@@ -6,12 +6,12 @@ const customStyles = css`
     scroll-behavior: smooth;
   }
   body {
-    ${tw`antialiased font-body`}
-    ${tw`h-screen min-h-screen relative`}
+    ${tw`font-body antialiased`}
+    ${tw`relative h-screen min-h-screen`}
   }
   #__next,
   #__next > div {
-    ${tw`h-full min-h-full flex flex-col relative`}
+    ${tw`relative flex h-full min-h-full flex-col`}
   }
 
   /* Progress Bar */

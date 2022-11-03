@@ -45,13 +45,13 @@ export const HomeStaticTweetWall: FC = () => {
   return (
     <>
       <Wrapper>
-        <SubheadingSmall noHeadingMarkup={true} tw="text-center mx-auto">
+        <SubheadingSmall noHeadingMarkup={true} tw="mx-auto text-center">
           What others say
         </SubheadingSmall>
-        <Subheading tw="text-center mx-auto mb-10">You’re in good company</Subheading>
-        <div tw="flex justify-center flex-wrap -mx-3 -mt-3">
+        <Subheading tw="mx-auto mb-10 text-center">You’re in good company</Subheading>
+        <div tw="-mx-3 -mt-3 flex flex-wrap justify-center">
           {tweets.map((tweet, idx) => (
-            <StaticTweet key={`tweet-${idx}`} {...tweet} tw="w-[20rem] mx-3 my-3" />
+            <StaticTweet key={`tweet-${idx}`} {...tweet} tw="mx-3 my-3 w-[20rem]" />
           ))}
         </div>
       </Wrapper>
@@ -75,12 +75,12 @@ export const StaticTweet: FC<StaticTweetDetails> = ({ id, tweet, time, author, .
       <Link
         href={`https://twitter.com/twitter/status/${id}`}
         target="_blank"
-        tw="flex flex-col py-3 px-4 space-y-3 rounded-xl border border-gray-200 overflow-hidden cursor-pointer transition-all hover:bg-gray-50"
+        tw="flex cursor-pointer flex-col space-y-3 overflow-hidden rounded-xl border border-gray-200 py-3 px-4 transition-all hover:bg-gray-50"
         {...props}
       >
-        <div tw="flex justify-between items-start">
-          <div tw="flex items-start mb-0.5">
-            <div tw="shrink-0 grow-0 flex flex-col w-[2.75rem] h-[2.75rem] mr-2 relative rounded-full bg-gray-100 overflow-hidden">
+        <div tw="flex items-start justify-between">
+          <div tw="mb-0.5 flex items-start">
+            <div tw="relative mr-2 flex shrink-0 grow-0 flex-col overflow-hidden rounded-full bg-gray-100 w-[2.75rem] h-[2.75rem]">
               <Image
                 src={`/images/avatars/${author.username}.jpg`}
                 width={400}
@@ -90,15 +90,15 @@ export const StaticTweet: FC<StaticTweetDetails> = ({ id, tweet, time, author, .
             </div>
             <div tw="flex flex-col whitespace-nowrap">
               <div tw="font-semibold">{author.name}</div>
-              <div tw="text-sm text-gray-600 -mt-px">@{author.username}</div>
+              <div tw="-mt-px text-sm text-gray-600">@{author.username}</div>
             </div>
           </div>
-          <div tw="shrink-0 grow-0 ml-2">
+          <div tw="ml-2 shrink-0 grow-0">
             <Image src={twitterSvg} width={25} height={25} alt="Twitter Logo" />
           </div>
         </div>
         <div>{tweet}</div>
-        <div tw="grow mt-0!"></div>
+        <div tw="mt-0! grow"></div>
         <div tw="text-sm text-gray-600">{time.format('LT · ll')}</div>
       </Link>
     </>

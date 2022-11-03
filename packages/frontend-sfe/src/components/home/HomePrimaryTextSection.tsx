@@ -15,7 +15,7 @@ export const HomePrimaryTextSection: FC<HomePrimaryTextSectionProps> = () => {
             Stake to Offset Carbon
           </Subheading>
 
-          <div tw="prose first:prose-p:(mt-0) last:prose-p:(mb-0)">
+          <div tw="prose first:prose-p:mt-0 last:prose-p:mb-0">
             <p>
               Stake for Earth is a pool that generates yield and uses it to buy NCT (
               <a

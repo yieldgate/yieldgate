@@ -51,7 +51,7 @@ export interface HomeHowItWorksSectionProps {}
 export const HomeHowItWorksSection: FC<HomeHowItWorksSectionProps> = () => {
   return (
     <>
-      <div tw="bg-gray-700 text-white py-3 lg:py-6">
+      <div tw="bg-gray-700 py-3 text-white lg:py-6">
         <Wrapper>
           {/* Title & Tagline */}
           <div tw="max-w-[25rem]">
@@ -103,7 +103,7 @@ export const HomeHowItWorksTabs: FC<HomeHowItWorksTabsProps> = () => {
       <Tab.Group
         vertical
         as="div"
-        tw="flex mt-14"
+        tw="mt-14 flex"
         onChange={(index: any) => {
           setPreviousIndex(selectedIndex)
           setSelectedIndex(index)
@@ -111,16 +111,16 @@ export const HomeHowItWorksTabs: FC<HomeHowItWorksTabsProps> = () => {
         }}
       >
         {/* Tab Titles  */}
-        <Tab.List tw="shrink-0 grow-0 flex flex-col py-6 border-r-[2px] border-gray-600">
+        <Tab.List tw="flex shrink-0 grow-0 flex-col border-gray-600 py-6 border-r-[2px]">
           {items.map((item, idx) => (
             <Tab as={Fragment} key={`tab-button-${idx}`}>
               {({ selected }) => (
                 <button
                   css={[
-                    tw`text-left tracking-wide whitespace-nowrap py-2 pr-6 sm:pr-12 -mr-[2px] border-r-[2px] border-transparent outline-none`,
+                    tw`whitespace-nowrap border-transparent py-2 pr-6 text-left tracking-wide outline-none -mr-[2px] border-r-[2px] sm:pr-12`,
                     selected
-                      ? tw`text-white  border-white`
-                      : tw`text-gray-400 cursor-pointer hover:text-white`,
+                      ? tw`border-white text-white`
+                      : tw`cursor-pointer text-gray-400 hover:text-white`,
                   ]}
                 >
                   <span tw="mr-4 hidden sm:inline">0{idx + 1}</span>
@@ -132,18 +132,18 @@ export const HomeHowItWorksTabs: FC<HomeHowItWorksTabsProps> = () => {
         </Tab.List>
 
         {/* Tab Content  */}
-        <Tab.Panels tw="flex flex-col justify-start w-full">
+        <Tab.Panels tw="flex w-full flex-col justify-start">
           <AnimatePresence mode="wait">
             <Tab.Panel key={`tab-panel-${selectedIndex}`} as={m.div} {...animationProps}>
-              <div tw="flex justify-between items-start py-2">
+              <div tw="flex items-start justify-between py-2">
                 <div tw="max-w-prose pl-6 md:px-6 lg:px-12">
-                  <h3 tw="font-display text-2xl font-bold tracking-tight mb-4">
+                  <h3 tw="mb-4 font-display font-bold text-2xl tracking-tight">
                     {selectedItem.title}
                   </h3>
                   <RenderedMarkdownContent content={selectedItem.content} tw="prose prose-invert" />
                 </div>
-                <div tw="hidden md:flex h-[9rem] w-[9rem] shrink-0 grow-0 ml-auto justify-center items-center bg-gray-800 rounded-full">
-                  <selectedItem.icon tw="h-[4rem] w-[4rem] text-gray-500" />
+                <div tw="ml-auto hidden shrink-0 grow-0 items-center justify-center rounded-full bg-gray-800 h-[9rem] w-[9rem] md:flex">
+                  <selectedItem.icon tw="text-gray-500 h-[4rem] w-[4rem]" />
                 </div>
               </div>
             </Tab.Panel>
