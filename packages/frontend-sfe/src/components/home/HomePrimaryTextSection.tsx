@@ -9,10 +9,9 @@ export const HomePrimaryTextSection: FC<HomePrimaryTextSectionProps> = () => {
     <>
       <Wrapper>
         <div tw="grid space-y-2 sm:(grid-cols-2 gap-6 space-y-0)">
-          <Subheading>
-            ReFi 🤝 DeFi
-            <br />
-            Stake to Offset Carbon
+          <Subheading tw="space-y-2">
+            <p>ReFi 🤝 DeFi</p>
+            <p>Stake to Offset Carbon</p>
           </Subheading>
 
           <div tw="prose first:prose-p:mt-0 last:prose-p:mb-0">
@@ -35,19 +34,22 @@ export const HomePrimaryTextSection: FC<HomePrimaryTextSectionProps> = () => {
               The moment users stake, they receive a climate action badge, enabling them to prove
               their participation, including their relative contribution to carbon credits removed,
               using Stake For Earth. When they remove their stake, their badge becomes inactive.
-              This creates the incentive for anyone to continue staking and make a perpetual impact.
+              <strong>
+                This creates the incentive for anyone to continue staking and make a perpetual
+                impact.
+              </strong>
               Stakers can both decide to make a permanent pledge or a withdrawable pledge. The
               difference being that the permanent pledge will continue to both generate yield and
               buy up carbon tokens in perpetuity.
             </p>
-            <p>
+            {/* <p>
               <strong>
                 We envision the Stake for Earth badges to become a main route for crypto native
                 companies to participate in climate action
               </strong>
               , in a similar way to existing ESG badges which are listed at the bottom of corporate
               websites.
-            </p>
+            </p> */}
             {/* <p>
               The Stake for Earth Foundation was spun out of an ETHAmsterdam winning project team in
               2022 which received prizes from Aave, Polygon, ETHGlobal, WalletConnect, and Coinbase.

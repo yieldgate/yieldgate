@@ -51,7 +51,7 @@ export interface HomeHowItWorksSectionProps {}
 export const HomeHowItWorksSection: FC<HomeHowItWorksSectionProps> = () => {
   return (
     <>
-      <div tw="bg-gray-700 py-3 text-white lg:py-6">
+      <div tw="bg-gray-700 py-2 text-white lg:py-4">
         <Wrapper>
           {/* Title & Tagline */}
           <div tw="max-w-[25rem]">

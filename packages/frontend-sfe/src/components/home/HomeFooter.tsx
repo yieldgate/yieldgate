@@ -11,7 +11,7 @@ export const HomeFooter: FC<HomeFooterProps> = () => {
   return (
     <>
       <div tw="bg-gray-100">
-        <Wrapper tw="py-6">
+        <Wrapper smallVerticalPadding>
           {/* Logo & Nav */}
           <div tw="flex flex-col items-center justify-between space-y-6 md:(flex-row space-y-0)">
             <StakeForEarthLogo href="/" />

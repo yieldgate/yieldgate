@@ -1,7 +1,7 @@
 import { Wrapper } from '@components/layout/Wrapper'
 import { FC } from 'react'
-import CountUp from 'react-countup'
 import 'twin.macro'
+import { HomeCarbonTonnesCountUp } from './HomeCarbonTonnesCountUp'
 import { HomeHeroIllustration } from './HomeHeroIllustration'
 import { HomeNewsletterSubscribeForm } from './HomeNewsletterSection'
 
@@ -19,12 +19,7 @@ export const HomeHero: FC<HomeHeroProps> = () => {
             </p>
 
             {/* Burned KPI */}
-            <div tw="flex flex-col">
-              <div tw="whitespace-nowrap font-display font-bold text-4xl leading-none min-h-[1em] lg:text-5xl">
-                <CountUp end={238477} duration={2.5} separator="," decimals={0} />
-              </div>
-              <div tw="mt-2 text-sm opacity-75">carbon credits burned</div>
-            </div>
+            <HomeCarbonTonnesCountUp subtitle="carbon credits burned" />
 
             {/* Staking CTAs */}
             {/* <HomeCTAs primaryFirst={true} tw="text-base" /> */}

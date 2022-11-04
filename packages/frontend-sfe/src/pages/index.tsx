@@ -1,4 +1,5 @@
 import { HomeBackedBySection } from '@components/home/HomeBackedBySection'
+import { HomeCarbonExamplesSection } from '@components/home/HomeCarbonExamplesSection'
 import { HomeFAQsSection } from '@components/home/HomeFAQsSection'
 import { HomeHero } from '@components/home/HomeHero'
 import { HomeHeroKPIs } from '@components/home/HomeHeroKPIs'
@@ -19,6 +20,7 @@ export default function IndexPage() {
         <HomeHeroKPIs />
         <HomeBackedBySection />
         <HomePrimaryTextSection />
+        <HomeCarbonExamplesSection />
         <HomeStaticTweetWall />
         <HomeHowItWorksSection />
         <HomeFAQsSection />

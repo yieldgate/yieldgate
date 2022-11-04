@@ -24,8 +24,8 @@ export const HomeCTAs: FC<HomeCTAsProps> = ({ primaryFirst, withTwitter, ...prop
               alt="Twitter Logo"
               tw="mr-1.5 brightness-0"
             />
-            <div tw="font-medium text-xs">
-              <span tw="hidden whitespace-pre sm:inline">Follow on </span>Twitter
+            <div tw="hidden font-medium text-xs sm:inline">
+              <span tw="hidden whitespace-pre md:inline">Follow on </span>Twitter
             </div>
           </Link>
         )}

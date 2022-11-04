@@ -41,7 +41,7 @@ export const HomeBackedBySection: FC<HomeBackedBySectionProps> = () => {
   ]
   return (
     <>
-      <Wrapper tw="overflow-hidden">
+      <Wrapper tw="overflow-hidden" smallVerticalPadding>
         <SubheadingSmall tw="text-center">Backed by</SubheadingSmall>
         <div tw="-mx-8 -my-2 mt-0 flex flex-wrap justify-center">
           {logos.map((logo) => (
