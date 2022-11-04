@@ -56,6 +56,21 @@ describe('TokenPool', function () {
     expect(reserveData.aTokenAddress).to.equal(aUsdc.address)
   })
 
+  it('AavePool approval should only work if approve call works', async function () {
+    const { usdc, pool } = await loadFixture(deployTokenPool)
+    usdc.approve.reset()
+
+    // Failing case
+    usdc.approve.returns(false)
+    await expect(pool.approvePool(usdc.address)).to.be.revertedWith(
+      RevertReasons.AavePoolApprovalFailed
+    )
+
+    // Success case
+    usdc.approve.returns(true)
+    await expect(pool.approvePool(usdc.address)).to.not.be.reverted
+  })
+
   it('Staking with 0 amount should revert', async function () {
     const { supporter, usdc, pool } = await loadFixture(deployTokenPool)
 
@@ -63,10 +78,18 @@ describe('TokenPool', function () {
       .to.be.revertedWith(RevertReasons.ZeroAmount)
   })
 
+  it('Unstaking without any stake should revert', async function () {
+    const { supporter, usdc, pool } = await loadFixture(deployTokenPool)
+
+    await expect(pool.connect(supporter).unstake(usdc.address)) //
+      .to.be.revertedWith(RevertReasons.NoSupporter)
+  })
+
   it('Staking with failed transferFrom should revert', async function () {
     const { supporter, usdc, pool } = await loadFixture(deployTokenPool)
     const stake = ethers.utils.parseEther('1')
 
+    usdc.transferFrom.reset()
     usdc.transferFrom.returns(false)
     await expect(pool.connect(supporter).stake(usdc.address, supporter.address, stake)) //
       .to.be.revertedWith(RevertReasons.TokenTransferFailed)
@@ -82,6 +105,7 @@ describe('TokenPool', function () {
 
     // 1. Stake
 
+    usdc.transferFrom.reset()
     usdc.transferFrom.returns(false)
     usdc.transferFrom.whenCalledWith(supporter.address, pool.address, stake).returns(true)
     const stakeTx = await poolAsSup.stake(usdc.address, supporter.address, stake)
@@ -96,6 +120,7 @@ describe('TokenPool', function () {
 
     // 2. Unstake
 
+    aavePool.withdraw.reset()
     aavePool.withdraw.reverts()
     aavePool.withdraw.whenCalledWith(usdc.address, stake, supporter.address).returns()
 
@@ -107,5 +132,42 @@ describe('TokenPool', function () {
     expect(aavePool.withdraw).to.be.calledWith(usdc.address, stake, supporter.address)
     expect(await pool.staked(usdc.address)).to.equal(0)
     expect(await pool.stakes(usdc.address, supporter.address)).to.equal(0)
+  })
+
+  it('Claiming should withdraw generated yield to beneficiary', async function () {
+    const { beneficiary, supporter, usdc, aUsdc, aavePool, pool } = await loadFixture(
+      deployTokenPool
+    )
+    const poolAsSup = pool.connect(supporter)
+    const stake = ethers.utils.parseEther('1')
+    const yld = ethers.utils.parseEther('.2')
+
+    // stake
+    usdc.transferFrom.reset()
+    usdc.transferFrom.whenCalledWith(supporter.address, pool.address, stake).returns(true)
+    await poolAsSup.stake(usdc.address, supporter.address, stake)
+
+    // add yield to balance
+    aUsdc.balanceOf.whenCalledWith(pool.address).returns(stake.add(yld))
+    expect(await pool.staked(usdc.address)).to.equal(stake)
+    expect(await pool.claimable(usdc.address)).to.equal(yld)
+
+    // try clamining as supporter
+    await expect(poolAsSup.claim(usdc.address)).to.be.revertedWith(RevertReasons.OnlyBeneficiary)
+
+    // claim yield
+    aavePool.withdraw.reset()
+    aavePool.withdraw.reverts()
+    aavePool.withdraw.whenCalledWith(usdc.address, yld, beneficiary.address).returns()
+
+    await expect(pool.connect(beneficiary).claim(usdc.address))
+      .to.emit(pool, 'Claimed')
+      .withArgs(usdc.address, yld)
+    expect(aavePool.withdraw).to.be.calledWith(usdc.address, yld, beneficiary.address)
+
+    // remove yield from balance
+    aUsdc.balanceOf.whenCalledWith(pool.address).returns(stake)
+    expect(await pool.staked(usdc.address)).to.equal(stake)
+    expect(await pool.claimable(usdc.address)).to.equal(0)
   })
 })
