@@ -12,7 +12,8 @@ export const HomeNavigationBar: FC<HomeNavigationBarProps> = () => {
         <Wrapper noVerticalPadding tw="py-5">
           <div tw="flex items-center justify-between">
             <StakeForEarthLogo hideTextOn="xs" href="/" />
-            <HomeCTAs />
+
+            <HomeCTAs withTwitter={true} />
           </div>
         </Wrapper>
       </div>

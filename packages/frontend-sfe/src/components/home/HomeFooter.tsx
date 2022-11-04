@@ -15,7 +15,7 @@ export const HomeFooter: FC<HomeFooterProps> = () => {
           {/* Logo & Nav */}
           <div tw="flex flex-col items-center justify-between space-y-6 md:(flex-row space-y-0)">
             <StakeForEarthLogo href="/" />
-            <HomeCTAs />
+            <HomeCTAs withTwitter={true} />
           </div>
 
           {/* Legal Links */}
