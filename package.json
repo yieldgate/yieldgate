@@ -36,7 +36,7 @@
   "devDependencies": {
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
-    "next": "^13.0.1",
+    "next": "^13.0.2",
     "prettier": "^2.7.1",
     "prettier-plugin-solidity": "1.0.0-beta.24",
     "turbo": "^1.6.3",
