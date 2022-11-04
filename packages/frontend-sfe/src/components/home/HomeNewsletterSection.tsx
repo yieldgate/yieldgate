@@ -23,7 +23,7 @@ export const HomeNewsletterSection: FC<HomeNewsletterSectionProps> = () => {
             </Subheading>
 
             {/* Subscribe Form */}
-            <HomeNewsletterSubscribeForm />
+            <HomeNewsletterSubscribeForm tw="mt-8" />
           </div>
 
           <div tw="absolute right-0 top-1/2 z-0 -translate-y-1/2 select-none opacity-50 max-w-[66%]">
@@ -36,7 +36,7 @@ export const HomeNewsletterSection: FC<HomeNewsletterSectionProps> = () => {
 }
 
 export interface HomeNewsletterSubscribeFormProps {}
-export const HomeNewsletterSubscribeForm: FC<HomeNewsletterSubscribeFormProps> = () => {
+export const HomeNewsletterSubscribeForm: FC<HomeNewsletterSubscribeFormProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false)
   const form = useForm({ mode: 'onChange' })
   const { isValid } = form.formState
@@ -61,7 +61,7 @@ export const HomeNewsletterSubscribeForm: FC<HomeNewsletterSubscribeFormProps> =
 
   return (
     <>
-      <form onSubmit={onSubmit} tw="relative mt-8">
+      <form onSubmit={onSubmit} tw="relative" {...props}>
         <label htmlFor="email" tw="sr-only">
           E-Mail for Newsletter
         </label>
@@ -70,7 +70,7 @@ export const HomeNewsletterSubscribeForm: FC<HomeNewsletterSubscribeFormProps> =
             type="text"
             id="email"
             placeholder="Email Address"
-            tw="mr-2 rounded border border-gray-300 bg-white py-2.5 px-2.5 font-body text-black leading-none outline-none w-[20rem] focus:(ring-2 ring-sky-500 ring-offset-2)"
+            tw="mr-2 min-w-0 rounded border border-gray-300 bg-white py-2.5 px-2.5 font-body text-black leading-none outline-none w-[20rem] focus:(ring-2 ring-sky-500 ring-offset-2)"
             {...form.register('email', { required: true })}
           />
           <BaseButton
