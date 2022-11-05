@@ -1,4 +1,5 @@
 import { FAQItem, FAQsSection } from '@components/shared/FAQsSection'
+import { ArrowRightCircleIcon } from '@heroicons/react/20/solid'
 import { env } from '@lib/environment'
 import { FC } from 'react'
 import 'twin.macro'
@@ -57,13 +58,14 @@ export const StakingViewPrepareFunds: FC<StakingViewPrepareFundsProps> = (props)
             href={`https://buy.ramp.network/?${rampUrlParams}`}
             target="_blank"
           >
-            Top up wallet with Fiat-Onramp ↗
+            Top-up wallet with Fiat-Onramp ↗
           </StakingStepperItemFullWidthAnchor>
           <StakingStepperItemFullWidthAnchor href="https://transferto.xyz/swap" target="_blank">
             Bridge funds to Polygon ↗
           </StakingStepperItemFullWidthAnchor>
           <StakingStepperItemContinueButton onClick={() => onGoNext()}>
             Continue to {props.mode === 'donate' ? 'Donate' : 'Stake'}
+            <ArrowRightCircleIcon tw="ml-2 h-4 w-4" />
           </StakingStepperItemContinueButton>
           <FAQsSection items={faqItems} tw="mt-16!" />
         </StakingStepperItemBody>

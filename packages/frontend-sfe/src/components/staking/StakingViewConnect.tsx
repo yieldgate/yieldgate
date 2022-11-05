@@ -1,4 +1,5 @@
 import { FAQItem, FAQsSection } from '@components/shared/FAQsSection'
+import { ArrowRightCircleIcon } from '@heroicons/react/20/solid'
 import { useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
 import { FC, useEffect, useState } from 'react'
 import 'twin.macro'
@@ -51,8 +52,8 @@ export const StakingViewConnect: FC<StakingViewConnectProps> = ({
         <StakingStepperItemBody>
           <StakingViewConnectButton />
           {isConnected && !chain?.unsupported && (
-            <StakingStepperItemContinueButton tw="mt-6" onClick={() => onGoNext()}>
-              Continue to Prepare Funds
+            <StakingStepperItemContinueButton onClick={() => onGoNext()}>
+              Continue to Prepare Funds <ArrowRightCircleIcon tw="ml-2 h-4 w-4" />
             </StakingStepperItemContinueButton>
           )}
           <FAQsSection items={faqItems} tw="mt-16!" />

@@ -45,7 +45,9 @@ export const StakeDonateBalance: FC<StakeDonateBalanceProps> = ({ isFirstRender,
   // and the wallet balance is high enough
   useEffect(() => {
     const balanceHighEnough = balance?.value?.gt(0)
-    if (isFetchedAfterMount && balanceHighEnough && isFirstRender) onGoNext()
+    if (isFetchedAfterMount && balanceHighEnough && isFirstRender) {
+      onGoNext()
+    }
   }, [isFetchedAfterMount])
 
   return (

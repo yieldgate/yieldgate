@@ -1,4 +1,5 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
+import { CircleStackIcon } from '@heroicons/react/20/solid'
 import { constants } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
 import Image from 'next/image'
@@ -21,7 +22,7 @@ type StakeDonateFormValues = {
 }
 
 export interface StakeDonateFormProps extends StakingViewStakeDonateProps {}
-export const StakeDonateForm: FC<StakeDonateFormProps> = ({ mode, onGoNext }) => {
+export const StakeDonateForm: FC<StakeDonateFormProps> = ({ mode, onGoNext, onGoPrev }) => {
   const [isLoading, setIsLoading] = useState(false)
   const form = useForm<StakeDonateFormValues>({ mode: 'onChange' })
   const { isValid } = form.formState
@@ -43,11 +44,26 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ mode, onGoNext }) =>
         </StakingStepperItemContentBoxHeadline>
         <StakingStepperItemContentBoxSubtitle>
           Set the amount you want to put into the climate pool to participate in carbon credits
-          burning. You can always unstake.
+          burning.{' '}
+          {mode === 'donate' ? (
+            <strong>Your donation will be permanent and you can&apos;t revoke your funds.</strong>
+          ) : (
+            <strong>You can always unstake.</strong>
+          )}
         </StakingStepperItemContentBoxSubtitle>
 
         <form onSubmit={onSubmit}>
           <StakeDonateAmountInputField form={form} />
+
+          {/* Top-up button */}
+          <button
+            tw="mt-3 flex w-full items-center justify-center font-medium text-sm"
+            onClick={onGoPrev}
+            type="button"
+          >
+            Top-up or bridge funds
+            <CircleStackIcon tw="ml-1.5 h-3.5 w-3.5" />
+          </button>
 
           <StakingStepperItemContentBoxDivider />
 

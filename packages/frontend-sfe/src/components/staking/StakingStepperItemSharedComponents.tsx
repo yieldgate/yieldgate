@@ -35,8 +35,7 @@ export const StakingStepperItemFullWidthButtonSubtitle = styled.div(({ primary }
 ])
 
 export const StakingStepperItemContinueButton = styled.button(() => [
-  // tw`self-center font-semibold text-sm text-primary-500`,
-  tw`self-center rounded-full border border-primary-300 px-4 py-2 font-semibold text-primary-500 text-sm`,
+  tw`flex items-center self-center rounded-full border border-primary-300 px-4 py-2 font-semibold text-primary-500 text-sm`,
 ])
 
 /**
