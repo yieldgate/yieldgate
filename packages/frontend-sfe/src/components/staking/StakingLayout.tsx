@@ -26,6 +26,7 @@ export const StakingLayout: FC<PropsWithChildren<StakingLayoutProps>> = ({ child
                     objectFit: 'contain',
                     objectPosition: 'center bottom',
                   }}
+                  sizes="33vw"
                   alt="Decorative Element"
                   priority
                 />

@@ -24,7 +24,7 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
     <>
       <StakingStepperItemContentBox>
         <StakingStepperItemContentBoxHeadline>
-          {mode === 'donate' ? 'Previous Donations' : 'Current Staking'}
+          {mode === 'donate' ? 'Your previous Donations' : 'Your current Staking'}
         </StakingStepperItemContentBoxHeadline>
 
         {/* KPIs */}

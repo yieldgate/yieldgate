@@ -63,7 +63,7 @@ export const StakingViewPrepareFunds: FC<StakingViewPrepareFundsProps> = (props)
             Bridge funds to Polygon ↗
           </StakingStepperItemFullWidthAnchor>
           <StakingStepperItemContinueButton onClick={() => onGoNext()}>
-            Skip - I already have funds on Polygon
+            Continue to {props.mode === 'donate' ? 'Donate' : 'Stake'}
           </StakingStepperItemContinueButton>
           <FAQsSection items={faqItems} tw="mt-16!" />
         </StakingStepperItemBody>

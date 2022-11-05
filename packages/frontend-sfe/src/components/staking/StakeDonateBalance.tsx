@@ -19,7 +19,7 @@ import {
 } from './StakingStepperItemSharedComponents'
 
 export interface StakeDonateBalanceProps extends StakingStepperItemComponentProps {}
-export const StakeDonateBalance: FC<StakeDonateBalanceProps> = ({ mode }) => {
+export const StakeDonateBalance: FC<StakeDonateBalanceProps> = () => {
   const { address } = useAccount()
   const { data: ensName } = useEnsName({ address, chainId: 1 })
   const { chain } = useNetwork()

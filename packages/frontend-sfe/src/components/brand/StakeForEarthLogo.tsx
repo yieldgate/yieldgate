@@ -12,9 +12,9 @@ export interface StakeForEarthLogoProps {
 }
 export const StakeForEarthLogo: FC<StakeForEarthLogoProps> = ({ href, hideTextOn, ...props }) => {
   const StakeForEarthLogoInner: FC = () => (
-    <div tw="flex items-center space-x-2" {...props}>
+    <div tw="flex items-center space-x-3" {...props}>
       <div tw="flex shrink-0 items-center justify-center">
-        <Image src={logoIcon} width={32} height={32} alt="Stake For Earth Logo" priority />
+        <Image src={logoIcon} width={34} height={30} alt="Stake For Earth Logo" priority />
       </div>
       <div
         css={[

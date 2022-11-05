@@ -19,7 +19,7 @@ export const StakingStepperItemBody = styled.div(() => [tw`flex w-full flex-col 
  */
 
 export const StakingStepperItemFullWidthButton = styled.button(({ primary, warning }: any) => [
-  tw`flex w-full flex-col items-center justify-center space-y-px overflow-hidden rounded-md border border-current py-4 px-3 text-center text-lg`,
+  tw`flex w-full flex-col items-center justify-center overflow-hidden rounded-md border border-current py-4 px-3 text-center text-lg`,
   primary
     ? tw`bg-gray-900 font-bold text-white not-disabled:hover:bg-gray-800`
     : warning
@@ -35,7 +35,8 @@ export const StakingStepperItemFullWidthButtonSubtitle = styled.div(({ primary }
 ])
 
 export const StakingStepperItemContinueButton = styled.button(() => [
-  tw`self-center font-semibold text-sm text-primary-500`,
+  // tw`self-center font-semibold text-sm text-primary-500`,
+  tw`self-center rounded-full border border-primary-300 px-4 py-2 font-semibold text-primary-500 text-sm`,
 ])
 
 /**
@@ -47,7 +48,7 @@ export const StakingStepperItemContentBox = styled.div(() => [
 ])
 
 export const StakingStepperItemContentBoxHeadline = styled.h3(() => [
-  tw`mb-4 max-w-full font-semibold text-lg`,
+  tw`mb-3.5 max-w-full font-semibold text-lg`,
 ])
 export const StakingStepperItemContentBoxSubtitle = styled.p(() => [
   tw`-mt-3 mb-4 text-sm text-gray-600`,
