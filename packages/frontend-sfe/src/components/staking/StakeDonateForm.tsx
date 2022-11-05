@@ -9,6 +9,7 @@ import { useForm, UseFormReturn } from 'react-hook-form'
 import { NumericFormat } from 'react-number-format'
 import 'twin.macro'
 import { useAccount, useBalance, useNetwork } from 'wagmi'
+import { StakeDonateImpactEstimationSlider } from './StakeDonateImpactEstimationSlider'
 import {
   StakingStepperItemContentBox,
   StakingStepperItemContentBoxDivider,
@@ -55,6 +56,8 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
 
         <form onSubmit={onSubmit}>
           <StakeDonateAmountInputField form={form} {...props} />
+
+          <StakeDonateImpactEstimationSlider {...props} />
 
           <StakingStepperItemContentBoxDivider />
 
