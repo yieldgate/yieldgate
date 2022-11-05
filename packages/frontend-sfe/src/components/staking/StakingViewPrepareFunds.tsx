@@ -58,7 +58,7 @@ export const StakingViewPrepareFunds: FC<StakingViewPrepareFundsProps> = (props)
             href={`https://buy.ramp.network/?${rampUrlParams}`}
             target="_blank"
           >
-            Top-up wallet with Fiat-Onramp ↗
+            Top-up with Fiat-Onramp ↗
           </StakingStepperItemFullWidthAnchor>
           <StakingStepperItemFullWidthAnchor href="https://transferto.xyz/swap" target="_blank">
             Bridge funds to Polygon ↗

@@ -12,7 +12,7 @@ import 'twin.macro'
 import tw, { styled, theme } from 'twin.macro'
 
 const BaseButtonWrapper = styled.button(({ variant, disabled }: Partial<BaseButtonProps>) => [
-  tw`relative flex items-center justify-center rounded py-2.5 px-5 font-body leading-none`,
+  tw`relative flex items-center justify-center whitespace-nowrap rounded py-2.5 px-5 font-body leading-none`,
   variant === 'outline'
     ? tw`border border-black bg-transparent text-black backdrop-blur-md`
     : tw`border border-transparent bg-black text-white`,

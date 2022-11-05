@@ -27,14 +27,14 @@ export const StakingViewSuccess: FC<StakingViewSuccessProps> = ({ mode }) => {
           <CheckCircleIcon tw="ml-2 h-7 w-7 shrink-0 grow-0 text-green-500" />
         </StakingStepperItemHeadline>
         <StakingStepperItemBody tw="items-center">
-          <StakingStepperItemContentBox tw="text-center w-[25rem]">
+          <StakingStepperItemContentBox tw="w-full text-center max-w-[25rem]">
             <StakingStepperItemContentBoxHeadline>
               Your Supporter Badge
             </StakingStepperItemContentBoxHeadline>
             <StakingStepperItemContentBoxSubtitle>Minted NFT</StakingStepperItemContentBoxSubtitle>
 
             {/* Staking Badge (TODO) */}
-            <div tw="mx-auto w-[13rem] mb-[-1rem]">
+            <div tw="mx-auto w-[12rem] mb-[-1rem]">
               <Image src={badgePlaceholderImg} alt="Staking Badge NFT" />
             </div>
             <StakingStepperItemContentBoxDivider />
@@ -42,7 +42,7 @@ export const StakingViewSuccess: FC<StakingViewSuccessProps> = ({ mode }) => {
             {/* Actions */}
             <BaseButtonGroup tw="grid grid-cols-1">
               <BaseButton asLink={true} href="https://doingud.com/" target="_blank">
-                View on DoinGud ↗
+                View Badge ↗
               </BaseButton>
             </BaseButtonGroup>
           </StakingStepperItemContentBox>

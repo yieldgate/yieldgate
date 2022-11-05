@@ -68,7 +68,7 @@ export const StakingStepper: FC<StakingStepperProps> = ({ items, mode }) => {
         onChange={setIndex as any}
       >
         {/* Stepper Titles/Tabs  */}
-        <Tab.List tw="mt-2 flex items-center justify-center space-x-6 sm:mt-0 lg:-mt-0.5">
+        <Tab.List tw="mt-2 flex items-center justify-center space-x-4 sm:(mt-0 space-x-6) lg:-mt-0.5">
           {items
             .filter((i) => !i.invisible)
             .map((item, idx) => (
@@ -149,6 +149,7 @@ export interface StakingStepperTabButtonProps {
 export const StakingStepperTabButton = forwardRef<HTMLButtonElement, StakingStepperTabButtonProps>(
   function StakingStepperTabButton({ item, index, selectedIndex, ...props }, ref) {
     const isSSR = useIsSSR()
+    const isSelected = index === selectedIndex
 
     return (
       <button
@@ -163,21 +164,27 @@ export const StakingStepperTabButton = forwardRef<HTMLButtonElement, StakingStep
         {...props}
       >
         <div
-          css={[
-            tw`flex h-8 w-8 items-center justify-center rounded-full bg-black font-semibold text-white`,
-            tw`group-focus:(ring-2 ring-primary-500 ring-offset-2)`,
-            index === selectedIndex && tw`ring-2 ring-black ring-offset-2`,
-          ]}
+          tw="hidden h-6 w-6 items-center justify-center rounded-full bg-black font-semibold text-sm text-white group-focus:(ring-2 ring-primary-500 ring-offset-2) sm:(h-8 w-8 text-base) xs:flex"
+          css={[isSelected && tw`ring-2 ring-black ring-offset-2`]}
         >
-          {index < selectedIndex ? <CheckIcon tw="h-4 w-4 shrink-0 grow-0" /> : <>{index + 1}</>}
+          {index < selectedIndex ? (
+            <CheckIcon tw="h-3 w-3 shrink-0 grow-0 sm:(h-4 w-4)" />
+          ) : (
+            <>{index + 1}</>
+          )}
         </div>
         <div tw="flex flex-col items-start">
-          <div tw="font-semibold">
+          <div
+            tw="font-semibold underline-offset-2"
+            css={[isSelected && tw`underline xs:no-underline`]}
+          >
             {!!item.shortTitle && <span tw="lg:hidden">{item.shortTitle}</span>}
             <span css={[item.shortTitle && tw`hidden lg:inline`]}>{item.title}</span>
           </div>
           {!!item.subTitle && !isSSR && (
-            <div tw="-mt-0.5 inline text-xs text-gray-700">{item.subTitle}</div>
+            <div tw="-mt-0.5 hidden truncate text-xs text-gray-700 max-w-[6rem] xs:inline">
+              {item.subTitle}
+            </div>
           )}
         </div>
       </button>

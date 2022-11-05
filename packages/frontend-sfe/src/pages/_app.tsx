@@ -7,6 +7,7 @@ import GlobalStyles from '@styles/GlobalStyles'
 import { domAnimation, LazyMotion } from 'framer-motion'
 import { DefaultSeo } from 'next-seo'
 import type { AppProps } from 'next/app'
+import Head from 'next/head'
 import Router from 'next/router'
 import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -42,6 +43,10 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
           // ],
         }}
       />
+
+      <Head>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
 
       <CacheProvider value={cache}>
         <GlobalStyles />

@@ -28,8 +28,12 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
         </StakingStepperItemContentBoxHeadline>
 
         {/* KPIs */}
-        <div tw="-m-1 grid grid-cols-3">
-          <StakeDonateKPI title="Impact (CO₂)" isLoading={isLoading} tw="text-green-500">
+        <div tw="-m-1 grid grid-cols-2 sm:grid-cols-3">
+          <StakeDonateKPI
+            title="Impact (CO₂)"
+            isLoading={isLoading}
+            tw="col-span-2 text-green-500 sm:col-span-1"
+          >
             <NumericFormat
               value={1000}
               displayType={'text'}

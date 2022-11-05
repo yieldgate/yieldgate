@@ -5,7 +5,7 @@ import tw, { styled } from 'twin.macro'
  */
 
 export const StakingStepperItemOuterWrapper = styled.div(() => [
-  tw`relative mx-auto flex h-full flex-col items-start justify-center w-[30rem]`,
+  tw`relative mx-auto flex h-full w-full flex-col items-start justify-center max-w-[30rem]`,
 ])
 
 export const StakingStepperItemHeadline = styled.h2(() => [
@@ -43,7 +43,7 @@ export const StakingStepperItemContinueButton = styled.button(() => [
  */
 
 export const StakingStepperItemContentBox = styled.div(() => [
-  tw`rounded-lg border border-gray-200 px-6 pt-3 pb-3.5`,
+  tw`rounded-lg border border-gray-200 px-4 pt-3 pb-3.5 xs:px-6`,
 ])
 
 export const StakingStepperItemContentBoxHeadline = styled.h3(() => [
@@ -53,4 +53,6 @@ export const StakingStepperItemContentBoxSubtitle = styled.p(() => [
   tw`-mt-3 mb-4 text-sm text-gray-600`,
 ])
 
-export const StakingStepperItemContentBoxDivider = styled.hr(() => [tw`-mx-6 my-4 border-gray-200`])
+export const StakingStepperItemContentBoxDivider = styled.hr(() => [
+  tw`-mx-4 my-4 border-gray-200 xs:-mx-6`,
+])

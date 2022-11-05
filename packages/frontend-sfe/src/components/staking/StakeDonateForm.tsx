@@ -22,10 +22,11 @@ type StakeDonateFormValues = {
 }
 
 export interface StakeDonateFormProps extends StakingViewStakeDonateProps {}
-export const StakeDonateForm: FC<StakeDonateFormProps> = ({ mode, onGoNext, onGoPrev }) => {
+export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
   const [isLoading, setIsLoading] = useState(false)
   const form = useForm<StakeDonateFormValues>({ mode: 'onChange' })
   const { isValid } = form.formState
+  const isDonateMode = props.mode === 'donate'
 
   // Handle form submit (staking action)
   const onSubmit = async (e: SyntheticEvent) => {
@@ -33,19 +34,19 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ mode, onGoNext, onGo
     setIsLoading(true)
     await new Promise((r) => setTimeout(r, 1500))
     setIsLoading(false)
-    onGoNext()
+    props.onGoNext()
   }
 
   return (
     <>
       <StakingStepperItemContentBox>
         <StakingStepperItemContentBoxHeadline>
-          {mode === 'donate' ? 'Donation Amount' : 'Staking Amount'}
+          {isDonateMode ? 'Donation Amount' : 'Staking Amount'}
         </StakingStepperItemContentBoxHeadline>
         <StakingStepperItemContentBoxSubtitle>
           Set the amount you want to put into the climate pool to participate in carbon credits
           burning.{' '}
-          {mode === 'donate' ? (
+          {isDonateMode ? (
             <strong>Your donation will be permanent and you can&apos;t revoke your funds.</strong>
           ) : (
             <strong>You can always unstake.</strong>
@@ -53,17 +54,7 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ mode, onGoNext, onGo
         </StakingStepperItemContentBoxSubtitle>
 
         <form onSubmit={onSubmit}>
-          <StakeDonateAmountInputField form={form} />
-
-          {/* Top-up button */}
-          <button
-            tw="mt-3 flex w-full items-center justify-center font-medium text-sm"
-            onClick={onGoPrev}
-            type="button"
-          >
-            Top-up or bridge funds
-            <CircleStackIcon tw="ml-1.5 h-3.5 w-3.5" />
-          </button>
+          <StakeDonateAmountInputField form={form} {...props} />
 
           <StakingStepperItemContentBoxDivider />
 
@@ -75,7 +66,7 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ mode, onGoNext, onGo
               disabled={!isValid || isLoading}
               isLoading={isLoading}
             >
-              {mode === 'donate' ? 'Donate' : 'Stake'}
+              {isDonateMode ? 'Donate' : 'Stake'}
             </BaseButton>
           </BaseButtonGroup>
         </form>
@@ -84,10 +75,13 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ mode, onGoNext, onGo
   )
 }
 
-export interface StakeDonateAmountInputFieldProps {
+export interface StakeDonateAmountInputFieldProps extends StakingViewStakeDonateProps {
   form: UseFormReturn<StakeDonateFormValues, any>
 }
-export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> = ({ form }) => {
+export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> = ({
+  form,
+  onGoPrev,
+}) => {
   const { errors } = form.formState
   const { address } = useAccount()
   const { chain } = useNetwork()
@@ -105,8 +99,8 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
 
   return (
     <>
+      {/* Input Field */}
       <div tw="relative">
-        {/* Input Field */}
         <label htmlFor="stakingAmount" tw="sr-only">
           Staking Amount
         </label>
@@ -161,8 +155,22 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
         </div>
       </div>
 
-      {/* Error Message */}
-      <div tw="mt-2 font-semibold text-xs text-amber-500">{errors.stakingAmount?.message}</div>
+      <div tw="my-4 flex flex-col flex-wrap items-center justify-center space-y-3 whitespace-nowrap text-xs sm:(flex-row items-baseline space-y-0 space-x-2)">
+        {/* Error Message */}
+        {!!errors.stakingAmount?.message && (
+          <div tw="grow font-bold text-amber-500">{errors.stakingAmount?.message}</div>
+        )}
+
+        {/* Top-up button */}
+        <button
+          tw="flex items-center justify-center font-medium text-gray-800 hover:text-black"
+          onClick={onGoPrev}
+          type="button"
+        >
+          Top-up or bridge funds
+          <CircleStackIcon tw="ml-1.5 h-3.5 w-3.5" />
+        </button>
+      </div>
     </>
   )
 }

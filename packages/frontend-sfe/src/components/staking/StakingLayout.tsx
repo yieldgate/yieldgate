@@ -5,7 +5,9 @@ import { FC, PropsWithChildren } from 'react'
 import 'twin.macro'
 import tw, { styled } from 'twin.macro'
 
-const PaddingWrapper = styled.div(() => [tw`py-6 px-6 sm:(py-8 px-8) lg:(py-12 px-10)`])
+const PaddingWrapper = styled.div(() => [
+  tw`px-4 py-4 sm:(py-8 px-8) lg:(py-12 px-10) xs:(py-6 px-6)`,
+])
 const PaddingWrapperAside = PaddingWrapper.withComponent('aside')
 
 export interface StakingLayoutProps {}
@@ -35,13 +37,13 @@ export const StakingLayout: FC<PropsWithChildren<StakingLayoutProps>> = ({ child
           </PaddingWrapperAside>
 
           {/* Main Body (Form) */}
-          <PaddingWrapper tw="flex grow flex-col py-6 px-4 sm:(py-8 px-8) lg:py-12">
+          <PaddingWrapper tw="flex grow flex-col p-0 sm:p-0 lg:(px-8 py-12) xs:p-0">
             {/* Logo (on small) */}
-            <div tw="mt-2 mb-8 flex items-center justify-center sm:(mt-0 mb-10) lg:hidden">
+            <div tw="mb-6 flex items-center justify-center bg-gray-100 py-5 sm:mb-10 md:(mt-4 mb-6 bg-transparent) lg:hidden">
               <StakeForEarthLogo href="/" />
             </div>
 
-            <main tw="grow">{children}</main>
+            <main tw="grow px-4 pb-4 sm:(px-8 pb-8) xs:(px-6 pb-6)">{children}</main>
           </PaddingWrapper>
         </div>
       </div>
