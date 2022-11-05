@@ -1,6 +1,6 @@
 import { FAQItem, FAQsSection } from '@components/shared/FAQsSection'
-import { useAccountModal, useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
-import { FC, useEffect } from 'react'
+import { useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
+import { FC, useEffect, useState } from 'react'
 import 'twin.macro'
 import { useAccount, useDisconnect, useEnsName, useNetwork } from 'wagmi'
 import { StakingStepperItemComponentProps } from './StakingStepper'
@@ -34,17 +34,15 @@ export const StakingViewConnect: FC<StakingViewConnectProps> = ({
 }) => {
   // Navigate to next tab when wallet connected correctly
   const { chain } = useNetwork()
-  const { isConnected } = useAccount({
-    onConnect: ({ address }) => {
-      if (!!address && !chain?.unsupported) onGoNext()
-    },
-  })
+  const { isConnected } = useAccount()
 
   // Navigate to next tab when tab is opened for the first time
   // and the wallet was already connected correctly
+  const [listenForConnects, setListenForConnects] = useState(false)
   useEffect(() => {
-    if (firstRender && isConnected && !chain?.unsupported) onGoNext()
-  }, [])
+    if ((listenForConnects || firstRender) && isConnected && !chain?.unsupported) onGoNext()
+    setListenForConnects(true)
+  }, [isConnected])
 
   return (
     <>
@@ -70,8 +68,8 @@ export const StakingViewConnectButton: FC = () => {
   const { address } = useAccount()
   const { data: ensName } = useEnsName({ address, chainId: 1 })
   const { openConnectModal } = useConnectModal()
-  const { openAccountModal } = useAccountModal()
   const { openChainModal } = useChainModal()
+  // const { openAccountModal } = useAccountModal()
   const { disconnect } = useDisconnect()
 
   return (
@@ -86,8 +84,6 @@ export const StakingViewConnectButton: FC = () => {
           <StakingStepperItemFullWidthButton onClick={disconnect} title={address}>
             <div>Disconnect Wallet</div>
             <StakingStepperItemFullWidthButtonSubtitle>
-              {/* <StakingStepperItemFullWidthButtonSubtitle tw="flex items-center space-x-1">
-              <WalletIcon tw="h-[.95rem] w-[.95rem] text-gray-800" /> */}
               <div>{ensName || address}</div>
             </StakingStepperItemFullWidthButtonSubtitle>
           </StakingStepperItemFullWidthButton>
