@@ -4,7 +4,7 @@ import { constants } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
 import Image from 'next/image'
 import usdcSvg from 'public/icons/tokens/usdc.svg'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { NumericFormat } from 'react-number-format'
 import { SpinnerDiamond } from 'spinners-react'
 import 'twin.macro'
@@ -19,7 +19,7 @@ import {
 } from './StakingStepperItemSharedComponents'
 
 export interface StakeDonateBalanceProps extends StakingStepperItemComponentProps {}
-export const StakeDonateBalance: FC<StakeDonateBalanceProps> = () => {
+export const StakeDonateBalance: FC<StakeDonateBalanceProps> = ({ isFirstRender, onGoNext }) => {
   const { address } = useAccount()
   const { data: ensName } = useEnsName({ address, chainId: 1 })
   const { chain } = useNetwork()
@@ -34,11 +34,19 @@ export const StakeDonateBalance: FC<StakeDonateBalanceProps> = () => {
     data: balance,
     isError,
     isLoading,
+    isFetchedAfterMount,
   } = useBalance({
     addressOrName: address,
     watch: true,
     token,
   })
+
+  // Navigate to next tab when tab is opened for the first time
+  // and the wallet balance is high enough
+  useEffect(() => {
+    const balanceHighEnough = balance?.value?.gt(0)
+    if (isFetchedAfterMount && balanceHighEnough && isFirstRender) onGoNext()
+  }, [isFetchedAfterMount])
 
   return (
     <>

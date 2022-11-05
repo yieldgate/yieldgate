@@ -30,7 +30,7 @@ export interface StakingViewConnectProps extends StakingStepperItemComponentProp
 export const StakingViewConnect: FC<StakingViewConnectProps> = ({
   onGoNext,
   onGoPrev,
-  firstRender,
+  isFirstRender,
 }) => {
   // Navigate to next tab when wallet connected correctly
   const { chain } = useNetwork()
@@ -40,7 +40,7 @@ export const StakingViewConnect: FC<StakingViewConnectProps> = ({
   // and the wallet was already connected correctly
   const [listenForConnects, setListenForConnects] = useState(false)
   useEffect(() => {
-    if ((listenForConnects || firstRender) && isConnected && !chain?.unsupported) onGoNext()
+    if ((listenForConnects || isFirstRender) && isConnected && !chain?.unsupported) onGoNext()
     setListenForConnects(true)
   }, [isConnected])
 
@@ -69,7 +69,6 @@ export const StakingViewConnectButton: FC = () => {
   const { data: ensName } = useEnsName({ address, chainId: 1 })
   const { openConnectModal } = useConnectModal()
   const { openChainModal } = useChainModal()
-  // const { openAccountModal } = useAccountModal()
   const { disconnect } = useDisconnect()
 
   return (

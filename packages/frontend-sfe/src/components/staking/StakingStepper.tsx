@@ -10,7 +10,7 @@ export type StakingViewStakeDonateMode = 'stake' | 'donate'
 export interface StakingStepperItemComponentProps {
   onGoPrev: () => void
   onGoNext: () => void
-  firstRender?: boolean
+  isFirstRender?: boolean
   mode: StakingViewStakeDonateMode
 }
 export interface StakingStepperItem {
@@ -28,6 +28,7 @@ export interface StakingStepperProps {
 }
 export const StakingStepper: FC<StakingStepperProps> = ({ items, mode }) => {
   type IndexState = { selected: number; previous: undefined | number }
+  const [itemHadFirstRender, setItemHadFirstRender] = useState<boolean[]>([])
   const [index, setIndexState] = useState<IndexState>({ selected: 0, previous: undefined })
   const [selectedItem, setSelectedItem] = useState(items[0])
   const setIndex = (val: number) => {
@@ -37,9 +38,18 @@ export const StakingStepper: FC<StakingStepperProps> = ({ items, mode }) => {
     }))
   }
 
-  // Update selected item
   useEffect(() => {
+    // Update selected item
     setSelectedItem(items[index.selected])
+
+    // Update `itemHadFirstRender`
+    if (items?.length !== itemHadFirstRender?.length)
+      setItemHadFirstRender(new Array(items?.length || 0).fill(false))
+    setItemHadFirstRender((prevArray) => {
+      const newArray = [...prevArray]
+      if (index.previous !== undefined) newArray[index.previous] = true
+      return newArray
+    })
   }, [index.selected, items])
 
   // Navigate back if item gets disabled dynamically
@@ -118,7 +128,7 @@ export const StakingStepper: FC<StakingStepperProps> = ({ items, mode }) => {
                   onGoNext={() => {
                     setIndex(index.selected + 1)
                   }}
-                  firstRender={index.previous === undefined}
+                  isFirstRender={!itemHadFirstRender[index.selected]}
                   mode={mode}
                 />
               )}
