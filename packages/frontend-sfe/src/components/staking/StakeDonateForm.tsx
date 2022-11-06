@@ -18,7 +18,7 @@ import {
 } from './StakingStepperItemSharedComponents'
 import { StakingViewStakeDonateProps } from './StakingViewStakeDonate'
 
-type StakeDonateFormValues = {
+export type StakeDonateFormValues = {
   stakingAmount: string
 }
 
@@ -57,7 +57,7 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
         <form onSubmit={onSubmit}>
           <StakeDonateAmountInputField form={form} {...props} />
 
-          <StakeDonateImpactEstimationSlider {...props} />
+          <StakeDonateImpactEstimationSlider form={form} {...props} />
 
           <StakingStepperItemContentBoxDivider />
 
