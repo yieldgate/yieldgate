@@ -10,7 +10,7 @@ export type StakingViewStakeDonateMode = 'stake' | 'donate'
 export interface StakingStepperItemComponentProps {
   onGoPrev: () => void
   onGoNext: () => void
-  firstRender?: boolean
+  isFirstRender?: boolean
   mode: StakingViewStakeDonateMode
 }
 export interface StakingStepperItem {
@@ -28,6 +28,7 @@ export interface StakingStepperProps {
 }
 export const StakingStepper: FC<StakingStepperProps> = ({ items, mode }) => {
   type IndexState = { selected: number; previous: undefined | number }
+  const [itemHadFirstRender, setItemHadFirstRender] = useState<boolean[]>([])
   const [index, setIndexState] = useState<IndexState>({ selected: 0, previous: undefined })
   const [selectedItem, setSelectedItem] = useState(items[0])
   const setIndex = (val: number) => {
@@ -37,9 +38,18 @@ export const StakingStepper: FC<StakingStepperProps> = ({ items, mode }) => {
     }))
   }
 
-  // Update selected item
   useEffect(() => {
+    // Update selected item
     setSelectedItem(items[index.selected])
+
+    // Update `itemHadFirstRender`
+    if (items?.length !== itemHadFirstRender?.length)
+      setItemHadFirstRender(new Array(items?.length || 0).fill(false))
+    setItemHadFirstRender((prevArray) => {
+      const newArray = [...prevArray]
+      if (index.previous !== undefined) newArray[index.previous] = true
+      return newArray
+    })
   }, [index.selected, items])
 
   // Navigate back if item gets disabled dynamically
@@ -54,18 +64,18 @@ export const StakingStepper: FC<StakingStepperProps> = ({ items, mode }) => {
         manual
         selectedIndex={index.selected}
         as="div"
-        tw="flex flex-col h-full"
+        tw="flex h-full flex-col"
         onChange={setIndex as any}
       >
         {/* Stepper Titles/Tabs  */}
-        <Tab.List tw="flex justify-center items-center space-x-6 mt-2 sm:mt-0 lg:-mt-0.5">
+        <Tab.List tw="mt-2 flex items-center justify-center space-x-4 sm:(mt-0 space-x-6) lg:-mt-0.5">
           {items
             .filter((i) => !i.invisible)
             .map((item, idx) => (
               <Fragment key={`stepper-button-${idx}`}>
                 {idx !== 0 && (
                   <div>
-                    <ChevronRightIcon tw="text-gray-400 h-5 w-5 grow-0 shrink-0" />
+                    <ChevronRightIcon tw="h-5 w-5 shrink-0 grow-0 text-gray-400" />
                   </div>
                 )}
                 <Tab as={Fragment}>
@@ -83,12 +93,12 @@ export const StakingStepper: FC<StakingStepperProps> = ({ items, mode }) => {
         </Tab.List>
 
         {/* Stepper Content  */}
-        <Tab.Panels tw="grow flex flex-col">
+        <Tab.Panels tw="flex grow flex-col">
           <AnimatePresence mode="wait">
             <Tab.Panel
               key={`stepper-panel-${selectedItem?.title}`}
               as={m.div}
-              tw="grow flex flex-col py-12 outline-none"
+              tw="flex grow flex-col py-12 outline-none"
               static={true}
               initial={{
                 opacity: 0,
@@ -118,7 +128,7 @@ export const StakingStepper: FC<StakingStepperProps> = ({ items, mode }) => {
                   onGoNext={() => {
                     setIndex(index.selected + 1)
                   }}
-                  firstRender={index.previous === undefined}
+                  isFirstRender={!itemHadFirstRender[index.selected]}
                   mode={mode}
                 />
               )}
@@ -139,6 +149,7 @@ export interface StakingStepperTabButtonProps {
 export const StakingStepperTabButton = forwardRef<HTMLButtonElement, StakingStepperTabButtonProps>(
   function StakingStepperTabButton({ item, index, selectedIndex, ...props }, ref) {
     const isSSR = useIsSSR()
+    const isSelected = index === selectedIndex
 
     return (
       <button
@@ -146,30 +157,34 @@ export const StakingStepperTabButton = forwardRef<HTMLButtonElement, StakingStep
         ref={ref}
         className="group"
         css={[
-          tw`flex items-center space-x-3 transition-opacity outline-none disabled:cursor-not-allowed`,
-          index <= selectedIndex
-            ? tw`opacity-100`
-            : tw`opacity-40 not-disabled:hocus:(opacity-100)`,
+          tw`flex items-center space-x-3 outline-none transition-opacity disabled:cursor-not-allowed`,
+          index <= selectedIndex ? tw`opacity-100` : tw`opacity-40 not-disabled:hocus:opacity-100`,
         ]}
         disabled={item.disabled}
         {...props}
       >
         <div
-          css={[
-            tw`w-8 h-8 flex justify-center items-center bg-black text-white font-semibold rounded-full`,
-            tw`group-focus:(ring-2 ring-offset-2 ring-primary-500)`,
-            index === selectedIndex && tw`ring-2 ring-offset-2 ring-black`,
-          ]}
+          tw="hidden h-6 w-6 items-center justify-center rounded-full bg-black font-semibold text-sm text-white group-focus:(ring-2 ring-primary-500 ring-offset-2) sm:(h-8 w-8 text-base) xs:flex"
+          css={[isSelected && tw`ring-2 ring-black ring-offset-2`]}
         >
-          {index < selectedIndex ? <CheckIcon tw="h-4 w-4 grow-0 shrink-0" /> : <>{index + 1}</>}
+          {index < selectedIndex ? (
+            <CheckIcon tw="h-3 w-3 shrink-0 grow-0 sm:(h-4 w-4)" />
+          ) : (
+            <>{index + 1}</>
+          )}
         </div>
         <div tw="flex flex-col items-start">
-          <div tw="font-semibold">
+          <div
+            tw="font-semibold underline-offset-2"
+            css={[isSelected && tw`underline xs:no-underline`]}
+          >
             {!!item.shortTitle && <span tw="lg:hidden">{item.shortTitle}</span>}
             <span css={[item.shortTitle && tw`hidden lg:inline`]}>{item.title}</span>
           </div>
           {!!item.subTitle && !isSSR && (
-            <div tw="inline text-xs text-gray-700 -mt-0.5">{item.subTitle}</div>
+            <div tw="-mt-0.5 hidden truncate text-xs text-gray-700 max-w-[6rem] xs:inline">
+              {item.subTitle}
+            </div>
           )}
         </div>
       </button>

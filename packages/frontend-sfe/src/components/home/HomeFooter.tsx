@@ -11,15 +11,15 @@ export const HomeFooter: FC<HomeFooterProps> = () => {
   return (
     <>
       <div tw="bg-gray-100">
-        <Wrapper tw="py-6">
+        <Wrapper smallVerticalPadding>
           {/* Logo & Nav */}
-          <div tw="flex flex-col space-y-6 md:(flex-row space-y-0) justify-between items-center">
+          <div tw="flex flex-col items-center justify-between space-y-6 md:(flex-row space-y-0)">
             <StakeForEarthLogo href="/" />
-            <HomeCTAs />
+            <HomeCTAs withTwitter={true} />
           </div>
 
           {/* Legal Links */}
-          <div tw="mt-10 flex flex-col items-center space-y-2 md:(flex-row space-y-0) justify-between text-xs text-gray-500">
+          <div tw="mt-10 flex flex-col items-center justify-between space-y-2 text-xs text-gray-500 md:(flex-row space-y-0)">
             <div>©{dayjs().year()} Stake for Earth Foundation</div>
             <div tw="-mx-2">
               <Link

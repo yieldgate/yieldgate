@@ -12,13 +12,13 @@ export interface StakeForEarthLogoProps {
 }
 export const StakeForEarthLogo: FC<StakeForEarthLogoProps> = ({ href, hideTextOn, ...props }) => {
   const StakeForEarthLogoInner: FC = () => (
-    <div tw="flex items-center space-x-2" {...props}>
-      <div tw="flex justify-center items-center shrink-0">
-        <Image src={logoIcon} width={32} height={32} alt="Stake For Earth Logo" priority />
+    <div tw="flex items-center space-x-3" {...props}>
+      <div tw="flex shrink-0 items-center justify-center">
+        <Image src={logoIcon} width={34} height={30} alt="Stake For Earth Logo" priority />
       </div>
       <div
         css={[
-          tw`font-body text-2xl font-medium tracking-tighter whitespace-nowrap!`,
+          tw`whitespace-nowrap! font-body font-medium text-2xl tracking-tighter`,
           hideTextOn === 'lg' && tw`sr-only lg:not-sr-only`,
           hideTextOn === 'md' && tw`sr-only md:not-sr-only`,
           hideTextOn === 'sm' && tw`sr-only sm:not-sr-only`,

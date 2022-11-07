@@ -1,4 +1,5 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
+import { CircleStackIcon } from '@heroicons/react/20/solid'
 import { constants } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils'
 import Image from 'next/image'
@@ -8,6 +9,7 @@ import { useForm, UseFormReturn } from 'react-hook-form'
 import { NumericFormat } from 'react-number-format'
 import 'twin.macro'
 import { useAccount, useBalance, useNetwork } from 'wagmi'
+import { StakeDonateImpactEstimationSlider } from './StakeDonateImpactEstimationSlider'
 import {
   StakingStepperItemContentBox,
   StakingStepperItemContentBoxDivider,
@@ -16,15 +18,16 @@ import {
 } from './StakingStepperItemSharedComponents'
 import { StakingViewStakeDonateProps } from './StakingViewStakeDonate'
 
-type StakeDonateFormValues = {
+export type StakeDonateFormValues = {
   stakingAmount: string
 }
 
 export interface StakeDonateFormProps extends StakingViewStakeDonateProps {}
-export const StakeDonateForm: FC<StakeDonateFormProps> = ({ mode, onGoNext }) => {
+export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
   const [isLoading, setIsLoading] = useState(false)
   const form = useForm<StakeDonateFormValues>({ mode: 'onChange' })
   const { isValid } = form.formState
+  const isDonateMode = props.mode === 'donate'
 
   // Handle form submit (staking action)
   const onSubmit = async (e: SyntheticEvent) => {
@@ -32,22 +35,29 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ mode, onGoNext }) =>
     setIsLoading(true)
     await new Promise((r) => setTimeout(r, 1500))
     setIsLoading(false)
-    onGoNext()
+    props.onGoNext()
   }
 
   return (
     <>
       <StakingStepperItemContentBox>
         <StakingStepperItemContentBoxHeadline>
-          {mode === 'donate' ? 'Donation Amount' : 'Staking Amount'}
+          {isDonateMode ? 'Donation Amount' : 'Staking Amount'}
         </StakingStepperItemContentBoxHeadline>
         <StakingStepperItemContentBoxSubtitle>
           Set the amount you want to put into the climate pool to participate in carbon credits
-          burning. You can always unstake.
+          burning.{' '}
+          {isDonateMode ? (
+            <strong>Your donation will be permanent and you can&apos;t revoke your funds.</strong>
+          ) : (
+            <strong>You can always unstake.</strong>
+          )}
         </StakingStepperItemContentBoxSubtitle>
 
         <form onSubmit={onSubmit}>
-          <StakeDonateAmountInputField form={form} />
+          <StakeDonateAmountInputField form={form} {...props} />
+
+          <StakeDonateImpactEstimationSlider form={form} {...props} />
 
           <StakingStepperItemContentBoxDivider />
 
@@ -59,7 +69,7 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ mode, onGoNext }) =>
               disabled={!isValid || isLoading}
               isLoading={isLoading}
             >
-              {mode === 'donate' ? 'Donate' : 'Stake'}
+              {isDonateMode ? 'Donate' : 'Stake'}
             </BaseButton>
           </BaseButtonGroup>
         </form>
@@ -68,10 +78,13 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ mode, onGoNext }) =>
   )
 }
 
-export interface StakeDonateAmountInputFieldProps {
+export interface StakeDonateAmountInputFieldProps extends StakingViewStakeDonateProps {
   form: UseFormReturn<StakeDonateFormValues, any>
 }
-export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> = ({ form }) => {
+export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> = ({
+  form,
+  onGoPrev,
+}) => {
   const { errors } = form.formState
   const { address } = useAccount()
   const { chain } = useNetwork()
@@ -89,8 +102,8 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
 
   return (
     <>
+      {/* Input Field */}
       <div tw="relative">
-        {/* Input Field */}
         <label htmlFor="stakingAmount" tw="sr-only">
           Staking Amount
         </label>
@@ -98,7 +111,7 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
           type="text"
           id="stakingAmount"
           placeholder="100.00"
-          tw="w-full bg-white text-2xl font-medium text-black border border-gray-300 rounded leading-none py-5 pl-4 pr-[5rem] outline-none focus:(ring-offset-2 ring-2 ring-sky-500)"
+          tw="w-full rounded border border-gray-300 bg-white py-5 pl-4 font-medium text-2xl text-black leading-none outline-none pr-[5rem] focus:(ring-2 ring-sky-500 ring-offset-2)"
           {...form.register('stakingAmount', {
             required: true,
             min: {
@@ -112,16 +125,16 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
           })}
         />
 
-        <div tw="flex flex-col items-end space-y-2 absolute right-4 top-1/2 -translate-y-1/2 z-10">
+        <div tw="absolute right-4 top-1/2 z-10 flex -translate-y-1/2 flex-col items-end space-y-2">
           {/* Unit (USDC) */}
-          <div tw="flex items-center space-x-1 text-lg font-medium text-black tracking-tight leading-none">
+          <div tw="flex items-center space-x-1 font-medium text-lg text-black leading-none tracking-tight">
             <Image src={usdcSvg} width={18} height={18} alt="USDC Token Logo" />
             <div>USDC</div>
           </div>
 
           {/* Balance and "Max"-Button */}
           {balance !== undefined && (
-            <div tw="flex justify-end items-baseline text-sm leading-none h-4 space-x-1.5">
+            <div tw="flex h-4 items-baseline justify-end space-x-1.5 text-sm leading-none">
               <div tw="text-gray-600">
                 Balance:{' '}
                 <NumericFormat
@@ -133,7 +146,7 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
               </div>
               <button
                 type="button"
-                tw="text-green-500 font-semibold border border-green-200 hover:(border-green-300) rounded-md py-0.5 px-1"
+                tw="rounded-md border border-green-200 py-0.5 px-1 font-semibold text-green-500 hover:border-green-300"
                 onClick={() => {
                   form.setValue('stakingAmount', balance.formatted)
                 }}
@@ -145,8 +158,22 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
         </div>
       </div>
 
-      {/* Error Message */}
-      <div tw="mt-2 text-xs font-semibold text-amber-500">{errors.stakingAmount?.message}</div>
+      <div tw="my-4 flex flex-col flex-wrap items-center justify-center space-y-3 whitespace-nowrap text-xs sm:(flex-row items-baseline space-y-0 space-x-2)">
+        {/* Error Message */}
+        {!!errors.stakingAmount?.message && (
+          <div tw="grow font-bold text-amber-500">{errors.stakingAmount?.message}</div>
+        )}
+
+        {/* Top-up button */}
+        <button
+          tw="flex items-center justify-center font-medium text-gray-800 hover:text-black"
+          onClick={onGoPrev}
+          type="button"
+        >
+          Top-up or bridge funds
+          <CircleStackIcon tw="ml-1.5 h-3.5 w-3.5" />
+        </button>
+      </div>
     </>
   )
 }

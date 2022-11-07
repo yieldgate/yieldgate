@@ -12,11 +12,11 @@ import 'twin.macro'
 import tw, { styled, theme } from 'twin.macro'
 
 const BaseButtonWrapper = styled.button(({ variant, disabled }: Partial<BaseButtonProps>) => [
-  tw`flex relative items-center justify-center leading-none rounded font-body py-2.5 px-5`,
+  tw`relative flex items-center justify-center whitespace-nowrap rounded py-2.5 px-5 font-body leading-none`,
   variant === 'outline'
-    ? tw`bg-transparent backdrop-blur-md border border-black text-black`
-    : tw`bg-black border border-transparent text-white`,
-  disabled && tw`opacity-80 cursor-not-allowed`,
+    ? tw`border border-black bg-transparent text-black backdrop-blur-md`
+    : tw`border border-transparent bg-black text-white`,
+  disabled && tw`cursor-not-allowed opacity-80`,
   disabled && (variant === 'outline' ? tw`text-black/80` : tw`text-white/80`),
 ])
 const BaseButtonLinkWrapper = BaseButtonWrapper.withComponent(Link)
@@ -47,7 +47,7 @@ export const BaseButton: FC<PropsWithChildren<BaseButtonProps>> = ({
 
       {/* Loading Animation Overlay */}
       {isLoading && (
-        <div tw="absolute inset-0 flex justify-center items-center">
+        <div tw="absolute inset-0 flex items-center justify-center">
           <SpinnerDiamond
             size={20}
             thickness={125}
@@ -63,7 +63,7 @@ export const BaseButton: FC<PropsWithChildren<BaseButtonProps>> = ({
 }
 
 export const BaseButtonGroup = styled.div`
-  ${tw`flex flex-wrap -mx-1 -my-1`}
+  ${tw`-mx-1 -my-1 flex flex-wrap`}
   button, a {
     ${tw`mx-1 my-1`}
   }

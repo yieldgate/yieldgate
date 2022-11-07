@@ -45,7 +45,7 @@ export const FAQsSection: FC<FAQsSectionProps> = ({ items, openFirst, ...props }
             key={`faq-${index}`}
             defaultOpen={index === 0 && openFirst}
             as="div"
-            tw="pt-2 pb-3 border-b border-gray-200"
+            tw="border-gray-200 border-b pt-2 pb-3"
           >
             {({ open }) => {
               const Icon = open ? MinusIcon : PlusIcon
@@ -53,11 +53,11 @@ export const FAQsSection: FC<FAQsSectionProps> = ({ items, openFirst, ...props }
                 <>
                   <Disclosure.Button
                     css={[
-                      tw`flex items-center w-full font-semibold cursor-help`,
+                      tw`flex w-full cursor-help items-center font-semibold`,
                       open ? tw`text-black` : tw`text-gray-700 hover:text-black`,
                     ]}
                   >
-                    <h3 tw="grow text-left pt-2 pb-1 mr-2">{item.question}</h3>
+                    <h3 tw="mr-2 grow pt-2 pb-1 text-left">{item.question}</h3>
                     <Icon tw="h-5 w-5 shrink-0 grow-0" />
                   </Disclosure.Button>
                   <AnimatePresence mode="wait">
@@ -68,7 +68,7 @@ export const FAQsSection: FC<FAQsSectionProps> = ({ items, openFirst, ...props }
                     >
                       <RenderedMarkdownContent
                         content={item.answer}
-                        tw="prose prose-sm first:prose-p:(mt-2) last:prose-p:(mb-2)"
+                        tw="prose prose-sm first:prose-p:mt-2 last:prose-p:mb-2"
                       />
                     </Disclosure.Panel>
                   </AnimatePresence>

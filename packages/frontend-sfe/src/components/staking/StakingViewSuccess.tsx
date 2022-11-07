@@ -24,17 +24,17 @@ export const StakingViewSuccess: FC<StakingViewSuccessProps> = ({ mode }) => {
       <StakingStepperItemOuterWrapper tw="items-center">
         <StakingStepperItemHeadline tw="flex items-center">
           {mode === 'donate' ? 'Donated successfully' : 'Staked successfully'}
-          <CheckCircleIcon tw="h-7 w-7 ml-2  shrink-0 grow-0 text-green-500" />
+          <CheckCircleIcon tw="ml-2 h-7 w-7 shrink-0 grow-0 text-green-500" />
         </StakingStepperItemHeadline>
         <StakingStepperItemBody tw="items-center">
-          <StakingStepperItemContentBox tw="w-[25rem] text-center">
+          <StakingStepperItemContentBox tw="w-full text-center max-w-[25rem]">
             <StakingStepperItemContentBoxHeadline>
               Your Supporter Badge
             </StakingStepperItemContentBoxHeadline>
             <StakingStepperItemContentBoxSubtitle>Minted NFT</StakingStepperItemContentBoxSubtitle>
 
             {/* Staking Badge (TODO) */}
-            <div tw="w-[13rem] mx-auto mb-[-1rem]">
+            <div tw="mx-auto w-[12rem] mb-[-1rem]">
               <Image src={badgePlaceholderImg} alt="Staking Badge NFT" />
             </div>
             <StakingStepperItemContentBoxDivider />
@@ -42,7 +42,7 @@ export const StakingViewSuccess: FC<StakingViewSuccessProps> = ({ mode }) => {
             {/* Actions */}
             <BaseButtonGroup tw="grid grid-cols-1">
               <BaseButton asLink={true} href="https://doingud.com/" target="_blank">
-                View on DoinGud ↗
+                View Badge ↗
               </BaseButton>
             </BaseButtonGroup>
           </StakingStepperItemContentBox>
@@ -56,7 +56,7 @@ export const StakingViewSuccess: FC<StakingViewSuccessProps> = ({ mode }) => {
 }
 
 const SuccessShareButton = styled.button(() => [
-  tw`flex items-center space-x-2 tracking-tight font-semibold underline underline-offset-4 whitespace-nowrap`,
+  tw`flex items-center space-x-2 whitespace-nowrap font-semibold tracking-tight underline underline-offset-4`,
 ])
 const SuccessShareButtonAnchor = SuccessShareButton.withComponent('a')
 

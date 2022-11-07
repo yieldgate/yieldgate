@@ -24,12 +24,16 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
     <>
       <StakingStepperItemContentBox>
         <StakingStepperItemContentBoxHeadline>
-          {mode === 'donate' ? 'Previous Donations' : 'Current Staking'}
+          {mode === 'donate' ? 'Your previous Donations' : 'Your current Staking'}
         </StakingStepperItemContentBoxHeadline>
 
         {/* KPIs */}
-        <div tw="grid grid-cols-3 -m-1">
-          <StakeDonateKPI title="Impact (CO₂)" isLoading={isLoading} tw="text-green-500">
+        <div tw="-m-1 grid grid-cols-2 sm:grid-cols-3">
+          <StakeDonateKPI
+            title="Impact (CO₂)"
+            isLoading={isLoading}
+            tw="col-span-2 text-green-500 sm:col-span-1"
+          >
             <NumericFormat
               value={1000}
               displayType={'text'}
@@ -79,9 +83,9 @@ export const StakeDonateKPI: FC<PropsWithChildren<StakeDonateKPIProps>> = ({
 }) => {
   return (
     <>
-      <div tw="flex flex-col m-1 rounded bg-gray-100 py-3 px-4 space-y-1" {...props}>
+      <div tw="m-1 flex flex-col space-y-1 rounded bg-gray-100 py-3 px-4" {...props}>
         <h4 tw="text-sm text-gray-500!">{title}</h4>
-        {!isLoading && <p tw="text-xl font-bold tracking-tight">{value}</p>}
+        {!isLoading && <p tw="font-bold text-xl tracking-tight">{value}</p>}
         {isLoading && (
           <SpinnerDiamond
             size={20}

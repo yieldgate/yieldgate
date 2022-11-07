@@ -15,7 +15,7 @@ export const HomeNewsletterSection: FC<HomeNewsletterSectionProps> = () => {
     <>
       <div tw="bg-primary-100">
         <Wrapper tw="overflow-hidden">
-          <div tw="relative  z-10">
+          <div tw="relative z-10">
             {/* Heading & Text */}
             <SubheadingSmall>Newsletter</SubheadingSmall>
             <Subheading noHeadingMarkup={true} tagline="We notify you when the pool launches.">
@@ -23,10 +23,10 @@ export const HomeNewsletterSection: FC<HomeNewsletterSectionProps> = () => {
             </Subheading>
 
             {/* Subscribe Form */}
-            <HomeNewsletterSubscribeForm />
+            <HomeNewsletterSubscribeForm tw="mt-8" />
           </div>
 
-          <div tw="absolute max-w-[66%] right-0 top-1/2 -translate-y-1/2 select-none opacity-50 z-0">
+          <div tw="absolute right-0 top-1/2 z-0 -translate-y-1/2 select-none opacity-50 max-w-[66%]">
             <Image src={circleElementSvg} width={450} height={450} alt="Decorative Element" />
           </div>
         </Wrapper>
@@ -36,7 +36,7 @@ export const HomeNewsletterSection: FC<HomeNewsletterSectionProps> = () => {
 }
 
 export interface HomeNewsletterSubscribeFormProps {}
-export const HomeNewsletterSubscribeForm: FC<HomeNewsletterSubscribeFormProps> = () => {
+export const HomeNewsletterSubscribeForm: FC<HomeNewsletterSubscribeFormProps> = (props) => {
   const [isLoading, setIsLoading] = useState(false)
   const form = useForm({ mode: 'onChange' })
   const { isValid } = form.formState
@@ -61,16 +61,16 @@ export const HomeNewsletterSubscribeForm: FC<HomeNewsletterSubscribeFormProps> =
 
   return (
     <>
-      <form onSubmit={onSubmit} tw="relative mt-8">
+      <form onSubmit={onSubmit} tw="relative" {...props}>
         <label htmlFor="email" tw="sr-only">
           E-Mail for Newsletter
         </label>
-        <div tw="flex items-stretch relative">
+        <div tw="relative flex items-stretch">
           <input
             type="text"
             id="email"
             placeholder="Email Address"
-            tw="w-[20rem] mr-2 bg-white text-black border border-gray-300 rounded font-body leading-none py-2.5 px-2.5 outline-none focus:(ring-offset-2 ring-2 ring-sky-500)"
+            tw="mr-2 min-w-0 rounded border border-gray-300 bg-white py-2.5 px-2.5 font-body text-black leading-none outline-none w-[20rem] focus:(ring-2 ring-sky-500 ring-offset-2)"
             {...form.register('email', { required: true })}
           />
           <BaseButton

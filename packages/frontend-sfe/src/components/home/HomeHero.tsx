@@ -1,33 +1,36 @@
 import { Wrapper } from '@components/layout/Wrapper'
 import { FC } from 'react'
-import CountUp from 'react-countup'
 import 'twin.macro'
-import { HomeCTAs } from './HomeCTAs'
+import { HomeCarbonTonnesCountUp } from './HomeCarbonTonnesCountUp'
 import { HomeHeroIllustration } from './HomeHeroIllustration'
+import { HomeNewsletterSubscribeForm } from './HomeNewsletterSection'
 
 export interface HomeHeroProps {}
 export const HomeHero: FC<HomeHeroProps> = () => {
   return (
     <>
-      <div tw="h-[60vh] lg:(h-[70vh]) min-h-[33rem] flex items-center relative overflow-hidden">
+      <div tw="relative flex items-center overflow-hidden h-[60vh] min-h-[33rem] lg:h-[70vh]">
         {/* Text Content */}
         <Wrapper tw="z-10">
-          <div tw="max-w-[22rem] pb-[2.5vh] lg:(max-w-[30rem] pb-[5vh])  sm:(px-4) space-y-8">
+          <div tw="space-y-10 max-w-[22rem] pb-[2.5vh] sm:px-4 lg:(max-w-[30rem] pb-[5vh])">
             {/* Tagline */}
-            <p tw="text-4xl lg:(text-5xl) font-display font-bold tracking-tight">
+            <p tw="font-display font-bold text-4xl tracking-tight lg:text-5xl">
               Compounding yield to enable climate action at 0 cost
             </p>
 
             {/* Burned KPI */}
-            <div tw="flex flex-col">
-              <div tw="text-4xl lg:(text-5xl) min-h-[1em] leading-none font-display font-bold whitespace-nowrap">
-                <CountUp end={238477} duration={2.5} separator="," decimals={0} />
-              </div>
-              <div tw="text-sm opacity-75 mt-2">carbon credits burned</div>
-            </div>
+            <HomeCarbonTonnesCountUp subtitle="carbon credits burned" />
 
-            {/* CTAs */}
-            <HomeCTAs primaryFirst={true} tw="text-base" />
+            {/* Staking CTAs */}
+            {/* <HomeCTAs primaryFirst={true} tw="text-base" /> */}
+
+            {/* Newsletter CTA */}
+            <div>
+              <div tw="mb-2 font-medium text-gray-800 text-sm uppercase">
+                Subscribe to our Newsletter
+              </div>
+              <HomeNewsletterSubscribeForm />
+            </div>
           </div>
         </Wrapper>
 

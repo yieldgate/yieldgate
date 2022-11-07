@@ -1,6 +1,7 @@
 import { FAQItem, FAQsSection } from '@components/shared/FAQsSection'
-import { useAccountModal, useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
-import { FC, useEffect } from 'react'
+import { ArrowRightCircleIcon } from '@heroicons/react/20/solid'
+import { useChainModal, useConnectModal } from '@rainbow-me/rainbowkit'
+import { FC, useEffect, useState } from 'react'
 import 'twin.macro'
 import { useAccount, useDisconnect, useEnsName, useNetwork } from 'wagmi'
 import { StakingStepperItemComponentProps } from './StakingStepper'
@@ -30,21 +31,19 @@ export interface StakingViewConnectProps extends StakingStepperItemComponentProp
 export const StakingViewConnect: FC<StakingViewConnectProps> = ({
   onGoNext,
   onGoPrev,
-  firstRender,
+  isFirstRender,
 }) => {
   // Navigate to next tab when wallet connected correctly
   const { chain } = useNetwork()
-  const { isConnected } = useAccount({
-    onConnect: ({ address }) => {
-      if (!!address && !chain?.unsupported) onGoNext()
-    },
-  })
+  const { isConnected } = useAccount()
 
   // Navigate to next tab when tab is opened for the first time
   // and the wallet was already connected correctly
+  const [listenForConnects, setListenForConnects] = useState(false)
   useEffect(() => {
-    if (firstRender && isConnected && !chain?.unsupported) onGoNext()
-  }, [])
+    if ((listenForConnects || isFirstRender) && isConnected && !chain?.unsupported) onGoNext()
+    setListenForConnects(true)
+  }, [isConnected])
 
   return (
     <>
@@ -53,8 +52,8 @@ export const StakingViewConnect: FC<StakingViewConnectProps> = ({
         <StakingStepperItemBody>
           <StakingViewConnectButton />
           {isConnected && !chain?.unsupported && (
-            <StakingStepperItemContinueButton tw="mt-6" onClick={() => onGoNext()}>
-              Continue to Prepare Funds
+            <StakingStepperItemContinueButton onClick={() => onGoNext()}>
+              Continue to Prepare Funds <ArrowRightCircleIcon tw="ml-2 h-4 w-4" />
             </StakingStepperItemContinueButton>
           )}
           <FAQsSection items={faqItems} tw="mt-16!" />
@@ -70,7 +69,6 @@ export const StakingViewConnectButton: FC = () => {
   const { address } = useAccount()
   const { data: ensName } = useEnsName({ address, chainId: 1 })
   const { openConnectModal } = useConnectModal()
-  const { openAccountModal } = useAccountModal()
   const { openChainModal } = useChainModal()
   const { disconnect } = useDisconnect()
 
@@ -86,8 +84,6 @@ export const StakingViewConnectButton: FC = () => {
           <StakingStepperItemFullWidthButton onClick={disconnect} title={address}>
             <div>Disconnect Wallet</div>
             <StakingStepperItemFullWidthButtonSubtitle>
-              {/* <StakingStepperItemFullWidthButtonSubtitle tw="flex items-center space-x-1">
-              <WalletIcon tw="h-[.95rem] w-[.95rem] text-gray-800" /> */}
               <div>{ensName || address}</div>
             </StakingStepperItemFullWidthButtonSubtitle>
           </StakingStepperItemFullWidthButton>
