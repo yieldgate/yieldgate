@@ -5,4 +5,7 @@ export const enum RevertReasons {
   StakeStillLocked = 'stake still locked',
   NoSupporter = 'no supporter',
   wethgwApprovalFailed = 'ethgw approval failed',
+  AavePoolApprovalFailed = 'AavePool approval failed',
+  ZeroAmount = 'zero amount',
+  TokenTransferFailed = 'token transfer failed',
 }
