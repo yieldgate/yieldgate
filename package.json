@@ -30,7 +30,8 @@
     "lint:fix": "prettier . --write",
     "dev:frontend-yg": "pnpm run --filter frontend-yg dev",
     "dev:frontend-sfe": "pnpm run --filter frontend-sfe dev",
-    "deploy:contracts": "pnpm run --filter contracts deploy",
+    "deploy:contracts-yg": "pnpm run --filter contracts deploy-yg",
+    "deploy:contracts-sfe": "pnpm run --filter contracts deploy-sfe",
     "prepare": "husky install"
   },
   "devDependencies": {

@@ -4,3 +4,4 @@ artifacts
 typechain-types
 deployments/localhost
 deployments/1337.json
+deployments/**/1337.json
