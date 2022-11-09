@@ -1,6 +1,6 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
 import { CircleStackIcon } from '@heroicons/react/20/solid'
-import { constants } from 'ethers'
+import { useDeployments } from '@lib/useDeployments'
 import { formatUnits } from 'ethers/lib/utils'
 import Image from 'next/image'
 import usdcSvg from 'public/icons/tokens/usdc.svg'
@@ -87,17 +87,13 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
 }) => {
   const { errors } = form.formState
   const { address } = useAccount()
+  const { addresses } = useDeployments()
   const { chain } = useNetwork()
+  const token = addresses?.USDC
   const { data: balance } = useBalance({
     addressOrName: address,
     watch: true,
-    // TODO
-    token:
-      chain?.id === 137
-        ? '0x2791bca1f2de4661ed88a30c99a7a9449aa84174'
-        : chain?.id === 80001
-        ? '0x9aa7fEc87CA69695Dd1f879567CcF49F3ba417E2'
-        : constants.AddressZero,
+    token,
   })
 
   return (
@@ -138,9 +134,10 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
               <div tw="text-gray-600">
                 Balance:{' '}
                 <NumericFormat
-                  value={formatUnits(balance.value, 6)}
+                  value={formatUnits(balance.value, 18 /* TODO USDCs has 6 decimals */)}
                   displayType={'text'}
                   decimalScale={2}
+                  fixedDecimalScale={true}
                   thousandSeparator={true}
                 />
               </div>
@@ -148,7 +145,7 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
                 type="button"
                 tw="rounded-md border border-green-200 py-0.5 px-1 font-semibold text-green-500 hover:border-green-300"
                 onClick={() => {
-                  form.setValue('stakingAmount', balance.formatted)
+                  form.setValue('stakingAmount', parseFloat(balance.formatted).toFixed(2))
                 }}
               >
                 Max

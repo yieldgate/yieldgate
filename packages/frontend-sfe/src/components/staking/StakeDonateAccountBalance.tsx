@@ -1,6 +1,6 @@
 import { ArrowTopRightOnSquareIcon, ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import { truncateHash } from '@lib/truncateHash'
-import { constants } from 'ethers'
+import { useDeployments } from '@lib/useDeployments'
 import { formatUnits } from 'ethers/lib/utils'
 import Image from 'next/image'
 import usdcSvg from 'public/icons/tokens/usdc.svg'
@@ -24,15 +24,11 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({
   onGoNext,
 }) => {
   const { address } = useAccount()
+  const { addresses } = useDeployments()
+  console.log({ addresses })
   const { data: ensName } = useEnsName({ address, chainId: 1 })
   const { chain } = useNetwork()
-  // TODO
-  const token =
-    chain?.id === 137
-      ? '0x2791bca1f2de4661ed88a30c99a7a9449aa84174'
-      : chain?.id === 80001
-      ? '0x9aa7fEc87CA69695Dd1f879567CcF49F3ba417E2'
-      : constants.AddressZero
+  const token = addresses?.USDC
   const {
     data: balance,
     isError,
@@ -81,9 +77,10 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({
             {!isLoading && balance?.value && (
               <div tw="flex flex-col">
                 <NumericFormat
-                  value={formatUnits(balance.value, 6)}
+                  value={formatUnits(balance.value, 18 /* TODO USDCs has 6 decimals */)}
                   displayType={'text'}
                   decimalScale={2}
+                  fixedDecimalScale={true}
                   thousandSeparator={true}
                   suffix=" USDC"
                   tw="whitespace-nowrap font-display font-bold text-2xl leading-none"
