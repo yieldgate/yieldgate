@@ -4,7 +4,7 @@ import { env } from '@lib/environment'
 import { FC } from 'react'
 import 'twin.macro'
 import { useAccount } from 'wagmi'
-import { StakeDonateBalance } from './StakeDonateBalance'
+import { StakeDonateAccountBalance } from './StakeDonateAccountBalance'
 import { StakingStepperItemComponentProps } from './StakingStepper'
 import {
   StakingStepperItemBody,
@@ -52,7 +52,7 @@ export const StakingViewPrepareFunds: FC<StakingViewPrepareFundsProps> = (props)
       <StakingStepperItemOuterWrapper>
         <StakingStepperItemHeadline>Prepare Funds</StakingStepperItemHeadline>
         <StakingStepperItemBody>
-          <StakeDonateBalance {...props} />
+          <StakeDonateAccountBalance {...props} />
           {/* TODO Consider deeper Integration for both */}
           <StakingStepperItemFullWidthAnchor
             href={`https://buy.ramp.network/?${rampUrlParams}`}

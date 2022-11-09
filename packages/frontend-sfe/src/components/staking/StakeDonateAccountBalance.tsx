@@ -18,8 +18,11 @@ import {
   StakingStepperItemContentBoxSubtitle,
 } from './StakingStepperItemSharedComponents'
 
-export interface StakeDonateBalanceProps extends StakingStepperItemComponentProps {}
-export const StakeDonateBalance: FC<StakeDonateBalanceProps> = ({ isFirstRender, onGoNext }) => {
+export interface StakeDonateAccountBalanceProps extends StakingStepperItemComponentProps {}
+export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({
+  isFirstRender,
+  onGoNext,
+}) => {
   const { address } = useAccount()
   const { data: ensName } = useEnsName({ address, chainId: 1 })
   const { chain } = useNetwork()
