@@ -1,7 +1,11 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
+import { useDeployments } from '@lib/useDeployments'
+import { TokenPool__factory } from '@yieldgate/contracts/typechain-types'
 import { FC, SyntheticEvent, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import 'twin.macro'
+import { useSigner } from 'wagmi'
 import { StakeDonateAmountInputField } from './StakeDonateAmountInputField'
 import { StakeDonateImpactEstimationSlider } from './StakeDonateImpactEstimationSlider'
 import {
@@ -22,9 +26,36 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
   const form = useForm<StakeDonateFormValues>({ mode: 'onChange' })
   const { isValid } = form.formState
   const isDonateMode = props.mode === 'donate'
+  const [isApproved, setIsApproved] = useState(false)
+  const { data: signer } = useSigner()
+  const { contracts, addresses } = useDeployments()
 
-  // Handle form submit (staking action)
-  const onSubmit = async (e: SyntheticEvent) => {
+  // Approval Action
+  const onApprove = async (e: SyntheticEvent) => {
+    e?.preventDefault()
+    if (!signer || !contracts || !addresses?.USDC) return
+    setIsLoading(true)
+    console.log({ contracts })
+    const contract = TokenPool__factory.connect(contracts.TokenPool.address, signer)
+    try {
+      console.log('addresses.USDC', addresses.USDC)
+      const tsx = await contract.approvePool(addresses.USDC)
+      console.log({ tsx })
+      const receipt = await tsx.wait()
+      console.log({ receipt })
+      toast.success('Successfully approved USDC.')
+      setIsApproved(true)
+    } catch (e) {
+      toast.error('Error while approving USDC. Try again…')
+      console.error(e)
+      setIsApproved(false)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Staking Action
+  const onStake = async (e: SyntheticEvent) => {
     e?.preventDefault()
     setIsLoading(true)
     await new Promise((r) => setTimeout(r, 1500))
@@ -48,7 +79,7 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
           )}
         </StakingStepperItemContentBoxSubtitle>
 
-        <form onSubmit={onSubmit}>
+        <form>
           <StakeDonateAmountInputField form={form} {...props} />
 
           <StakeDonateImpactEstimationSlider form={form} {...props} />
@@ -57,14 +88,26 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
 
           {/* Actions */}
           <BaseButtonGroup tw="grid grid-cols-1">
-            <BaseButton
-              onClick={onSubmit}
-              type="submit"
-              disabled={!isValid || isLoading}
-              isLoading={isLoading}
-            >
-              {isDonateMode ? 'Donate' : 'Stake'}
-            </BaseButton>
+            {!isApproved && (
+              <BaseButton
+                onClick={onApprove}
+                type="button"
+                disabled={!isValid || isLoading}
+                isLoading={isLoading}
+              >
+                Approve
+              </BaseButton>
+            )}
+            {isApproved && (
+              <BaseButton
+                onClick={onStake}
+                type="button"
+                disabled={!isValid || isLoading}
+                isLoading={isLoading}
+              >
+                {isDonateMode ? 'Donate' : 'Stake'}
+              </BaseButton>
+            )}
           </BaseButtonGroup>
         </form>
       </StakingStepperItemContentBox>

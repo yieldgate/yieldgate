@@ -65,6 +65,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
               border: '1px #e4e4e4 solid',
               boxShadow: 'none',
               background: 'white',
+              maxWidth: '30rem',
             },
             success: {
               duration: 5000,
