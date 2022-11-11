@@ -48,14 +48,15 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
       address || constants.AddressZero,
       contracts?.TokenPool?.address || constants.AddressZero,
     ],
-    enabled: !!address && addresses?.USDC && !!contracts?.TokenPool?.address,
+    enabled: !!address && !!addresses?.USDC && !!contracts?.TokenPool?.address,
     onError: (e) => {
       console.error(e)
       toast.error('Error while fetching allowance for USDC.')
+      setIsApproved(false)
     },
     onSuccess: (data) => {
       const allowanceIsMax = data?.eq(constants.MaxUint256)
-      if (allowanceIsMax) setIsApproved(true)
+      setIsApproved(allowanceIsMax)
     },
   })
 
