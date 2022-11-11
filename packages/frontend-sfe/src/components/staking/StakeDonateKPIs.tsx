@@ -1,9 +1,14 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
-import { FC, PropsWithChildren, useEffect, useState } from 'react'
+import { useDeployments } from '@lib/useDeployments'
+import { TokenPool__factory } from '@yieldgate/contracts/typechain-types'
+import { formatUnits } from 'ethers/lib/utils.js'
+import { FC, PropsWithChildren, useState } from 'react'
 import { NumericFormat } from 'react-number-format'
 import { SpinnerDiamond } from 'spinners-react'
 import 'twin.macro'
 import { theme } from 'twin.macro'
+import useAsyncEffect from 'use-async-effect'
+import { useAccount, useProvider } from 'wagmi'
 import {
   StakingStepperItemContentBox,
   StakingStepperItemContentBoxDivider,
@@ -13,12 +18,27 @@ import { StakingViewStakeDonateProps } from './StakingViewStakeDonate'
 
 export interface StakeDonateKPIsProps extends StakingViewStakeDonateProps {}
 export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
-  const [isLoading, setIsLoading] = useState(true)
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 1500)
-  }, [])
+  const { contracts, addresses } = useDeployments()
+  const provider = useProvider()
+  const { address } = useAccount()
+
+  // Fetch existing stake
+  const [stakeAmountIsLoading, setStakeAmountIsLoading] = useState(true)
+  const [stakeAmount, setStakeAmount] = useState<number>()
+  useAsyncEffect(async () => {
+    const tokenPoolAddress = contracts?.TokenPool?.address
+    const tokenAddress = addresses?.USDC
+    if (!tokenPoolAddress || !tokenAddress || !address) return
+    setStakeAmountIsLoading(true)
+    try {
+      const contract = TokenPool__factory.connect(tokenPoolAddress, provider)
+      const result = await contract.stakes(tokenAddress, address)
+      const stakeAmount = parseFloat(formatUnits(result, 18 /* TODO USDCs has 6 decimals */))
+      setStakeAmount(stakeAmount)
+    } finally {
+      setStakeAmountIsLoading(false)
+    }
+  }, [address, contracts])
 
   return (
     <>
@@ -29,13 +49,9 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
 
         {/* KPIs */}
         <div tw="-m-1 grid grid-cols-2 sm:grid-cols-3">
-          <StakeDonateKPI
-            title="Impact (CO₂)"
-            isLoading={isLoading}
-            tw="col-span-2 text-green-500 sm:col-span-1"
-          >
+          <StakeDonateKPI title="Impact (CO₂)" tw="col-span-2 text-green-500 sm:col-span-1">
             <NumericFormat
-              value={1000}
+              value={0}
               displayType={'text'}
               decimalScale={0}
               fixedDecimalScale={true}
@@ -43,18 +59,16 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
               suffix=" kg"
             />
           </StakeDonateKPI>
-          <StakeDonateKPI title="Stake (USDC)" isLoading={isLoading}>
+          <StakeDonateKPI title="Stake (USDC)" isLoading={stakeAmountIsLoading}>
             <NumericFormat
-              value={900}
+              value={stakeAmount}
               displayType={'text'}
               decimalScale={2}
               fixedDecimalScale={true}
               thousandSeparator={true}
             />
           </StakeDonateKPI>
-          <StakeDonateKPI title="Duration" isLoading={isLoading}>
-            30 days
-          </StakeDonateKPI>
+          <StakeDonateKPI title="Duration">0 days</StakeDonateKPI>
         </div>
 
         <StakingStepperItemContentBoxDivider />
