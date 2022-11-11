@@ -24,7 +24,7 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
   const { chain } = useNetwork()
   const token = addresses?.USDC
   const { data: balance } = useBalance({
-    addressOrName: address,
+    address,
     watch: true,
     token,
   })

@@ -35,7 +35,7 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({
     isLoading,
     isFetchedAfterMount,
   } = useBalance({
-    addressOrName: address,
+    address,
     watch: true,
     token,
   })
