@@ -26,3 +26,9 @@ export const getAddressesFor = (chainId: number): AddressesType => {
     {}
   )
 }
+
+/**
+ * Decimals of tokens above
+ */
+
+export const USDC_DECIMALS = 18 /* TODO USDCs has 6 decimals */

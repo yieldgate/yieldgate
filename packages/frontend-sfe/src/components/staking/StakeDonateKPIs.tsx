@@ -1,4 +1,5 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
+import { USDC_DECIMALS } from '@deployments/addresses'
 import { useDeployments } from '@lib/useDeployments'
 import { TokenPool__factory } from '@yieldgate/contracts/typechain-types'
 import { formatUnits } from 'ethers/lib/utils.js'
@@ -33,7 +34,7 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
     try {
       const contract = TokenPool__factory.connect(tokenPoolAddress, provider)
       const result = await contract.stakes(tokenAddress, address)
-      const stakeAmount = parseFloat(formatUnits(result, 18 /* TODO USDCs has 6 decimals */))
+      const stakeAmount = parseFloat(formatUnits(result, USDC_DECIMALS))
       setStakeAmount(stakeAmount)
     } finally {
       setStakeAmountIsLoading(false)

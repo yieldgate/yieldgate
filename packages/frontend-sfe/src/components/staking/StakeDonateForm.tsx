@@ -1,4 +1,5 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
+import { USDC_DECIMALS } from '@deployments/addresses'
 import { useDeployments } from '@lib/useDeployments'
 import { constants } from 'ethers'
 import { parseUnits } from 'ethers/lib/utils.js'
@@ -90,11 +91,7 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
     overrides: {
       gasLimit: 1000000,
     },
-    args: [
-      addresses?.USDC,
-      address,
-      parseUnits(stakingAmount || '0', 18 /* TODO USDCs has 6 decimals */),
-    ],
+    args: [addresses?.USDC, address, parseUnits(stakingAmount || '0', USDC_DECIMALS)],
   })
   const stake = useContractWrite(stakeConfig)
   const { isLoading: stakeTsxIsLoading } = useWaitForTransaction({

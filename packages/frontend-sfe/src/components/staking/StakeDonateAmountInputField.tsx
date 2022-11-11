@@ -1,3 +1,4 @@
+import { USDC_DECIMALS } from '@deployments/addresses'
 import { CircleStackIcon } from '@heroicons/react/20/solid'
 import { useDeployments } from '@lib/useDeployments'
 import { formatUnits } from 'ethers/lib/utils'
@@ -67,7 +68,7 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
               <div tw="text-gray-600">
                 Balance:{' '}
                 <NumericFormat
-                  value={formatUnits(balance.value, 18 /* TODO USDCs has 6 decimals */)}
+                  value={formatUnits(balance.value, USDC_DECIMALS)}
                   displayType={'text'}
                   decimalScale={2}
                   fixedDecimalScale={true}

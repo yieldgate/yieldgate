@@ -1,3 +1,4 @@
+import { USDC_DECIMALS } from '@deployments/addresses'
 import { ArrowTopRightOnSquareIcon, ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import { truncateHash } from '@lib/truncateHash'
 import { useDeployments } from '@lib/useDeployments'
@@ -76,7 +77,7 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({
             {!isLoading && balance?.value && (
               <div tw="flex flex-col">
                 <NumericFormat
-                  value={formatUnits(balance.value, 18 /* TODO USDCs has 6 decimals */)}
+                  value={formatUnits(balance.value, USDC_DECIMALS)}
                   displayType={'text'}
                   decimalScale={2}
                   fixedDecimalScale={true}
