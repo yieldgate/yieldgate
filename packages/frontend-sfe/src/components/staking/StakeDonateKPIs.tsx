@@ -57,7 +57,7 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
     chainId: usedChainId,
     functionName: 'unstake',
     overrides: {
-      gasLimit: 1000000,
+      gasLimit: 300000,
     },
     args: [addresses?.USDC],
   })

@@ -91,7 +91,7 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
     functionName: 'stake',
     chainId: usedChainId,
     overrides: {
-      gasLimit: 1000000,
+      gasLimit: 300000,
     },
     args: [addresses?.USDC, address, parseUnits(stakingAmount || '0', USDC_DECIMALS)],
   })
