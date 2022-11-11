@@ -1,15 +1,15 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
 import { USDC_DECIMALS } from '@deployments/addresses'
 import { useDeployments } from '@lib/useDeployments'
-import { TokenPool__factory } from '@yieldgate/contracts/typechain-types'
+import { BigNumber, constants } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils.js'
 import { FC, PropsWithChildren, useState } from 'react'
+import toast from 'react-hot-toast'
 import { NumericFormat } from 'react-number-format'
 import { SpinnerDiamond } from 'spinners-react'
 import 'twin.macro'
 import { theme } from 'twin.macro'
-import useAsyncEffect from 'use-async-effect'
-import { useAccount, useProvider } from 'wagmi'
+import { useAccount, useContractRead } from 'wagmi'
 import {
   StakingStepperItemContentBox,
   StakingStepperItemContentBoxDivider,
@@ -20,26 +20,28 @@ import { StakingViewStakeDonateProps } from './StakingViewStakeDonate'
 export interface StakeDonateKPIsProps extends StakingViewStakeDonateProps {}
 export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
   const { contracts, addresses } = useDeployments()
-  const provider = useProvider()
   const { address } = useAccount()
 
   // Fetch existing stake
-  const [stakeAmountIsLoading, setStakeAmountIsLoading] = useState(true)
   const [stakeAmount, setStakeAmount] = useState<number>()
-  useAsyncEffect(async () => {
-    const tokenPoolAddress = contracts?.TokenPool?.address
-    const tokenAddress = addresses?.USDC
-    if (!tokenPoolAddress || !tokenAddress || !address) return
-    setStakeAmountIsLoading(true)
-    try {
-      const contract = TokenPool__factory.connect(tokenPoolAddress, provider)
-      const result = await contract.stakes(tokenAddress, address)
-      const stakeAmount = parseFloat(formatUnits(result, USDC_DECIMALS))
+  const { isLoading: stakeAmountIsLoading } = useContractRead({
+    address: contracts?.TokenPool.address,
+    abi: contracts?.TokenPool.abi,
+    functionName: 'stakes',
+    args: [addresses?.USDC || constants.AddressZero, address || constants.AddressZero],
+    enabled: !!address && !!addresses?.USDC && !!contracts?.TokenPool?.address,
+    onError: (e) => {
+      console.error(e)
+      toast.error('Error while fetching existing stake.')
+      setStakeAmount(undefined)
+    },
+    onSuccess: (data) => {
+      const stakeAmount = BigNumber.isBigNumber(data)
+        ? parseFloat(formatUnits(data, USDC_DECIMALS))
+        : undefined
       setStakeAmount(stakeAmount)
-    } finally {
-      setStakeAmountIsLoading(false)
-    }
-  }, [address, contracts])
+    },
+  })
 
   if (!stakeAmount) return null
 
