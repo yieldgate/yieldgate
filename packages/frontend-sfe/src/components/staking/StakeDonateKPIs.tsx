@@ -41,6 +41,8 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
     }
   }, [address, contracts])
 
+  if (!stakeAmount) return null
+
   return (
     <>
       <StakingStepperItemContentBox>
