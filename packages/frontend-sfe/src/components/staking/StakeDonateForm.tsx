@@ -1,7 +1,8 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
 import { useDeployments } from '@lib/useDeployments'
 import { constants } from 'ethers'
-import { FC, SyntheticEvent, useState } from 'react'
+import { parseUnits } from 'ethers/lib/utils.js'
+import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import 'twin.macro'
@@ -11,7 +12,6 @@ import {
   useContractRead,
   useContractWrite,
   usePrepareContractWrite,
-  useSigner,
   useWaitForTransaction,
 } from 'wagmi'
 import { StakeDonateAmountInputField } from './StakeDonateAmountInputField'
@@ -30,17 +30,16 @@ export type StakeDonateFormValues = {
 
 export interface StakeDonateFormProps extends StakingViewStakeDonateProps {}
 export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
-  const [isLoading, setIsLoading] = useState(false)
   const form = useForm<StakeDonateFormValues>({ mode: 'onChange' })
   const { isValid } = form.formState
   const isDonateMode = props.mode === 'donate'
   const [isApproved, setIsApproved] = useState(false)
-  const { data: signer } = useSigner()
   const { address } = useAccount()
   const { contracts, addresses, usedChainId } = useDeployments()
+  const stakingAmount = form.watch('stakingAmount')
 
   // Check for earlier approval (allowance)
-  const allowance = useContractRead({
+  useContractRead({
     address: addresses?.USDC,
     abi: erc20ABI,
     functionName: 'allowance',
@@ -82,14 +81,34 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
     },
   })
 
-  // Staking Action
-  const onStake = async (e: SyntheticEvent) => {
-    e?.preventDefault()
-    setIsLoading(true)
-    await new Promise((r) => setTimeout(r, 1500))
-    setIsLoading(false)
-    props.onGoNext()
-  }
+  // Staking call
+  const { config: stakeConfig } = usePrepareContractWrite({
+    address: contracts?.TokenPool?.address,
+    abi: contracts?.TokenPool?.abi,
+    functionName: 'stake',
+    chainId: usedChainId,
+    overrides: {
+      gasLimit: 1000000,
+    },
+    args: [
+      addresses?.USDC,
+      address,
+      parseUnits(stakingAmount || '0', 18 /* TODO USDCs has 6 decimals */),
+    ],
+  })
+  const stake = useContractWrite(stakeConfig)
+  const { isLoading: stakeTsxIsLoading } = useWaitForTransaction({
+    chainId: usedChainId,
+    hash: stake?.data?.hash,
+    onSuccess: () => {
+      toast.success(`Successfully staked ${stakingAmount} USDC.`)
+      props.onGoNext()
+    },
+    onError: (e) => {
+      console.error(e)
+      toast.error('Error while staking USDC. Try again…')
+    },
+  })
 
   return (
     <>
@@ -120,7 +139,7 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
               <BaseButton
                 onClick={approve?.write as () => void}
                 type="button"
-                disabled={!isValid || isLoading || !approve?.write}
+                disabled={!isValid || approveTsxIsLoading || !approve?.write}
                 isLoading={approveTsxIsLoading}
               >
                 Approve
@@ -128,10 +147,10 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
             )}
             {isApproved && (
               <BaseButton
-                onClick={onStake}
+                onClick={stake?.write as () => void}
                 type="button"
-                disabled={!isValid || isLoading}
-                isLoading={isLoading}
+                disabled={!isValid || stakeTsxIsLoading || !stake?.write}
+                isLoading={stakeTsxIsLoading}
               >
                 {isDonateMode ? 'Donate' : 'Stake'}
               </BaseButton>
