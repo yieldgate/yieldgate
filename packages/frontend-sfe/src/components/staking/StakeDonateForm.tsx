@@ -1,11 +1,19 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
 import { useDeployments } from '@lib/useDeployments'
-import { TokenPool__factory } from '@yieldgate/contracts/typechain-types'
+import { constants } from 'ethers'
 import { FC, SyntheticEvent, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import 'twin.macro'
-import { useSigner } from 'wagmi'
+import {
+  erc20ABI,
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  usePrepareContractWrite,
+  useSigner,
+  useWaitForTransaction,
+} from 'wagmi'
 import { StakeDonateAmountInputField } from './StakeDonateAmountInputField'
 import { StakeDonateImpactEstimationSlider } from './StakeDonateImpactEstimationSlider'
 import {
@@ -28,31 +36,51 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
   const isDonateMode = props.mode === 'donate'
   const [isApproved, setIsApproved] = useState(false)
   const { data: signer } = useSigner()
-  const { contracts, addresses } = useDeployments()
+  const { address } = useAccount()
+  const { contracts, addresses, usedChainId } = useDeployments()
 
-  // Approval Action
-  const onApprove = async (e: SyntheticEvent) => {
-    e?.preventDefault()
-    if (!signer || !contracts || !addresses?.USDC) return
-    setIsLoading(true)
-    console.log({ contracts })
-    const contract = TokenPool__factory.connect(contracts.TokenPool.address, signer)
-    try {
-      console.log('addresses.USDC', addresses.USDC)
-      const tsx = await contract.approvePool(addresses.USDC)
-      console.log({ tsx })
-      const receipt = await tsx.wait()
-      console.log({ receipt })
+  // Check for earlier approval (allowance)
+  const allowance = useContractRead({
+    address: addresses?.USDC,
+    abi: erc20ABI,
+    functionName: 'allowance',
+    args: [
+      address || constants.AddressZero,
+      contracts?.TokenPool?.address || constants.AddressZero,
+    ],
+    enabled: !!address && addresses?.USDC && !!contracts?.TokenPool?.address,
+    onError: (e) => {
+      console.error(e)
+      toast.error('Error while fetching allowance for USDC.')
+    },
+    onSuccess: (data) => {
+      const allowanceIsMax = data?.eq(constants.MaxUint256)
+      if (allowanceIsMax) setIsApproved(true)
+    },
+  })
+
+  // Approval call
+  const { config: approveConfig } = usePrepareContractWrite({
+    address: addresses?.USDC,
+    abi: erc20ABI,
+    functionName: 'approve',
+    chainId: usedChainId,
+    args: [contracts?.TokenPool?.address || constants.AddressZero, constants.MaxUint256],
+  })
+  const approve = useContractWrite(approveConfig)
+  const { isLoading: approveTsxIsLoading } = useWaitForTransaction({
+    chainId: usedChainId,
+    hash: approve?.data?.hash,
+    onSuccess: () => {
       toast.success('Successfully approved USDC.')
       setIsApproved(true)
-    } catch (e) {
-      toast.error('Error while approving USDC. Try again…')
+    },
+    onError: (e) => {
       console.error(e)
+      toast.error('Error while approving USDC. Try again…')
       setIsApproved(false)
-    } finally {
-      setIsLoading(false)
-    }
-  }
+    },
+  })
 
   // Staking Action
   const onStake = async (e: SyntheticEvent) => {
@@ -90,10 +118,10 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
           <BaseButtonGroup tw="grid grid-cols-1">
             {!isApproved && (
               <BaseButton
-                onClick={onApprove}
+                onClick={approve?.write as () => void}
                 type="button"
-                disabled={!isValid || isLoading}
-                isLoading={isLoading}
+                disabled={!isValid || isLoading || !approve?.write}
+                isLoading={approveTsxIsLoading}
               >
                 Approve
               </BaseButton>

@@ -25,7 +25,6 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({
 }) => {
   const { address } = useAccount()
   const { addresses } = useDeployments()
-  console.log({ addresses })
   const { data: ensName } = useEnsName({ address, chainId: 1 })
   const { chain } = useNetwork()
   const token = addresses?.USDC
