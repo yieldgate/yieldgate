@@ -9,7 +9,13 @@ import { NumericFormat } from 'react-number-format'
 import { SpinnerDiamond } from 'spinners-react'
 import 'twin.macro'
 import { theme } from 'twin.macro'
-import { useAccount, useContractRead } from 'wagmi'
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from 'wagmi'
 import {
   StakingStepperItemContentBox,
   StakingStepperItemContentBoxDivider,
@@ -19,14 +25,15 @@ import { StakingViewStakeDonateProps } from './StakingViewStakeDonate'
 
 export interface StakeDonateKPIsProps extends StakingViewStakeDonateProps {}
 export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
-  const { contracts, addresses } = useDeployments()
+  const { contracts, addresses, usedChainId } = useDeployments()
   const { address } = useAccount()
 
   // Fetch existing stake
   const [stakeAmount, setStakeAmount] = useState<number>()
-  const { isLoading: stakeAmountIsLoading } = useContractRead({
+  const { isLoading: stakeAmountIsLoading, refetch: refetchStakeAmount } = useContractRead({
     address: contracts?.TokenPool.address,
     abi: contracts?.TokenPool.abi,
+    chainId: usedChainId,
     functionName: 'stakes',
     args: [addresses?.USDC || constants.AddressZero, address || constants.AddressZero],
     enabled: !!address && !!addresses?.USDC && !!contracts?.TokenPool?.address,
@@ -40,6 +47,32 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
         ? parseFloat(formatUnits(data, USDC_DECIMALS))
         : undefined
       setStakeAmount(stakeAmount)
+    },
+  })
+
+  // Unstake call
+  const { config: unstakeConfig } = usePrepareContractWrite({
+    address: contracts?.TokenPool?.address,
+    abi: contracts?.TokenPool?.abi,
+    chainId: usedChainId,
+    functionName: 'unstake',
+    overrides: {
+      gasLimit: 1000000,
+    },
+    args: [addresses?.USDC],
+  })
+  const unstake = useContractWrite(unstakeConfig)
+  const { isLoading: unstakeIsLoading } = useWaitForTransaction({
+    chainId: usedChainId,
+    hash: unstake?.data?.hash,
+    onError: (e) => {
+      console.error(e)
+      toast.error('Error while unstaking USDC. Try again…')
+      refetchStakeAmount?.()
+    },
+    onSuccess: () => {
+      toast.success(`Successfully unstaked ${stakeAmount} USDC.`)
+      refetchStakeAmount?.()
     },
   })
 
@@ -83,7 +116,15 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
           <BaseButton asLink={true} href="https://doingud.com/" target="_blank">
             View Badge ↗
           </BaseButton>
-          <BaseButton variant="outline">Withdraw</BaseButton>
+          <BaseButton
+            variant="outline"
+            onClick={unstake?.write as VoidFunction}
+            type="button"
+            disabled={unstakeIsLoading || !unstake?.write || !stakeAmount}
+            isLoading={unstakeIsLoading}
+          >
+            Withdraw
+          </BaseButton>
         </BaseButtonGroup>
       </StakingStepperItemContentBox>
     </>

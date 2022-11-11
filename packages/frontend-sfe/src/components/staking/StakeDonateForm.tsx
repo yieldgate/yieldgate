@@ -43,6 +43,7 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
   useContractRead({
     address: addresses?.USDC,
     abi: erc20ABI,
+    chainId: usedChainId,
     functionName: 'allowance',
     args: [
       address || constants.AddressZero,
@@ -69,17 +70,17 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
     args: [contracts?.TokenPool?.address || constants.AddressZero, constants.MaxUint256],
   })
   const approve = useContractWrite(approveConfig)
-  const { isLoading: approveTsxIsLoading } = useWaitForTransaction({
+  const { isLoading: approveIsLoading } = useWaitForTransaction({
     chainId: usedChainId,
     hash: approve?.data?.hash,
-    onSuccess: () => {
-      toast.success('Successfully approved USDC.')
-      setIsApproved(true)
-    },
     onError: (e) => {
       console.error(e)
       toast.error('Error while approving USDC. Try again…')
       setIsApproved(false)
+    },
+    onSuccess: () => {
+      toast.success('Successfully approved USDC.')
+      setIsApproved(true)
     },
   })
 
@@ -95,16 +96,16 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
     args: [addresses?.USDC, address, parseUnits(stakingAmount || '0', USDC_DECIMALS)],
   })
   const stake = useContractWrite(stakeConfig)
-  const { isLoading: stakeTsxIsLoading } = useWaitForTransaction({
+  const { isLoading: stakeIsLoading } = useWaitForTransaction({
     chainId: usedChainId,
     hash: stake?.data?.hash,
-    onSuccess: () => {
-      toast.success(`Successfully staked ${stakingAmount} USDC.`)
-      props.onGoNext()
-    },
     onError: (e) => {
       console.error(e)
       toast.error('Error while staking USDC. Try again…')
+    },
+    onSuccess: () => {
+      toast.success(`Successfully staked ${stakingAmount} USDC.`)
+      props.onGoNext()
     },
   })
 
@@ -135,20 +136,20 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
           <BaseButtonGroup tw="grid grid-cols-1">
             {!isApproved && (
               <BaseButton
-                onClick={approve?.write as () => void}
+                onClick={approve?.write as VoidFunction}
                 type="button"
-                disabled={!isValid || approveTsxIsLoading || !approve?.write}
-                isLoading={approveTsxIsLoading}
+                disabled={!isValid || approveIsLoading || !approve?.write}
+                isLoading={approveIsLoading}
               >
                 Approve
               </BaseButton>
             )}
             {isApproved && (
               <BaseButton
-                onClick={stake?.write as () => void}
+                onClick={stake?.write as VoidFunction}
                 type="button"
-                disabled={!isValid || stakeTsxIsLoading || !stake?.write}
-                isLoading={stakeTsxIsLoading}
+                disabled={!isValid || stakeIsLoading || !stake?.write}
+                isLoading={stakeIsLoading}
               >
                 {isDonateMode ? 'Donate' : 'Stake'}
               </BaseButton>
