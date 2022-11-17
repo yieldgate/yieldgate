@@ -142,3 +142,18 @@ contract TokenPool is ITokenPool {
         return IAavePool(aavePoolAddressesProvider.getPool());
     }
 }
+
+/**
+ * @dev The TokenPoolWithApproval is the same contract as the
+ * TokenPool while its constructor also approves the aavePool to spend the
+ * provided list of tokens on behalf of this TokenPool.
+ */
+contract TokenPoolWithApproval is TokenPool {
+    constructor(
+        address _aavePoolAddressesProvider,
+        address _beneficiary,
+        address[] memory _approvedTokens
+    ) TokenPool(_aavePoolAddressesProvider, _beneficiary) {
+        for (uint256 i = 0; i < _approvedTokens.length; i++) approvePool(_approvedTokens[i]);
+    }
+}
