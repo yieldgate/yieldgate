@@ -30,6 +30,13 @@ interface ITokenPool {
     event Claimed(address indexed token, uint256 amount);
 
     /**
+     * @notice Returns the beneficiary of this pool.
+     * @dev Usually this is implemented as a public (immutable) address storage
+     * variable.
+     */
+    function beneficiary() external view returns (address);
+
+    /**
      * @notice Stakes given amount of token on behalf of the provided supporter.
      * @dev Prio to calling stake, a respective allowance for the token pool has
      *   to be set. On success, the implementation must emit a Staked event.
