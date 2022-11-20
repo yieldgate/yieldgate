@@ -63,8 +63,6 @@ export const StakeDonateImpactEstimationSlider: FC<StakeDonateImpactEstimationSl
     setEstimatedCarbonFormatted(estimatedCarbonFormatted)
   }, [durationMonths, stakingAmount])
 
-  if (!stakingAmount) return null
-
   return (
     <>
       <StakingStepperItemContentBoxHeadline tw="mt-4">
@@ -94,11 +92,12 @@ export const StakeDonateImpactEstimationSlider: FC<StakeDonateImpactEstimationSl
       </div>
 
       {/* Estimation */}
-      <div tw="mt-4 rounded-lg bg-primary-50 py-2 px-3 text-sm">
+      <div tw="mt-4 rounded-lg bg-primary-50 py-2 px-3 text-sm leading-6">
         The estimated amount of carbon offsetted after staking{' '}
-        <strong tw="whitespace-nowrap">{stakingAmount} USDC</strong> for{' '}
-        <strong>{durationFormatted}</strong> at {apy * 100} % APY is{' '}
-        <strong tw="whitespace-nowrap">{estimatedCarbonFormatted}</strong>.
+        <strong tw="whitespace-nowrap">
+          {stakingAmount} USDC for {durationFormatted}
+        </strong>{' '}
+        at {apy * 100}% APY is <strong tw="whitespace-nowrap">{estimatedCarbonFormatted}</strong>.
       </div>
     </>
   )

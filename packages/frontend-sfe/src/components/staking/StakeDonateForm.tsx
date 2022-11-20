@@ -76,11 +76,16 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
         <form>
           <StakeDonateAmountInputField form={form} {...props} />
 
-          <StakeDonateImpactEstimationSlider form={form} {...props} />
-
-          <StakingStepperItemContentBoxDivider />
+          {/* Estimation */}
+          {!!parseFloat(stakingAmount) && (
+            <>
+              <StakingStepperItemContentBoxDivider />
+              <StakeDonateImpactEstimationSlider form={form} {...props} />
+            </>
+          )}
 
           {/* Actions */}
+          <StakingStepperItemContentBoxDivider />
           <BaseButtonGroup tw="grid grid-cols-1">
             {!isApproved && (
               <BaseButton type="button" onClick={props.onGoPrev}>
