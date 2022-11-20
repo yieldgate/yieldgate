@@ -10,6 +10,7 @@ import { NumericFormat } from 'react-number-format'
 import 'twin.macro'
 import { useAccount, useBalance, useNetwork } from 'wagmi'
 import { StakeDonateFormValues } from './StakeDonateForm'
+import { StakingStepperItemContentBoxSecondaryAction } from './StakingStepperItemSharedComponents'
 import { StakingViewStakeDonateProps } from './StakingViewStakeDonate'
 
 export interface StakeDonateAmountInputFieldProps extends StakingViewStakeDonateProps {
@@ -96,14 +97,10 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
         )}
 
         {/* Top-up button */}
-        <button
-          tw="flex items-center justify-center font-medium text-gray-800 hover:text-black"
-          onClick={onGoPrev}
-          type="button"
-        >
+        <StakingStepperItemContentBoxSecondaryAction type="button" onClick={onGoPrev}>
           Top-up or bridge funds
-          <CircleStackIcon tw="ml-1.5 h-3.5 w-3.5" />
-        </button>
+          <CircleStackIcon />
+        </StakingStepperItemContentBoxSecondaryAction>
       </div>
     </>
   )

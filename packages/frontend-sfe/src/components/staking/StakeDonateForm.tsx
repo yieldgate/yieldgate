@@ -1,20 +1,13 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
 import { USDC_DECIMALS } from '@deployments/addresses'
 import { useDeployments } from '@lib/useDeployments'
-import { constants } from 'ethers'
 import { parseUnits } from 'ethers/lib/utils.js'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import 'twin.macro'
-import {
-  erc20ABI,
-  useAccount,
-  useContractRead,
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from 'wagmi'
+import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
+import { useStakeDonateAllowanceProviderContext } from './StakeDonateAllowanceProvider'
 import { StakeDonateAmountInputField } from './StakeDonateAmountInputField'
 import { StakeDonateImpactEstimationSlider } from './StakeDonateImpactEstimationSlider'
 import {
@@ -34,55 +27,10 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
   const form = useForm<StakeDonateFormValues>({ mode: 'onChange' })
   const { isValid } = form.formState
   const isDonateMode = props.mode === 'donate'
-  const [isApproved, setIsApproved] = useState(false)
   const { address } = useAccount()
   const { contracts, addresses, usedChainId } = useDeployments()
   const stakingAmount = form.watch('stakingAmount')
-
-  // Check for earlier approval (allowance)
-  useContractRead({
-    address: addresses?.USDC,
-    abi: erc20ABI,
-    chainId: usedChainId,
-    functionName: 'allowance',
-    args: [
-      address || constants.AddressZero,
-      contracts?.TokenPool?.address || constants.AddressZero,
-    ],
-    enabled: !!address && !!addresses?.USDC && !!contracts?.TokenPool?.address,
-    onError: (e) => {
-      console.error(e)
-      toast.error('Error while fetching allowance for USDC.')
-      setIsApproved(false)
-    },
-    onSuccess: (data) => {
-      const allowanceIsMax = data?.eq(constants.MaxUint256)
-      setIsApproved(allowanceIsMax)
-    },
-  })
-
-  // Approval call
-  const { config: approveConfig } = usePrepareContractWrite({
-    address: addresses?.USDC,
-    abi: erc20ABI,
-    functionName: 'approve',
-    chainId: usedChainId,
-    args: [contracts?.TokenPool?.address || constants.AddressZero, constants.MaxUint256],
-  })
-  const approve = useContractWrite(approveConfig)
-  const { isLoading: approveIsLoading } = useWaitForTransaction({
-    chainId: usedChainId,
-    hash: approve?.data?.hash,
-    onError: (e) => {
-      console.error(e)
-      toast.error('Error while approving USDC. Try again…')
-      setIsApproved(false)
-    },
-    onSuccess: () => {
-      toast.success('Successfully approved USDC.')
-      setIsApproved(true)
-    },
-  })
+  const { isApproved } = useStakeDonateAllowanceProviderContext()
 
   // Staking call
   const { config: stakeConfig } = usePrepareContractWrite({
@@ -135,19 +83,14 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
           {/* Actions */}
           <BaseButtonGroup tw="grid grid-cols-1">
             {!isApproved && (
-              <BaseButton
-                onClick={approve?.write as VoidFunction}
-                type="button"
-                disabled={!isValid || approveIsLoading || !approve?.write}
-                isLoading={approveIsLoading}
-              >
-                Approve
+              <BaseButton type="button" onClick={props.onGoPrev}>
+                Go back to approve USDC
               </BaseButton>
             )}
             {isApproved && (
               <BaseButton
-                onClick={stake?.write as VoidFunction}
                 type="button"
+                onClick={stake?.write as VoidFunction}
                 disabled={!isValid || stakeIsLoading || !stake?.write}
                 isLoading={stakeIsLoading}
               >

@@ -1,3 +1,4 @@
+import { StakeDonateAllowanceProvider } from '@components/staking/StakeDonateAllowanceProvider'
 import { StakingLayout } from '@components/staking/StakingLayout'
 import {
   StakingStepper,
@@ -59,7 +60,9 @@ export default function StakingPage() {
     <>
       <NextSeo title="Stake & Dontation Form" />
       <StakingLayout>
-        <StakingStepper items={stepperItems} mode={mode} />
+        <StakeDonateAllowanceProvider>
+          <StakingStepper items={stepperItems} mode={mode} />
+        </StakeDonateAllowanceProvider>
       </StakingLayout>
     </>
   )

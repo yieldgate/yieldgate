@@ -64,7 +64,7 @@ export const BaseButton: FC<PropsWithChildren<BaseButtonProps>> = ({
 
 export const BaseButtonGroup = styled.div`
   ${tw`-mx-1 -my-1 flex flex-wrap`}
-  button, a {
+  button, a, input {
     ${tw`mx-1 my-1`}
   }
 `

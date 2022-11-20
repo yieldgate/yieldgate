@@ -5,12 +5,14 @@ import { useDeployments } from '@lib/useDeployments'
 import { formatUnits } from 'ethers/lib/utils'
 import Image from 'next/image'
 import usdcSvg from 'public/icons/tokens/usdc.svg'
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { NumericFormat } from 'react-number-format'
 import { SpinnerDiamond } from 'spinners-react'
 import 'twin.macro'
 import { theme } from 'twin.macro'
 import { useAccount, useBalance, useEnsName, useNetwork } from 'wagmi'
+import { useStakeDonateAllowanceProviderContext } from './StakeDonateAllowanceProvider'
+import { StakeDonateApprovalForm } from './StakeDonateApprovalForm'
 import { StakingStepperItemComponentProps } from './StakingStepper'
 import {
   StakingStepperItemContentBox,
@@ -20,10 +22,7 @@ import {
 } from './StakingStepperItemSharedComponents'
 
 export interface StakeDonateAccountBalanceProps extends StakingStepperItemComponentProps {}
-export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({
-  isFirstRender,
-  onGoNext,
-}) => {
+export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({ ...props }) => {
   const { address } = useAccount()
   const { addresses } = useDeployments()
   const { data: ensName } = useEnsName({ address, chainId: 1 })
@@ -39,24 +38,17 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({
     watch: true,
     token,
   })
-
-  // Navigate to next tab when tab is opened for the first time
-  // and the wallet balance is high enough
-  useEffect(() => {
-    const balanceHighEnough = balance?.value?.gt(0)
-    if (isFetchedAfterMount && balanceHighEnough && isFirstRender) {
-      onGoNext()
-    }
-  }, [isFetchedAfterMount])
+  const { isApproved, allowanceFormatted, allowanceIsMax } =
+    useStakeDonateAllowanceProviderContext()
 
   return (
     <>
       <StakingStepperItemContentBox>
+        {/* Title section with address & chain */}
         <div tw="flex items-baseline justify-between">
           <StakingStepperItemContentBoxHeadline>
             Account Balance
           </StakingStepperItemContentBoxHeadline>
-          {/* Chain Name */}
           <div tw="flex -translate-y-0.5 items-center space-x-2 rounded-full bg-gray-100 px-2.5 py-1.5">
             <div tw="h-2 w-2 rounded-full bg-green-500" />
             <div tw="text-xs leading-none">{chain?.name}</div>
@@ -66,12 +58,12 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({
           {ensName || truncateHash(address)}
         </StakingStepperItemContentBoxSubtitle>
 
+        {/* Balance */}
         <StakingStepperItemContentBoxDivider />
-
         <div tw="flex items-center justify-between">
           <div tw="flex items-center space-x-4">
             {/* Currency Logo */}
-            <Image src={usdcSvg} width={40} height={40} alt="USDC Token Logo" />
+            <Image src={usdcSvg} width={42} height={42} alt="USDC Token Logo" />
 
             {/* Balance Value */}
             {!isLoading && balance?.value && (
@@ -83,13 +75,24 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({
                   fixedDecimalScale={true}
                   thousandSeparator={true}
                   suffix=" USDC"
-                  tw="whitespace-nowrap font-display font-bold text-2xl leading-none"
+                  tw="-mt-0.5 whitespace-nowrap font-display font-bold text-2xl leading-none"
                 />
 
                 {/* Warning if balance too low */}
                 {balance.value.isZero() && (
                   <div tw="-ml-px mt-0.5 font-semibold text-xs text-amber-500 leading-none">
                     Balance too low
+                  </div>
+                )}
+
+                {/* Show approved amount */}
+                {!balance.value.isZero() && (
+                  <div tw="-ml-px mt-1 flex items-center text-xs text-gray-500 leading-none">
+                    {isApproved
+                      ? allowanceIsMax
+                        ? 'Maximum approved'
+                        : `${allowanceFormatted} USDC approved`
+                      : 'Not approved'}
                   </div>
                 )}
               </div>
@@ -126,6 +129,10 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({
             </a>
           )}
         </div>
+
+        {/* Approval */}
+        <StakingStepperItemContentBoxDivider />
+        <StakeDonateApprovalForm {...props} />
       </StakingStepperItemContentBox>
     </>
   )
