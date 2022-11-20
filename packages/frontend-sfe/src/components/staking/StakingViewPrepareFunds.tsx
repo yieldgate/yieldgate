@@ -44,7 +44,10 @@ export const StakingViewPrepareFunds: FC<StakingViewPrepareFundsProps> = (props)
       <StakingStepperItemOuterWrapper>
         <StakingStepperItemHeadline>Prepare Funds</StakingStepperItemHeadline>
         <StakingStepperItemBody>
+          {/* Account Balance & Approval Form */}
           <StakeDonateAccountBalance {...props} />
+
+          {/* Top-Up & Bridging Links */}
           {/* TODO Consider deeper Integration for both */}
           <StakingStepperItemFullWidthAnchor
             href={`https://buy.ramp.network/?${rampUrlParams}`}
@@ -55,6 +58,8 @@ export const StakingViewPrepareFunds: FC<StakingViewPrepareFundsProps> = (props)
           <StakingStepperItemFullWidthAnchor href="https://transferto.xyz/swap" target="_blank">
             Bridge funds to Polygon ↗
           </StakingStepperItemFullWidthAnchor>
+
+          {/* Continue to Staking Button */}
           {isApproved && (
             <StakingStepperItemContinueButton onClick={() => onGoNext()}>
               Continue to {props.mode === 'donate' ? 'Donate' : 'Stake'}

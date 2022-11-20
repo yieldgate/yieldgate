@@ -10,7 +10,7 @@ import { NumericFormat } from 'react-number-format'
 import { SpinnerDiamond } from 'spinners-react'
 import 'twin.macro'
 import { theme } from 'twin.macro'
-import { useAccount, useBalance, useEnsName, useNetwork } from 'wagmi'
+import { useAccount, useEnsName, useNetwork } from 'wagmi'
 import { useStakeDonateAllowanceProviderContext } from './StakeDonateAllowanceProvider'
 import { StakeDonateApprovalForm } from './StakeDonateApprovalForm'
 import { StakingStepperItemComponentProps } from './StakingStepper'
@@ -29,17 +29,13 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({ 
   const { chain } = useNetwork()
   const token = addresses?.USDC
   const {
-    data: balance,
-    isError,
-    isLoading,
-    isFetchedAfterMount,
-  } = useBalance({
-    address,
-    watch: true,
-    token,
-  })
-  const { isApproved, allowanceFormatted, allowanceIsMax } =
-    useStakeDonateAllowanceProviderContext()
+    balance,
+    balanceIsLoading,
+    balanceIsError,
+    isApproved,
+    allowanceFormatted,
+    allowanceIsMax,
+  } = useStakeDonateAllowanceProviderContext()
 
   return (
     <>
@@ -66,10 +62,10 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({ 
             <Image src={usdcSvg} width={42} height={42} alt="USDC Token Logo" />
 
             {/* Balance Value */}
-            {!isLoading && balance?.value && (
+            {!balanceIsLoading && !!balance && (
               <div tw="flex flex-col">
                 <NumericFormat
-                  value={formatUnits(balance.value, USDC_DECIMALS)}
+                  value={formatUnits(balance, USDC_DECIMALS)}
                   displayType={'text'}
                   decimalScale={2}
                   fixedDecimalScale={true}
@@ -79,14 +75,14 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({ 
                 />
 
                 {/* Warning if balance too low */}
-                {balance.value.isZero() && (
+                {balance.isZero() && (
                   <div tw="-ml-px mt-0.5 font-semibold text-xs text-amber-500 leading-none">
                     Balance too low
                   </div>
                 )}
 
                 {/* Show approved amount */}
-                {!balance.value.isZero() && (
+                {!balance.isZero() && (
                   <div tw="-ml-px mt-1 flex items-center text-xs text-gray-500 leading-none">
                     {isApproved
                       ? allowanceIsMax
@@ -99,7 +95,7 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({ 
             )}
 
             {/* Loading Indicator */}
-            {isLoading && (
+            {balanceIsLoading && (
               <SpinnerDiamond
                 size={24}
                 thickness={125}
@@ -110,7 +106,7 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({ 
           </div>
 
           {/* Error */}
-          {!isLoading && isError && (
+          {!balanceIsLoading && balanceIsError && (
             <div tw="flex items-center text-amber-600">
               <ExclamationTriangleIcon tw="mr-2 w-6 shrink-0 grow-0" />
               <div tw="mb-px font-semibold text-sm">Error while fetching balance</div>
@@ -131,8 +127,12 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({ 
         </div>
 
         {/* Approval */}
-        <StakingStepperItemContentBoxDivider />
-        <StakeDonateApprovalForm {...props} />
+        {!balance?.isZero() && (
+          <>
+            <StakingStepperItemContentBoxDivider />
+            <StakeDonateApprovalForm {...props} />
+          </>
+        )}
       </StakingStepperItemContentBox>
     </>
   )

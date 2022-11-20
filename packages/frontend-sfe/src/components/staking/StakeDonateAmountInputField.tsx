@@ -1,6 +1,5 @@
 import { USDC_DECIMALS } from '@deployments/addresses'
 import { CircleStackIcon } from '@heroicons/react/20/solid'
-import { useDeployments } from '@lib/useDeployments'
 import { BigNumber } from 'ethers'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import Image from 'next/image'
@@ -10,7 +9,6 @@ import { UseFormReturn } from 'react-hook-form'
 import { NumericFormat } from 'react-number-format'
 import 'twin.macro'
 import tw from 'twin.macro'
-import { useAccount, useBalance, useNetwork } from 'wagmi'
 import { useStakeDonateAllowanceProviderContext } from './StakeDonateAllowanceProvider'
 import { StakeDonateFormValues } from './StakeDonateForm'
 import { StakingStepperItemContentBoxSecondaryAction } from './StakingStepperItemSharedComponents'
@@ -24,16 +22,8 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
   onGoPrev,
 }) => {
   const { errors } = form.formState
-  const { address } = useAccount()
-  const { addresses } = useDeployments()
-  const { chain } = useNetwork()
-  const token = addresses?.USDC
-  const { data: balance } = useBalance({
-    address,
-    watch: true,
-    token,
-  })
-  const { allowance, allowanceIsMax } = useStakeDonateAllowanceProviderContext()
+  const { balance, allowance, allowanceIsMax, isApproved } =
+    useStakeDonateAllowanceProviderContext()
 
   return (
     <>
@@ -64,8 +54,8 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
                 return 'Entered amount is higher than approval.'
               },
               balance: (val) => {
-                if (!val || !balance?.value) return
-                if (BigNumber.from(parseUnits(val, USDC_DECIMALS)).lte(balance.value)) return
+                if (!val || !balance) return
+                if (BigNumber.from(parseUnits(val, USDC_DECIMALS)).lte(balance)) return
                 return 'Entered amount is higher than balance.'
               },
             },
@@ -80,27 +70,30 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
           </div>
 
           {/* Balance and "Max"-Button */}
-          {!!balance?.value && (
+          {!!balance && (
             <div tw="flex items-baseline justify-end space-x-1.5 text-xs leading-none">
               <div
                 tw="font-medium text-gray-500"
-                css={[balance.value.isZero() && tw`font-bold text-amber-500`]}
+                css={[balance.isZero() && tw`font-bold text-amber-500`]}
               >
                 Balance:{' '}
                 <NumericFormat
-                  value={formatUnits(balance.value, USDC_DECIMALS)}
+                  value={formatUnits(balance, USDC_DECIMALS)}
                   displayType={'text'}
                   decimalScale={2}
                   fixedDecimalScale={true}
                   thousandSeparator={true}
                 />
               </div>
-              {!balance.value.isZero() && (
+              {!balance.isZero() && (
                 <button
                   type="button"
                   tw="rounded-md border border-green-200 py-0.5 px-1 font-semibold text-green-500 uppercase tracking-wide hover:border-green-300"
                   onClick={() => {
-                    form.setValue('stakingAmount', parseFloat(balance.formatted).toFixed(2))
+                    form.setValue(
+                      'stakingAmount',
+                      parseFloat(formatUnits(balance, USDC_DECIMALS)).toFixed(2)
+                    )
                   }}
                 >
                   Max

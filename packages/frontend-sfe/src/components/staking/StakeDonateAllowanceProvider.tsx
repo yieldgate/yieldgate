@@ -2,14 +2,17 @@ import { USDC_DECIMALS } from '@deployments/addresses'
 import { useDeployments } from '@lib/useDeployments'
 import { BigNumber, constants } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils.js'
-import { createContext, FC, PropsWithChildren, useContext, useState } from 'react'
-import { erc20ABI, useAccount, useContractRead } from 'wagmi'
+import { createContext, FC, PropsWithChildren, useContext, useEffect, useState } from 'react'
+import { erc20ABI, useAccount, useBalance, useContractRead } from 'wagmi'
 
 export type StakeDonateAllowanceProviderContextType = {
   isApproved?: boolean
   allowance?: BigNumber
   allowanceFormatted?: string
   allowanceIsMax?: boolean
+  balance?: BigNumber
+  balanceIsLoading?: boolean
+  balanceIsError?: boolean
 }
 export const StakeDonateAllowanceProviderContext =
   createContext<StakeDonateAllowanceProviderContextType>({})
@@ -23,11 +26,12 @@ export const StakeDonateAllowanceProvider: FC<PropsWithChildren> = ({ children }
   const [allowance, setAllowance] = useState<BigNumber>()
   const [allowanceFormatted, setAllowanceFormatted] = useState<string>()
   const [allowanceIsMax, setAllowanceIsMax] = useState<boolean>()
+  const [balance, setBalance] = useState<BigNumber>()
 
   const { address } = useAccount()
   const { contracts, addresses, usedChainId } = useDeployments()
 
-  // Check & watch for USDC allowance
+  // Fetch & watch USDC allowance
   useContractRead({
     address: addresses?.USDC,
     abi: erc20ABI,
@@ -54,6 +58,21 @@ export const StakeDonateAllowanceProvider: FC<PropsWithChildren> = ({ children }
     },
   })
 
+  // Fetch & watch USDC balance
+  const token = addresses?.USDC
+  const {
+    data: balanceData,
+    isLoading: balanceIsLoading,
+    isError: balanceIsError,
+  } = useBalance({
+    address,
+    token,
+    watch: true,
+  })
+  useEffect(() => {
+    setBalance(balanceData?.value)
+  }, [balanceData])
+
   return (
     <StakeDonateAllowanceProviderContext.Provider
       value={{
@@ -61,6 +80,9 @@ export const StakeDonateAllowanceProvider: FC<PropsWithChildren> = ({ children }
         allowance,
         allowanceFormatted,
         allowanceIsMax,
+        balance,
+        balanceIsLoading,
+        balanceIsError,
       }}
     >
       {children}
