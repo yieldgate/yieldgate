@@ -1,14 +1,17 @@
 import { USDC_DECIMALS } from '@deployments/addresses'
 import { CircleStackIcon } from '@heroicons/react/20/solid'
 import { useDeployments } from '@lib/useDeployments'
-import { formatUnits } from 'ethers/lib/utils'
+import { BigNumber } from 'ethers'
+import { formatUnits, parseUnits } from 'ethers/lib/utils'
 import Image from 'next/image'
 import usdcSvg from 'public/icons/tokens/usdc.svg'
 import { FC } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { NumericFormat } from 'react-number-format'
 import 'twin.macro'
+import tw from 'twin.macro'
 import { useAccount, useBalance, useNetwork } from 'wagmi'
+import { useStakeDonateAllowanceProviderContext } from './StakeDonateAllowanceProvider'
 import { StakeDonateFormValues } from './StakeDonateForm'
 import { StakingStepperItemContentBoxSecondaryAction } from './StakingStepperItemSharedComponents'
 import { StakingViewStakeDonateProps } from './StakingViewStakeDonate'
@@ -30,6 +33,7 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
     watch: true,
     token,
   })
+  const { allowance, allowanceIsMax } = useStakeDonateAllowanceProviderContext()
 
   return (
     <>
@@ -47,11 +51,23 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
             required: true,
             min: {
               value: 1,
-              message: 'Please enter an amount ≥ 1',
+              message: 'Please enter an amount ≥ 1.',
             },
             pattern: {
               value: /^(0|[1-9]\d*)(\.\d+)?$/,
-              message: 'Please enter a valid number',
+              message: 'Please enter a valid number.',
+            },
+            validate: {
+              approval: (val) => {
+                if (!val || allowanceIsMax || !allowance) return
+                if (BigNumber.from(parseUnits(val, USDC_DECIMALS)).lte(allowance)) return
+                return 'Entered amount is higher than approval.'
+              },
+              balance: (val) => {
+                if (!val || !balance?.value) return
+                if (BigNumber.from(parseUnits(val, USDC_DECIMALS)).lte(balance.value)) return
+                return 'Entered amount is higher than balance.'
+              },
             },
           })}
         />
@@ -64,9 +80,12 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
           </div>
 
           {/* Balance and "Max"-Button */}
-          {balance !== undefined && (
-            <div tw="flex h-4 items-baseline justify-end space-x-1.5 text-sm leading-none">
-              <div tw="text-gray-600">
+          {!!balance?.value && (
+            <div tw="flex items-baseline justify-end space-x-1.5 text-xs leading-none">
+              <div
+                tw="font-medium text-gray-500"
+                css={[balance.value.isZero() && tw`font-bold text-amber-500`]}
+              >
                 Balance:{' '}
                 <NumericFormat
                   value={formatUnits(balance.value, USDC_DECIMALS)}
@@ -76,15 +95,17 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
                   thousandSeparator={true}
                 />
               </div>
-              <button
-                type="button"
-                tw="rounded-md border border-green-200 py-0.5 px-1 font-semibold text-green-500 hover:border-green-300"
-                onClick={() => {
-                  form.setValue('stakingAmount', parseFloat(balance.formatted).toFixed(2))
-                }}
-              >
-                Max
-              </button>
+              {!balance.value.isZero() && (
+                <button
+                  type="button"
+                  tw="rounded-md border border-green-200 py-0.5 px-1 font-semibold text-green-500 uppercase tracking-wide hover:border-green-300"
+                  onClick={() => {
+                    form.setValue('stakingAmount', parseFloat(balance.formatted).toFixed(2))
+                  }}
+                >
+                  Max
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -98,7 +119,7 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
 
         {/* Top-up button */}
         <StakingStepperItemContentBoxSecondaryAction type="button" onClick={onGoPrev}>
-          Top-up or bridge funds
+          Prepare funds
           <CircleStackIcon />
         </StakingStepperItemContentBoxSecondaryAction>
       </div>

@@ -1,6 +1,7 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
 import { USDC_DECIMALS } from '@deployments/addresses'
 import { useDeployments } from '@lib/useDeployments'
+import { BigNumber } from 'ethers'
 import { parseUnits } from 'ethers/lib/utils.js'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
@@ -41,7 +42,11 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
     overrides: {
       gasLimit: 300000,
     },
-    args: [addresses?.USDC, address, parseUnits(stakingAmount || '0', USDC_DECIMALS)],
+    args: [
+      addresses?.USDC,
+      address,
+      isValid ? parseUnits(stakingAmount || '0', USDC_DECIMALS) : BigNumber.from(0),
+    ],
   })
   const stake = useContractWrite(stakeConfig)
   const { isLoading: stakeIsLoading } = useWaitForTransaction({

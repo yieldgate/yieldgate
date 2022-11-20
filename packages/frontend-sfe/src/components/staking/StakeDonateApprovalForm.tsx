@@ -69,11 +69,11 @@ export const StakeDonateApprovalForm: FC<StakeDonateApprovalFormProps> = ({ onGo
                 required: true,
                 min: {
                   value: 0,
-                  message: 'Please enter an amount ≥ 0',
+                  message: 'Please enter an amount ≥ 0.',
                 },
                 pattern: {
                   value: /^(0|[1-9]\d*)(\.\d+)?$/,
-                  message: 'Please enter a valid number',
+                  message: 'Please enter a valid number.',
                 },
               })}
             ></input>
