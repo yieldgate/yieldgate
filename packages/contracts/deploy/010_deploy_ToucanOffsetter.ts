@@ -7,7 +7,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const deployer = await getDeployer(hre)
   console.log(`Deploying as ${deployer}…`)
 
-  const { toucan } = getAddresses(hre.network.name)
+  const { toucan } = await getAddresses(hre)
   if (!toucan) {
     throw new Error(`No toucan addresses for network ${hre.network.name}`)
   }

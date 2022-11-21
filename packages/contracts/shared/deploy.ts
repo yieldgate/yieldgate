@@ -19,23 +19,28 @@ export type DeploymentConfig = {
   }
 }
 
-const DeploymentConfigs: Record<string /* network name */, DeploymentConfig> = {
-  hardhat: {
+const DeploymentConfigs: Record<number /* chain id */, DeploymentConfig> = {
+  // hardhat local
+  1337: {
     tokenPool: {
       tokenApprovals: [],
     },
   },
-  mumbai: {
+  // Mumbai
+  80001: {
     tokenPool: {
-      tokenApprovals: [Addresses.mumbai.tokens.usdc, Addresses.mumbai.tokens.wmatic!],
+      tokenApprovals: [Addresses[80001].tokens.usdc, Addresses[80001].tokens.wmatic!],
     },
   },
 }
 
-export function getDeploymentConfig(network: string): DeploymentConfig {
-  const conf = DeploymentConfigs[network]
+export async function getDeploymentConfig(
+  hre: HardhatRuntimeEnvironment
+): Promise<DeploymentConfig> {
+  const chainId = parseInt(await hre.getChainId())
+  const conf = DeploymentConfigs[chainId]
   if (!conf) {
-    throw new Error(`No deployment configuration for network ${network}`)
+    throw new Error(`No deployment configuration for network ${chainId}`)
   }
   return conf
 }

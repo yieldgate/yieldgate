@@ -7,8 +7,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const deployer = await getDeployer(hre)
   console.log(`Deploying as ${deployer}…`)
 
-  const { aave } = getAddresses(hre.network.name)
-  const deployCfg = getDeploymentConfig(hre.network.name)
+  const { aave } = await getAddresses(hre)
+  const deployCfg = await getDeploymentConfig(hre)
   const toucanOffsetterDepl = await hre.deployments.get('ToucanOffsetter')
 
   const { deploy, execute } = hre.deployments

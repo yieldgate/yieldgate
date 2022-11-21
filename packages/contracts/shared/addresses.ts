@@ -1,3 +1,5 @@
+import { HardhatRuntimeEnvironment } from 'hardhat/types'
+
 export type AddressValues = {
   aave: {
     poolAddressesProvider: string
@@ -15,10 +17,11 @@ export type AddressValues = {
 }
 
 export const Addresses: Record<
-  string, // network name
+  number, // network name
   AddressValues
 > = {
-  hardhat: {
+  // hardhat local node for unit tests
+  1337: {
     aave: {
       poolAddressesProvider: '0x0000000000000000000000000000000000000000',
       pool: '0x0000000000000000000000000000000000000000',
@@ -33,7 +36,7 @@ export const Addresses: Record<
     },
   },
   // Goerli
-  goerli: {
+  5: {
     aave: {
       poolAddressesProvider: '0xc4dCB5126a3AfEd129BC3668Ea19285A9f56D15D',
       pool: '0x368EedF3f56ad10b9bC57eed4Dac65B26Bb667f6',
@@ -45,7 +48,7 @@ export const Addresses: Record<
     },
   },
   // Polygon Mumbai
-  mumbai: {
+  80001: {
     aave: {
       poolAddressesProvider: '0x5343b5bA672Ae99d627A1C87866b8E53F47Db2E6',
       pool: '0x6C9fB0D5bD9429eb9Cd96B85B81d872281771E6B',
@@ -53,7 +56,7 @@ export const Addresses: Record<
       nativeAToken: '0x89a6AE840b3F8f489418933A220315eeA36d11fF',
     },
     toucan: {
-      offsetHelper: '0x0000000000000000000000000000000000000000',
+      offsetHelper: '0x30dC279166DCFB69F52C91d6A3380dCa75D0fCa7',
     },
     tokens: {
       usdc: '0x9aa7fEc87CA69695Dd1f879567CcF49F3ba417E2',
@@ -62,10 +65,11 @@ export const Addresses: Record<
   },
 }
 
-export function getAddresses(network: string): AddressValues {
-  const addrs = Addresses[network]
+export async function getAddresses(hre: HardhatRuntimeEnvironment): Promise<AddressValues> {
+  const chainId = parseInt(await hre.getChainId())
+  const addrs = Addresses[chainId]
   if (!addrs) {
-    throw new Error(`No addresses for network ${network}`)
+    throw new Error(`No addresses for network ${chainId}`)
   }
   return addrs
 }
