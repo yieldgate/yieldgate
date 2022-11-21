@@ -23,6 +23,11 @@ const ethers = hre.ethers
 const ZeroAddr = ethers.constants.AddressZero
 
 describe('YieldGate', function () {
+  // Unit tests should only run on local hardhat network
+  before(function () {
+    if (hre.network.name !== 'hardhat' || 'forking' in hre.network.config) this.skip()
+  })
+
   const aavePool = '0x000000000000000000000000000000000000bEEF' // passed to wETHGateway
 
   async function deployYieldGateAndOnePool() {

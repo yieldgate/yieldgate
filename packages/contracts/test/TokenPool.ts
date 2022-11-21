@@ -22,6 +22,11 @@ const ethers = hre.ethers
 const ZeroAddr = ethers.constants.AddressZero
 
 describe('TokenPool', function () {
+  // Unit tests should only run on local hardhat network
+  before(function () {
+    if (hre.network.name !== 'hardhat' || 'forking' in hre.network.config) this.skip()
+  })
+
   async function deployTokenPool() {
     // Aave context setup
     const usdc = await smock.fake<IERC20>('IERC20')
