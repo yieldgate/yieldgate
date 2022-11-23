@@ -26,7 +26,13 @@ const DeploymentConfigs: Record<number /* chain id */, DeploymentConfig> = {
       tokenApprovals: [],
     },
   },
-  // Mumbai
+  // Polygon mainnet
+  137: {
+    tokenPool: {
+      tokenApprovals: [Addresses[137].tokens.usdc],
+    },
+  },
+  // Polygon Mumbai
   80001: {
     tokenPool: {
       tokenApprovals: [Addresses[80001].tokens.usdc, Addresses[80001].tokens.wmatic!],

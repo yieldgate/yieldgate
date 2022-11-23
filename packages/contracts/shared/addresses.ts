@@ -9,6 +9,7 @@ export type AddressValues = {
   }
   toucan?: {
     offsetHelper: string
+    nct: string
   }
   tokens: {
     usdc: string
@@ -30,6 +31,7 @@ export const Addresses: Record<
     },
     toucan: {
       offsetHelper: '0x0000000000000000000000000000000000000000',
+      nct: '0x0000000000000000000000000000000000000000',
     },
     tokens: {
       usdc: '0x0000000000000000000000000000000000000000',
@@ -47,6 +49,23 @@ export const Addresses: Record<
       usdc: '0xA2025B15a1757311bfD68cb14eaeFCc237AF5b43',
     },
   },
+  // Polygon mainnet
+  137: {
+    aave: {
+      poolAddressesProvider: '0xa97684ead0e402dC232d5A977953DF7ECBaB3CDb',
+      pool: '0x794a61358D6845594F94dc1DB02A252b5b4814aD',
+      wETHGateway: '0x1e4b7A6b903680eab0c5dAbcb8fD429cD2a9598c',
+      nativeAToken: '0xe50fA9b3c56FfB159cB0FCA61F5c9D750e8128c8',
+    },
+    toucan: {
+      offsetHelper: '0x9e0ACA6ABd7498d6EFcDcb5E3e736DbB6487458c',
+      nct: '0xD838290e877E0188a4A44700463419ED96c16107',
+    },
+    tokens: {
+      usdc: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+      wmatic: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
+    },
+  },
   // Polygon Mumbai
   80001: {
     aave: {
@@ -56,7 +75,8 @@ export const Addresses: Record<
       nativeAToken: '0x89a6AE840b3F8f489418933A220315eeA36d11fF',
     },
     toucan: {
-      offsetHelper: '0x30dC279166DCFB69F52C91d6A3380dCa75D0fCa7',
+      offsetHelper: '0xDC54484c13d9956199cc14A49d07D58be4794D2A',
+      nct: '0x7beCBA11618Ca63Ead5605DE235f6dD3b25c530E',
     },
     tokens: {
       usdc: '0x9aa7fEc87CA69695Dd1f879567CcF49F3ba417E2',
