@@ -41,6 +41,9 @@ const config: HardhatUserConfig = {
     deployer: {
       default: 0,
     },
+    offsetter: {
+      default: 1,
+    },
   },
   verify: {
     etherscan: {

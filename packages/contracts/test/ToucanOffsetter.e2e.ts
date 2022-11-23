@@ -1,8 +1,14 @@
 // SPDX-License-Identifier: MIT
 
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 import { expect } from 'chai'
 import hre from 'hardhat'
-import { loadFixture } from '@nomicfoundation/hardhat-network-helpers'
+import {
+  impersonateAccount,
+  loadFixture,
+  time as ethtime,
+} from '@nomicfoundation/hardhat-network-helpers'
 
 import { getAddresses } from '../shared/addresses'
 import { getDeploymentConfig } from '../shared/deploy'
@@ -11,27 +17,51 @@ import {
   IERC20Metadata__factory,
   TokenPool__factory,
   ToucanOffsetter__factory,
+  IToucanOffsetHelper__factory,
 } from '../typechain-types'
+import { getEnd2endConfig } from './end2end-config'
+import { withinRelRange } from './utils'
+
+dayjs.extend(duration)
 
 const ethers = hre.ethers
+const MaxUint256 = ethers.constants.MaxUint256
 
 describe('ToucanOffsetter@e2e', function () {
+  this.bail(true) // fail on first error, related steps
+
   // End2end tests should only run on forked real networks
   before(async function () {
     if (!(hre.network.name === 'hardhat' && 'forking' in hre.network.config)) this.skip()
   })
 
   async function deployToucanOffsetter() {
-    const deployer = await ethers.getNamedSigner('deployer')
+    const { deployer, offsetter } = await ethers.getNamedSigners()
     const depls = await hre.deployments.fixture(['ToucanOffsetter', 'TokenPool'])
 
     const toucanOffsetter = ToucanOffsetter__factory.connect(
       depls.ToucanOffsetter.address,
       deployer
     )
-    const tokenPool = TokenPool__factory.connect(depls.TokenPoolWithApproval.address, deployer)
 
-    return { deployer, depls, toucanOffsetter, tokenPool }
+    const e2e = await getEnd2endConfig(hre)
+    await impersonateAccount(e2e.whale)
+    const staker = await ethers.getSigner(e2e.whale)
+    const token = IERC20Metadata__factory.connect(e2e.token, staker)
+    const tokenPool = TokenPool__factory.connect(depls.TokenPoolWithApproval.address, staker)
+    const stake = e2e.stake
+    const offsetToken = e2e.offsetToken
+
+    return {
+      deployer,
+      staker,
+      offsetter,
+      token,
+      toucanOffsetter,
+      tokenPool,
+      stake,
+      offsetToken,
+    }
   }
 
   it('Fixture should correctly deploy ToucanOffsetter with its TokenPool', async function () {
@@ -55,7 +85,7 @@ describe('ToucanOffsetter@e2e', function () {
       this.skip()
     }
 
-    const { deployer, tokenPool } = await loadFixture(deployToucanOffsetter)
+    const { deployer, tokenPool, token } = await loadFixture(deployToucanOffsetter)
     const aavePoolAP = IAavePoolAddressesProvider__factory.connect(
       aave.poolAddressesProvider,
       deployer
@@ -68,9 +98,51 @@ describe('ToucanOffsetter@e2e', function () {
       const tokenName = await token.name()
       console.log(`Checking allowance for token ${tokenName}`)
       expect(await token.allowance(tokenPool.address, aavePoolAddr)).to.equal(
-        ethers.constants.MaxUint256, // max allowance
+        MaxUint256, // max allowance
         `AavePool max. allowance for token ${tokenName}`
       )
     }
+    expect(deplCfg.tokenPool.tokenApprovals).to.include(token.address)
+  })
+
+  it('Fixture should have staker with enough token', async function () {
+    const { token, staker, stake } = await loadFixture(deployToucanOffsetter)
+    expect(await token.balanceOf(staker.address)).to.be.greaterThan(stake)
+  })
+
+  it('Stake, wait, then offset', async function () {
+    const { staker, offsetter, token, toucanOffsetter, tokenPool, stake, offsetToken } =
+      await loadFixture(deployToucanOffsetter)
+
+    await expect(token.approve(tokenPool.address, MaxUint256))
+      .to.emit(token, 'Approval')
+      .withArgs(staker.address, tokenPool.address, MaxUint256)
+    await expect(tokenPool.stake(token.address, staker.address, stake)) //
+      .to.emit(tokenPool, 'Staked')
+      .withArgs(token.address, staker.address, stake)
+
+    // advance blockchain by one month
+    await ethtime.increase(dayjs.duration(1, 'month').asSeconds())
+
+    const expYield = await tokenPool.claimable(token.address)
+    console.log(`Claimable: ${expYield}`)
+    expect(expYield).to.be.greaterThan(0)
+    const expOffset = await IToucanOffsetHelper__factory.connect(
+      await toucanOffsetter.offsetHelper(),
+      staker
+    ).calculateExpectedPoolTokenForToken(token.address, expYield, offsetToken)
+    expect(expOffset).to.be.greaterThan(0)
+    console.log(`Exp. offset: ${ethers.utils.formatEther(expOffset)}`)
+
+    await toucanOffsetter.grantRole(toucanOffsetter.OFFSET_ROLE(), offsetter.address)
+    const offsetterAsOfs = toucanOffsetter.connect(offsetter)
+    await expect(offsetterAsOfs.offsetYield(token.address, offsetToken)) //
+      .to.emit(toucanOffsetter, 'Offset')
+      .withArgs(
+        token.address,
+        withinRelRange(expYield, 0.01), // ±1%
+        offsetToken,
+        withinRelRange(expOffset, 0.01) // ±1%
+      )
   })
 })

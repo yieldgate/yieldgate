@@ -46,4 +46,20 @@ interface IToucanOffsetHelper {
         uint256 _amountToSwap,
         address _poolToken
     ) external returns (address[] memory tco2s, uint256[] memory amounts);
+
+    /**
+     * @notice Calculates the expected amount of Toucan Pool token that can be
+     * acquired by swapping the provided amount of ERC20 token.
+     *
+     * @param _fromToken The address of the ERC20 token used for the swap
+     * @param _fromAmount The amount of ERC20 token to swap
+     * @param _toToken The address of the pool token to swap for,
+     * for example, NCT or BCT
+     * @return The expected amount of Pool token that can be acquired
+     */
+    function calculateExpectedPoolTokenForToken(
+        address _fromToken,
+        uint256 _fromAmount,
+        address _toToken
+    ) external view returns (uint256);
 }
