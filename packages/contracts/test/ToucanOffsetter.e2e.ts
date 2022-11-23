@@ -18,6 +18,8 @@ import {
   TokenPool__factory,
   ToucanOffsetter__factory,
   IToucanOffsetHelper__factory,
+  ToucanOffsetterWithPoolDeployment__factory,
+  ToucanOffsetterWithPoolDeploymentApproval__factory,
 } from '../typechain-types'
 import { getEnd2endConfig } from './end2end-config'
 import { withinRelRange } from './utils'
@@ -144,5 +146,45 @@ describe('ToucanOffsetter@e2e', function () {
         offsetToken,
         withinRelRange(expOffset, 0.01) // ±1%
       )
+  })
+
+  it('ToucanOffsetterWithPoolDeployment constructor should deploy pool with offsetter as ben.', async function () {
+    const deployer = await ethers.getNamedSigner('deployer')
+    const addrs = await getAddresses(hre)
+    const ToucanOffsetter = (await hre.ethers.getContractFactory(
+      'ToucanOffsetterWithPoolDeployment'
+    )) as ToucanOffsetterWithPoolDeployment__factory
+    const toucanOffsetter = await ToucanOffsetter.deploy(
+      addrs.toucan!.offsetHelper,
+      addrs.aave.poolAddressesProvider
+    )
+
+    const pool = TokenPool__factory.connect(await toucanOffsetter.pool(), deployer)
+    expect(await pool.beneficiary()).to.equal(toucanOffsetter.address)
+  })
+
+  it('ToucanOffsetterWithPoolDeploymentApproval constructor should also set token approvals', async function () {
+    const addrs = await getAddresses(hre)
+    const tokenAddr = addrs.tokens.usdc
+    const deployer = await ethers.getNamedSigner('deployer')
+    const ToucanOffsetter = (await hre.ethers.getContractFactory(
+      'ToucanOffsetterWithPoolDeploymentApproval'
+    )) as ToucanOffsetterWithPoolDeploymentApproval__factory
+    const toucanOffsetter = await ToucanOffsetter.deploy(
+      addrs.toucan!.offsetHelper,
+      addrs.aave.poolAddressesProvider,
+      [tokenAddr]
+    )
+
+    const pool = TokenPool__factory.connect(await toucanOffsetter.pool(), deployer)
+    expect(await pool.beneficiary()).to.equal(toucanOffsetter.address)
+
+    const token = IERC20Metadata__factory.connect(tokenAddr, deployer)
+    const aavePoolAP = IAavePoolAddressesProvider__factory.connect(
+      addrs.aave.poolAddressesProvider,
+      deployer
+    )
+    const aavePoolAddr = await aavePoolAP.getPool()
+    expect(await token.allowance(pool.address, aavePoolAddr)).to.equal(MaxUint256)
   })
 })
