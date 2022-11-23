@@ -12,26 +12,27 @@ const config: HardhatUserConfig = {
   solidity: '0.8.10',
   networks: {
     hardhat: {
-      chainId: 1337,
-      allowUnlimitedContractSize: false,
-      blockGasLimit: 20000000, // 20 million
-      // chainId: 80001,
-      // forking: {
-      //   url: process.env.RPC_80001 || 'https://rpc.ankr.com/polygon_mumbai',
-      // },
-    },
-    rinkeby: {
-      chainId: 4,
-      url: process.env.RPC_4 || 'https://rpc.ankr.com/eth_rinkeby',
-      accounts,
+      chainId: 137, // 1337 for local
+      //allowUnlimitedContractSize: false,
+      //blockGasLimit: 20000000, // 20 million
+      forking: {
+        //url: process.env.RPC_80001 || 'https://rpc.ankr.com/polygon_mumbai',
+        //blockNumber: 29277750, // 2022-11-22 noon CET
+        url: process.env.RPC_137 || 'https://rpc.ankr.com/polygon',
+        blockNumber: 35934500, // 2022-11-22 evening CET
+      },
     },
     goerli: {
-      chainId: 5,
+      // 5
       url: process.env.RPC_5 || 'https://rpc.ankr.com/eth_goerli',
       accounts,
     },
+    polygon: {
+      // 137
+      url: process.env.RPC_137 || 'https://rpc.ankr.com/polygon',
+    },
     mumbai: {
-      chainId: 80001,
+      // 80001
       url: process.env.RPC_80001 || 'https://rpc.ankr.com/polygon_mumbai',
       accounts,
     },
