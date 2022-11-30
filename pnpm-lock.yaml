@@ -34,6 +34,7 @@ importers:
       '@typechain/ethers-v5': ^10.1.1
       '@typechain/hardhat': ^6.1.4
       '@types/chai': ^4.3.3
+      '@types/lodash.isplainobject': ^4.0.7
       '@types/mocha': ^9.1.1
       '@types/node': ^16.18.3
       '@typescript-eslint/eslint-plugin': ^5.42.0
@@ -48,6 +49,7 @@ importers:
       hardhat: ^2.12.2
       hardhat-deploy: ^0.11.20
       hardhat-gas-reporter: ^1.0.8
+      lodash.isplainobject: ^4.0.6
       solhint: ^3.3.7
       solidity-coverage: ^0.8.2
       ts-node: ^10.9.1
@@ -66,6 +68,7 @@ importers:
       '@typechain/ethers-v5': 10.1.1_jf5e27ylnqv3j37iczhhtz7myu
       '@typechain/hardhat': 6.1.4_e3ga5ze2qpwpaszncs4bsj7ute
       '@types/chai': 4.3.4
+      '@types/lodash.isplainobject': 4.0.7
       '@types/mocha': 9.1.1
       '@types/node': 16.18.3
       '@typescript-eslint/eslint-plugin': 5.42.1_2udltptbznfmezdozpdoa2aemq
@@ -80,6 +83,7 @@ importers:
       hardhat: 2.12.2_mwhvu7sfp6vq5ryuwb6hlbjfka
       hardhat-deploy: 0.11.20
       hardhat-gas-reporter: 1.0.9_hardhat@2.12.2
+      lodash.isplainobject: 4.0.6
       solhint: 3.3.7
       solidity-coverage: 0.8.2_hardhat@2.12.2
       ts-node: 10.9.1_e7yvbkxpwwqnzxz2s2bfjt7zx4
@@ -6016,6 +6020,12 @@ packages:
     resolution: {integrity: sha512-HZQYqbiFVWufzCwexrvh694SOim8z2d+xJl5UNamcvQFejLY/2YUtzXHYi3cHdI7PMlS8ejH2slRAOJQ32aNbA==}
     dev: true
 
+  /@types/lodash.isplainobject/4.0.7:
+    resolution: {integrity: sha512-fdHtdjpy7fXydEaRHx1dPa+2AVmLbmk2Gv7f0w/90BKCH0DkWo8pIrzygnB3rvgo6oKNb3cO9VaPpj9GLCr5Ug==}
+    dependencies:
+      '@types/lodash': 4.14.188
+    dev: true
+
   /@types/lodash.mergewith/4.6.6:
     resolution: {integrity: sha512-RY/8IaVENjG19rxTZu9Nukqh0W2UrYgmBj5sdns4hWRZaV8PqR7wIKHFKzvOTjo4zVRV7sVI+yFhAJql12Kfqg==}
     dependencies:
@@ -6024,7 +6034,6 @@ packages:
 
   /@types/lodash/4.14.188:
     resolution: {integrity: sha512-zmEmF5OIM3rb7SbLCFYoQhO4dGt2FRM9AMkxvA3LaADOF1n8in/zGJlWji9fmafLoNyz+FoL6FE0SLtGIArD7w==}
-    dev: false
 
   /@types/lru-cache/5.1.1:
     resolution: {integrity: sha512-ssE3Vlrys7sdIzs5LOxCzTVMsU7i9oa/IaW92wF32JFb3CVczqOkru2xspuKczHEbG3nvmPY7IFqVmGGHdNbYw==}
@@ -7266,7 +7275,7 @@ packages:
   /axios/0.21.4_debug@4.3.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2_debug@4.3.4
     transitivePeerDependencies:
       - debug
     dev: true
@@ -10193,6 +10202,19 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: false
+
+  /follow-redirects/1.15.2_debug@4.3.4:
+    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.4
+    dev: true
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -16099,7 +16121,7 @@ packages:
     dependencies:
       command-exists: 1.2.9
       commander: 3.0.2
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2_debug@4.3.4
       fs-extra: 0.30.0
       js-sha3: 0.8.0
       memorystream: 0.3.1
