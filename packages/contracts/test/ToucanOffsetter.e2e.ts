@@ -11,13 +11,14 @@ import {
 } from '@nomicfoundation/hardhat-network-helpers'
 
 import { getAddresses } from '../shared/addresses'
-import { getDeploymentConfig } from '../shared/deploy'
+import { getDeploymentConfig, TESTNET_CHAIN_IDS } from '../shared/deploy'
 import {
   IAavePoolAddressesProvider__factory,
   IERC20Metadata__factory,
   TokenPool__factory,
   ToucanOffsetter__factory,
   IToucanOffsetHelper__factory,
+  SFETestUSD__factory,
   ToucanOffsetterWithPoolDeployment__factory,
   ToucanOffsetterWithPoolDeploymentApproval__factory,
 } from '../typechain-types'
@@ -32,14 +33,17 @@ const MaxUint256 = ethers.constants.MaxUint256
 describe('ToucanOffsetter@e2e', function () {
   this.bail(true) // fail on first error, related steps
 
-  // End2end tests should only run on forked real networks
+  // End2end tests should only run on local node or forked real networks
   before(async function () {
-    if (!(hre.network.name === 'hardhat' && 'forking' in hre.network.config)) this.skip()
+    if (!(hre.network.name === 'hardhat')) this.skip()
   })
 
   async function deployToucanOffsetter() {
+    const isTestnet = TESTNET_CHAIN_IDS.includes(await hre.getChainId())
     const { deployer, offsetter } = await ethers.getNamedSigners()
-    const depls = await hre.deployments.fixture(['ToucanOffsetter', 'TokenPool'])
+    const contracts = ['ToucanOffsetter', 'TokenPool']
+    if (isTestnet) contracts.push('SFETestUSD', 'AaveMock', 'OffsetHelperMock')
+    const depls = await hre.deployments.fixture(contracts)
 
     const toucanOffsetter = ToucanOffsetter__factory.connect(
       depls.ToucanOffsetter.address,
@@ -47,9 +51,16 @@ describe('ToucanOffsetter@e2e', function () {
     )
 
     const e2e = await getEnd2endConfig(hre)
-    await impersonateAccount(e2e.whale)
-    const staker = await ethers.getSigner(e2e.whale)
-    const token = IERC20Metadata__factory.connect(e2e.token, staker)
+    // For testnets, just use the named account. For real forked networs, whale
+    // must be specified.
+    const whale = isTestnet ? (await hre.getNamedAccounts())['whale'] : e2e.whale!
+    if (!isTestnet) await impersonateAccount(whale)
+    const staker = await ethers.getSigner(whale)
+    const token = IERC20Metadata__factory.connect(
+      isTestnet ? depls.SFETestUSD.address : e2e.token!,
+      staker
+    )
+    if (isTestnet) await SFETestUSD__factory.connect(token.address, staker).mintMe(e2e.stake)
     const tokenPool = TokenPool__factory.connect(depls.TokenPoolWithApproval.address, staker)
     const stake = e2e.stake
     const offsetToken = e2e.offsetToken
@@ -109,10 +120,12 @@ describe('ToucanOffsetter@e2e', function () {
 
   it('Fixture should have staker with enough token', async function () {
     const { token, staker, stake } = await loadFixture(deployToucanOffsetter)
-    expect(await token.balanceOf(staker.address)).to.be.greaterThan(stake)
+    expect(await token.balanceOf(staker.address)).to.be.gte(stake)
   })
 
   it('Stake, wait, then offset', async function () {
+    if ('forking' in hre.network.config) this.timeout(120_000)
+
     const { staker, offsetter, token, toucanOffsetter, tokenPool, stake, offsetToken } =
       await loadFixture(deployToucanOffsetter)
 
@@ -127,7 +140,7 @@ describe('ToucanOffsetter@e2e', function () {
     await ethtime.increase(dayjs.duration(1, 'month').asSeconds())
 
     const expYield = await tokenPool.claimable(token.address)
-    console.log(`Claimable: ${expYield}`)
+    console.log(`Claimable: ${ethers.utils.formatUnits(expYield, 6)}`)
     expect(expYield).to.be.greaterThan(0)
     const expOffset = await IToucanOffsetHelper__factory.connect(
       await toucanOffsetter.offsetHelper(),

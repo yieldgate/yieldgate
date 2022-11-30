@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
+import isPlainObject from 'lodash.isplainobject'
 
 export type AddressValues = {
   aave: {
@@ -26,17 +27,17 @@ export const Addresses: Record<
   // hardhat local node for unit tests
   1337: {
     aave: {
-      poolAddressesProvider: '0x0000000000000000000000000000000000000000',
-      pool: '0x0000000000000000000000000000000000000000',
+      poolAddressesProvider: 'deployment:AaveMock',
+      pool: 'deployment:AaveMock',
       wETHGateway: '0x0000000000000000000000000000000000000000',
-      nativeAToken: '0x0000000000000000000000000000000000000000',
+      nativeAToken: 'deployment:AaveMock',
     },
     toucan: {
-      offsetHelper: '0x0000000000000000000000000000000000000000',
-      nct: '0x0000000000000000000000000000000000000000',
+      offsetHelper: 'deployment:OffsetHelperMock',
+      nct: '0x0000000000000000000000000000000000000042',
     },
     tokens: {
-      usdc: '0x0000000000000000000000000000000000000000',
+      usdc: 'deployment:SFETestUSD',
     },
   },
   // Goerli
@@ -93,5 +94,43 @@ export async function getAddresses(hre: HardhatRuntimeEnvironment): Promise<Addr
   if (!addrs) {
     throw new Error(`No addresses for network ${chainId}`)
   }
-  return addrs
+  return populateDeploymentAddresses(hre, addrs)
+}
+
+export async function populateDeploymentAddresses(
+  hre: HardhatRuntimeEnvironment,
+  obj: any
+): Promise<any> {
+  return mapDeepStringValuesAsync(obj, async (addr: string) => {
+    if (!addr.startsWith('deployment:')) {
+      return addr
+    }
+    const [, deplName] = addr.split(':')
+    try {
+      const { address } = await hre.deployments.get(deplName)
+      return address ? address : '0x0000000000000000000000000000000000000000'
+    } catch {
+      return '0x0000000000000000000000000000000000000000'
+    }
+  })
+}
+
+async function mapDeepStringValuesAsync(
+  obj: any,
+  func: (s: string) => Promise<string>
+): Promise<any> {
+  if (isPlainObject(obj)) {
+    return Object.fromEntries(
+      await Promise.all(
+        Object.entries(obj).map(async ([key, value]) => {
+          return [key, await mapDeepStringValuesAsync(value, func)]
+        })
+      )
+    )
+  } else if (typeof obj === 'object' && Array.isArray(obj)) {
+    return Promise.all(obj.map((value) => mapDeepStringValuesAsync(value, func)))
+  } else if (typeof obj == 'string') {
+    return func(obj)
+  }
+  return obj
 }
