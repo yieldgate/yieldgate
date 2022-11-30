@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 
 export type AddressValues = {
