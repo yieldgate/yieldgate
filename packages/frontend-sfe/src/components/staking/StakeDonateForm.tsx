@@ -1,17 +1,16 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
-import { FeeData } from '@ethersproject/providers'
 import { useDeployments } from '@lib/useDeployments'
 import { BigNumber } from 'ethers'
 import { parseUnits } from 'ethers/lib/utils.js'
-import { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import 'twin.macro'
 import {
   useAccount,
   useContractWrite,
+  useFeeData,
   usePrepareContractWrite,
-  useProvider,
   useWaitForTransaction,
 } from 'wagmi'
 import { useStakeDonateAllowanceProviderContext } from './StakeDonateAllowanceProvider'
@@ -38,18 +37,9 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
   const { contracts, addresses, usedChainId } = useDeployments()
   const stakingAmount = form.watch('stakingAmount')
   const { isApproved } = useStakeDonateAllowanceProviderContext()
-  const provider = useProvider()
-  const [feeData, setFeeData] = useState<FeeData>()
+  const { data: feeData } = useFeeData({ chainId: usedChainId })
 
-  // Manually load feeData due to https://github.com/ethers-io/ethers.js/issues/2828
-  const updateFeeData = async () => {
-    setFeeData(await provider.getFeeData())
-  }
-  useEffect(() => {
-    updateFeeData()
-  }, [provider])
-
-  // Staking call
+  // Stake call
   const { config: stakeConfig } = usePrepareContractWrite({
     address: contracts?.TokenPoolWithApproval?.address,
     abi: contracts?.TokenPoolWithApproval?.abi,
@@ -62,7 +52,8 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
     ],
     overrides: {
       gasLimit: 400000,
-      gasPrice: feeData?.gasPrice,
+      maxFeePerGas: feeData?.maxFeePerGas,
+      maxPriorityFeePerGas: feeData?.maxPriorityFeePerGas,
     },
   })
   const stake = useContractWrite(stakeConfig)
