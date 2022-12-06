@@ -12,9 +12,8 @@ const config: HardhatUserConfig = {
   solidity: '0.8.10',
   networks: {
     hardhat: {
-      chainId: 137, // 1337 for local
-      //allowUnlimitedContractSize: false,
-      //blockGasLimit: 20000000, // 20 million
+      //chainId: 1337, // localhost
+      chainId: 137, // polygon
       forking: {
         //url: process.env.RPC_80001 || 'https://rpc.ankr.com/polygon_mumbai',
         //blockNumber: 29277750, // 2022-11-22 noon CET
@@ -43,6 +42,9 @@ const config: HardhatUserConfig = {
     },
     offsetter: {
       default: 1,
+    },
+    whale: {
+      default: 2,
     },
   },
   verify: {

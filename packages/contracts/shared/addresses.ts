@@ -1,4 +1,7 @@
+// SPDX-License-Identifier: MIT
+
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
+import isPlainObject from 'lodash.isplainobject'
 
 export type AddressValues = {
   aave: {
@@ -24,17 +27,17 @@ export const Addresses: Record<
   // hardhat local node for unit tests
   1337: {
     aave: {
-      poolAddressesProvider: '0x0000000000000000000000000000000000000000',
-      pool: '0x0000000000000000000000000000000000000000',
+      poolAddressesProvider: 'deployment:AaveMock',
+      pool: 'deployment:AaveMock',
       wETHGateway: '0x0000000000000000000000000000000000000000',
-      nativeAToken: '0x0000000000000000000000000000000000000000',
+      nativeAToken: 'deployment:AaveMock',
     },
     toucan: {
-      offsetHelper: '0x0000000000000000000000000000000000000000',
-      nct: '0x0000000000000000000000000000000000000000',
+      offsetHelper: 'deployment:OffsetHelperMock',
+      nct: '0x0000000000000000000000000000000000000042',
     },
     tokens: {
-      usdc: '0x0000000000000000000000000000000000000000',
+      usdc: 'deployment:SFETestUSD',
     },
   },
   // Goerli
@@ -69,17 +72,17 @@ export const Addresses: Record<
   // Polygon Mumbai
   80001: {
     aave: {
-      poolAddressesProvider: '0x5343b5bA672Ae99d627A1C87866b8E53F47Db2E6',
-      pool: '0x6C9fB0D5bD9429eb9Cd96B85B81d872281771E6B',
+      poolAddressesProvider: 'deployment:AaveMock',
+      pool: 'deployment:AaveMock',
       wETHGateway: '0x2a58E9bbb5434FdA7FF78051a4B82cb0EF669C17',
-      nativeAToken: '0x89a6AE840b3F8f489418933A220315eeA36d11fF',
+      nativeAToken: 'deployment:AaveMock',
     },
     toucan: {
-      offsetHelper: '0xDC54484c13d9956199cc14A49d07D58be4794D2A',
+      offsetHelper: 'deployment:OffsetHelperMock',
       nct: '0x7beCBA11618Ca63Ead5605DE235f6dD3b25c530E',
     },
     tokens: {
-      usdc: '0x9aa7fEc87CA69695Dd1f879567CcF49F3ba417E2',
+      usdc: 'deployment:SFETestUSD',
       wmatic: '0xb685400156cF3CBE8725958DeAA61436727A30c3',
     },
   },
@@ -91,5 +94,43 @@ export async function getAddresses(hre: HardhatRuntimeEnvironment): Promise<Addr
   if (!addrs) {
     throw new Error(`No addresses for network ${chainId}`)
   }
-  return addrs
+  return populateDeploymentAddresses(hre, addrs)
+}
+
+export async function populateDeploymentAddresses(
+  hre: HardhatRuntimeEnvironment,
+  obj: any
+): Promise<any> {
+  return mapDeepStringValuesAsync(obj, async (addr: string) => {
+    if (!addr.startsWith('deployment:')) {
+      return addr
+    }
+    const [, deplName] = addr.split(':')
+    try {
+      const { address } = await hre.deployments.get(deplName)
+      return address ? address : '0x0000000000000000000000000000000000000000'
+    } catch {
+      return '0x0000000000000000000000000000000000000000'
+    }
+  })
+}
+
+async function mapDeepStringValuesAsync(
+  obj: any,
+  func: (s: string) => Promise<string>
+): Promise<any> {
+  if (isPlainObject(obj)) {
+    return Object.fromEntries(
+      await Promise.all(
+        Object.entries(obj).map(async ([key, value]) => {
+          return [key, await mapDeepStringValuesAsync(value, func)]
+        })
+      )
+    )
+  } else if (typeof obj === 'object' && Array.isArray(obj)) {
+    return Promise.all(obj.map((value) => mapDeepStringValuesAsync(value, func)))
+  } else if (typeof obj == 'string') {
+    return func(obj)
+  }
+  return obj
 }
