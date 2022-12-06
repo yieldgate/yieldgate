@@ -12,6 +12,7 @@ import {
   useAccount,
   useContractRead,
   useContractWrite,
+  useFeeData,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from 'wagmi'
@@ -26,6 +27,7 @@ export interface StakeDonateKPIsProps extends StakingViewStakeDonateProps {}
 export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
   const { contracts, addresses, usedChainId } = useDeployments()
   const { address } = useAccount()
+  const { data: feeData } = useFeeData({ chainId: usedChainId })
 
   // Fetch existing stake
   const [stakeAmount, setStakeAmount] = useState<number>()
@@ -53,10 +55,12 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
     abi: contracts?.TokenPoolWithApproval?.abi,
     chainId: usedChainId,
     functionName: 'unstake',
-    overrides: {
-      gasLimit: 300000,
-    },
     args: [addresses?.USDC],
+    overrides: {
+      gasLimit: 400000,
+      maxFeePerGas: feeData?.maxFeePerGas,
+      maxPriorityFeePerGas: feeData?.maxPriorityFeePerGas,
+    },
   })
   const unstake = useContractWrite(unstakeConfig)
   const { isLoading: unstakeIsLoading } = useWaitForTransaction({
