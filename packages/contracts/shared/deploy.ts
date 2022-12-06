@@ -61,11 +61,7 @@ const DeploymentConfigs: Record<number /* chain id */, DeploymentConfig> = {
   // Polygon Mumbai
   80001: {
     tokenPool: {
-      tokenApprovals: [
-        'deployment:SFETestUSD',
-        Addresses[80001].tokens.usdc,
-        Addresses[80001].tokens.wmatic!,
-      ],
+      tokenApprovals: [Addresses[80001].tokens.usdc, Addresses[80001].tokens.wmatic!],
     },
     mocks: {
       maxMint: parseUSDC('1000000'), // 1 Mio

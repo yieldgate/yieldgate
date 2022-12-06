@@ -72,17 +72,17 @@ export const Addresses: Record<
   // Polygon Mumbai
   80001: {
     aave: {
-      poolAddressesProvider: '0x5343b5bA672Ae99d627A1C87866b8E53F47Db2E6',
-      pool: '0x6C9fB0D5bD9429eb9Cd96B85B81d872281771E6B',
+      poolAddressesProvider: 'deployment:AaveMock',
+      pool: 'deployment:AaveMock',
       wETHGateway: '0x2a58E9bbb5434FdA7FF78051a4B82cb0EF669C17',
-      nativeAToken: '0x89a6AE840b3F8f489418933A220315eeA36d11fF',
+      nativeAToken: 'deployment:AaveMock',
     },
     toucan: {
-      offsetHelper: '0xDC54484c13d9956199cc14A49d07D58be4794D2A',
+      offsetHelper: 'deployment:OffsetHelperMock',
       nct: '0x7beCBA11618Ca63Ead5605DE235f6dD3b25c530E',
     },
     tokens: {
-      usdc: '0x9aa7fEc87CA69695Dd1f879567CcF49F3ba417E2',
+      usdc: 'deployment:SFETestUSD',
       wmatic: '0xb685400156cF3CBE8725958DeAA61436727A30c3',
     },
   },
