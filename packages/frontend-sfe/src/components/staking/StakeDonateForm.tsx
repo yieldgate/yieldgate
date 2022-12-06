@@ -6,13 +6,7 @@ import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import 'twin.macro'
-import {
-  useAccount,
-  useContractWrite,
-  useFeeData,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from 'wagmi'
+import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
 import { useStakeDonateAllowanceProviderContext } from './StakeDonateAllowanceProvider'
 import { StakeDonateAmountInputField } from './StakeDonateAmountInputField'
 import { StakeDonateImpactEstimationSlider } from './StakeDonateImpactEstimationSlider'
@@ -37,7 +31,7 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
   const { contracts, addresses, usedChainId } = useDeployments()
   const stakingAmount = form.watch('stakingAmount')
   const { isApproved } = useStakeDonateAllowanceProviderContext()
-  const { data: feeData } = useFeeData({ chainId: usedChainId })
+  // const { data: feeData } = useFeeData({ chainId: usedChainId })
 
   // Stake call
   const { config: stakeConfig } = usePrepareContractWrite({
@@ -52,8 +46,8 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
     ],
     overrides: {
       gasLimit: 400000,
-      maxFeePerGas: feeData?.maxFeePerGas,
-      maxPriorityFeePerGas: feeData?.maxPriorityFeePerGas,
+      // maxFeePerGas: feeData?.maxFeePerGas,
+      // maxPriorityFeePerGas: feeData?.maxPriorityFeePerGas,
     },
   })
   const stake = useContractWrite(stakeConfig)
