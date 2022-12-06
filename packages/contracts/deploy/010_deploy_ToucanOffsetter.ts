@@ -7,16 +7,19 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const deployer = await getDeployer(hre)
   console.log(`Deploying as ${deployer}…`)
 
-  const { aave } = await getAddresses(hre)
+  const { toucan } = await getAddresses(hre)
+  if (!toucan) {
+    throw new Error(`No toucan addresses for network ${hre.network.name}`)
+  }
 
   const { deploy } = hre.deployments
-  const deployArgs = [aave.pool, aave.wETHGateway, aave.nativeAToken]
-  console.log(`Deploying YieldGate(${deployArgs})…`)
-  await deploy('YieldGate', {
+  const deployArgs = [toucan.offsetHelper]
+  console.log(`Deploying ToucanOffsetter(${deployArgs})…`)
+  await deploy('ToucanOffsetter', {
     from: deployer,
     args: deployArgs,
     log: true,
   })
 }
-func.tags = ['YieldGate']
+func.tags = ['ToucanOffsetter']
 export default func
