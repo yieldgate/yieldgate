@@ -42,7 +42,7 @@ export default function StakingPage() {
         disabled: !isConnected,
       },
       {
-        title: pathname === '/donate' ? 'Donate' : 'Stake',
+        title: pathname === '/donate' ? 'Donate' : 'Manage Stake',
         component: StakingViewStakeDonate,
         disabled: !isConnected,
       },

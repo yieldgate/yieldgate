@@ -62,7 +62,7 @@ export const StakingViewPrepareFunds: FC<StakingViewPrepareFundsProps> = (props)
           {/* Continue to Staking Button */}
           {isApproved && (
             <StakingStepperItemContinueButton onClick={() => onGoNext()}>
-              Continue to {props.mode === 'donate' ? 'Donate' : 'Stake'}
+              Continue to {props.mode === 'donate' ? 'Donate' : 'Manage Stake'}
               <ArrowRightCircleIcon tw="ml-2 h-4 w-4" />
             </StakingStepperItemContinueButton>
           )}
