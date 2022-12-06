@@ -1,13 +1,19 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
-import { USDC_DECIMALS } from '@deployments/addresses'
+import { FeeData } from '@ethersproject/providers'
 import { useDeployments } from '@lib/useDeployments'
 import { BigNumber } from 'ethers'
 import { parseUnits } from 'ethers/lib/utils.js'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import 'twin.macro'
-import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from 'wagmi'
+import {
+  useAccount,
+  useContractWrite,
+  usePrepareContractWrite,
+  useProvider,
+  useWaitForTransaction,
+} from 'wagmi'
 import { useStakeDonateAllowanceProviderContext } from './StakeDonateAllowanceProvider'
 import { StakeDonateAmountInputField } from './StakeDonateAmountInputField'
 import { StakeDonateImpactEstimationSlider } from './StakeDonateImpactEstimationSlider'
@@ -32,21 +38,32 @@ export const StakeDonateForm: FC<StakeDonateFormProps> = ({ ...props }) => {
   const { contracts, addresses, usedChainId } = useDeployments()
   const stakingAmount = form.watch('stakingAmount')
   const { isApproved } = useStakeDonateAllowanceProviderContext()
+  const provider = useProvider()
+  const [feeData, setFeeData] = useState<FeeData>()
+
+  // Manually load feeData due to https://github.com/ethers-io/ethers.js/issues/2828
+  const updateFeeData = async () => {
+    setFeeData(await provider.getFeeData())
+  }
+  useEffect(() => {
+    updateFeeData()
+  }, [provider])
 
   // Staking call
   const { config: stakeConfig } = usePrepareContractWrite({
-    address: contracts?.TokenPool?.address,
-    abi: contracts?.TokenPool?.abi,
+    address: contracts?.TokenPoolWithApproval?.address,
+    abi: contracts?.TokenPoolWithApproval?.abi,
     functionName: 'stake',
     chainId: usedChainId,
-    overrides: {
-      gasLimit: 300000,
-    },
     args: [
       addresses?.USDC,
       address,
-      isValid ? parseUnits(stakingAmount || '0', USDC_DECIMALS) : BigNumber.from(0),
+      isValid ? parseUnits(stakingAmount || '0', 6) : BigNumber.from(0),
     ],
+    overrides: {
+      gasLimit: 400000,
+      gasPrice: feeData?.gasPrice,
+    },
   })
   const stake = useContractWrite(stakeConfig)
   const { isLoading: stakeIsLoading } = useWaitForTransaction({

@@ -1,4 +1,3 @@
-import { USDC_DECIMALS } from '@deployments/addresses'
 import { useDeployments } from '@lib/useDeployments'
 import { BigNumber, constants } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils.js'
@@ -34,14 +33,14 @@ export const StakeDonateAllowanceProvider: FC<PropsWithChildren> = ({ children }
   // Fetch & watch USDC allowance
   useContractRead({
     address: addresses?.USDC,
-    abi: erc20ABI,
+    abi: usedChainId === 80001 ? (contracts?.SFETestUSD.abi as any) : erc20ABI,
     chainId: usedChainId,
     functionName: 'allowance',
     args: [
       address || constants.AddressZero,
-      contracts?.TokenPool?.address || constants.AddressZero,
+      contracts?.TokenPoolWithApproval?.address || constants.AddressZero,
     ],
-    enabled: !!address && !!addresses?.USDC && !!contracts?.TokenPool?.address,
+    enabled: !!address && !!addresses?.USDC && !!contracts?.TokenPoolWithApproval?.address,
     watch: true,
     onError: (e) => {
       console.error('Error while fetching allowance for USDC:', e)
@@ -50,10 +49,10 @@ export const StakeDonateAllowanceProvider: FC<PropsWithChildren> = ({ children }
       setAllowanceFormatted(undefined)
       setAllowanceIsMax(false)
     },
-    onSuccess: (data) => {
+    onSuccess: (data: BigNumber) => {
       setIsApproved(data.gt(0))
       setAllowance(data)
-      setAllowanceFormatted(parseFloat(formatUnits(data, USDC_DECIMALS)).toFixed(2))
+      setAllowanceFormatted(parseFloat(formatUnits(data, 6)).toFixed(2))
       setAllowanceIsMax(data.eq(constants.MaxUint256))
     },
   })
@@ -67,6 +66,7 @@ export const StakeDonateAllowanceProvider: FC<PropsWithChildren> = ({ children }
   } = useBalance({
     address,
     token,
+    chainId: usedChainId,
     watch: true,
   })
   useEffect(() => {

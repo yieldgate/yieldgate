@@ -1,5 +1,4 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
-import { USDC_DECIMALS } from '@deployments/addresses'
 import { useDeployments } from '@lib/useDeployments'
 import { BigNumber, constants } from 'ethers'
 import { formatUnits } from 'ethers/lib/utils.js'
@@ -31,29 +30,27 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
   // Fetch existing stake
   const [stakeAmount, setStakeAmount] = useState<number>()
   const { isLoading: stakeAmountIsLoading, refetch: refetchStakeAmount } = useContractRead({
-    address: contracts?.TokenPool.address,
-    abi: contracts?.TokenPool.abi,
+    address: contracts?.TokenPoolWithApproval.address,
+    abi: contracts?.TokenPoolWithApproval.abi,
     chainId: usedChainId,
     functionName: 'stakes',
     args: [addresses?.USDC || constants.AddressZero, address || constants.AddressZero],
-    enabled: !!address && !!addresses?.USDC && !!contracts?.TokenPool?.address,
+    enabled: !!address && !!addresses?.USDC && !!contracts?.TokenPoolWithApproval?.address,
     onError: (e) => {
       console.error(e)
       toast.error('Error while fetching existing stake.')
       setStakeAmount(undefined)
     },
     onSuccess: (data) => {
-      const stakeAmount = BigNumber.isBigNumber(data)
-        ? parseFloat(formatUnits(data, USDC_DECIMALS))
-        : undefined
+      const stakeAmount = BigNumber.isBigNumber(data) ? parseFloat(formatUnits(data, 6)) : undefined
       setStakeAmount(stakeAmount)
     },
   })
 
   // Unstake call
   const { config: unstakeConfig } = usePrepareContractWrite({
-    address: contracts?.TokenPool?.address,
-    abi: contracts?.TokenPool?.abi,
+    address: contracts?.TokenPoolWithApproval?.address,
+    abi: contracts?.TokenPoolWithApproval?.abi,
     chainId: usedChainId,
     functionName: 'unstake',
     overrides: {

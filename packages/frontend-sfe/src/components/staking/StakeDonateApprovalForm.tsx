@@ -1,5 +1,4 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
-import { USDC_DECIMALS } from '@deployments/addresses'
 import { AdjustmentsHorizontalIcon, PlusCircleIcon } from '@heroicons/react/20/solid'
 import { useDeployments } from '@lib/useDeployments'
 import { constants } from 'ethers'
@@ -26,13 +25,13 @@ export const StakeDonateApprovalForm: FC<StakeDonateApprovalFormProps> = ({ onGo
   // Approval call
   const { config: approveConfig } = usePrepareContractWrite({
     address: addresses?.USDC,
-    abi: erc20ABI,
+    abi: usedChainId === 80001 ? (contracts?.SFETestUSD.abi as any) : erc20ABI,
     functionName: 'approve',
     chainId: usedChainId,
     args: [
-      contracts?.TokenPool?.address || constants.AddressZero,
+      contracts?.TokenPoolWithApproval?.address || constants.AddressZero,
       showAmountInput && isValid && approvalAmount
-        ? parseUnits(approvalAmount, USDC_DECIMALS)
+        ? parseUnits(approvalAmount, 6)
         : constants.MaxUint256,
     ],
   })

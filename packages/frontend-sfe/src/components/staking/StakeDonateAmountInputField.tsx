@@ -1,4 +1,3 @@
-import { USDC_DECIMALS } from '@deployments/addresses'
 import { CircleStackIcon } from '@heroicons/react/20/solid'
 import { BigNumber } from 'ethers'
 import { formatUnits, parseUnits } from 'ethers/lib/utils'
@@ -50,12 +49,12 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
             validate: {
               approval: (val) => {
                 if (!val || allowanceIsMax || !allowance) return
-                if (BigNumber.from(parseUnits(val, USDC_DECIMALS)).lte(allowance)) return
+                if (BigNumber.from(parseUnits(val, 6)).lte(allowance)) return
                 return 'Entered amount is higher than approval.'
               },
               balance: (val) => {
                 if (!val || !balance) return
-                if (BigNumber.from(parseUnits(val, USDC_DECIMALS)).lte(balance)) return
+                if (BigNumber.from(parseUnits(val, 6)).lte(balance)) return
                 return 'Entered amount is higher than balance.'
               },
             },
@@ -78,7 +77,7 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
               >
                 Balance:{' '}
                 <NumericFormat
-                  value={formatUnits(balance, USDC_DECIMALS)}
+                  value={formatUnits(balance, 6)}
                   displayType={'text'}
                   decimalScale={2}
                   fixedDecimalScale={true}
@@ -90,10 +89,7 @@ export const StakeDonateAmountInputField: FC<StakeDonateAmountInputFieldProps> =
                   type="button"
                   tw="rounded-md border border-green-200 py-0.5 px-1 font-semibold text-green-500 uppercase tracking-wide hover:border-green-300"
                   onClick={() => {
-                    form.setValue(
-                      'stakingAmount',
-                      parseFloat(formatUnits(balance, USDC_DECIMALS)).toFixed(2)
-                    )
+                    form.setValue('stakingAmount', parseFloat(formatUnits(balance, 6)).toFixed(2))
                   }}
                 >
                   Max

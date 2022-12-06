@@ -1,5 +1,5 @@
 /**
- * Additional address constants (per chain-id)
+ * Additional address (per chain-id)
  */
 
 export enum AddressesKeys {
@@ -12,8 +12,8 @@ export type AllAddressesType = { [_ in AddressesKeys]: { [_: number]: AddressTyp
 
 export const allAddresses: AllAddressesType = {
   [AddressesKeys.USDC]: {
-    // TODO Replace with actual USDC address
-    80001: '0xb685400156cf3cbe8725958deaa61436727a30c3',
+    80001: '0x7ab4fCFCd4F108cdC43D591C0546aC7cfC36fd6B',
+    137: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
   },
 }
 
@@ -26,9 +26,3 @@ export const getAddressesFor = (chainId: number): AddressesType => {
     {}
   )
 }
-
-/**
- * Decimals of tokens above
- */
-
-export const USDC_DECIMALS = 18 /* TODO USDCs has 6 decimals */

@@ -1,4 +1,3 @@
-import { USDC_DECIMALS } from '@deployments/addresses'
 import { ArrowTopRightOnSquareIcon, ExclamationTriangleIcon } from '@heroicons/react/20/solid'
 import { truncateHash } from '@lib/truncateHash'
 import { useDeployments } from '@lib/useDeployments'
@@ -24,7 +23,7 @@ import {
 export interface StakeDonateAccountBalanceProps extends StakingStepperItemComponentProps {}
 export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({ ...props }) => {
   const { address } = useAccount()
-  const { addresses } = useDeployments()
+  const { addresses, usedChainId } = useDeployments()
   const { data: ensName } = useEnsName({ address, chainId: 1 })
   const { chain } = useNetwork()
   const token = addresses?.USDC
@@ -65,7 +64,7 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({ 
             {!balanceIsLoading && !!balance && (
               <div tw="flex flex-col">
                 <NumericFormat
-                  value={formatUnits(balance, USDC_DECIMALS)}
+                  value={formatUnits(balance, 6)}
                   displayType={'text'}
                   decimalScale={2}
                   fixedDecimalScale={true}
@@ -127,7 +126,7 @@ export const StakeDonateAccountBalance: FC<StakeDonateAccountBalanceProps> = ({ 
         </div>
 
         {/* Approval */}
-        {!balance?.isZero() && (
+        {(!balance?.isZero() || usedChainId === 80001) && (
           <>
             <StakingStepperItemContentBoxDivider />
             <StakeDonateApprovalForm {...props} />
