@@ -1,4 +1,5 @@
 import { Web3Wrapper } from '@components/layout/Web3Wrapper'
+import { OffsetEventsProvider } from '@components/shared/OffsetEventsProvider'
 import { cache } from '@emotion/css'
 import { CacheProvider } from '@emotion/react'
 import { env } from '@lib/environment'
@@ -51,11 +52,13 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
       <CacheProvider value={cache}>
         <GlobalStyles />
 
-        <Web3Wrapper>
-          <LazyMotion features={domAnimation}>
-            <Component {...pageProps} />
-          </LazyMotion>
-        </Web3Wrapper>
+        <LazyMotion features={domAnimation}>
+          <Web3Wrapper>
+            <OffsetEventsProvider>
+              <Component {...pageProps} />
+            </OffsetEventsProvider>
+          </Web3Wrapper>
+        </LazyMotion>
 
         <Toaster
           toastOptions={{
