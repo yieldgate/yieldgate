@@ -4,7 +4,7 @@
  */
 
 export interface HardhatContractExport {
-  address: string
+  address: `0x${string}`
   abi: any[]
   linkedData?: any
 }

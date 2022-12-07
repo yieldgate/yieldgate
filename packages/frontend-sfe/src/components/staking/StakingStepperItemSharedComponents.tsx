@@ -1,4 +1,4 @@
-import tw, { styled } from 'twin.macro'
+import tw, { css, styled } from 'twin.macro'
 
 /**
  * StakingStepperItem (Layout)
@@ -55,4 +55,14 @@ export const StakingStepperItemContentBoxSubtitle = styled.p(() => [
 
 export const StakingStepperItemContentBoxDivider = styled.hr(() => [
   tw`-mx-4 my-4 border-gray-200 xs:-mx-6`,
+])
+
+export const StakingStepperItemContentBoxSecondaryAction = styled.button(({ disabled }) => [
+  tw`flex items-center justify-center whitespace-nowrap font-medium text-xs text-gray-700`,
+  disabled ? tw`cursor-not-allowed opacity-80` : tw`hover:text-black`,
+  css`
+    > svg {
+      ${tw`ml-1.5 h-3.5 w-3.5`}
+    }
+  `,
 ])

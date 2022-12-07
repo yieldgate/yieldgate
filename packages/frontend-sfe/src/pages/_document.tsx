@@ -1,22 +1,33 @@
 import { extractCritical } from '@emotion/server'
 import { env } from '@lib/environment'
-import Document, { Head, Html, Main, NextScript } from 'next/document'
-import { Fragment, ReactFragment } from 'react'
+import Document, {
+  DocumentContext,
+  DocumentInitialProps,
+  Head,
+  Html,
+  Main,
+  NextScript,
+} from 'next/document'
 
-export default class MyDocument extends Document {
-  static async getInitialProps(ctx: any) {
+export type NewDocumentInitialProps = DocumentInitialProps & {
+  ids: string[]
+  css: string
+}
+export default class MyDocument extends Document<NewDocumentInitialProps> {
+  static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
     const initialProps = await Document.getInitialProps(ctx)
     const critical = extractCritical(initialProps.html)
     initialProps.html = critical.html
     initialProps.styles = (
-      <Fragment>
+      <>
         {initialProps.styles}
         <style
           data-emotion-css={critical.ids.join(' ')}
           dangerouslySetInnerHTML={{ __html: critical.css }}
         />
-      </Fragment>
-    ) as any as ReactFragment
+      </>
+    )
+
     return initialProps
   }
 
@@ -24,6 +35,12 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          {/* Emotion Inline Styles */}
+          <style
+            data-emotion-css={this.props?.ids?.join(' ')}
+            dangerouslySetInnerHTML={{ __html: this.props.css }}
+          />
+
           {/* Manifest & Favicon */}
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />

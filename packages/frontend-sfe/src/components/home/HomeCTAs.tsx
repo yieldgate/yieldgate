@@ -40,7 +40,7 @@ export const HomeCTAs: FC<HomeCTAsProps> = ({ primaryFirst, withTwitter, ...prop
           Donate
         </BaseButton>
         <BaseButton asLink={true} href="/stake" tw="mx-1.5">
-          Stake
+          Manage Stake
         </BaseButton>
       </div>
     </>

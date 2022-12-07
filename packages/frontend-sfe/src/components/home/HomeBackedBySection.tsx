@@ -52,6 +52,7 @@ export const HomeBackedBySection: FC<HomeBackedBySectionProps> = () => {
               <Image
                 src={logo.img}
                 fill
+                sizes="150px"
                 style={{
                   objectFit: 'contain',
                   objectPosition: 'center center',

@@ -1,4 +1,6 @@
 import { Wrapper } from '@components/layout/Wrapper'
+import { useOffsetEvents } from '@components/shared/OffsetEventsProvider'
+import { formatUnits } from 'ethers/lib/utils.js'
 import { FC, useEffect, useState } from 'react'
 import { NumericFormat, NumericFormatProps } from 'react-number-format'
 import { SpinnerDiamond } from 'spinners-react'
@@ -7,6 +9,7 @@ import tw, { theme } from 'twin.macro'
 
 export interface HomeHeroKPIsProps {}
 export const HomeHeroKPIs: FC<HomeHeroKPIsProps> = () => {
+  const { isLoading, accumulatedTCO2Offset } = useOffsetEvents()
   const [isDemoLoading, setIsDemoLoading] = useState(true)
   useEffect(() => {
     setTimeout(() => {
@@ -21,11 +24,11 @@ export const HomeHeroKPIs: FC<HomeHeroKPIsProps> = () => {
         <Wrapper noVerticalPadding>
           <div tw="-mx-4 grid divide-y divide-black/10 sm:-mx-8 lg:(mx-0 grid-cols-3 divide-y-0 divide-x)">
             <HomeHeroKPIItem
-              label="Total amount"
-              value={11140456}
-              numericFormatProps={{ prefix: '$' }}
+              label="Total Offset"
+              value={accumulatedTCO2Offset ? parseFloat(formatUnits(accumulatedTCO2Offset, 18)) : 0}
+              numericFormatProps={{ suffix: ' TCO₂' }}
               tw="lg:pl-0"
-              isLoading={isDemoLoading}
+              isLoading={isLoading}
             />
             <HomeHeroKPIItem label="Number of stakers" value={23140} isLoading={isDemoLoading} />
             <HomeHeroKPIItem

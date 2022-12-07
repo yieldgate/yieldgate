@@ -27,7 +27,7 @@ export const HomeNewsletterSection: FC<HomeNewsletterSectionProps> = () => {
           </div>
 
           <div tw="absolute right-0 top-1/2 z-0 -translate-y-1/2 select-none opacity-50 max-w-[66%]">
-            <Image src={circleElementSvg} width={450} height={450} alt="Decorative Element" />
+            <Image src={circleElementSvg} height={450} alt="Decorative Element" />
           </div>
         </Wrapper>
       </div>

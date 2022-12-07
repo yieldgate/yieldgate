@@ -1,27 +1,26 @@
-import { BigNumber, utils } from 'ethers'
+// SPDX-License-Identifier: MIT
+
+import { BigNumber } from 'ethers'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { Addresses } from '../shared/addresses'
-
-export function parseUSDC(s: string): BigNumber {
-  return utils.parseUnits(s, 6)
-}
+import { parseUSDC } from '../shared/utils'
 
 export type End2EndConfig = {
-  token: string
-  whale: string
+  token?: string
+  whale?: string
   stake: BigNumber
   offsetToken: string
 }
 
 const End2EndConfigs: Record<number, End2EndConfig> = {
+  // Local hardhat node
+  1337: {
+    stake: parseUSDC('1000000'), // 1 Mio
+    offsetToken: Addresses[1337].toucan!.nct,
+  },
   // Polygon Mumbai
   80001: {
-    token: Addresses[80001].tokens.usdc,
-    whale: '0xc945a5a960fef1a9c3fef8593fc2446d1d7c6146',
     stake: parseUSDC('1000000'), // 1 Mio
-    //token: Addresses[80001].tokens.wmatic!,
-    //whale: '0xc945a5a960fef1a9c3fef8593fc2446d1d7c6146',
-    //stake: utils.parseEther('10000'), // 10k
     offsetToken: Addresses[80001].toucan!.nct,
   },
   // Polygon mainnet

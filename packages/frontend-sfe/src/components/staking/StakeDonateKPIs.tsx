@@ -1,9 +1,20 @@
 import { BaseButton, BaseButtonGroup } from '@components/shared/BaseButton'
-import { FC, PropsWithChildren, useEffect, useState } from 'react'
+import { useDeployments } from '@lib/useDeployments'
+import { BigNumber, constants } from 'ethers'
+import { formatUnits } from 'ethers/lib/utils.js'
+import { FC, PropsWithChildren, useState } from 'react'
+import toast from 'react-hot-toast'
 import { NumericFormat } from 'react-number-format'
 import { SpinnerDiamond } from 'spinners-react'
 import 'twin.macro'
 import { theme } from 'twin.macro'
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from 'wagmi'
 import {
   StakingStepperItemContentBox,
   StakingStepperItemContentBoxDivider,
@@ -13,12 +24,59 @@ import { StakingViewStakeDonateProps } from './StakingViewStakeDonate'
 
 export interface StakeDonateKPIsProps extends StakingViewStakeDonateProps {}
 export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
-  const [isLoading, setIsLoading] = useState(true)
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 1500)
-  }, [])
+  const { contracts, addresses, usedChainId } = useDeployments()
+  const { address } = useAccount()
+  // const { data: feeData } = useFeeData({ chainId: usedChainId })
+
+  // Fetch existing stake
+  const [stakeAmount, setStakeAmount] = useState<number>()
+  const { isLoading: stakeAmountIsLoading, refetch: refetchStakeAmount } = useContractRead({
+    address: contracts?.TokenPoolWithApproval.address,
+    abi: contracts?.TokenPoolWithApproval.abi,
+    chainId: usedChainId,
+    functionName: 'stakes',
+    args: [addresses?.USDC || constants.AddressZero, address || constants.AddressZero],
+    enabled: !!address && !!addresses?.USDC && !!contracts?.TokenPoolWithApproval?.address,
+    onError: (e) => {
+      console.error(e)
+      toast.error('Error while fetching existing stake.')
+      setStakeAmount(undefined)
+    },
+    onSuccess: (data) => {
+      const stakeAmount = BigNumber.isBigNumber(data) ? parseFloat(formatUnits(data, 6)) : undefined
+      setStakeAmount(stakeAmount)
+    },
+  })
+
+  // Unstake call
+  const { config: unstakeConfig } = usePrepareContractWrite({
+    address: contracts?.TokenPoolWithApproval?.address,
+    abi: contracts?.TokenPoolWithApproval?.abi,
+    chainId: usedChainId,
+    functionName: 'unstake',
+    args: [addresses?.USDC],
+    overrides: {
+      gasLimit: 400000,
+      // maxFeePerGas: feeData?.maxFeePerGas,
+      // maxPriorityFeePerGas: feeData?.maxPriorityFeePerGas,
+    },
+  })
+  const unstake = useContractWrite(unstakeConfig)
+  const { isLoading: unstakeIsLoading } = useWaitForTransaction({
+    chainId: usedChainId,
+    hash: unstake?.data?.hash,
+    onError: (e) => {
+      console.error(e)
+      toast.error('Error while unstaking USDC. Try again…')
+      refetchStakeAmount?.()
+    },
+    onSuccess: () => {
+      toast.success(`Successfully unstaked ${stakeAmount} USDC.`)
+      refetchStakeAmount?.()
+    },
+  })
+
+  if (!stakeAmount) return null
 
   return (
     <>
@@ -29,13 +87,9 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
 
         {/* KPIs */}
         <div tw="-m-1 grid grid-cols-2 sm:grid-cols-3">
-          <StakeDonateKPI
-            title="Impact (CO₂)"
-            isLoading={isLoading}
-            tw="col-span-2 text-green-500 sm:col-span-1"
-          >
+          <StakeDonateKPI title="Impact (CO₂)" tw="col-span-2 text-green-500 sm:col-span-1">
             <NumericFormat
-              value={1000}
+              value={0}
               displayType={'text'}
               decimalScale={0}
               fixedDecimalScale={true}
@@ -43,18 +97,16 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
               suffix=" kg"
             />
           </StakeDonateKPI>
-          <StakeDonateKPI title="Stake (USDC)" isLoading={isLoading}>
+          <StakeDonateKPI title="Stake (USDC)" isLoading={stakeAmountIsLoading}>
             <NumericFormat
-              value={900}
+              value={stakeAmount}
               displayType={'text'}
               decimalScale={2}
               fixedDecimalScale={true}
               thousandSeparator={true}
             />
           </StakeDonateKPI>
-          <StakeDonateKPI title="Duration" isLoading={isLoading}>
-            30 days
-          </StakeDonateKPI>
+          <StakeDonateKPI title="Duration">0 days</StakeDonateKPI>
         </div>
 
         <StakingStepperItemContentBoxDivider />
@@ -64,7 +116,15 @@ export const StakeDonateKPIs: FC<StakeDonateKPIsProps> = ({ mode }) => {
           <BaseButton asLink={true} href="https://doingud.com/" target="_blank">
             View Badge ↗
           </BaseButton>
-          <BaseButton variant="outline">Withdraw</BaseButton>
+          <BaseButton
+            variant="outline"
+            onClick={unstake?.write as VoidFunction}
+            type="button"
+            disabled={unstakeIsLoading || !unstake?.write || !stakeAmount}
+            isLoading={unstakeIsLoading}
+          >
+            Withdraw
+          </BaseButton>
         </BaseButtonGroup>
       </StakingStepperItemContentBox>
     </>
