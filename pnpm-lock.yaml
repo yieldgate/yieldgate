@@ -125,7 +125,7 @@ importers:
       babel-loader: ^9.1.0
       babel-plugin-macros: ^3.1.0
       cssnano: ^5.1.14
-      dayjs: ^1.11.6
+      dayjs: ^1.11.7
       eslint: ^8.29.0
       eslint-config-next: ^13.0.6
       eslint-config-prettier: ^8.5.0
@@ -154,7 +154,7 @@ importers:
       react-slider: ^2.0.4
       spinners-react: ^1.0.7
       tailwindcss: ^3.2.4
-      twin.macro: ^3.0.1
+      twin.macro: ^3.1.0
       typescript: ^4.9.3
       use-async-effect: ^2.2.7
       wagmi: ^0.8.10
@@ -169,7 +169,7 @@ importers:
       '@sendinblue/client': 3.2.2
       '@yieldgate/contracts': link:../contracts
       axios: 1.2.1
-      dayjs: 1.11.6
+      dayjs: 1.11.7
       ethers: 5.7.2
       framer-motion: 7.6.19_biqbaboplfbrettd7655fr4n2y
       gray-matter: 4.0.3
@@ -224,7 +224,7 @@ importers:
       postcss: 8.4.19
       prettier-plugin-twin.macro: 1.0.11_twaj7q2qx3xp6g7ffuedviyz6e
       tailwindcss: 3.2.4_postcss@8.4.19
-      twin.macro: 3.0.1_tailwindcss@3.2.4
+      twin.macro: 3.1.0_tailwindcss@3.2.4
       typescript: 4.9.3
 
   packages/frontend-yg:
@@ -7380,7 +7380,7 @@ packages:
   /axios/0.21.4_debug@4.3.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2_debug@4.3.4
     transitivePeerDependencies:
       - debug
     dev: true
@@ -7388,7 +7388,7 @@ packages:
   /axios/1.2.1:
     resolution: {integrity: sha512-I88cFiGu9ryt/tfVEi4kX2SITsvDddTajXTOFmt2uK1ZVA8LytjtdeyefdQWEf5PU8w+4SSJDoYnggflB5tW4A==}
     dependencies:
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2_debug@4.3.4
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -8683,6 +8683,10 @@ packages:
 
   /dayjs/1.11.6:
     resolution: {integrity: sha512-zZbY5giJAinCG+7AGaw0wIhNZ6J8AhWuSXKvuc1KAyMiRsvGQWqh4L+MomvhdAYjN+lqvVCMq1I41e3YHvXkyQ==}
+
+  /dayjs/1.11.7:
+    resolution: {integrity: sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==}
+    dev: false
 
   /death/1.1.0:
     resolution: {integrity: sha512-vsV6S4KVHvTGxbEcij7hkWRv0It+sGGWVOM67dQde/o5Xjnr+KmLjxWJii2uEObIrt1CcM9w0Yaovx+iOlIL+w==}
@@ -10327,6 +10331,18 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: false
+
+  /follow-redirects/1.15.2_debug@4.3.4:
+    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.4
 
   /for-each/0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -13050,7 +13066,7 @@ packages:
     hasBin: true
     dependencies:
       ansi-fragments: 0.2.1
-      dayjs: 1.11.6
+      dayjs: 1.11.7
       yargs: 15.4.1
     dev: false
 
@@ -16278,7 +16294,7 @@ packages:
     dependencies:
       command-exists: 1.2.9
       commander: 3.0.2
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2_debug@4.3.4
       fs-extra: 0.30.0
       js-sha3: 0.8.0
       memorystream: 0.3.1
@@ -17283,8 +17299,8 @@ packages:
   /tweetnacl/1.0.3:
     resolution: {integrity: sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==}
 
-  /twin.macro/3.0.1_tailwindcss@3.2.4:
-    resolution: {integrity: sha512-0mpdfQYpfCyPYa37MC/WKHCLQrwlqe6b2bM+uKaku5Iwe6bxHvEhcfXp8E8TyAdTupenYTvI6nHZvrh7msSFkQ==}
+  /twin.macro/3.1.0_tailwindcss@3.2.4:
+    resolution: {integrity: sha512-7DSR/xdvSaAqhTM4JptBgI+1IzXQR5v+2hp0CDMmHMjlm44IBEewU8MeqPlXmFgQI06zpLyJMaKRbJu96drAJw==}
     engines: {node: '>=16.14.0'}
     peerDependencies:
       tailwindcss: ^3.2.4
